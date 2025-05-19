@@ -1,7 +1,18 @@
 package back2basics.modulecommon.global.error.exception;
 
 
+import static back2basics.modulecommon.global.error.exception.ErrorCode.INTERNAL_SERVER_ERROR;
+import static back2basics.modulecommon.global.error.exception.ErrorCode.INVALID_INPUT_VALUE;
+import static back2basics.modulecommon.global.error.exception.ErrorCode.METHOD_NOT_ALLOWED;
+
+import java.net.BindException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @Slf4j
 @RestControllerAdvice
@@ -14,13 +25,15 @@ public class GlobalExceptionHandler {
 //    }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
+        MethodArgumentTypeMismatchException e) {
         final ErrorResponse response = ErrorResponse.of(e);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
+        HttpRequestMethodNotSupportedException e) {
         final ErrorResponse response = ErrorResponse.of(METHOD_NOT_ALLOWED);
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
