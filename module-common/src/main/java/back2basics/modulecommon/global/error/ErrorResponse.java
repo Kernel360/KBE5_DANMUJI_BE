@@ -1,4 +1,4 @@
-package back2basics.modulecommon.global.error.exception;
+package back2basics.modulecommon.global.error;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

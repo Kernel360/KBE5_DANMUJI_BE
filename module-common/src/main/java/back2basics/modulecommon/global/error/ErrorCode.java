@@ -1,4 +1,4 @@
-package back2basics.modulecommon.global.error.exception;
+package back2basics.modulecommon.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
