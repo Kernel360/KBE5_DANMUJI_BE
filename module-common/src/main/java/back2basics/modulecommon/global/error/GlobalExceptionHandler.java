@@ -4,8 +4,9 @@ package back2basics.modulecommon.global.error;
 import static back2basics.modulecommon.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
 import static back2basics.modulecommon.global.error.ErrorCode.INVALID_INPUT_VALUE;
 import static back2basics.modulecommon.global.error.ErrorCode.METHOD_NOT_ALLOWED;
+import org.springframework.validation.BindException;
 
-import java.net.BindException;
+import back2basics.modulecommon.global.error.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {
         final ErrorResponse response = ErrorResponse.of(INVALID_INPUT_VALUE, e.getBindingResult());
-        System.out.println("================== 메소드 콜");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
