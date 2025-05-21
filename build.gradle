@@ -1,9 +1,3 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.0' apply false
@@ -48,6 +42,10 @@ allprojects {
     tasks.named('test') {
         useJUnitPlatform()
     }
+}
+
+bootJar {
+    archiveFileName = "${rootProject.name}.jar"
 }
 
 bootJar {
