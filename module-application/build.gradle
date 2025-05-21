@@ -13,6 +13,9 @@ dependencies {
 
     // starter
     implementation 'org.springframework.boot:spring-boot-starter'
+
+    // mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 bootJar {
