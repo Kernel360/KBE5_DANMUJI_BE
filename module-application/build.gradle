@@ -1,0 +1,20 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+dependencies {
+
+    // module
+    implementation project(':module-core')
+    implementation project(':module-common')
+    implementation project(':module-adapter-web')
+    implementation project(':module-adapter-jpa')
+    implementation project(':module-adapter-batch')
+
+    // starter
+    implementation 'org.springframework.boot:spring-boot-starter'
+}
+
+bootJar {
+    archiveFileName = "${rootProject.name}.jar"
+}

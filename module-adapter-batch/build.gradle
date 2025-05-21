@@ -1,0 +1,21 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+dependencies {
+
+    // module
+    implementation project(':module-core')
+    implementation project(':module-common')
+
+    // starter
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
