@@ -1,12 +1,12 @@
 package com.back2basics.response.post;
 
-import com.back2basics.response.global.BaseResponseCode;
+import com.back2basics.response.global.ResponseCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum PostResponseCode implements BaseResponseCode {
+public enum PostResponseCode implements ResponseCode {
 
     POST_CREATE_SUCCESS(201, "P201", "게시글 생성 완료"),
     POST_READ_SUCCESS(200, "P202", "게시글 조회 완료"),

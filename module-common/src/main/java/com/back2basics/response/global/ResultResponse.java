@@ -10,11 +10,11 @@ public class ResultResponse {
     private final String message;
     private final Object data;
 
-    public static ResultResponse of(BaseResponseCode responseCode, Object data) {
+    public static ResultResponse of(ResponseCode responseCode, Object data) {
         return new ResultResponse(responseCode, data);
     }
 
-    public ResultResponse(BaseResponseCode resultCode, Object data) {
+    public ResultResponse(ResponseCode resultCode, Object data) {
         this.status = resultCode.getStatus();
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage();
