@@ -1,4 +1,4 @@
-package com.back2basics.response;
+package com.back2basics.response.global;
 
 
 import lombok.AllArgsConstructor;
