@@ -9,6 +9,8 @@ import com.back2basics.port.out.post.PostRepositoryPort;
 import com.back2basics.service.post.dto.PostCreateCommand;
 import com.back2basics.service.post.dto.PostResponseDto;
 import com.back2basics.service.post.dto.PostUpdateCommand;
+import com.back2basics.service.post.exception.PostErrorCode;
+import com.back2basics.service.post.exception.PostException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class PostServiceImpl implements
     CreatePostUseCase,
     GetPostUseCase,
     UpdatePostUseCase,
-    DeletePostUseCase {
+    DeletePostUseCase { // todo : 응답 데이터 통일 필요. 현재 어떤건 id, 어떤건 post
 
     private final PostRepositoryPort postRepository;
 
@@ -37,7 +39,7 @@ public class PostServiceImpl implements
     @Override
     public PostResponseDto getPost(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)); // todo : valdator 추가해서 여기서 throw 안하게 수정 필요
         return PostResponseDto.from(post);
     }
 
@@ -50,8 +52,9 @@ public class PostServiceImpl implements
 
     @Override
     public void updatePost(Long id, PostUpdateCommand command) {
+        // todo : 작성자 검증 필요
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)); // todo : valdator 추가해서 여기서 throw 안하게 수정 필요
         post.update(command.getTitle(), command.getContent());
         postRepository.update(post);
     }

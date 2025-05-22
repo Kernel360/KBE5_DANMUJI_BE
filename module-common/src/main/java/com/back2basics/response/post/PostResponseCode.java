@@ -1,6 +1,6 @@
 package com.back2basics.response.post;
 
-import com.back2basics.response.global.ResponseCode;
+import com.back2basics.response.global.result.ResponseCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

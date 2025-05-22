@@ -1,8 +1,8 @@
-package com.back2basics.global.exception;
+package com.back2basics.response.global.error.exception;
 
-import com.back2basics.global.error.ErrorCode;
-import com.back2basics.global.error.ErrorResponse;
-import com.back2basics.global.error.ErrorResponse.FieldError;
+import com.back2basics.response.global.error.ErrorCode;
+import com.back2basics.response.global.error.ErrorResponse;
+import com.back2basics.response.global.error.ErrorResponse.FieldError;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;

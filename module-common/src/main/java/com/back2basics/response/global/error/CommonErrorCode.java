@@ -1,4 +1,4 @@
-package com.back2basics.global.error;
+package com.back2basics.response.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

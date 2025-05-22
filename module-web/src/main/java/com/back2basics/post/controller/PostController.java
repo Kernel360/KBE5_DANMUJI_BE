@@ -4,7 +4,7 @@ import com.back2basics.port.in.post.CreatePostUseCase;
 import com.back2basics.port.in.post.DeletePostUseCase;
 import com.back2basics.port.in.post.GetPostUseCase;
 import com.back2basics.port.in.post.UpdatePostUseCase;
-import com.back2basics.response.global.ResultResponse;
+import com.back2basics.response.global.result.ResultResponse;
 import com.back2basics.response.post.PostResponseCode;
 import com.back2basics.service.post.dto.PostCreateCommand;
 import com.back2basics.service.post.dto.PostResponseDto;

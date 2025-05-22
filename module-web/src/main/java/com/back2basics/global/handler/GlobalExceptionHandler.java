@@ -1,14 +1,14 @@
-package com.back2basics.global.exception;
+package com.back2basics.global.handler;
 
 
-import static com.back2basics.global.error.CommonErrorCode.INTERNAL_SERVER_ERROR;
-import static com.back2basics.global.error.CommonErrorCode.INVALID_INPUT_VALUE;
-import static com.back2basics.global.error.CommonErrorCode.METHOD_NOT_ALLOWED;
-import static com.back2basics.global.error.CommonErrorCode.NOT_FOUND;
+import static com.back2basics.response.global.error.CommonErrorCode.INTERNAL_SERVER_ERROR;
+import static com.back2basics.response.global.error.CommonErrorCode.INVALID_INPUT_VALUE;
+import static com.back2basics.response.global.error.CommonErrorCode.METHOD_NOT_ALLOWED;
+import static com.back2basics.response.global.error.CommonErrorCode.NOT_FOUND;
 
-import com.back2basics.global.error.CommonErrorCode;
-import com.back2basics.global.error.ErrorCode;
-import com.back2basics.global.error.ErrorResponse;
+import com.back2basics.response.global.error.exception.CustomException;
+import com.back2basics.response.global.error.ErrorCode;
+import com.back2basics.response.global.error.ErrorResponse;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

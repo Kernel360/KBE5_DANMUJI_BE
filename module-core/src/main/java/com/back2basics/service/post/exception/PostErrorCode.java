@@ -1,6 +1,6 @@
-package com.back2basics.post.exception;
+package com.back2basics.service.post.exception;
 
-import com.back2basics.global.error.ErrorCode;
+import com.back2basics.response.global.error.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

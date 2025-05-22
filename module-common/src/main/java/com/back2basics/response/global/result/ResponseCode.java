@@ -1,4 +1,4 @@
-package com.back2basics.response.global;
+package com.back2basics.response.global.result;
 
 public interface ResponseCode {
 

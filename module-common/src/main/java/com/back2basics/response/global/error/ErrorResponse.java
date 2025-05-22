@@ -1,4 +1,4 @@
-package com.back2basics.global.error;
+package com.back2basics.response.global.error;
 
 import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
