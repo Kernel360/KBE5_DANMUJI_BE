@@ -11,7 +11,9 @@ public enum CommonErrorCode implements ErrorCode {
     INVALID_INPUT_VALUE(400, "C002", "invalid input type"),
     METHOD_NOT_ALLOWED(405, "C003", "method not allowed"),
     INVALID_TYPE_VALUE(400, "C004", "invalid type value"),
-    BAD_CREDENTIALS(400, "C005", "bad credentials");
+    BAD_CREDENTIALS(400, "C005", "bad credentials"),
+    NOT_FOUND(404, "C006", "not found");
+
 
     private final int status;
     private final String code;
