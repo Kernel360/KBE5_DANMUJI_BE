@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class Post {
 
-    private Long id;
+    private final Long id;
     private String authorName;
     private String title;
     private String content;
@@ -26,8 +26,12 @@ public class Post {
         }
     }
 
-    public void updateContent(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public void update(String title, String content) {
+        if(title != null){
+            this.title = title;
+        }
+        if(content != null){
+            this.content = content;
+        }
     }
 }

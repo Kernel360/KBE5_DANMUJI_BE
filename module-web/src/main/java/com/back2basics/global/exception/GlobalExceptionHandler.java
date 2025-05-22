@@ -1,10 +1,9 @@
 package com.back2basics.global.exception;
 
 
-import static com.back2basics.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
-import static com.back2basics.global.error.ErrorCode.INVALID_INPUT_VALUE;
-import static com.back2basics.global.error.ErrorCode.METHOD_NOT_ALLOWED;
-
+import static com.back2basics.global.error.CommonErrorCode.INTERNAL_SERVER_ERROR;
+import static com.back2basics.global.error.CommonErrorCode.INVALID_INPUT_VALUE;
+import static com.back2basics.global.error.CommonErrorCode.METHOD_NOT_ALLOWED;
 import com.back2basics.global.error.ErrorCode;
 import com.back2basics.global.error.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;

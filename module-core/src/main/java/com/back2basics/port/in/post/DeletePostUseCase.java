@@ -1,4 +1,4 @@
-package com.back2basics.service.post;
+package com.back2basics.port.in.post;
 
 public interface DeletePostUseCase {
 

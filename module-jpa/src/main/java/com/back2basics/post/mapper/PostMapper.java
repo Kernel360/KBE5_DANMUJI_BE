@@ -1,5 +1,6 @@
 package com.back2basics.post.mapper;
 
+import com.back2basics.model.post.Post;
 import com.back2basics.post.entity.PostEntity;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ public class PostMapper {
 
     public PostEntity fromDomain(Post domain) {
         return PostEntity.builder()
+            .id(domain.getId())
             .authorName(domain.getAuthorName())
             .title(domain.getTitle())
             .content(domain.getContent())
