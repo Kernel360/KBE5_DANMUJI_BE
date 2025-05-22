@@ -1,18 +1,19 @@
-package com.back2basics.global.error;
+package com.back2basics.response.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum CommonErrorCode implements ErrorCode {
 
-    // Common
     INTERNAL_SERVER_ERROR(500, "C001", "internal server error"),
     INVALID_INPUT_VALUE(400, "C002", "invalid input type"),
     METHOD_NOT_ALLOWED(405, "C003", "method not allowed"),
     INVALID_TYPE_VALUE(400, "C004", "invalid type value"),
-    BAD_CREDENTIALS(400, "C005", "bad credentials");
+    BAD_CREDENTIALS(400, "C005", "bad credentials"),
+    NOT_FOUND(404, "C006", "not found");
+
 
     private final int status;
     private final String code;

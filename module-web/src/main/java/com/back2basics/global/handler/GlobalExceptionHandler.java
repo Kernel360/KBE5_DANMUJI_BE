@@ -1,12 +1,15 @@
-package com.back2basics.global.exception;
+package com.back2basics.global.handler;
 
 
-import static com.back2basics.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
-import static com.back2basics.global.error.ErrorCode.INVALID_INPUT_VALUE;
-import static com.back2basics.global.error.ErrorCode.METHOD_NOT_ALLOWED;
+import static com.back2basics.response.global.error.CommonErrorCode.INTERNAL_SERVER_ERROR;
+import static com.back2basics.response.global.error.CommonErrorCode.INVALID_INPUT_VALUE;
+import static com.back2basics.response.global.error.CommonErrorCode.METHOD_NOT_ALLOWED;
+import static com.back2basics.response.global.error.CommonErrorCode.NOT_FOUND;
 
-import com.back2basics.global.error.ErrorCode;
-import com.back2basics.global.error.ErrorResponse;
+import com.back2basics.response.global.error.exception.CustomException;
+import com.back2basics.response.global.error.ErrorCode;
+import com.back2basics.response.global.error.ErrorResponse;
+import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,12 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
+        final ErrorResponse response = ErrorResponse.of(NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
@@ -53,6 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
         final ErrorResponse response = ErrorResponse.of(INTERNAL_SERVER_ERROR);
+        log.error("============== 잡지 못한 예외 : { }",e);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

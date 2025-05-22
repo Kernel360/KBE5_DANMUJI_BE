@@ -1,4 +1,4 @@
-package com.back2basics.global.error;
+package com.back2basics.response.global.error;
 
 import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class ErrorResponse {
     public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
         final String value = e.getValue() == null ? "" : e.getValue().toString();
         final List<FieldError> errors = FieldError.of(e.getName(), value, e.getErrorCode());
-        return new ErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
+        return new ErrorResponse(CommonErrorCode.INVALID_TYPE_VALUE, errors);
     }
 
 
