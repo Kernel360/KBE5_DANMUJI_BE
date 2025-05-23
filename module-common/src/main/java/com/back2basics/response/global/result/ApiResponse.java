@@ -15,7 +15,7 @@ public class ApiResponse<T> {
 	private final String code;
 	private final String message;
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final T data;
 
 	public ApiResponse(BaseCode baseCode, T data) {
@@ -47,5 +47,11 @@ public class ApiResponse<T> {
 		return ResponseEntity
 			.status(errorCode.getStatus())
 			.body(new ApiResponse<>(errorCode));
+	}
+
+	public static <T> ResponseEntity<ApiResponse<T>> error(ErrorCode code, T errorDetails) {
+		return ResponseEntity
+			.status(code.getStatus())
+			.body(new ApiResponse<>(code, errorDetails));
 	}
 }

@@ -4,6 +4,7 @@ import com.back2basics.response.global.code.CommonErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,12 +25,13 @@ public class ErrorResponse {
 		this.errors = errors;
 	}
 
-	public static ErrorResponse of(BindingResult bindingResult) {
-		return new ErrorResponse(FieldError.of(bindingResult));
+	// todo errorCode field 수정
+	public static ErrorResponse of() {
+		return new ErrorResponse(Collections.emptyList());
 	}
 
-	public static ErrorResponse of(Set<ConstraintViolation<?>> violations) {
-		return new ErrorResponse(FieldError.of(violations));
+	public static ErrorResponse of(BindingResult bindingResult) {
+		return new ErrorResponse(FieldError.of(bindingResult));
 	}
 
 	public static ErrorResponse of(MethodArgumentTypeMismatchException e) {

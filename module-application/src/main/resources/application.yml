@@ -65,3 +65,5 @@ spring:
 logging:
   level:
     org.hibernate.SQL: info
+    org.springframework.web: warn
+    org.springframework.boot.autoconfigure.web: warn
