@@ -46,14 +46,14 @@ public class PostController {
 
     @PatchMapping("/{postId}")
     public ResponseEntity<ResultResponse> updatePost(@PathVariable Long postId,
-        @RequestBody PostUpdateCommand command) {
+        @RequestBody @Valid PostUpdateCommand command) {
         updatePostUseCase.updatePost(postId, command);
-        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_UPDATE_SUCCESS, null));
+        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_UPDATE_SUCCESS, command));
     }
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<ResultResponse> deletePost(@PathVariable Long postId) {
         deletePostUseCase.deletePost(postId);
-        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_DELETE_SUCCESS, null));
+        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_DELETE_SUCCESS, postId));
     }
 }
