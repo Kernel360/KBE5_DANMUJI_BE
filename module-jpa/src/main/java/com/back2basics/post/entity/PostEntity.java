@@ -1,6 +1,6 @@
 package com.back2basics.post.entity;
 
-import com.back2basics.common.entity.common.BaseTimeEntity;
+import com.back2basics.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
