@@ -9,7 +9,7 @@ import com.back2basics.port.out.post.PostRepositoryPort;
 import com.back2basics.service.post.dto.PostCreateCommand;
 import com.back2basics.service.post.dto.PostResponseDto;
 import com.back2basics.service.post.dto.PostUpdateCommand;
-import com.back2basics.service.post.validation.PostValidator;
+import com.back2basics.infra.validation.PostValidator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

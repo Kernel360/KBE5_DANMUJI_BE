@@ -1,5 +1,6 @@
 package com.back2basics.service.post.dto;
 
+import com.back2basics.infra.custom.CustomTitleNotBlank;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -11,7 +12,7 @@ public class PostUpdateCommand {
 
     private String requesterName;
 
-    @Size(min = 1, message = "제목은 공백일 수 없습니다.")
+    @CustomTitleNotBlank(message = "제목은 공백일 수 없습니다.")
     private String title;
 
     @Size(min = 1, message = "내용은 공백일 수 없습니다.")
