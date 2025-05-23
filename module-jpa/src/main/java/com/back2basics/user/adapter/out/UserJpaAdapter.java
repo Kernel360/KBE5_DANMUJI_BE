@@ -17,13 +17,13 @@ public class UserJpaAdapter implements UserRepositoryPort {
 	private final UserMapper userMapper;
 
 	@Override
-	public Optional<User> findById(Long userId) {
-		return userEntityRepository.findById(userId).map(userMapper::toDomain);
+	public void save(User user) {
+		UserEntity entity = userMapper.toEntity(user);
+		userEntityRepository.save(entity);
 	}
 
 	@Override
-	public void save(User user) {
-		UserEntity entity = UserMapper.toEntity(user);
-		userEntityRepository.save(entity);
+	public Optional<User> findById(Long userId) {
+		return userEntityRepository.findById(userId).map(userMapper::toDomain);
 	}
 }
