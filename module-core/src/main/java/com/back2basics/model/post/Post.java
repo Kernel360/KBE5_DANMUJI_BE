@@ -1,5 +1,7 @@
 package com.back2basics.model.post;
 
+import com.back2basics.service.post.exception.PostErrorCode;
+import com.back2basics.service.post.exception.PostException;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,13 +19,6 @@ public class Post {
         this.authorName = authorName;
         this.title = title;
         this.content = content;
-    }
-
-    // todo : Post 관련 CustomException 추가 필요
-    public void isAuthor(String requesterName) {
-        if (!this.authorName.equals(requesterName)) {
-            throw new IllegalStateException("작성자만 수정 또는 삭제할 수 있습니다.");
-        }
     }
 
     public void update(String title, String content) {
