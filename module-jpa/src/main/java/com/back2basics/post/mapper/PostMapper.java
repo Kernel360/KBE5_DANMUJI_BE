@@ -13,6 +13,8 @@ public class PostMapper {
             .authorName(entity.getAuthorName())
             .title(entity.getTitle())
             .content(entity.getContent())
+            .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
             .build();
     }
 

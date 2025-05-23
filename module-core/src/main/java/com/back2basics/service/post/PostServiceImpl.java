@@ -38,7 +38,7 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
 
     @Override
     public PostResponseDto getPost(Long id) {
-        Post post = postValidator.isExists(id);
+        Post post = postValidator.findPost(id);
         return PostResponseDto.from(post);
     }
 
@@ -51,16 +51,17 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
 
     @Override // todo : requesterName은 시큐리티 연결되면 컨트롤러에서 파라미터로 넘겨주는 걸로? 현재는 updateCommand에 일단 넣어서 사용
     public void updatePost(Long id, PostUpdateCommand command) {
-        Post post = postValidator.isExists(id);
+        Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, command.getRequesterName());
-        
+
         post.update(command.getTitle(), command.getContent());
         postRepository.update(post);
     }
 
-    @Override
-    public void deletePost(Long id) {
-        postValidator.isExists(id);
+    @Override // todo : soft delete 으로 변경
+    public void deletePost(Long id, String requesterName) {
+        Post post = postValidator.findPost(id);
+        postValidator.isAuthor(post, requesterName);
         postRepository.deleteById(id);
     }
 }

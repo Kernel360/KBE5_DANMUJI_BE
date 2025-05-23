@@ -52,8 +52,10 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<ResultResponse> deletePost(@PathVariable Long postId) {
-        deletePostUseCase.deletePost(postId);
+    // todo : soft delete 으로 수정 @DeleteMapping -> @PatchMapping 예상
+    // todo : 현재 Auth 정보는 임시로 그냥 requestName 전달하겠음
+    public ResponseEntity<ResultResponse> deletePost(@PathVariable Long postId, String requestName) {
+        deletePostUseCase.deletePost(postId, requestName);
         return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_DELETE_SUCCESS, postId));
     }
 }
