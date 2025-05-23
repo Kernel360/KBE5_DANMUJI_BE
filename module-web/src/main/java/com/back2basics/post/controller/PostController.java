@@ -28,40 +28,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PostController {
 
-  private final CreatePostUseCase createPostUseCase;
-  private final GetPostUseCase getPostUseCase;
-  private final UpdatePostUseCase updatePostUseCase;
-  private final DeletePostUseCase deletePostUseCase;
+	private final CreatePostUseCase createPostUseCase;
+	private final GetPostUseCase getPostUseCase;
+	private final UpdatePostUseCase updatePostUseCase;
+	private final DeletePostUseCase deletePostUseCase;
 
-  @PostMapping
-  public ResponseEntity<ApiResponse<Long>> createPost(
-      @RequestBody @Valid PostCreateCommand command) {
-    Long id = createPostUseCase.createPost(command);
-    return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, id);
-  }
+	@PostMapping
+	public ResponseEntity<ApiResponse<Long>> createPost(
+		@RequestBody @Valid PostCreateCommand command) {
+		Long id = createPostUseCase.createPost(command);
+		return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, id);
+	}
 
-  @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<PostResponseDto>> getPost(@PathVariable Long id) {
-    PostResponseDto post = getPostUseCase.getPost(id);
-    return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, post);
-  }
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<PostResponseDto>> getPost(@PathVariable Long id) {
+		PostResponseDto post = getPostUseCase.getPost(id);
+		return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, post);
+	}
 
-  @GetMapping
-  public ResponseEntity<ApiResponse<List<PostResponseDto>>> getAllPosts() {
-    List<PostResponseDto> posts = getPostUseCase.getAllPosts();
-    return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, posts);
-  }
+	@GetMapping
+	public ResponseEntity<ApiResponse<List<PostResponseDto>>> getAllPosts() {
+		List<PostResponseDto> posts = getPostUseCase.getAllPosts();
+		return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, posts);
+	}
 
-  @PatchMapping("/{id}")
-  public ResponseEntity<ApiResponse<Long>> updatePost(@PathVariable Long id,
-      @RequestBody PostUpdateCommand command) {
-    updatePostUseCase.updatePost(id, command);
-    return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, id);
-  }
+	@PatchMapping("/{id}")
+	public ResponseEntity<ApiResponse<Long>> updatePost(@PathVariable Long id,
+		@RequestBody PostUpdateCommand command) {
+		updatePostUseCase.updatePost(id, command);
+		return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, id);
+	}
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Long>> deletePost(@PathVariable Long id) {
-    deletePostUseCase.deletePost(id);
-    return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS, id);
-  }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ApiResponse<Long>> deletePost(@PathVariable Long id) {
+		deletePostUseCase.deletePost(id);
+		return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS, id);
+	}
 }

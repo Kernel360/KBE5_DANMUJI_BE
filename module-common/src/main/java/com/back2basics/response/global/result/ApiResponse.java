@@ -11,41 +11,41 @@ import org.springframework.http.ResponseEntity;
 @Getter
 public class ApiResponse<T> {
 
-  private final HttpStatus status;
-  private final String code;
-  private final String message;
+	private final HttpStatus status;
+	private final String code;
+	private final String message;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private final T data;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private final T data;
 
-  public ApiResponse(BaseCode baseCode, T data) {
-    this.status = baseCode.getStatus();
-    this.code = baseCode.getCode();
-    this.message = baseCode.getMessage();
-    this.data = data;
-  }
+	public ApiResponse(BaseCode baseCode, T data) {
+		this.status = baseCode.getStatus();
+		this.code = baseCode.getCode();
+		this.message = baseCode.getMessage();
+		this.data = data;
+	}
 
-  public ApiResponse(BaseCode baseCode) {
-    this(baseCode, null);
-  }
+	public ApiResponse(BaseCode baseCode) {
+		this(baseCode, null);
+	}
 
-  public static <T> ResponseEntity<ApiResponse<T>> success(
-      ResponseCode responseCode, T data) {
-    return ResponseEntity
-        .status(responseCode.getStatus())
-        .body(new ApiResponse<>(responseCode, data));
-  }
+	public static <T> ResponseEntity<ApiResponse<T>> success(
+		ResponseCode responseCode, T data) {
+		return ResponseEntity
+			.status(responseCode.getStatus())
+			.body(new ApiResponse<>(responseCode, data));
+	}
 
-  public static ResponseEntity<ApiResponse<Void>> success(
-      ResponseCode responseCode) {
-    return ResponseEntity
-        .status(responseCode.getStatus())
-        .body(new ApiResponse<>(responseCode));
-  }
+	public static ResponseEntity<ApiResponse<Void>> success(
+		ResponseCode responseCode) {
+		return ResponseEntity
+			.status(responseCode.getStatus())
+			.body(new ApiResponse<>(responseCode));
+	}
 
-  public static ResponseEntity<ApiResponse<Void>> error(ErrorCode errorCode) {
-    return ResponseEntity
-        .status(errorCode.getStatus())
-        .body(new ApiResponse<>(errorCode));
-  }
+	public static ResponseEntity<ApiResponse<Void>> error(ErrorCode errorCode) {
+		return ResponseEntity
+			.status(errorCode.getStatus())
+			.body(new ApiResponse<>(errorCode));
+	}
 }

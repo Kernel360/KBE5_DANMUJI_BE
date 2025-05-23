@@ -6,11 +6,11 @@ import java.util.List;
 
 public class PostException extends CustomException {
 
-  public PostException(PostErrorCode errorCode) {
-    super(errorCode);
-  }
+	public PostException(PostErrorCode errorCode) {
+		super(errorCode);
+	}
 
-  public PostException(PostErrorCode errorCode, List<FieldError> errors) {
-    super(errorCode, errors);
-  }
+	public PostException(PostErrorCode errorCode, List<FieldError> errors) {
+		super(errorCode, errors);
+	}
 }
