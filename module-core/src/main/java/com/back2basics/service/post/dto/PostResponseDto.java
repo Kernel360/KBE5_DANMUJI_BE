@@ -13,7 +13,7 @@ public class PostResponseDto {
     private final String title;
     private final String content;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt; 
+    private LocalDateTime updatedAt;
 
     @Builder
     public PostResponseDto(Long id, String authorName, String title, String content,
@@ -32,8 +32,8 @@ public class PostResponseDto {
             .authorName(post.getAuthorName())
             .title(post.getTitle())
             .content(post.getContent())
-            //.createdAt(post.getCreatedAt())
-            //.updatedAt(post.getUpdatedAt())
+            .createdAt(post.getCreatedAt())
+            .updatedAt(post.getUpdatedAt())
             .build();
     }
 }

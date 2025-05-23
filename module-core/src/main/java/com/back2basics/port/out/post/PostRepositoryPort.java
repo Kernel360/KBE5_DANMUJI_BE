@@ -5,9 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepositoryPort {
+
     Long save(Post post);
+
     Optional<Post> findById(Long id);
+
     List<Post> findAll();
+
     void update(Post post);
+
     void deleteById(Long id);
 }
