@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
     }
 
     // @Valid + @RequestBody, @Validated 에서 binding error 발생 시(@Valid command)
-    // JSON 바디 같은 거 @Valid 붙여서 검사하다가 실패하면 여기서 처리하는 거임
+    // json 바디 같은 거 @Valid 붙여서 검사하다가 실패하면 여기서 처리하는 거임
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleMethodArgumentNotValidException(
         MethodArgumentNotValidException ex) {
