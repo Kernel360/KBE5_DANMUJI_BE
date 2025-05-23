@@ -32,9 +32,9 @@ public class PostController {
         return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_CREATE_SUCCESS, id));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResultResponse> getPost(@PathVariable Long id) {
-        PostResponseDto post = getPostUseCase.getPost(id);
+    @GetMapping("/{postId}")
+    public ResponseEntity<ResultResponse> getPost(@PathVariable Long postId) {
+        PostResponseDto post = getPostUseCase.getPost(postId);
         return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_READ_SUCCESS, post));
     }
 
@@ -44,16 +44,18 @@ public class PostController {
         return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_READ_ALL_SUCCESS, posts));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ResultResponse> updatePost(@PathVariable Long id,
-        @RequestBody PostUpdateCommand command) {
-        updatePostUseCase.updatePost(id, command);
-        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_UPDATE_SUCCESS, null));
+    @PatchMapping("/{postId}")
+    public ResponseEntity<ResultResponse> updatePost(@PathVariable Long postId,
+        @RequestBody @Valid PostUpdateCommand command) {
+        updatePostUseCase.updatePost(postId, command);
+        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_UPDATE_SUCCESS, command));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResultResponse> deletePost(@PathVariable Long id) {
-        deletePostUseCase.deletePost(id);
-        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_DELETE_SUCCESS, null));
+    @DeleteMapping("/{postId}")
+    // todo : soft delete 으로 수정 @DeleteMapping -> @PatchMapping 예상
+    // todo : 현재 Auth 정보는 임시로 그냥 requestName 전달하겠음
+    public ResponseEntity<ResultResponse> deletePost(@PathVariable Long postId, String requestName) {
+        deletePostUseCase.deletePost(postId, requestName);
+        return ResponseEntity.ok(ResultResponse.of(PostResponseCode.POST_DELETE_SUCCESS, postId));
     }
 }

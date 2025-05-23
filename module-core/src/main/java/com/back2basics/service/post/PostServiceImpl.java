@@ -9,8 +9,7 @@ import com.back2basics.port.out.post.PostRepositoryPort;
 import com.back2basics.service.post.dto.PostCreateCommand;
 import com.back2basics.service.post.dto.PostResponseDto;
 import com.back2basics.service.post.dto.PostUpdateCommand;
-import com.back2basics.service.post.exception.PostErrorCode;
-import com.back2basics.service.post.exception.PostException;
+import com.back2basics.infra.validation.PostValidator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +17,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PostServiceImpl implements
+public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴할지 정해봐야할듯
     CreatePostUseCase,
     GetPostUseCase,
     UpdatePostUseCase,
-    DeletePostUseCase { // todo : 응답 데이터 통일 필요. 현재 어떤건 id, 어떤건 post
+    DeletePostUseCase {
 
     private final PostRepositoryPort postRepository;
+    private final PostValidator postValidator;
 
     @Override
     public Long createPost(PostCreateCommand command) {
@@ -38,8 +38,7 @@ public class PostServiceImpl implements
 
     @Override
     public PostResponseDto getPost(Long id) {
-        Post post = postRepository.findById(id)
-            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)); // todo : valdator 추가해서 여기서 throw 안하게 수정 필요
+        Post post = postValidator.findPost(id);
         return PostResponseDto.from(post);
     }
 
@@ -50,17 +49,19 @@ public class PostServiceImpl implements
             .collect(Collectors.toList());
     }
 
-    @Override
+    @Override // todo : requesterName은 시큐리티 연결되면 컨트롤러에서 파라미터로 넘겨주는 걸로? 현재는 updateCommand에 일단 넣어서 사용
     public void updatePost(Long id, PostUpdateCommand command) {
-        // todo : 작성자 검증 필요
-        Post post = postRepository.findById(id)
-            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)); // todo : valdator 추가해서 여기서 throw 안하게 수정 필요
+        Post post = postValidator.findPost(id);
+        postValidator.isAuthor(post, command.getRequesterName());
+
         post.update(command.getTitle(), command.getContent());
         postRepository.update(post);
     }
 
-    @Override
-    public void deletePost(Long id) {
+    @Override // todo : soft delete 으로 변경
+    public void deletePost(Long id, String requesterName) {
+        Post post = postValidator.findPost(id);
+        postValidator.isAuthor(post, requesterName);
         postRepository.deleteById(id);
     }
 }

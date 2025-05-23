@@ -1,6 +1,6 @@
 package com.back2basics.post.entity;
 
-import com.back2basics.common.entity.common.BaseTimeEntity;
+import com.back2basics.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "post")
+@Table(name = "posts")
 // todo : ERD에 기반한 따른 필드 값 추가
 public class PostEntity extends BaseTimeEntity {
 
