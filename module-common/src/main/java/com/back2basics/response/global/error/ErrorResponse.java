@@ -2,6 +2,7 @@ package com.back2basics.response.global.error;
 
 import com.back2basics.response.global.code.CommonErrorCode;
 import com.back2basics.response.global.code.ErrorCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 
+    @JsonIgnore // 응답에서 제외
     private ErrorCode errorCode;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -30,8 +32,8 @@ public class ErrorResponse {
     }
 
     public ErrorResponse(ErrorCode errorCode, List<FieldError> errors) {
-        this.errors = errors;
         this.errorCode = errorCode;
+        this.errors = errors;
     }
 
     // @Valid + @RequestBody에서 나오는 에러
@@ -55,12 +57,6 @@ public class ErrorResponse {
     // 에러코드만 전달(주로 커스텀익셉션)
     public static ErrorResponse of(final ErrorCode errorCode) {
         return new ErrorResponse(errorCode);
-    }
-
-    // 단일 필드 에러
-    public static ErrorResponse of(final ErrorCode errorCode,
-        final String field, final String value, final String reason) {
-        return new ErrorResponse(errorCode, FieldError.of(field, value, reason));
     }
 
     // 에러코드 + 필드 목록
