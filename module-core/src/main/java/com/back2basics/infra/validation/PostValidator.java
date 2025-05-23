@@ -11,16 +11,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PostValidator {
 
-    private final PostRepositoryPort postRepository;
+	private final PostRepositoryPort postRepository;
 
-    public Post findPost(Long id) {
-        return postRepository.findById(id)
-            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
-    }
+	public Post findPost(Long id) {
+		return postRepository.findById(id)
+			.orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
+	}
 
-    public void isAuthor(Post post, String requesterName) {
-        if (!post.getAuthorName().equals(requesterName)) {
-            throw new PostException(PostErrorCode.UNAUTHORIZED_AUTHOR);
-        }
-    }
+	public void isAuthor(Post post, String requesterName) {
+		if (!post.getAuthorName().equals(requesterName)) {
+			throw new PostException(PostErrorCode.INVALID_POST_AUTHOR);
+		}
+	}
 }
