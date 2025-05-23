@@ -11,14 +11,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements CreateUserUseCase {
 
-  private final UserRepositoryPort userRepositoryPort;
+	private final UserRepositoryPort userRepositoryPort;
 
-  @Override
-  public Long createUser(UserCreateCommand command) {
-    User user = User.builder()
-        .username(command.getUsername())
-        .password(command.getPassword())
-        .build();
-    return userRepositoryPort.save(user);
-  }
+	@Override
+	public void createUser(UserCreateCommand command) {
+		User user = User.builder()
+			.username(command.getUsername())
+			.password(command.getPassword())
+			.build();
+        
+		userRepositoryPort.save(user);
+	}
 }

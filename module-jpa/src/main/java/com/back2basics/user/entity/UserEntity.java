@@ -1,6 +1,6 @@
 package com.back2basics.user.entity;
 
-import com.back2basics.common.entity.common.BaseTimeEntity;
+import com.back2basics.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,19 +18,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class UserEntity extends BaseTimeEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  @Column(name = "username", nullable = false, unique = true, length = 50)
-  private String username;
+	@Column(name = "username", nullable = false, unique = true, length = 50)
+	private String username;
 
-  @Column(name = "password", nullable = false)
-  private String password;
+	@Column(name = "password", nullable = false)
+	private String password;
 
-  @Builder
-  public UserEntity(String username, String password) {
-    this.username = username;
-    this.password = password;
-  }
+	@Builder
+	public UserEntity(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
 }

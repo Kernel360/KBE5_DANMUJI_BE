@@ -1,7 +1,7 @@
 package com.back2basics.user.controller;
 
 import com.back2basics.port.in.user.CreateUserUseCase;
-import com.back2basics.response.global.result.ResultResponse;
+import com.back2basics.response.global.result.ApiResponse;
 import com.back2basics.response.user.UserResponseCode;
 import com.back2basics.service.user.dto.UserCreateCommand;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-  private final CreateUserUseCase createUserUseCase;
+	private final CreateUserUseCase createUserUseCase;
 
-  @PostMapping
-  public ResponseEntity<ResultResponse> createUser(UserCreateCommand command) {
-    Long id = createUserUseCase.createUser(command);
-    return ResponseEntity.ok(ResultResponse.of(UserResponseCode.USER_CREATE_SUCCESS, id));
-  }
+	@PostMapping
+	public ResponseEntity<ApiResponse<Void>> createUser(UserCreateCommand command) {
+		createUserUseCase.createUser(command);
+		return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS);
+	}
 }
