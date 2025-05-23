@@ -1,4 +1,4 @@
-package com.back2basics.global.handler;
+package com.back2basics.response.global.handler;
 
 
 import static com.back2basics.response.global.error.CommonErrorCode.INTERNAL_SERVER_ERROR;
