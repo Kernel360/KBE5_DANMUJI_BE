@@ -8,20 +8,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CompanyCreateCommand {
 
-  private String name;
-  private String ceoName;
-  private String bio;
-  private CompanyType companyType;
-  private int bizNo;
-  private String address;
+    private String name;
+    private String ceoName;
+    private String bio;
+    private CompanyType companyType;
+    private int bizNo;
+    private String address;
 
-  public CompanyCreateCommand(String name, String ceoName, String bio, CompanyType companyType, int bizNo, String address) {
-    this.name = name;
-    this.ceoName = ceoName;
-    this.bio = bio;
-    this.companyType = companyType;
-    this.bizNo = bizNo;
-    this.address = address;
-  }
+    public CompanyCreateCommand(String name, String ceoName, String bio, CompanyType companyType,
+        int bizNo, String address) {
+        this.name = name;
+        this.ceoName = ceoName;
+        this.bio = bio;
+        this.companyType = companyType;
+        this.bizNo = bizNo;
+        this.address = address;
+    }
 
 }
