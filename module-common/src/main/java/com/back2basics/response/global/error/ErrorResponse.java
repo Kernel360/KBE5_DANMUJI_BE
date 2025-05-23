@@ -1,5 +1,6 @@
 package com.back2basics.response.global.error;
 
+import com.back2basics.response.global.code.CommonErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
@@ -16,62 +17,63 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<FieldError> errors;
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private List<FieldError> errors;
 
-  public ErrorResponse(List<FieldError> errors) {
-    this.errors = errors;
-  }
+	public ErrorResponse(List<FieldError> errors) {
+		this.errors = errors;
+	}
 
-  public static ErrorResponse fromBindingResult(BindingResult bindingResult) {
-    return new ErrorResponse(FieldError.from(bindingResult));
-  }
+	public static ErrorResponse of(BindingResult bindingResult) {
+		return new ErrorResponse(FieldError.of(bindingResult));
+	}
 
-  public static ErrorResponse fromViolations(Set<ConstraintViolation<?>> violations) {
-    return new ErrorResponse(FieldError.from(violations));
-  }
+	public static ErrorResponse of(Set<ConstraintViolation<?>> violations) {
+		return new ErrorResponse(FieldError.of(violations));
+	}
 
-  public static ErrorResponse fromTypeMismatch(MethodArgumentTypeMismatchException e) {
-    String value = e.getValue() == null ? "" : e.getValue().toString();
-    return new ErrorResponse(FieldError.of(e.getName(), value, "Invalid parameter type"));
-  }
+	public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
+		String value = e.getValue() == null ? "" : e.getValue().toString();
+		return new ErrorResponse(
+			FieldError.of(e.getName(), value, CommonErrorCode.INVALID_TYPE_VALUE.getMessage()));
+	}
 
-  @Getter
-  @NoArgsConstructor(access = AccessLevel.PROTECTED)
-  public static class FieldError {
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class FieldError {
 
-    private String field;
-    private String value;
-    private String reason;
+		private String field;
+		private String value;
+		private String reason;
 
-    public FieldError(String field, String value, String reason) {
-      this.field = field;
-      this.value = value;
-      this.reason = reason;
-    }
+		public FieldError(String field, String value, String reason) {
+			this.field = field;
+			this.value = value;
+			this.reason = reason;
+		}
 
-    public static List<FieldError> of(String field, String value, String reason) {
-      List<FieldError> list = new ArrayList<>();
-      list.add(new FieldError(field, value, reason));
-      return list;
-    }
+		public static List<FieldError> of(String field, String value, String reason) {
+			List<FieldError> list = new ArrayList<>();
+			list.add(new FieldError(field, value, reason));
+			return list;
+		}
 
-    public static List<FieldError> from(BindingResult bindingResult) {
-      return bindingResult.getFieldErrors().stream()
-          .map(error -> new FieldError(
-              error.getField(),
-              error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
-              error.getDefaultMessage()))
-          .collect(Collectors.toList());
-    }
+		public static List<FieldError> of(BindingResult bindingResult) {
+			return bindingResult.getFieldErrors().stream()
+				.map(error -> new FieldError(
+					error.getField(),
+					error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
+					error.getDefaultMessage()))
+				.collect(Collectors.toList());
+		}
 
-    public static List<FieldError> from(Set<ConstraintViolation<?>> violations) {
-      return violations.stream()
-          .map(v -> new FieldError(
-              v.getPropertyPath().toString(),
-              "",
-              v.getMessage()))
-          .collect(Collectors.toList());
-    }
-  }
+		public static List<FieldError> of(Set<ConstraintViolation<?>> violations) {
+			return violations.stream()
+				.map(v -> new FieldError(
+					v.getPropertyPath().toString(),
+					"",
+					v.getMessage()))
+				.collect(Collectors.toList());
+		}
+	}
 }

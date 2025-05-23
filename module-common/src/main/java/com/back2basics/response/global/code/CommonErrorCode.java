@@ -13,7 +13,9 @@ public enum CommonErrorCode implements ErrorCode {
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C003", "Method not allowed"),
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "C004", "Invalid type value"),
 	BAD_CREDENTIALS(HttpStatus.BAD_REQUEST, "C005", "Invalid username or password"),
-	NOT_FOUND(HttpStatus.NOT_FOUND, "C006", "Resource not found");
+	NOT_FOUND(HttpStatus.NOT_FOUND, "C006", "Resource not found"),
+	MISSING_PARAMETER(HttpStatus.BAD_REQUEST, "C007", "Missing request parameter"),
+	BAD_REQUEST(HttpStatus.BAD_REQUEST, "C008", "Bad Request");
 
 	private final HttpStatus status;
 	private final String code;
