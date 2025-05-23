@@ -18,13 +18,6 @@ public class PostValidator {
             .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
     }
 
-    // todo : isExists랑 findPost랑 뭔가 중복 쓰임인거같긴한데 또 막상 serviceImpl에서 구현할 때 보면 다른게 의미상 맞는거같기도한데 이게맞나?
-
-    public Boolean isExists(Long id) {
-        findPost(id);
-        return true;
-    }
-
     public void isAuthor(Post post, String requesterName) {
         if (!post.getAuthorName().equals(requesterName)) {
             throw new PostException(PostErrorCode.UNAUTHORIZED_AUTHOR);
