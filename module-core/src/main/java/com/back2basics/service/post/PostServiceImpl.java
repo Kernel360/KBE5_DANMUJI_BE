@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PostServiceImpl implements
+public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴할지 정해봐야할듯
     CreatePostUseCase,
     GetPostUseCase,
     UpdatePostUseCase,
-    DeletePostUseCase { // todo : 응답 데이터 통일 필요. 현재 어떤건 id, 어떤건 post
+    DeletePostUseCase {
 
     private final PostRepositoryPort postRepository;
 
@@ -36,10 +36,11 @@ public class PostServiceImpl implements
         return postRepository.save(post);
     }
 
-    @Override
+    @Override // todo : validator 추가 예정
     public PostResponseDto getPost(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)); // todo : valdator 추가해서 여기서 throw 안하게 수정 필요
+            .orElseThrow(() -> new PostException(
+                PostErrorCode.POST_NOT_FOUND));
         return PostResponseDto.from(post);
     }
 
@@ -50,11 +51,11 @@ public class PostServiceImpl implements
             .collect(Collectors.toList());
     }
 
-    @Override
+    @Override // todo : 작성자 검증 필요
     public void updatePost(Long id, PostUpdateCommand command) {
-        // todo : 작성자 검증 필요
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)); // todo : valdator 추가해서 여기서 throw 안하게 수정 필요
+            .orElseThrow(() -> new PostException(
+                PostErrorCode.POST_NOT_FOUND));
         post.update(command.getTitle(), command.getContent());
         postRepository.update(post);
     }

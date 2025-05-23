@@ -13,7 +13,7 @@ public class PostResponseDto {
     private final String title;
     private final String content;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt; 
+    private final LocalDateTime updatedAt;
 
     @Builder
     public PostResponseDto(Long id, String authorName, String title, String content,
@@ -26,6 +26,7 @@ public class PostResponseDto {
         this.updatedAt = updatedAt;
     }
 
+    // todo : created_at, updated_at 뜨게 해야함
     public static PostResponseDto from(Post post) {
         return PostResponseDto.builder()
             .id(post.getId())
