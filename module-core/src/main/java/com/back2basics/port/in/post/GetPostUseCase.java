@@ -6,5 +6,6 @@ import java.util.List;
 public interface GetPostUseCase {
 
     PostResponseDto getPost(Long id);
+
     List<PostResponseDto> getAllPosts();
 }

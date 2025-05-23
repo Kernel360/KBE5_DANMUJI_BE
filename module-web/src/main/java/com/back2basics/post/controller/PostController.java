@@ -40,9 +40,9 @@ public class PostController {
 		return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, id);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponse<PostResponseDto>> getPost(@PathVariable Long id) {
-		PostResponseDto post = getPostUseCase.getPost(id);
+	@GetMapping("/{postId}")
+	public ResponseEntity<ApiResponse<PostResponseDto>> getPost(@PathVariable Long postId) {
+		PostResponseDto post = getPostUseCase.getPost(postId);
 		return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, post);
 	}
 
@@ -52,16 +52,17 @@ public class PostController {
 		return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, posts);
 	}
 
-	@PatchMapping("/{id}")
-	public ResponseEntity<ApiResponse<Long>> updatePost(@PathVariable Long id,
+	@PatchMapping("/{postId}")
+	public ResponseEntity<ApiResponse<Long>> updatePost(@PathVariable Long postId,
 		@RequestBody PostUpdateCommand command) {
-		updatePostUseCase.updatePost(id, command);
-		return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, id);
+		updatePostUseCase.updatePost(postId, command);
+		return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, postId);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<ApiResponse<Long>> deletePost(@PathVariable Long id) {
-		deletePostUseCase.deletePost(id);
-		return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS, id);
+	@DeleteMapping("/{postId}")
+	public ResponseEntity<ApiResponse<Long>> deletePost(@PathVariable Long postId) {
+		String requesterName = "author";
+		deletePostUseCase.deletePost(postId, requesterName);
+		return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS, postId);
 	}
 }
