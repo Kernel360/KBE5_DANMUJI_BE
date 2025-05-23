@@ -1,7 +1,8 @@
-package com.back2basics.response.global.error;
+package com.back2basics.global.handler;
 
 import com.back2basics.response.global.code.CommonErrorCode;
 import com.back2basics.response.global.code.ErrorCode;
+import com.back2basics.response.global.error.CustomException;
 import com.back2basics.response.global.result.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
