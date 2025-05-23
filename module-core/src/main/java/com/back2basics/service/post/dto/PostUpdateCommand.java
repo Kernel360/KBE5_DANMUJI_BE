@@ -1,7 +1,6 @@
 package com.back2basics.service.post.dto;
 
 import com.back2basics.infra.custom.CustomTitleNotBlank;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
