@@ -1,4 +1,4 @@
-package com.back2basics.common.entity.common;
+package com.back2basics.common.entity;
 
 
 import jakarta.persistence.Column;
