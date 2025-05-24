@@ -21,6 +21,7 @@ public class PostCreateCommand {
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
+    @CustomEnumValidator(enumClass = PostType.class, message = "올바른 enum type이 아닙니다")
     private PostType type;
 
     @NotNull(message = "우선순위가 입력되지 않았습니다.")

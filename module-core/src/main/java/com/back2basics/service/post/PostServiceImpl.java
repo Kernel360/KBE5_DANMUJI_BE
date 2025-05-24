@@ -1,6 +1,6 @@
 package com.back2basics.service.post;
 
-import com.back2basics.infra.validation.PostValidator;
+import com.back2basics.infra.post.validation.PostValidator;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
 import com.back2basics.port.in.post.CreatePostUseCase;
