@@ -1,4 +1,6 @@
 package com.back2basics.model.post;
 
-public interface PostType {
+public enum PostType {
+    GENERAL,
+    NOTICE
 }

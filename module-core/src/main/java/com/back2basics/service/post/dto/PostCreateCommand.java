@@ -1,11 +1,15 @@
 package com.back2basics.service.post.dto;
 
+import com.back2basics.model.post.PostType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostCreateCommand {
 
     @NotBlank(message = "작성자는 필수입니다.")
@@ -17,9 +21,8 @@ public class PostCreateCommand {
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
-    public PostCreateCommand(String authorName, String title, String content) {
-        this.authorName = authorName;
-        this.title = title;
-        this.content = content;
-    }
+    private PostType type;
+
+    @NotNull(message = "우선순위가 입력되지 않았습니다.")
+    private Integer priority;
 }
