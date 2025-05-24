@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -61,7 +62,7 @@ public class PostController {
     @PatchMapping("/{postId}/delete") // PatchMapping /{id} 가 겹쳐서 이렇게 일단 놨는데 의견 부탁드립니다.
     // todo : 현재 Auth 정보는 임시로 그냥 requestName 전달하겠음
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long postId,
-        String requesterName) {
+        @RequestParam String requesterName) { // requesterName : 임시 파라미터
         deletePostUseCase.softDeletePost(postId, requesterName);
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }

@@ -68,7 +68,6 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     public void softDeletePost(Long id, String requesterName) {
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, requesterName);
-
         post.softDelete();
         postRepository.softDelete(post);
     }
