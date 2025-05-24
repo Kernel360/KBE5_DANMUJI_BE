@@ -11,6 +11,9 @@ dependencies {
     implementation project(':module-jpa')
     implementation project(':module-batch')
 
+    // junit
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+
     // starter
     implementation 'org.springframework.boot:spring-boot-starter'
 
