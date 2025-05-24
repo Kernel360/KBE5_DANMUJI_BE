@@ -43,7 +43,8 @@ public class PostJpaAdapter implements PostRepositoryPort {
     }
 
     @Override
-    public void deleteById(Long id) {
-        postRepository.deleteById(id);
+    public void softDelete(Post post) {
+
+        postRepository.save(mapper.fromDomain(post));
     }
 }
