@@ -40,19 +40,19 @@ public class Post {
 
     public void update(PostUpdateCommand command) {
         if (command.getTitle() != null) {
-            this.title = title;
+            this.title = command.getTitle();
         }
         if (command.getContent() != null) {
-            this.content = content;
+            this.content = command.getContent();
         }
         if (command.getType() != null) {
-            this.type = type;
+            this.type = command.getType();
         }
         if (command.getStatus() != null) {
-            this.status = status;
+            this.status = command.getStatus();
         }
         if (command.getPriority() != null) {
-            this.priority = priority;
+            this.priority = command.getPriority();
         }
     }
 

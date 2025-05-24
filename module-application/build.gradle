@@ -11,6 +11,9 @@ dependencies {
     implementation project(':module-jpa')
     implementation project(':module-batch')
 
+    // junit
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     // starter
     implementation 'org.springframework.boot:spring-boot-starter'
 
