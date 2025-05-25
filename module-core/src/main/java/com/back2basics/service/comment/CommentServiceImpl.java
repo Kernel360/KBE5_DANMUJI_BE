@@ -20,6 +20,7 @@ public class CommentServiceImpl implements
 
     private final CommentRepositoryPort commentRepositoryPort;
     private final CommentValidator commentValidator;
+    private final CommentRelationService commentRelationService;
 
 
     @Override
@@ -28,8 +29,10 @@ public class CommentServiceImpl implements
             .postId(command.getPostId())
             .authorName(command.getAuthorName())
             .content(command.getContent())
-            .parentId(command.getParentId())
+            .parentCommentId(command.getParentId())
             .build();
+
+        commentRelationService.assignRelations(command, comment);
 
         return commentRepositoryPort.save(comment);
     }

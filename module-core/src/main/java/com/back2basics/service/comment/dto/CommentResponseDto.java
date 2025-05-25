@@ -26,7 +26,7 @@ public class CommentResponseDto {
         return CommentResponseDto.builder()
             .id(comment.getId())
             .postId(comment.getPostId())
-            .parentId(comment.getParentId())
+            .parentId(comment.getParentCommentId())
             .authorName(comment.getAuthorName())
             .content(comment.getContent())
             .createdAt(comment.getCreatedAt())

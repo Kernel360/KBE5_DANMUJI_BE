@@ -1,7 +1,10 @@
 package com.back2basics.model.post;
 
+import com.back2basics.model.comment.Comment;
 import com.back2basics.service.post.dto.PostUpdateCommand;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,6 +22,7 @@ public class Post {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private LocalDateTime completedAt;
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Post(Long id, String authorName, String title, String content, PostType type,
@@ -58,5 +62,11 @@ public class Post {
 
     public void softDelete() {
         this.deletedAt = LocalDateTime.now();
+    }
+
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.assignPost(this);
     }
 }

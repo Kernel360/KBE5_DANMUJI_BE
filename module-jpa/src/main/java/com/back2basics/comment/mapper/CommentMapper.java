@@ -10,8 +10,9 @@ public class CommentMapper {
     public Comment toDomain(CommentEntity entity) {
         return Comment.builder()
             .id(entity.getId())
-            .postId(entity.getPostId())
-            .parentId(entity.getParentId())
+            .postId(entity.getPost() != null ? entity.getPost().getId() : null)
+            .parentCommentId(
+                entity.getParentCommentId() != null ? entity.getParentCommentId().getId() : null)
             .authorName(entity.getAuthorName())
             .content(entity.getContent())
             .createdAt(entity.getCreatedAt())
@@ -22,8 +23,6 @@ public class CommentMapper {
     public CommentEntity fromDomain(Comment domain) {
         return CommentEntity.builder()
             .id(domain.getId())
-            .postId(domain.getPostId())
-            .parentId(domain.getParentId())
             .authorName(domain.getAuthorName())
             .content(domain.getContent())
             .build();
