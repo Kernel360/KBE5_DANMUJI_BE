@@ -1,6 +1,6 @@
-package com.back2basics.comment;
+package com.back2basics.comment.controller;
 
-import com.back2basics.comment.controller.CommentResponseCode;
+import com.back2basics.comment.response.CommentResponseCode;
 import com.back2basics.port.in.comment.CreateCommentUseCase;
 import com.back2basics.port.in.comment.DeleteCommentUseCase;
 import com.back2basics.response.global.result.ApiResponse;

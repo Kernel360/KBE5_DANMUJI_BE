@@ -1,4 +1,4 @@
-package com.back2basics.comment.controller;
+package com.back2basics.comment.response;
 
 import com.back2basics.response.global.code.ResponseCode;
 import lombok.Getter;
