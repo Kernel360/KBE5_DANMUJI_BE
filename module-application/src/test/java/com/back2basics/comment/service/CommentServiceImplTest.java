@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.back2basics.infra.comment.validation.CommentValidator;
-import com.back2basics.infra.post.validation.PostValidator;
 import com.back2basics.model.comment.Comment;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
@@ -31,9 +30,6 @@ public class CommentServiceImplTest {
 
     @Mock
     private CommentValidator commentValidator;
-
-    @Mock
-    private PostValidator postValidator;
 
     @InjectMocks
     private CommentServiceImpl commentServiceImpl;
@@ -98,7 +94,6 @@ public class CommentServiceImplTest {
         CommentUpdateCommand command = new CommentUpdateCommand(commentAuthorName, "new content");
 
         // when
-        when(postValidator.findPost(postId)).thenReturn(samplePost);
         when(commentValidator.findComment(1L)).thenReturn(sampleComment);
         doNothing().when(commentValidator).isAuthor(sampleComment, commentAuthorName);
 
@@ -107,8 +102,7 @@ public class CommentServiceImplTest {
         // then
         assertThat(sampleComment.getContent()).isEqualTo("new content");
 
-        verify(postValidator).findPost(postId);
-        verify(commentValidator).findComment(1L);
+        verify(commentValidator).findComment(sampleComment.getId());
         verify(commentValidator).isAuthor(sampleComment, commentAuthorName);
         verify(commentRepositoryPort).update(sampleComment);
     }

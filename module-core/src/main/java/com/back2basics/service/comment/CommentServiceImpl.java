@@ -46,7 +46,7 @@ public class CommentServiceImpl implements
     @Override
     public void deleteComment(Long id, String requesterName) {
         Comment comment = commentValidator.findComment(id);
-        commentValidator.isAuthor(comment, command.getRequesterName());
+        commentValidator.isAuthor(comment, requesterName);
 
         commentRepositoryPort.delete(comment);
     }
