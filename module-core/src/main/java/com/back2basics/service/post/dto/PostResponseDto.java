@@ -3,7 +3,10 @@ package com.back2basics.service.post.dto;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
 import com.back2basics.model.post.PostType;
+import com.back2basics.service.comment.dto.CommentResponseDto;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +28,8 @@ public class PostResponseDto {
     private final LocalDateTime deletedAt;
     private final LocalDateTime completedAt;
 
+    private final List<CommentResponseDto> comments;
+
     public static PostResponseDto from(Post post) {
         return PostResponseDto.builder()
             .id(post.getId())
@@ -38,6 +43,9 @@ public class PostResponseDto {
             .completedAt(post.getCompletedAt())
             .createdAt(post.getCreatedAt())
             .updatedAt(post.getUpdatedAt())
+            .comments(post.getComments().stream()
+                .map(CommentResponseDto::from)
+                .collect(Collectors.toList()))
             .build();
     }
 }

@@ -56,7 +56,7 @@ public class CommentJpaAdapter implements CommentRepositoryPort {
             entity.assignParentComment(parentEntity);
         }
 
-        commentRepository.save(entity);
+        commentRepository.save(mapper.fromDomain(comment));
     }
 
     @Override

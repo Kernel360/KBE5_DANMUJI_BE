@@ -31,6 +31,9 @@ public class CommentResponseDto {
             .content(comment.getContent())
             .createdAt(comment.getCreatedAt())
             .updatedAt(comment.getUpdatedAt())
+            .children(comment.getChildren().stream()
+                .map(CommentResponseDto::from)
+                .toList())
             .build();
     }
 }

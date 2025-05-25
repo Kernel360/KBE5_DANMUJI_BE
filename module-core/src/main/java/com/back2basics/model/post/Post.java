@@ -28,7 +28,7 @@ public class Post {
     public Post(Long id, String authorName, String title, String content, PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt) {
+        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments) {
         this.id = id;
         this.authorName = authorName;
         this.title = title;
@@ -40,6 +40,7 @@ public class Post {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.completedAt = completedAt;
+        this.comments = comments;
     }
 
     public void update(PostUpdateCommand command) {
