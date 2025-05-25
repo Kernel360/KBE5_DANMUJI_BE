@@ -18,11 +18,11 @@ public class Comment {
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Comment> children = new ArrayList<>();
+    private List<Comment> children;
 
     @Builder
     public Comment(Long id, Long postId, Long parentCommentId, String authorName, String content,
-        LocalDateTime createdAt, LocalDateTime updatedAt) {
+        LocalDateTime createdAt, LocalDateTime updatedAt, List<Comment> children) {
         this.id = id;
         this.postId = postId;
         this.parentCommentId = parentCommentId;
@@ -30,6 +30,7 @@ public class Comment {
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.children = children != null ? children : new ArrayList<>();
     }
 
     public void update(CommentUpdateCommand command) {
