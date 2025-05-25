@@ -1,8 +1,9 @@
 package com.back2basics.infra.comment.validation;
 
 import com.back2basics.model.comment.Comment;
-import com.back2basics.model.post.Post;
 import com.back2basics.port.out.comment.CommentRepositoryPort;
+import com.back2basics.service.comment.exception.CommentErrorCode;
+import com.back2basics.service.comment.exception.CommentException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,7 +11,7 @@ public class CommentValidator {
 
     private final CommentRepositoryPort commentRepository;
 
-    public Post findComment(Long id) {
+    public Comment findComment(Long id) {
         return commentRepository.findById(id)
             .orElseThrow(() -> new CommentException(CommentErrorCode.COMMENT_NOT_FOUND));
     }
