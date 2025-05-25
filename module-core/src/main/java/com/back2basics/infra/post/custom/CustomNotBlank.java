@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = CustomNotBlankValidator.class)
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CustomTitleNotBlank {
+public @interface CustomNotBlank {
 
     String message();
 
