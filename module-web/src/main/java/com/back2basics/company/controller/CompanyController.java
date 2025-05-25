@@ -29,7 +29,7 @@ public class CompanyController {
         Long id = createCompanyUseCase.createCompany(command);
         return ResponseEntity.ok(ResultResponse.of(CompanyResponseCode.COMPANY_CREATE_SUCCESS, id));
     }
- 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ResultResponse> deleteCompany(@PathVariable Long id) {
         deleteCompanyUseCase.deleteCompany(id);
