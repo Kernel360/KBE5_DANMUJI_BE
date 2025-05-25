@@ -13,6 +13,9 @@ dependencies {
 
     // junit
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    
+    // h2 database
+    runtimeOnly 'com.h2database:h2'
 
     // starter
     implementation 'org.springframework.boot:spring-boot-starter'
