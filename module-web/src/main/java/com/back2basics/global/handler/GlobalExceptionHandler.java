@@ -1,20 +1,18 @@
 package com.back2basics.global.handler;
 
-
-import static com.back2basics.response.global.error.CommonErrorCode.INTERNAL_SERVER_ERROR;
-import static com.back2basics.response.global.error.CommonErrorCode.INVALID_INPUT_VALUE;
-import static com.back2basics.response.global.error.CommonErrorCode.METHOD_NOT_ALLOWED;
-import static com.back2basics.response.global.error.CommonErrorCode.NOT_FOUND;
-
-import com.back2basics.response.global.error.exception.CustomException;
-import com.back2basics.response.global.error.ErrorCode;
+import com.back2basics.response.global.code.CommonErrorCode;
+import com.back2basics.response.global.code.ErrorCode;
+import com.back2basics.response.global.error.CustomException;
 import com.back2basics.response.global.error.ErrorResponse;
+import com.back2basics.response.global.result.ApiResponse;
+import jakarta.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -23,47 +21,98 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // 찾는거 없는 경우(Optional.orElseThrow 같은거)
     @ExceptionHandler(NoSuchElementException.class)
-    protected ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
-        final ErrorResponse response = ErrorResponse.of(NOT_FOUND);
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleNoSuchElementException(
+        NoSuchElementException ex) {
+        ErrorCode errorCode = CommonErrorCode.NOT_FOUND;
+        log.error("NoSuchElementException 발생 {}: {}", ex.getClass().getSimpleName(),
+            ex.getMessage(), ex);
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode);
+        return ApiResponse.error(errorCode, errorResponse);
     }
 
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
-        MethodArgumentTypeMismatchException e) {
-        final ErrorResponse response = ErrorResponse.of(e);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    // @RequestParam 등에서 타입이 맞지 않을 경우
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleMethodArgumentTypeMismatchException(
+        MethodArgumentTypeMismatchException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_TYPE_VALUE;
+        log.error("MethodArgumentTypeMismatchException 발생 {}: {}", ex.getClass().getSimpleName(),
+            ex.getMessage(), ex);
+        ErrorResponse errorResponse = ErrorResponse.of(ex);
+        return ApiResponse.error(errorCode, errorResponse);
     }
 
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
-        HttpRequestMethodNotSupportedException e) {
-        final ErrorResponse response = ErrorResponse.of(METHOD_NOT_ALLOWED);
-        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+    // HTTP 메소드 타입 잘못 줬을 때
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleHttpRequestMethodNotSupportedException(
+        HttpRequestMethodNotSupportedException ex) {
+        ErrorCode errorCode = CommonErrorCode.METHOD_NOT_ALLOWED;
+        log.error("HttpRequestMethodNotSupportedException 발생 {}: {}", ex.getClass().getSimpleName(),
+            ex.getMessage(), ex);
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode);
+        return ApiResponse.error(errorCode, errorResponse);
     }
 
-    // @Valid, @Validated 에서 binding error 발생 시 (@RequestBody)
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {
-        final ErrorResponse response = ErrorResponse.of(INVALID_INPUT_VALUE, e.getBindingResult());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    // 요청 파라미터가 누락됐을 때
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleMissingServletRequestParameterException(
+        MissingServletRequestParameterException ex) {
+        ErrorCode errorCode = CommonErrorCode.METHOD_NOT_ALLOWED;
+        log.error("HttpRequestMethodNotSupportedException 발생 {}: {}", ex.getClass().getSimpleName(),
+            ex.getMessage(), ex);
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode);
+        return ApiResponse.error(errorCode, errorResponse);
+    }
+
+    // 폼 데이터 바인딩할 때 유효성 검사 실패하면 여기서 잡아줌
+    @ExceptionHandler(BindException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleBindException(BindException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("BindException 발생 {}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getBindingResult());
+        return ApiResponse.error(errorCode, errorResponse);
+    }
+
+    // @Validated 먹여준 @RequestParam이나 @PathVariable 같은 데서 유효성 검사 실패하면 여기서 처리함
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleConstraintViolationException(
+        ConstraintViolationException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("ConstraintViolationException 발생 {}: {}", ex.getClass().getSimpleName(),
+            ex.getMessage(), ex);
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getConstraintViolations());
+        return ApiResponse.error(errorCode, errorResponse);
+    }
+
+    // @Valid + @RequestBody, @Validated 에서 binding error 발생 시(@Valid command)
+    // json 바디 같은 거 @Valid 붙여서 검사하다가 실패하면 여기서 처리하는 거임
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleMethodArgumentNotValidException(
+        MethodArgumentNotValidException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("MethodArgumentNotValidException 발생: {}", errorCode.getMessage());
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getBindingResult());
+        return ApiResponse.error(errorCode, errorResponse);
     }
 
     // 비즈니스 요구사항에 따라 커스텀해준 익셉션들
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleBusinessException(CustomException e) {
-        final ErrorCode errorCode = e.getErrorCode();
-        final ErrorResponse response = ErrorResponse.of(errorCode, e.getErrors());
-        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponse<ErrorResponse>> handleCustomException(CustomException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
+        log.error("CustomException 발생 {}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
+        return ex.getErrors().isEmpty()
+            ? ApiResponse.error(errorCode, ErrorResponse.of(errorCode))
+            : ApiResponse.error(errorCode, ErrorResponse.of(errorCode, ex.getErrors()));
     }
 
     // 그 밖에 발생하는 모든 예외처리는 여기서 잡음
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-        final ErrorResponse response = ErrorResponse.of(INTERNAL_SERVER_ERROR);
-        log.error("============== 잡지 못한 예외 : { }",e);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiResponse<ErrorResponse>> handleException(Exception ex) {
+        ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+        log.error("UnhandledException 발생 {}: {}", ex.getClass().getSimpleName(), ex.getMessage(),
+            ex);
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode);
+        return ApiResponse.error(errorCode, errorResponse);
     }
-
 }

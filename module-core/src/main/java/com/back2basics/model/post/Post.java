@@ -1,5 +1,6 @@
 package com.back2basics.model.post;
 
+import com.back2basics.service.post.dto.PostUpdateCommand;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,26 +12,51 @@ public class Post {
     private String authorName;
     private String title;
     private String content;
+    private PostType type;
+    private PostStatus status;
+    private int priority;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
+    private LocalDateTime completedAt;
 
     @Builder
-    public Post(Long id, String authorName, String title, String content, LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
+    public Post(Long id, String authorName, String title, String content, PostType type,
+        PostStatus status, int priority,
+        LocalDateTime createdAt, LocalDateTime updatedAt,
+        LocalDateTime deletedAt, LocalDateTime completedAt) {
         this.id = id;
         this.authorName = authorName;
         this.title = title;
         this.content = content;
+        this.type = type;
+        this.status = status != null ? status : PostStatus.PENDING;
+        this.priority = priority;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.completedAt = completedAt;
     }
 
-    public void update(String title, String content) {
-        if (title != null) {
-            this.title = title;
+    public void update(PostUpdateCommand command) {
+        if (command.getTitle() != null) {
+            this.title = command.getTitle();
         }
-        if (content != null) {
-            this.content = content;
+        if (command.getContent() != null) {
+            this.content = command.getContent();
         }
+        if (command.getType() != null) {
+            this.type = command.getType();
+        }
+        if (command.getStatus() != null) {
+            this.status = command.getStatus();
+        }
+        if (command.getPriority() != null) {
+            this.priority = command.getPriority();
+        }
+    }
+
+    public void softDelete() {
+        this.deletedAt = LocalDateTime.now();
     }
 }

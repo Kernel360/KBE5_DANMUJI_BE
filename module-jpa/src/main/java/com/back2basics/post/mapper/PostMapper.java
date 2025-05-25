@@ -13,8 +13,13 @@ public class PostMapper {
             .authorName(entity.getAuthorName())
             .title(entity.getTitle())
             .content(entity.getContent())
+            .type(entity.getType())
+            .status(entity.getStatus())
+            .priority(entity.getPriority())
             .createdAt(entity.getCreatedAt())
             .updatedAt(entity.getUpdatedAt())
+            .deletedAt(entity.getDeletedAt())
+            .completedAt(entity.getCompletedAt())
             .build();
     }
 
@@ -24,6 +29,11 @@ public class PostMapper {
             .authorName(domain.getAuthorName())
             .title(domain.getTitle())
             .content(domain.getContent())
+            .type(domain.getType())
+            .status(domain.getStatus())
+            .priority(domain.getPriority())
+            .deletedAt(domain.getDeletedAt())
+            .completedAt(domain.getCompletedAt())
             .build();
     }
 }

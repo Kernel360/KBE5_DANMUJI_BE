@@ -1,7 +1,12 @@
 package com.back2basics.response.global.error;
 
+import com.back2basics.response.global.code.CommonErrorCode;
+import com.back2basics.response.global.code.ErrorCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,51 +20,55 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 
-    private int status;
-    private String code;
-    private String message;
+    @JsonIgnore // 응답에서 제외
+    private ErrorCode errorCode;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FieldError> errors;
 
-    private ErrorResponse(final ErrorCode code, final List<FieldError> errors) {
-        this.status = code.getStatus();
-        this.code = code.getCode();
-        this.message = code.getMessage();
+    public ErrorResponse(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+        this.errors = Collections.emptyList();
+    }
+
+    public ErrorResponse(ErrorCode errorCode, List<FieldError> errors) {
+        this.errorCode = errorCode;
         this.errors = errors;
     }
 
-    private ErrorResponse(final ErrorCode code) {
-        this.status = code.getStatus();
-        this.code = code.getCode();
-        this.message = code.getMessage();
-        this.errors = new ArrayList<>();
+    // @Valid + @RequestBody에서 나오는 에러
+    public static ErrorResponse of(final ErrorCode errorCode, final BindingResult bindingResult) {
+        return new ErrorResponse(errorCode, FieldError.of(bindingResult));
     }
 
-    public static ErrorResponse of(final ErrorCode code, final BindingResult bindingResult) {
-        return new ErrorResponse(code, FieldError.of(bindingResult));
+    // @Validated + @RequestParam, @PathVariable 에서 나오는 에러
+    public static ErrorResponse of(final ErrorCode errorCode,
+        final Set<ConstraintViolation<?>> violations) {
+        return new ErrorResponse(errorCode, FieldError.of(violations));
     }
 
-    public static ErrorResponse of(final ErrorCode code,
-        final Set<ConstraintViolation<?>> constraintViolations) {
-        return new ErrorResponse(code, FieldError.of(constraintViolations));
+    // No-Parameter
+    public static ErrorResponse of(final ErrorCode errorCode,
+        final String missingParameterName) {
+        return new ErrorResponse(errorCode,
+            FieldError.of(missingParameterName, "", errorCode.getMessage()));
     }
 
-    public static ErrorResponse of(final ErrorCode code, final String missingParameterName) {
-        return new ErrorResponse(code,
-            FieldError.of(missingParameterName, "", "parameter must required"));
+    // 에러코드만 전달(주로 커스텀익셉션)
+    public static ErrorResponse of(final ErrorCode errorCode) {
+        return new ErrorResponse(errorCode);
     }
 
-    public static ErrorResponse of(final ErrorCode code) {
-        return new ErrorResponse(code);
+    // 에러코드 + 필드 목록
+    public static ErrorResponse of(final ErrorCode errorCode, final List<FieldError> fieldErrors) {
+        return new ErrorResponse(errorCode, fieldErrors);
     }
 
-    public static ErrorResponse of(final ErrorCode code, final List<FieldError> errors) {
-        return new ErrorResponse(code, errors);
-    }
-
+    // 잘못된 HTTP 메소드 타입
     public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
-        final String value = e.getValue() == null ? "" : e.getValue().toString();
-        final List<FieldError> errors = FieldError.of(e.getName(), value, e.getErrorCode());
-        return new ErrorResponse(CommonErrorCode.INVALID_TYPE_VALUE, errors);
+        String value = e.getValue() == null ? "" : e.getValue().toString();
+        return new ErrorResponse(CommonErrorCode.INVALID_TYPE_VALUE,
+            FieldError.of(e.getName(), value, CommonErrorCode.INVALID_TYPE_VALUE.getMessage()));
     }
 
 
@@ -77,34 +86,28 @@ public class ErrorResponse {
             this.reason = reason;
         }
 
-        public static List<FieldError> of(final String field, final String value,
-            final String reason) {
-            List<FieldError> fieldErrors = new ArrayList<>();
-            fieldErrors.add(new FieldError(field, value, reason));
-            return fieldErrors;
+        public static List<FieldError> of(String field, String value, String reason) {
+            List<FieldError> list = new ArrayList<>();
+            list.add(new FieldError(field, value, reason));
+            return list;
         }
 
-        public static List<FieldError> of(final BindingResult bindingResult) {
-            final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
-            return fieldErrors.stream()
+        public static List<FieldError> of(BindingResult bindingResult) {
+            return bindingResult.getFieldErrors().stream()
                 .map(error -> new FieldError(
                     error.getField(),
                     error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
-                    error.getDefaultMessage()
-                ))
+                    error.getDefaultMessage()))
                 .collect(Collectors.toList());
         }
 
-        public static List<FieldError> of(final Set<ConstraintViolation<?>> constraintViolations) {
-            List<ConstraintViolation<?>> lists = new ArrayList<>(constraintViolations);
-            return lists.stream()
-                .map(error -> new FieldError(
-                    error.getPropertyPath().toString(),
+        public static List<FieldError> of(Set<ConstraintViolation<?>> violations) {
+            return violations.stream()
+                .map(v -> new FieldError(
+                    v.getPropertyPath().toString(),
                     "",
-                    error.getMessageTemplate()
-                ))
+                    v.getMessage()))
                 .collect(Collectors.toList());
         }
     }
-
 }

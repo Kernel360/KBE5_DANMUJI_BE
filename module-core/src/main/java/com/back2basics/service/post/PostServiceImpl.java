@@ -1,6 +1,8 @@
 package com.back2basics.service.post;
 
+import com.back2basics.infra.post.validation.PostValidator;
 import com.back2basics.model.post.Post;
+import com.back2basics.model.post.PostStatus;
 import com.back2basics.port.in.post.CreatePostUseCase;
 import com.back2basics.port.in.post.DeletePostUseCase;
 import com.back2basics.port.in.post.GetPostUseCase;
@@ -9,7 +11,6 @@ import com.back2basics.port.out.post.PostRepositoryPort;
 import com.back2basics.service.post.dto.PostCreateCommand;
 import com.back2basics.service.post.dto.PostResponseDto;
 import com.back2basics.service.post.dto.PostUpdateCommand;
-import com.back2basics.infra.validation.PostValidator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
             .authorName(command.getAuthorName())
             .title(command.getTitle())
             .content(command.getContent())
+            .type(command.getType())
+            .priority(command.getPriority())
+            .status(PostStatus.PENDING)
+            .completedAt(null)
+            .deletedAt(null)
             .build();
         return postRepository.save(post);
     }
@@ -54,14 +60,15 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, command.getRequesterName());
 
-        post.update(command.getTitle(), command.getContent());
+        post.update(command);
         postRepository.update(post);
     }
 
-    @Override // todo : soft delete 으로 변경
-    public void deletePost(Long id, String requesterName) {
+    @Override
+    public void softDeletePost(Long id, String requesterName) {
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, requesterName);
-        postRepository.deleteById(id);
+        post.softDelete();
+        postRepository.softDelete(post);
     }
 }

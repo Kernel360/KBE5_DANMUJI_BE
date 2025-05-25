@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation;
+package com.back2basics.infra.post.validation;
 
 import com.back2basics.model.post.Post;
 import com.back2basics.port.out.post.PostRepositoryPort;
@@ -20,7 +20,7 @@ public class PostValidator {
 
     public void isAuthor(Post post, String requesterName) {
         if (!post.getAuthorName().equals(requesterName)) {
-            throw new PostException(PostErrorCode.UNAUTHORIZED_AUTHOR);
+            throw new PostException(PostErrorCode.INVALID_POST_AUTHOR);
         }
     }
 }
