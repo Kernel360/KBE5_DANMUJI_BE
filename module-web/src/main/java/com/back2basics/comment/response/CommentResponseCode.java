@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 public enum CommentResponseCode implements ResponseCode {
 
     COMMENT_CREATE_SUCCESS(HttpStatus.CREATED, "C201", "댓글 생성 완료"),
-    COMMENT_DELETE_SUCCESS(HttpStatus.OK, "C202", "댓글 삭제 완료");
+    COMMENT_DELETE_SUCCESS(HttpStatus.OK, "C202", "댓글 삭제 완료"),
+    COMMENT_UPDATE_SUCCESS(HttpStatus.CREATED, "C203", "댓글 수정 완료");
 
     private final HttpStatus status;
     private final String code;

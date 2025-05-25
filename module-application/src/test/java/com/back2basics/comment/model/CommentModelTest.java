@@ -21,7 +21,7 @@ public class CommentModelTest {
             .authorName("author")
             .content("content")
             .postId(1L)
-            .parentId(null)
+            .parentCommentId(null)
             .createdAt(LocalDateTime.now())
             .build();
 

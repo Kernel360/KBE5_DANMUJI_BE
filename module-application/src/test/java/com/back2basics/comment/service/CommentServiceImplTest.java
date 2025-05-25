@@ -58,7 +58,7 @@ public class CommentServiceImplTest {
             .authorName(commentAuthorName)
             .content(content)
             .postId(1L)
-            .parentId(null)
+            .parentCommentId(null)
             .build();
 
         sampleComment2 = Comment.builder()
@@ -66,7 +66,7 @@ public class CommentServiceImplTest {
             .authorName(commentAuthorName)
             .content("content2")
             .postId(1L)
-            .parentId(parentId)
+            .parentCommentId(parentId)
             .build();
     }
 

@@ -38,7 +38,7 @@ class CommentValidatorTest {
             .authorName(authorName)
             .content("content")
             .postId(1L)
-            .parentId(null)
+            .parentCommentId(null)
             .build();
     }
 
