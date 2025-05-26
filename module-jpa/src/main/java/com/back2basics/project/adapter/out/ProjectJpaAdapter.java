@@ -42,4 +42,10 @@ public class ProjectJpaAdapter implements ProjectRepositoryPort {
         projectEntityRepository.save(projectMapper.fromDomain(project));
     }
 
+    @Override
+    public void softDeleted(Project project) {
+        ProjectEntity entity = projectMapper.fromDomain(project);
+        entity.markDeleted();
+        projectEntityRepository.save(entity);
+    }
 }

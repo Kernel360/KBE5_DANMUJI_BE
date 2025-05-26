@@ -21,7 +21,7 @@ public class ProjectCommandMapper {
             .build();
     }
 
-    public Project to(ProjectCreateCommand command) {
+    public static Project to(ProjectCreateCommand command) {
         return Project.builder()
             .name(command.getName())
             .description(command.getDescription())

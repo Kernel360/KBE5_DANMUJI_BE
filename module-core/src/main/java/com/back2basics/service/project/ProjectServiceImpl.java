@@ -29,12 +29,7 @@ public class ProjectServiceImpl implements
 
     @Override
     public void createProject(ProjectCreateCommand command) {
-        Project project = Project.builder()
-            .name(command.getName())
-            .description(command.getDescription())
-            .startDate(command.getStartDate())
-            .endDate(command.getEndDate())
-            .build();
+        Project project = ProjectCommandMapper.to(command);
         projectRepositoryPort.save(project);
     }
 
@@ -69,7 +64,6 @@ public class ProjectServiceImpl implements
     @Override
     public void deleteProject(Long id) {
         Project project = projectValidator.findProject(id);
-        project.softDelete();
-        projectRepositoryPort.update(project);
+        projectRepositoryPort.softDeleted(project);
     }
 }

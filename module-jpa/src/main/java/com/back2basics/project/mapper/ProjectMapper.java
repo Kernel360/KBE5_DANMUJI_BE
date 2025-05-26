@@ -14,7 +14,9 @@ public class ProjectMapper {
             .description(projectEntity.getDescription())
             .startDate(projectEntity.getStartDate())
             .endDate(projectEntity.getEndDate())
-
+            .createdAt(projectEntity.getCreatedAt())
+            .updatedAt(projectEntity.getUpdatedAt())
+            .deletedAt(projectEntity.getDeletedAt())
             .build();
     }
 

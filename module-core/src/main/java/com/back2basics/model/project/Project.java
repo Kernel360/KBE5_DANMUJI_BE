@@ -61,7 +61,7 @@ public class Project {
     }
 
     // todo: baseEntity markDelete로 변경
-    public  void softDelete() {
+    public void softDelete() {
         this.deletedAt = LocalDateTime.now();
     }
 

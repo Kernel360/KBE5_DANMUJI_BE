@@ -12,4 +12,6 @@ public interface ProjectRepositoryPort {
     List<Project> findAll();
 
     void update(Project project);
+
+    void softDeleted(Project project);
 }
