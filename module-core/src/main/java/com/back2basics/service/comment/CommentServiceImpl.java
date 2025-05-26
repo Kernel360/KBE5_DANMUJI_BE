@@ -20,7 +20,7 @@ public class CommentServiceImpl implements
 
     private final CommentRepositoryPort commentRepositoryPort;
     private final CommentValidator commentValidator;
-    private final CommentRelationService commentRelationService;
+    private final CommentModelRelationHelper commentModelRelationHelper;
 
 
     @Override
@@ -32,7 +32,7 @@ public class CommentServiceImpl implements
             .parentCommentId(command.getParentId())
             .build();
 
-        commentRelationService.assignRelations(command, comment);
+        commentModelRelationHelper.assignRelations(command, comment);
 
         return commentRepositoryPort.save(comment);
     }

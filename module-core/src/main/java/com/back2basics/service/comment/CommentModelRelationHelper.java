@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CommentRelationService {
+public class CommentModelRelationHelper {
 
     private final PostValidator postValidator;
     private final CommentValidator commentValidator;
