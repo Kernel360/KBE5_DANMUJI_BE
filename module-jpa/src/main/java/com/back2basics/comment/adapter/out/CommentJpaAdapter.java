@@ -17,6 +17,7 @@ public class CommentJpaAdapter implements CommentRepositoryPort {
 
     private final CommentEntityRepository commentRepository;
     private final CommentRelationAdapter commentRelationAdapter;
+    private final CommentDeleteHelper commentDeleteHelper;
     private final CommentMapper mapper;
 
     @Override
@@ -46,7 +47,10 @@ public class CommentJpaAdapter implements CommentRepositoryPort {
 
     @Override
     public void delete(Comment comment) {
-        commentRepository.delete(mapper.fromDomain(comment));
+        CommentEntity entity = mapper.fromDomain(comment);
+        commentDeleteHelper.deleteCommentWithOrphanKeep(entity.getId());
+
+        commentRepository.delete(entity);
     }
 
 }
