@@ -1,9 +1,9 @@
-package com.back2basics.infra.post.custom;
+package com.back2basics.infra.custom;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class CustomNotBlankValidator implements ConstraintValidator<CustomTitleNotBlank, String> {
+public class CustomNotBlankValidator implements ConstraintValidator<CustomNotBlank, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

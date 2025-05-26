@@ -1,6 +1,6 @@
 package com.back2basics.service.post;
 
-import com.back2basics.infra.post.validation.PostValidator;
+import com.back2basics.infra.validation.PostValidator;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
 import com.back2basics.port.in.post.CreatePostUseCase;
@@ -68,7 +68,7 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     public void softDeletePost(Long id, String requesterName) {
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, requesterName);
-        post.softDelete();
+        //post.softDelete();
         postRepository.softDelete(post);
     }
 }
