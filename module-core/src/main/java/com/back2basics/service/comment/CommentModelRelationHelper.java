@@ -1,7 +1,7 @@
 package com.back2basics.service.comment;
 
-import com.back2basics.infra.comment.validation.CommentValidator;
-import com.back2basics.infra.post.validation.PostValidator;
+import com.back2basics.infra.validation.CommentValidator;
+import com.back2basics.infra.validation.PostValidator;
 import com.back2basics.model.comment.Comment;
 import com.back2basics.model.post.Post;
 import com.back2basics.service.comment.dto.CommentCreateCommand;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CommentRelationService {
+public class CommentModelRelationHelper {
 
     private final PostValidator postValidator;
     private final CommentValidator commentValidator;

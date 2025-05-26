@@ -1,4 +1,4 @@
-package com.back2basics.comment.adapter.out;
+package com.back2basics.comment.utils;
 
 import com.back2basics.comment.entity.CommentEntity;
 import com.back2basics.comment.repository.CommentEntityRepository;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CommentRelationAdapter {
+public class CommentRelationHelper {
 
     private final PostEntityRepository postEntityRepository;
     private final CommentEntityRepository commentRepository;

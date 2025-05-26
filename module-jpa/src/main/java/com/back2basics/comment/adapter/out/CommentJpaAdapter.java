@@ -3,10 +3,11 @@ package com.back2basics.comment.adapter.out;
 import com.back2basics.comment.entity.CommentEntity;
 import com.back2basics.comment.mapper.CommentMapper;
 import com.back2basics.comment.repository.CommentEntityRepository;
+import com.back2basics.comment.utils.CommentDeleteHelper;
+import com.back2basics.comment.utils.CommentRelationHelper;
+import com.back2basics.comment.utils.CommentUpdateHelper;
 import com.back2basics.model.comment.Comment;
 import com.back2basics.port.out.comment.CommentRepositoryPort;
-import com.back2basics.service.comment.exception.CommentErrorCode;
-import com.back2basics.service.comment.exception.CommentException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,14 +17,15 @@ import org.springframework.stereotype.Component;
 public class CommentJpaAdapter implements CommentRepositoryPort {
 
     private final CommentEntityRepository commentRepository;
-    private final CommentRelationAdapter commentRelationAdapter;
+    private final CommentRelationHelper commentRelationHelper;
     private final CommentDeleteHelper commentDeleteHelper;
+    private final CommentUpdateHelper commentUpdateHelper;
     private final CommentMapper mapper;
 
     @Override
     public Long save(Comment comment) {
         CommentEntity entity = mapper.fromDomain(comment);
-        commentRelationAdapter.assignRelations(entity, comment.getPostId(),
+        commentRelationHelper.assignRelations(entity, comment.getPostId(),
             comment.getParentCommentId());
         return commentRepository.save(entity).getId();
     }
@@ -35,11 +37,9 @@ public class CommentJpaAdapter implements CommentRepositoryPort {
 
     @Override
     public void update(Comment comment) {
-        CommentEntity entity = commentRepository.findById(comment.getId())
-            .orElseThrow(() -> new CommentException(CommentErrorCode.COMMENT_NOT_FOUND));
-
-        entity.updateContent(comment.getContent());
-        commentRelationAdapter.assignRelations(entity, comment.getPostId(),
+        // create 과 다르게 기존에 있는 댓글을 사용해야 한다는 점에서 jpa.findById() 가 필요
+        CommentEntity entity = commentUpdateHelper.updateComment(comment.getId(), comment);
+        commentRelationHelper.assignRelations(entity, comment.getPostId(),
             comment.getParentCommentId());
 
         commentRepository.save(entity);

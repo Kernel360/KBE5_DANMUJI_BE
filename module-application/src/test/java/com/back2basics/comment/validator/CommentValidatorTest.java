@@ -3,7 +3,7 @@ package com.back2basics.comment.validator;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.back2basics.infra.comment.validation.CommentValidator;
+import com.back2basics.infra.validation.CommentValidator;
 import com.back2basics.model.comment.Comment;
 import com.back2basics.port.out.comment.CommentRepositoryPort;
 import com.back2basics.service.comment.exception.CommentErrorCode;
