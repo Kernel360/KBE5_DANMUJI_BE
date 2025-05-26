@@ -38,16 +38,12 @@ public class ProjectEntity extends BaseTimeEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "delete_at")
-    private LocalDateTime deleteAt;
-
     @Builder
-    public ProjectEntity(Long id, String name, String description, LocalDate startDate, LocalDate endDate, LocalDateTime deleteAt) {
+    public ProjectEntity(Long id, String name, String description, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.deleteAt = deleteAt;
     }
 }

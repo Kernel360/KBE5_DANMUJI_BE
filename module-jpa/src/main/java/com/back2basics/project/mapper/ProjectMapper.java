@@ -25,7 +25,6 @@ public class ProjectMapper {
             .description(project.getDescription())
             .startDate(project.getStartDate())
             .endDate(project.getEndDate())
-            .deleteAt(project.getDeletedAt())
             .build();
     }
 }
