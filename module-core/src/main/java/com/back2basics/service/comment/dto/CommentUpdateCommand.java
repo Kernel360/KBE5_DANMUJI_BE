@@ -1,6 +1,6 @@
 package com.back2basics.service.comment.dto;
 
-import com.back2basics.infra.post.custom.CustomNotBlank;
+import com.back2basics.infra.custom.CustomNotBlank;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.back2basics.infra.post.validation;
+package com.back2basics.infra.validation;
 
 import com.back2basics.model.post.Post;
 import com.back2basics.port.out.post.PostRepositoryPort;

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.back2basics.infra.comment.validation.CommentValidator;
+import com.back2basics.infra.validation.CommentValidator;
 import com.back2basics.model.comment.Comment;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
