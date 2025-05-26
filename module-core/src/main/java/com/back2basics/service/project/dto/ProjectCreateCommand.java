@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProjectCreateCommand {
 
-    @NotBlank(message = "프로젝트명은 필수입니다.") // NotBlank - null, "", " " 모두 허용 안함
+    @NotBlank(message = "프로젝트명은 필수입니다.")
     private String name;
 
     private String description;
