@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 // todo: 프로젝트 - 회원 엔티티 추가
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "projects")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectEntity extends BaseTimeEntity {
 
     @Id
