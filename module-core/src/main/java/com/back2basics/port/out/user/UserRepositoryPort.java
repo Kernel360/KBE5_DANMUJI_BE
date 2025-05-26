@@ -5,8 +5,11 @@ import java.util.Optional;
 
 public interface UserRepositoryPort {
 
-	void save(User user);
+    void save(User user);
 
-	Optional<User> findById(Long userId);
+    Optional<User> findById(Long userId);
 
+    void deleteById(Long userId);
+
+    boolean existsByUsername(String username);
 }
