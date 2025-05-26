@@ -1,6 +1,8 @@
 package com.back2basics.response.global.error;
 
 import com.back2basics.response.global.code.CommonErrorCode;
+import com.back2basics.response.global.code.ErrorCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
@@ -18,64 +20,94 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private List<FieldError> errors;
+    @JsonIgnore // 응답에서 제외
+    private ErrorCode errorCode;
 
-	public ErrorResponse(List<FieldError> errors) {
-		this.errors = errors;
-	}
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FieldError> errors;
 
-	// todo errorCode field 수정
-	public static ErrorResponse of() {
-		return new ErrorResponse(Collections.emptyList());
-	}
+    public ErrorResponse(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+        this.errors = Collections.emptyList();
+    }
 
-	public static ErrorResponse of(BindingResult bindingResult) {
-		return new ErrorResponse(FieldError.of(bindingResult));
-	}
+    public ErrorResponse(ErrorCode errorCode, List<FieldError> errors) {
+        this.errorCode = errorCode;
+        this.errors = errors;
+    }
 
-	public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
-		String value = e.getValue() == null ? "" : e.getValue().toString();
-		return new ErrorResponse(
-			FieldError.of(e.getName(), value, CommonErrorCode.INVALID_TYPE_VALUE.getMessage()));
-	}
+    // @Valid + @RequestBody에서 나오는 에러
+    public static ErrorResponse of(final ErrorCode errorCode, final BindingResult bindingResult) {
+        return new ErrorResponse(errorCode, FieldError.of(bindingResult));
+    }
 
-	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class FieldError {
+    // @Validated + @RequestParam, @PathVariable 에서 나오는 에러
+    public static ErrorResponse of(final ErrorCode errorCode,
+        final Set<ConstraintViolation<?>> violations) {
+        return new ErrorResponse(errorCode, FieldError.of(violations));
+    }
 
-		private String field;
-		private String value;
-		private String reason;
+    // No-Parameter
+    public static ErrorResponse of(final ErrorCode errorCode,
+        final String missingParameterName) {
+        return new ErrorResponse(errorCode,
+            FieldError.of(missingParameterName, "", errorCode.getMessage()));
+    }
 
-		public FieldError(String field, String value, String reason) {
-			this.field = field;
-			this.value = value;
-			this.reason = reason;
-		}
+    // 에러코드만 전달(주로 커스텀익셉션)
+    public static ErrorResponse of(final ErrorCode errorCode) {
+        return new ErrorResponse(errorCode);
+    }
 
-		public static List<FieldError> of(String field, String value, String reason) {
-			List<FieldError> list = new ArrayList<>();
-			list.add(new FieldError(field, value, reason));
-			return list;
-		}
+    // 에러코드 + 필드 목록
+    public static ErrorResponse of(final ErrorCode errorCode, final List<FieldError> fieldErrors) {
+        return new ErrorResponse(errorCode, fieldErrors);
+    }
 
-		public static List<FieldError> of(BindingResult bindingResult) {
-			return bindingResult.getFieldErrors().stream()
-				.map(error -> new FieldError(
-					error.getField(),
-					error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
-					error.getDefaultMessage()))
-				.collect(Collectors.toList());
-		}
+    // 잘못된 HTTP 메소드 타입
+    public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
+        String value = e.getValue() == null ? "" : e.getValue().toString();
+        return new ErrorResponse(CommonErrorCode.INVALID_TYPE_VALUE,
+            FieldError.of(e.getName(), value, CommonErrorCode.INVALID_TYPE_VALUE.getMessage()));
+    }
 
-		public static List<FieldError> of(Set<ConstraintViolation<?>> violations) {
-			return violations.stream()
-				.map(v -> new FieldError(
-					v.getPropertyPath().toString(),
-					"",
-					v.getMessage()))
-				.collect(Collectors.toList());
-		}
-	}
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class FieldError {
+
+        private String field;
+        private String value;
+        private String reason;
+
+        public FieldError(String field, String value, String reason) {
+            this.field = field;
+            this.value = value;
+            this.reason = reason;
+        }
+
+        public static List<FieldError> of(String field, String value, String reason) {
+            List<FieldError> list = new ArrayList<>();
+            list.add(new FieldError(field, value, reason));
+            return list;
+        }
+
+        public static List<FieldError> of(BindingResult bindingResult) {
+            return bindingResult.getFieldErrors().stream()
+                .map(error -> new FieldError(
+                    error.getField(),
+                    error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
+                    error.getDefaultMessage()))
+                .collect(Collectors.toList());
+        }
+
+        public static List<FieldError> of(Set<ConstraintViolation<?>> violations) {
+            return violations.stream()
+                .map(v -> new FieldError(
+                    v.getPropertyPath().toString(),
+                    "",
+                    v.getMessage()))
+                .collect(Collectors.toList());
+        }
+    }
 }
