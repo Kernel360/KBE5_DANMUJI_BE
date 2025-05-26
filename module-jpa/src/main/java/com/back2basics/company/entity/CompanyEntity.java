@@ -37,7 +37,7 @@ public class CompanyEntity {
     private Company.CompanyType companyType;
 
     @Column(name = "biz_no", nullable = false)
-    private int bizNo;
+    private String bizNo;
 
     @Column(name = "address", nullable = false)
     private String address;
@@ -49,7 +49,7 @@ public class CompanyEntity {
 
     @Builder
     public CompanyEntity(Long companyId, String name, String ceoName, String bio,
-        Company.CompanyType companyType, int bizNo, String address) {
+        Company.CompanyType companyType, String bizNo, String address) {
         this.company_id = companyId;
         this.name = name;
         this.ceoName = ceoName;

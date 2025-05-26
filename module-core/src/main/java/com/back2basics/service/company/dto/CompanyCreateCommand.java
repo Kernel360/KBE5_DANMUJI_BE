@@ -12,11 +12,11 @@ public class CompanyCreateCommand {
     private String ceoName;
     private String bio;
     private CompanyType companyType;
-    private int bizNo;
+    private String bizNo;
     private String address;
 
     public CompanyCreateCommand(String name, String ceoName, String bio, CompanyType companyType,
-        int bizNo, String address) {
+        String bizNo, String address) {
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;

@@ -12,7 +12,7 @@ public class Company {
     private String ceoName;
     private String bio;
     private CompanyType companyType;
-    private int bizNo;
+    private String bizNo;
     private String address;
 
     public enum CompanyType {
@@ -22,7 +22,7 @@ public class Company {
 
     @Builder
     public Company(Long companyId, String name, String ceoName, String bio, CompanyType companyType,
-        int bizNo, String address) {
+        String bizNo, String address) {
         this.companyId = companyId;
         this.name = name;
         this.ceoName = ceoName;
@@ -45,10 +45,9 @@ public class Company {
         if (command.getCompanyType() != null) {
             this.companyType = command.getCompanyType();
         }
-        //bizNo int로하면 안될 듯.
-//        if (command.getBizNo() != null) {
-//            this.priority = command.getPriority();
-//        }
+        if (command.getBizNo() != null) {
+            this.bizNo = command.getBizNo();
+        }
         if (command.getAddress() != null) {
             this.address = command.getAddress();
         }

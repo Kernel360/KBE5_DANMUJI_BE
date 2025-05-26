@@ -24,7 +24,7 @@ public class CompanyUpdateCommand {
     @CustomEnumCheck(enumClass = CompanyType.class, message = "올바른 enum type이 아닙니다")
     private Company.CompanyType companyType;
 
-    private int bizNo;
+    private String bizNo;
 
     private String address;
 

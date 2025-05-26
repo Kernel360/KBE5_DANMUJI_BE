@@ -13,7 +13,7 @@ public class CompanyResponseDto {
     private final String bio;
     private final Company.CompanyType companyType;
     // TODO : bizNo의 타입 생각해보기
-    private final int bizNo;
+    private final String bizNo;
     private final String address;
 
     public enum CompanyType {
@@ -24,7 +24,7 @@ public class CompanyResponseDto {
     @Builder
     public CompanyResponseDto(Long companyId, String name, String ceoName, String bio,
         Company.CompanyType companyType,
-        int bizNo, String address) {
+        String bizNo, String address) {
         this.companyId = companyId;
         this.name = name;
         this.ceoName = ceoName;
