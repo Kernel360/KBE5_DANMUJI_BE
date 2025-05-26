@@ -3,7 +3,7 @@ package com.back2basics.infra.post.custom;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class CustomNotBlankValidator implements ConstraintValidator<CustomTitleNotBlank, String> {
+public class CustomNotBlankValidator implements ConstraintValidator<CustomNotBlank, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
