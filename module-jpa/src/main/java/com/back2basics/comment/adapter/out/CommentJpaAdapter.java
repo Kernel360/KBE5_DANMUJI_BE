@@ -37,7 +37,7 @@ public class CommentJpaAdapter implements CommentRepositoryPort {
         commentRelationAdapter.assignRelations(entity, comment.getPostId(),
             comment.getParentCommentId());
 
-        commentRepository.save(mapper.fromDomain(comment));
+        commentRepository.save(entity);
     }
 
     @Override
