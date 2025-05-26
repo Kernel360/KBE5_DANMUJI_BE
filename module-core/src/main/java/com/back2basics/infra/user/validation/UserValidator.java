@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation;
+package com.back2basics.infra.user.validation;
 
 import com.back2basics.model.user.User;
 import com.back2basics.port.out.user.UserRepositoryPort;
