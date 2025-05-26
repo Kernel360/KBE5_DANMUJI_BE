@@ -27,7 +27,6 @@ public class ProjectServiceImpl implements
     private final ProjectRepositoryPort projectRepositoryPort;
     private final ProjectValidator projectValidator;
 
-
     @Override
     public void createProject(ProjectCreateCommand command) {
         Project project = Project.builder()
