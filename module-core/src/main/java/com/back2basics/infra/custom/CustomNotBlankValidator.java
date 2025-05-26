@@ -1,4 +1,4 @@
-package com.back2basics.infra.post.custom;
+package com.back2basics.infra.custom;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
