@@ -44,7 +44,7 @@ public class CommentEntity extends BaseTimeEntity {
     @JoinColumn(name = "parent_comment_id")
     private CommentEntity parentCommentId;
 
-    @OneToMany(mappedBy = "parentCommentId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parentCommentId", cascade = CascadeType.ALL)
     private List<CommentEntity> childrenComments = new ArrayList<>();
 
     @Builder
@@ -73,5 +73,9 @@ public class CommentEntity extends BaseTimeEntity {
     public void removeChildComment(CommentEntity child) {
         childrenComments.remove(child);
         child.assignParentComment(null);
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 }
