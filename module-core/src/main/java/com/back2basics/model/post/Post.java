@@ -22,7 +22,7 @@ public class Post {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private LocalDateTime completedAt;
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
 
     @Builder
     public Post(Long id, String authorName, String title, String content, PostType type,
@@ -40,7 +40,7 @@ public class Post {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.completedAt = completedAt;
-        this.comments = comments;
+        this.comments = comments != null ? new ArrayList<>(comments) : new ArrayList<>();
     }
 
     public void update(PostUpdateCommand command) {

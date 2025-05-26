@@ -2,7 +2,9 @@ package com.back2basics.service.comment.dto;
 
 import com.back2basics.model.comment.Comment;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +35,7 @@ public class CommentResponseDto {
             .updatedAt(comment.getUpdatedAt())
             .children(comment.getChildren().stream()
                 .map(CommentResponseDto::from)
-                .toList())
+                .collect(Collectors.toCollection((ArrayList::new))))
             .build();
     }
 }

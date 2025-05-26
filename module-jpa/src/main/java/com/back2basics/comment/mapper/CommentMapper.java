@@ -2,6 +2,7 @@ package com.back2basics.comment.mapper;
 
 import com.back2basics.comment.entity.CommentEntity;
 import com.back2basics.model.comment.Comment;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ public class CommentMapper {
 
         List<Comment> children = entity.getChildrenComments().stream()
             .map(this::toDomain)
-            .collect(Collectors.toList());
+            .collect(Collectors.toCollection(ArrayList::new));
 
         return Comment.builder()
             .id(entity.getId())
