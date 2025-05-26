@@ -161,8 +161,6 @@ class PostServiceImplTest {
         postService.softDeletePost(1L, "author");
 
         // then
-        assertThat(samplePost.getDeletedAt()).isNotNull();
-
         verify(postValidator).findPost(1L);
         verify(postValidator).isAuthor(samplePost, "author");
         verify(postRepository).softDelete(samplePost);

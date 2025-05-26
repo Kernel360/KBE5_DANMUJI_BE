@@ -2,6 +2,7 @@ package com.back2basics.post.model;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import com.back2basics.model.comment.Comment;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
 import com.back2basics.model.post.PostType;
@@ -54,12 +55,19 @@ class PostModelTest {
     }
 
     @Test
-    @DisplayName("소프트 삭제, delete_at 필드가 null에서 수정됨")
-    void softDeleteMethod() {
+    @DisplayName("댓글이 게시글에 잘 연결되는지 확인")
+    void addCommentMethod() {
+        // given
+        Comment comment = new Comment(1L, 1L, null, "comment author", "content",
+            LocalDateTime.now(), LocalDateTime.now(), null);
+
         // when
-        post.softDelete();
+        post.addComment(comment);
 
         // then
-        assertThat(post.getDeletedAt()).isNotNull();
+        assertThat(post.getComments().size()).isEqualTo(1);
+        assertThat(post.getComments().get(0)).isEqualTo(comment);
+        assertThat(comment.getPostId()).isEqualTo(post.getId());
     }
+
 }
