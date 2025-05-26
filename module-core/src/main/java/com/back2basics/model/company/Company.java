@@ -12,7 +12,7 @@ public class Company {
     private String ceoName;
     private String bio;
     private CompanyType companyType;
-    private String bizNo;
+    private Integer bizNo;
     private String address;
 
     public enum CompanyType {
@@ -22,7 +22,7 @@ public class Company {
 
     @Builder
     public Company(Long companyId, String name, String ceoName, String bio, CompanyType companyType,
-        String bizNo, String address) {
+        Integer bizNo, String address) {
         this.companyId = companyId;
         this.name = name;
         this.ceoName = ceoName;
