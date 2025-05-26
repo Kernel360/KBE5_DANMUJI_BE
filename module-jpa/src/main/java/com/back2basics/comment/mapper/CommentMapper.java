@@ -30,10 +30,18 @@ public class CommentMapper {
     }
 
     public CommentEntity fromDomain(Comment domain) {
-        return CommentEntity.builder()
+
+        List<CommentEntity> children = domain.getChildren().stream()
+            .map(this::fromDomain)
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        CommentEntity entity = CommentEntity.builder()
             .id(domain.getId())
             .authorName(domain.getAuthorName())
             .content(domain.getContent())
             .build();
+
+        children.forEach(child -> entity.addChildComment(child));
+        return entity;
     }
 }
