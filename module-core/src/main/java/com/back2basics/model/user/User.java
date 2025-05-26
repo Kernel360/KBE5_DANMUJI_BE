@@ -48,28 +48,8 @@ public class User {
         this.isDeleted = false;
     }
 
-    public void updateUsername(String username) {
-        this.username = username;
-    }
-
     public void updatePassword(String password) {
         this.password = password;
-    }
-
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void updateEmail(String email) {
-        this.email = email;
-    }
-
-    public void updatePhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void updatePosition(String position) {
-        this.position = position;
     }
 
     public void updateUser(String username, String name, String email, String phone,
