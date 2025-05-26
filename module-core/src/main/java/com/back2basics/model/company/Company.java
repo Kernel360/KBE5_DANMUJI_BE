@@ -42,9 +42,6 @@ public class Company {
         if (command.getBio() != null) {
             this.bio = command.getBio();
         }
-        if (command.getCompanyType() != null) {
-            this.companyType = command.getCompanyType();
-        }
         if (command.getBizNo() != null) {
             this.bizNo = command.getBizNo();
         }

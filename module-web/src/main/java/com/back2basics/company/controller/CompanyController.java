@@ -9,7 +9,6 @@ import com.back2basics.service.company.dto.CompanyCreateCommand;
 import com.back2basics.service.company.dto.CompanyResponseDto;
 import com.back2basics.service.company.dto.CompanyUpdateCommand;
 import com.back2basics.service.company.response.CompanyResponseCode;
-import com.back2basics.service.post.response.PostResponseCode;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +56,7 @@ public class CompanyController {
     public ResponseEntity<ApiResponse<Long>> updateCompany(@PathVariable Long companyId,
         @Valid @RequestBody CompanyUpdateCommand command) {
         updateCompanyUseCase.updateCompany(companyId, command);
-        return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, companyId);
+        return ApiResponse.success(CompanyResponseCode.COMPANY_UPDATE_SUCCESS, companyId);
     }
 
     @DeleteMapping("/{deleteId}/delete")
