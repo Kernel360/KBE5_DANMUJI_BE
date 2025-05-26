@@ -1,6 +1,6 @@
 package com.back2basics.service.comment;
 
-import com.back2basics.infra.comment.validation.CommentValidator;
+import com.back2basics.infra.validation.CommentValidator;
 import com.back2basics.model.comment.Comment;
 import com.back2basics.port.in.comment.CreateCommentUseCase;
 import com.back2basics.port.in.comment.DeleteCommentUseCase;

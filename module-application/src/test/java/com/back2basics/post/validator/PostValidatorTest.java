@@ -3,7 +3,7 @@ package com.back2basics.post.validator;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.back2basics.infra.post.validation.PostValidator;
+import com.back2basics.infra.validation.PostValidator;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
 import com.back2basics.port.out.post.PostRepositoryPort;
