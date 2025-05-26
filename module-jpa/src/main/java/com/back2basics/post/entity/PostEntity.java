@@ -58,16 +58,12 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "priority", nullable = false)
     private Integer priority;
 
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt = null;
-
     @Column(name = "completed_at")
     private LocalDateTime completedAt = null;
 
     @Builder
     public PostEntity(Long id, String authorName, String title, String content, PostType type,
-        Integer priority, LocalDateTime deletedAt,
-        PostStatus status, LocalDateTime completedAt,
+        Integer priority, PostStatus status, LocalDateTime completedAt,
         List<CommentEntity> comments) {
         this.id = id;
         this.authorName = authorName;
@@ -75,7 +71,6 @@ public class PostEntity extends BaseTimeEntity {
         this.content = content;
         this.type = type;
         this.priority = priority;
-        this.deletedAt = deletedAt;
         this.status = status;
         this.completedAt = completedAt;
         this.comments = comments;

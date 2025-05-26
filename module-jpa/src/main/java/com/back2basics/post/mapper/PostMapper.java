@@ -44,7 +44,6 @@ public class PostMapper {
             .type(domain.getType())
             .status(domain.getStatus())
             .priority(domain.getPriority())
-            .deletedAt(domain.getDeletedAt())
             .completedAt(domain.getCompletedAt())
             .comments(fromDomainComments(domain.getComments()))
             .build();

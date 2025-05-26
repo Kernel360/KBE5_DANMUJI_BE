@@ -61,9 +61,9 @@ public class Post {
         }
     }
 
-    public void softDelete() {
-        this.deletedAt = LocalDateTime.now();
-    }
+//    public void softDelete() {
+//        this.deletedAt = LocalDateTime.now();
+//    }
 
 
     public void addComment(Comment comment) {
