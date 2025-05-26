@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final Long userId = 1L;
-
     private final CreateUserUseCase createUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
@@ -45,9 +43,9 @@ public class AdminController {
             UserCreateResponse.from(result));
     }
 
-    @PatchMapping
+    @PatchMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> updateUser(
-        @RequestBody @Valid UserUpdateRequest request) {
+        @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
         UserUpdateCommand command = new UserUpdateCommand(request.getUsername(),
             request.getName(), request.getEmail(), request.getPhone(), request.getPosition());
         updateUserUseCase.updateUser(userId, command);
@@ -60,8 +58,8 @@ public class AdminController {
         return ApiResponse.success(UserResponseCode.USER_DELETE_SUCCESS);
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<UserInfoResponse>> getUser() {
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponse<UserInfoResponse>> getUser(@PathVariable Long userId) {
         UserInfoResult result = getUserUseCase.getUser(userId);
         return ApiResponse.success(UserResponseCode.USER_READ_SUCCESS,
             UserInfoResponse.from(result));
