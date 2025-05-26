@@ -28,8 +28,10 @@ public class UserJpaAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public void deleteById(Long userId) {
-        userEntityRepository.deleteById(userId);
+    public void deleteById(User user) {
+        UserEntity userEntity = userMapper.toEntity(user);
+        userEntity.markDeleted();
+        userEntityRepository.save(userEntity);
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface UserRepositoryPort {
 
     Optional<User> findById(Long userId);
 
-    void deleteById(Long userId);
+    void deleteById(User user);
 
     boolean existsByUsername(String username);
 }

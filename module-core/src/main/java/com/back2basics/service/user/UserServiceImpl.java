@@ -1,6 +1,6 @@
 package com.back2basics.service.user;
 
-import com.back2basics.infra.validation.UserValidator;
+import com.back2basics.infra.user.validation.UserValidator;
 import com.back2basics.model.user.User;
 import com.back2basics.port.in.user.CreateUserUseCase;
 import com.back2basics.port.in.user.DeleteUserUseCase;
@@ -28,6 +28,10 @@ public class UserServiceImpl implements CreateUserUseCase, UpdateUserUseCase, De
         User user = User.builder()
             .username(command.getUsername())
             .password(command.getPassword())
+            .email(command.getEmail())
+            .name(command.getName())
+            .phone(command.getPhone())
+            .position(command.getPosition())
             .build();
 
         userRepositoryPort.save(user);
@@ -36,16 +40,18 @@ public class UserServiceImpl implements CreateUserUseCase, UpdateUserUseCase, De
     @Override
     public void updateUser(Long userId, UserUpdateCommand command) {
         User user = userValidator.findUserById(userId);
-        user.updateUser(command.getUsername(), command.getPassword());
+        user.updateUser(command.getUsername(), command.getName(), command.getEmail(),
+            command.getPhone(),
+            command.getPosition());
 
         userRepositoryPort.save(user);
     }
 
     @Override
     public void deleteUser(Long userId) {
-        userValidator.findUserById(userId);
+        User user = userValidator.findUserById(userId);
 
-        userRepositoryPort.deleteById(userId);
+        userRepositoryPort.deleteById(user);
     }
 
     @Override

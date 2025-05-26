@@ -38,7 +38,8 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> createUser(
         @RequestBody @Valid UserCreateRequest request) {
         UserCreateCommand command = new UserCreateCommand(request.getUsername(),
-            request.getPassword());
+            request.getPassword(), request.getName(), request.getEmail(), request.getPhone(),
+            request.getPosition());
         createUserUseCase.createUser(command);
         return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS);
     }
@@ -47,14 +48,13 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> updateUser(
         @RequestBody @Valid UserUpdateRequest request) {
         UserUpdateCommand command = new UserUpdateCommand(request.getUsername(),
-            request.getPassword());
+            request.getName(), request.getEmail(), request.getPhone(), request.getPosition());
         updateUserUseCase.updateUser(userId, command);
         return ApiResponse.success(UserResponseCode.USER_UPDATE_SUCCESS);
     }
 
     @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> deleteUser() {
-
         deleteUserUseCase.deleteUser(userId);
         return ApiResponse.success(UserResponseCode.USER_DELETE_SUCCESS);
     }

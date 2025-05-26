@@ -9,8 +9,12 @@ public class UserMapper {
 
     public User toDomain(UserEntity entity) {
         return User.builder()
+            .id(entity.getId())
             .username(entity.getUsername())
-            .password(entity.getPassword())
+            .name(entity.getName())
+            .email(entity.getEmail())
+            .phone(entity.getPhone())
+            .position(entity.getPosition())
             .build();
     }
 
@@ -18,6 +22,10 @@ public class UserMapper {
         return UserEntity.builder()
             .username(user.getUsername())
             .password(user.getPassword())
+            .name(user.getName())
+            .email(user.getEmail())
+            .phone(user.getPhone())
+            .position(user.getPosition())
             .build();
     }
 
