@@ -12,7 +12,6 @@ import org.springframework.cglib.core.Local;
 @Getter
 public class Project {
 
-    // id 가 final인 이유 - auto 라서 ?
     private final Long id;
 
     private String name;
@@ -42,9 +41,6 @@ public class Project {
         this.deletedAt = deletedAt;
     }
 
-
-
-
     public void update(ProjectUpdateCommand command) {
         if(command.getName() != null) {
             this.name = command.getName();
@@ -59,10 +55,4 @@ public class Project {
             this.endDate = command.getEndDate();
         }
     }
-
-    // todo: baseEntity markDelete로 변경
-    public void softDelete() {
-        this.deletedAt = LocalDateTime.now();
-    }
-
 }
