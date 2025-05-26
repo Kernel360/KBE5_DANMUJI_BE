@@ -1,4 +1,4 @@
-package com.back2basics.user.dto;
+package com.back2basics.admin.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

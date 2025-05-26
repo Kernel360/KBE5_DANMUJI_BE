@@ -1,8 +1,8 @@
 package com.back2basics.port.in.user;
 
-import com.back2basics.service.user.dto.UserResponseDto;
+import com.back2basics.service.user.result.UserInfoResult;
 
 public interface GetUserUseCase {
 
-    UserResponseDto getUser(Long userId);
+    UserInfoResult getUser(Long userId);
 }

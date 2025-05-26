@@ -1,8 +1,9 @@
 package com.back2basics.port.in.user;
 
-import com.back2basics.service.user.dto.UserCreateCommand;
+import com.back2basics.service.user.command.UserCreateCommand;
+import com.back2basics.service.user.result.UserCreateResult;
 
 public interface CreateUserUseCase {
 
-  void createUser(UserCreateCommand command);
+    UserCreateResult createUser(UserCreateCommand command);
 }

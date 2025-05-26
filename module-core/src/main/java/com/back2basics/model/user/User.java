@@ -1,12 +1,11 @@
 package com.back2basics.model.user;
 
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class User implements Serializable {
+public class User {
 
     private Long id;
 
@@ -22,10 +21,22 @@ public class User implements Serializable {
     private String phone;
     @NotNull
     private String position;
+    @NotNull
+    private Role role;
+
+    private boolean isDeleted;
+
+    public void markDeleted() {
+        this.isDeleted = true;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
-        String position) {
+        String position, Role role, boolean isDeleted) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,6 +44,8 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.position = position;
+        this.role = role;
+        this.isDeleted = false;
     }
 
     public void updateUsername(String username) {
