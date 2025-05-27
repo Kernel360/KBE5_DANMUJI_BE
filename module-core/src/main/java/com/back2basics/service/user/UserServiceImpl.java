@@ -3,11 +3,13 @@ package com.back2basics.service.user;
 import com.back2basics.infra.user.validation.UserValidator;
 import com.back2basics.model.user.Role;
 import com.back2basics.model.user.User;
+import com.back2basics.port.in.user.ChangePasswordUseCase;
 import com.back2basics.port.in.user.CreateUserUseCase;
 import com.back2basics.port.in.user.DeleteUserUseCase;
 import com.back2basics.port.in.user.GetUserUseCase;
 import com.back2basics.port.in.user.UpdateUserUseCase;
 import com.back2basics.port.out.user.UserRepositoryPort;
+import com.back2basics.service.user.command.UserChangePasswordCommand;
 import com.back2basics.service.user.command.UserCreateCommand;
 import com.back2basics.service.user.command.UserUpdateCommand;
 import com.back2basics.service.user.result.UserCreateResult;
@@ -18,8 +20,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements CreateUserUseCase, UpdateUserUseCase, DeleteUserUseCase,
-    GetUserUseCase {
+public class UserServiceImpl implements CreateUserUseCase,
+    UpdateUserUseCase,
+    DeleteUserUseCase,
+    GetUserUseCase,
+    ChangePasswordUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
     private final UserValidator userValidator;
@@ -76,5 +81,14 @@ public class UserServiceImpl implements CreateUserUseCase, UpdateUserUseCase, De
             .phone(user.getPhone())
             .position(user.getPosition())
             .build();
+    }
+
+    @Override
+    public void changePassword(Long userId, UserChangePasswordCommand command) {
+        User user = userValidator.findUserById(userId);
+        userValidator.validateCurrentPassword(user, command.getCurrentPassword());
+
+        user.updatePassword(command.getNewPassword());
+        userRepositoryPort.save(user);
     }
 }

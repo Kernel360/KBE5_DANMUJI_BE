@@ -24,4 +24,10 @@ public class UserValidator {
             throw new UserException(UserErrorCode.DUPLICATE_USERNAME);
         }
     }
+
+    public void validateCurrentPassword(User user, String currentPassword) {
+        if (!user.getPassword().equals(currentPassword)) {
+            throw new UserException(UserErrorCode.PASSWORD_MISMATCH);
+        }
+    }
 }
