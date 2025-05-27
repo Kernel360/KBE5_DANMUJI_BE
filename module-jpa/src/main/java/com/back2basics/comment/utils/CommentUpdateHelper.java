@@ -1,7 +1,8 @@
-package com.back2basics.comment.adapter.out;
+package com.back2basics.comment.utils;
 
 import com.back2basics.comment.entity.CommentEntity;
 import com.back2basics.comment.repository.CommentEntityRepository;
+import com.back2basics.model.comment.Comment;
 import com.back2basics.service.comment.exception.CommentErrorCode;
 import com.back2basics.service.comment.exception.CommentException;
 import lombok.RequiredArgsConstructor;
@@ -10,18 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class CommentDeleteHelper {
+public class CommentUpdateHelper {
 
     private final CommentEntityRepository commentRepository;
 
     @Transactional
-    public void deleteCommentWithOrphanKeep(Long commentId) {
-        CommentEntity parent = commentRepository.findById(commentId)
+    public CommentEntity updateComment(Long commentId, Comment comment) {
+        CommentEntity entity = commentRepository.findById(commentId)
             .orElseThrow(() -> new CommentException(CommentErrorCode.COMMENT_NOT_FOUND));
 
-        parent.getChildrenComments().forEach(child -> child.assignParentComment(null));
-        parent.getChildrenComments().clear();
-
-        commentRepository.delete(parent);
+        entity.updateContent(comment.getContent());
+        return entity;
     }
 }

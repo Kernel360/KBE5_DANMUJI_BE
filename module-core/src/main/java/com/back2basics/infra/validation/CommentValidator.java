@@ -1,4 +1,4 @@
-package com.back2basics.infra.comment.validation;
+package com.back2basics.infra.validation;
 
 import com.back2basics.model.comment.Comment;
 import com.back2basics.port.out.comment.CommentRepositoryPort;
