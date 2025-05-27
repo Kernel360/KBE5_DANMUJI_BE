@@ -10,8 +10,6 @@ public class UserCreateRequest {
     @NotNull
     private String username;
     @NotNull
-    private String password;
-    @NotNull
     private String name;
     @NotNull
     private String email;
@@ -21,12 +19,7 @@ public class UserCreateRequest {
     private String position;
 
     public UserCreateCommand toCommand() {
-        return UserCreateCommand.builder()
-            .username(username)
-            .name(name)
-            .email(email)
-            .phone(phone)
-            .position(position)
-            .build();
+        return UserCreateCommand.builder().username(username).name(name).email(email).phone(phone)
+            .position(position).build();
     }
 }
