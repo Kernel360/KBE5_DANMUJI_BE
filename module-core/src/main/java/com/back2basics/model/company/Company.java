@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class Company {
 
-    private final Long companyId;
+    private final Long id;
     private String name;
     private String ceoName;
     private String bio;
@@ -15,15 +15,10 @@ public class Company {
     private Integer bizNo;
     private String address;
 
-    public enum CompanyType {
-        CLIENT,
-        AGENCY
-    }
-
     @Builder
-    public Company(Long companyId, String name, String ceoName, String bio, CompanyType companyType,
+    public Company(Long id, String name, String ceoName, String bio, CompanyType companyType,
         Integer bizNo, String address) {
-        this.companyId = companyId;
+        this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
@@ -44,6 +39,9 @@ public class Company {
         }
         if (command.getBizNo() != null) {
             this.bizNo = command.getBizNo();
+        }
+        if (command.getCompanyType() != null) {
+            this.companyType = CompanyType.valueOf(command.getCompanyType());
         }
         if (command.getAddress() != null) {
             this.address = command.getAddress();

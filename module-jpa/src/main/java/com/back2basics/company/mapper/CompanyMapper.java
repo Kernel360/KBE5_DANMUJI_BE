@@ -9,7 +9,7 @@ public class CompanyMapper {
 
     public Company toDomain(CompanyEntity entity) {
         return Company.builder()
-            .companyId(entity.getCompany_id())
+            .id(entity.getId())
             .name(entity.getName())
             .ceoName(entity.getCeoName())
             .bio(entity.getBio())
@@ -19,9 +19,9 @@ public class CompanyMapper {
             .build();
     }
 
-    public CompanyEntity fromDomain(Company domain) {
+    public CompanyEntity toEntity(Company domain) {
         return CompanyEntity.builder()
-            .companyId(domain.getCompanyId())
+            .id(domain.getId())
             .name(domain.getName())
             .ceoName(domain.getCeoName())
             .bio(domain.getBio())

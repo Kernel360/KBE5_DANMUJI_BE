@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class CompanyValidator {
 
     private final CompanyRepositoryPort companyRepositoryPort;
-
+ 
     public Company findCompany(Long id) {
         return companyRepositoryPort.findById(id)
             .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));

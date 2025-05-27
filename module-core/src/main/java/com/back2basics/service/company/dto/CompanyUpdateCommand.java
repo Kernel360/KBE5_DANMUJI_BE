@@ -15,17 +15,11 @@ public class CompanyUpdateCommand {
 
     private String bio;
 
-    private CompanyType companyType;
+    private String companyType;
 
     private Integer bizNo;
 
     private String address;
-
-
-    public enum CompanyType {
-        CLIENT,
-        AGENCY
-    }
 
 
 }

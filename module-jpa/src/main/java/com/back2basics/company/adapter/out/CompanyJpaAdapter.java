@@ -20,8 +20,8 @@ public class CompanyJpaAdapter implements CompanyRepositoryPort {
 
     @Override
     public Long save(Company company) {
-        CompanyEntity entity = mapper.fromDomain(company);
-        return companyEntityRepository.save(entity).getCompany_id();
+        CompanyEntity entity = mapper.toEntity(company);
+        return companyEntityRepository.save(entity).getId();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CompanyJpaAdapter implements CompanyRepositoryPort {
 
     @Override
     public void update(Company company) {
-        companyEntityRepository.save(mapper.fromDomain(company));
+        companyEntityRepository.save(mapper.toEntity(company));
     }
 
     @Override

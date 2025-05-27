@@ -14,5 +14,5 @@ public interface CompanyRepositoryPort {
 
     void update(Company company);
 
-    public void deleteById(Long id);
+    void deleteById(Long id);
 }

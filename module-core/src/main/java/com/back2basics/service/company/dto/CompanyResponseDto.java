@@ -1,30 +1,26 @@
 package com.back2basics.service.company.dto;
 
 import com.back2basics.model.company.Company;
+import com.back2basics.model.company.CompanyType;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class CompanyResponseDto {
 
-    private final Long companyId;
+    private final Long id;
     private final String name;
     private final String ceoName;
     private final String bio;
-    private final Company.CompanyType companyType;
+    private final CompanyType companyType;
     private final Integer bizNo;
     private final String address;
 
-    public enum CompanyType {
-        CLIENT,
-        AGENCY
-    }
-
     @Builder
-    public CompanyResponseDto(Long companyId, String name, String ceoName, String bio,
-        Company.CompanyType companyType,
+    public CompanyResponseDto(Long id, String name, String ceoName, String bio,
+        CompanyType companyType,
         Integer bizNo, String address) {
-        this.companyId = companyId;
+        this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
@@ -35,7 +31,7 @@ public class CompanyResponseDto {
 
     public static CompanyResponseDto from(Company company) {
         return CompanyResponseDto.builder()
-            .companyId(company.getCompanyId())
+            .id(company.getId())
             .name(company.getName())
             .ceoName(company.getCeoName())
             .bio(company.getBio())

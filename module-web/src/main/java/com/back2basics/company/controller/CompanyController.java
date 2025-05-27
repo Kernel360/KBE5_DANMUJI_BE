@@ -1,14 +1,15 @@
 package com.back2basics.company.controller;
 
+import com.back2basics.company.response.CompanyResponseCode;
 import com.back2basics.port.in.company.CreateCompanyUseCase;
 import com.back2basics.port.in.company.DeleteCompanyUseCase;
-import com.back2basics.port.in.company.GetCompanyUseCase;
+import com.back2basics.port.in.company.GetAllCompaniesUseCase;
+import com.back2basics.port.in.company.GetCompanyByIdUseCase;
 import com.back2basics.port.in.company.UpdateCompanyUseCase;
 import com.back2basics.response.global.result.ApiResponse;
 import com.back2basics.service.company.dto.CompanyCreateCommand;
 import com.back2basics.service.company.dto.CompanyResponseDto;
 import com.back2basics.service.company.dto.CompanyUpdateCommand;
-import com.back2basics.service.company.response.CompanyResponseCode;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ public class CompanyController {
 
     private final CreateCompanyUseCase createCompanyUseCase;
     private final DeleteCompanyUseCase deleteCompanyUseCase;
-    private final GetCompanyUseCase getCompanyUseCase;
+    private final GetCompanyByIdUseCase getCompanyByIdUseCase;
+    private final GetAllCompaniesUseCase getAllCompaniesUseCase;
     private final UpdateCompanyUseCase updateCompanyUseCase;
 
     @PostMapping
@@ -40,15 +42,15 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}")
-    public ResponseEntity<ApiResponse<CompanyResponseDto>> getCompany(
+    public ResponseEntity<ApiResponse<CompanyResponseDto>> getCompanyById(
         @PathVariable Long companyId) {
-        CompanyResponseDto company = getCompanyUseCase.getCompany(companyId);
+        CompanyResponseDto company = getCompanyByIdUseCase.getCompany(companyId);
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS, company);
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<CompanyResponseDto>>> getAllCompanies() {
-        List<CompanyResponseDto> companies = getCompanyUseCase.getAllCompanies();
+        List<CompanyResponseDto> companies = getAllCompaniesUseCase.getAllCompanies();
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_ALL_SUCCESS, companies);
     }
 

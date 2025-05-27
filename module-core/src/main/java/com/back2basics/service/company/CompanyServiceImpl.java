@@ -4,7 +4,8 @@ import com.back2basics.infra.company.validation.CompanyValidator;
 import com.back2basics.model.company.Company;
 import com.back2basics.port.in.company.CreateCompanyUseCase;
 import com.back2basics.port.in.company.DeleteCompanyUseCase;
-import com.back2basics.port.in.company.GetCompanyUseCase;
+import com.back2basics.port.in.company.GetAllCompaniesUseCase;
+import com.back2basics.port.in.company.GetCompanyByIdUseCase;
 import com.back2basics.port.in.company.UpdateCompanyUseCase;
 import com.back2basics.port.out.company.CompanyRepositoryPort;
 import com.back2basics.service.company.dto.CompanyCreateCommand;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CreateCompanyUseCase, DeleteCompanyUseCase,
-    GetCompanyUseCase, UpdateCompanyUseCase {
+    GetCompanyByIdUseCase, GetAllCompaniesUseCase, UpdateCompanyUseCase {
 
     private final CompanyRepositoryPort companyRepositoryPort;
     private final CompanyValidator companyValidator;
@@ -49,7 +50,7 @@ public class CompanyServiceImpl implements CreateCompanyUseCase, DeleteCompanyUs
             .collect(Collectors.toList());
     }
 
-    @Override // todo : requesterName은 시큐리티 연결되면 컨트롤러에서 파라미터로 넘겨주는 걸로? 현재는 updateCommand에 일단 넣어서 사용
+    @Override
     public void updateCompany(Long id, CompanyUpdateCommand command) {
         Company company = companyValidator.findCompany(id);
 

@@ -1,6 +1,6 @@
 package com.back2basics.company.entity;
 
-import com.back2basics.model.company.Company;
+import com.back2basics.model.company.CompanyType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,15 +14,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Getter
 @Table(name = "company")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long company_id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -34,7 +34,7 @@ public class CompanyEntity {
     private String bio;
 
     @Enumerated(EnumType.STRING)
-    private Company.CompanyType companyType;
+    private CompanyType companyType;
 
     @Column(name = "biz_no", nullable = false)
     private Integer bizNo;
@@ -42,15 +42,10 @@ public class CompanyEntity {
     @Column(name = "address", nullable = false)
     private String address;
 
-    public enum CompanyType {
-        CLIENT,
-        AGENCY
-    }
-
     @Builder
-    public CompanyEntity(Long companyId, String name, String ceoName, String bio,
-        Company.CompanyType companyType, Integer bizNo, String address) {
-        this.company_id = companyId;
+    public CompanyEntity(Long id, String name, String ceoName, String bio,
+        CompanyType companyType, Integer bizNo, String address) {
+        this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
