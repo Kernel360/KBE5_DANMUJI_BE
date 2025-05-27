@@ -31,12 +31,13 @@ public class PostMapper {
             .deletedAt(entity.getDeletedAt())
             .completedAt(entity.getCompletedAt())
             .comments(toDomainComments(entity.getComments()))
+            .isDelete(entity.getDeletedAt() != null)
             .build();
     }
 
-    public PostEntity fromDomain(Post domain) {
+    public PostEntity toEntity(Post domain) {
 
-        return PostEntity.builder()
+        PostEntity entity = PostEntity.builder()
             .id(domain.getId())
             .authorName(domain.getAuthorName())
             .title(domain.getTitle())
@@ -47,7 +48,14 @@ public class PostMapper {
             .completedAt(domain.getCompletedAt())
             .comments(fromDomainComments(domain.getComments()))
             .build();
+
+        if (domain.isDelete()) {
+            entity.markDeleted();
+        }
+
+        return entity;
     }
+
 
     private List<Comment> toDomainComments(List<CommentEntity> entities) {
         if (entities == null || entities.isEmpty()) {

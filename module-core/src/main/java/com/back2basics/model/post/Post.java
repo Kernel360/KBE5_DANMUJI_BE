@@ -23,12 +23,14 @@ public class Post {
     private LocalDateTime deletedAt;
     private LocalDateTime completedAt;
     private List<Comment> comments;
+    private boolean isDelete;
 
     @Builder
     public Post(Long id, String authorName, String title, String content, PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments) {
+        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments,
+        boolean isDelete) {
         this.id = id;
         this.authorName = authorName;
         this.title = title;
@@ -41,6 +43,7 @@ public class Post {
         this.deletedAt = deletedAt;
         this.completedAt = completedAt;
         this.comments = comments != null ? new ArrayList<>(comments) : new ArrayList<>();
+        this.isDelete = false;
     }
 
     public void update(PostUpdateCommand command) {
@@ -61,9 +64,9 @@ public class Post {
         }
     }
 
-//    public void softDelete() {
-//        this.deletedAt = LocalDateTime.now();
-//    }
+    public void markDeleted() {
+        this.isDelete = true;
+    }
 
 
     public void addComment(Comment comment) {
