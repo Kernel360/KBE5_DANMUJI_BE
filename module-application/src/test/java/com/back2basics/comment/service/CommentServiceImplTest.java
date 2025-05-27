@@ -11,6 +11,7 @@ import com.back2basics.model.comment.Comment;
 import com.back2basics.model.post.Post;
 import com.back2basics.model.post.PostStatus;
 import com.back2basics.port.out.comment.CommentRepositoryPort;
+import com.back2basics.service.comment.CommentModelRelationHelper;
 import com.back2basics.service.comment.CommentServiceImpl;
 import com.back2basics.service.comment.dto.CommentCreateCommand;
 import com.back2basics.service.comment.dto.CommentUpdateCommand;
@@ -30,6 +31,9 @@ public class CommentServiceImplTest {
 
     @Mock
     private CommentValidator commentValidator;
+
+    @Mock
+    private CommentModelRelationHelper commentModelRelationHelper;
 
     @InjectMocks
     private CommentServiceImpl commentServiceImpl;
@@ -79,6 +83,7 @@ public class CommentServiceImplTest {
 
         // when
         when(commentRepositoryPort.save(any(Comment.class))).thenReturn(1L);
+        commentModelRelationHelper.assignRelations(command, sampleComment);
 
         // then
         Long id = commentServiceImpl.createComment(command);
@@ -123,5 +128,61 @@ public class CommentServiceImplTest {
         verify(commentValidator).isAuthor(sampleComment, commentAuthorName);
         verify(commentRepositoryPort).delete(sampleComment);
 
+    }
+
+    @Test
+    @DisplayName("대댓글 생성")
+    void createReplyCommentTest() {
+        // given
+        CommentCreateCommand command = new CommentCreateCommand(postId, parentId, commentAuthorName,
+            "reply content");
+
+        // when
+        when(commentRepositoryPort.save(any(Comment.class))).thenReturn(2L);
+
+        // then
+        Long id = commentServiceImpl.createComment(command);
+
+        assertThat(id).isEqualTo(2L);
+        verify(commentRepositoryPort).save(any(Comment.class));
+    }
+
+    @Test
+    @DisplayName("대댓글 수정")
+    void updateReplyCommentTest() {
+        // given
+        CommentUpdateCommand command = new CommentUpdateCommand(commentAuthorName, "updated reply");
+
+        // when
+        when(commentValidator.findComment(2L)).thenReturn(sampleComment2);
+        doNothing().when(commentValidator).isAuthor(sampleComment2, commentAuthorName);
+
+        // act
+        commentServiceImpl.updateComment(2L, command);
+
+        // then
+        assertThat(sampleComment2.getContent()).isEqualTo("updated reply");
+
+        verify(commentValidator).findComment(2L);
+        verify(commentValidator).isAuthor(sampleComment2, commentAuthorName);
+        verify(commentRepositoryPort).update(sampleComment2);
+    }
+
+    @Test
+    @DisplayName("대댓글 삭제")
+    void deleteReplyCommentTest() {
+        // given
+        when(commentValidator.findComment(2L)).thenReturn(sampleComment2);
+        doNothing().when(commentValidator).isAuthor(sampleComment2, commentAuthorName);
+
+        // when
+        commentServiceImpl.deleteComment(2L, commentAuthorName);
+
+        // then
+        assertThat(sampleComment2).isNotNull();
+
+        verify(commentValidator).findComment(2L);
+        verify(commentValidator).isAuthor(sampleComment2, commentAuthorName);
+        verify(commentRepositoryPort).delete(sampleComment2);
     }
 }

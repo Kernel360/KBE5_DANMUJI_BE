@@ -27,6 +27,7 @@ public class PostResponseDto {
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
     private final LocalDateTime completedAt;
+    private final boolean isDeleted;
 
     private final List<CommentResponseDto> comments;
 
@@ -46,6 +47,7 @@ public class PostResponseDto {
             .comments(post.getComments().stream()
                 .map(CommentResponseDto::from)
                 .collect(Collectors.toList()))
+            .isDeleted(post.getDeletedAt() != null)
             .build();
     }
 }
