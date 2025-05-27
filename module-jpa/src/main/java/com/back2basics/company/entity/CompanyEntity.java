@@ -42,9 +42,14 @@ public class CompanyEntity {
     @Column(name = "address", nullable = false)
     private String address;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+    @Column(name = "tel", nullable = false)
+    private String tel;
+
     @Builder
     public CompanyEntity(Long id, String name, String ceoName, String bio,
-        CompanyType companyType, Integer bizNo, String address) {
+        CompanyType companyType, Integer bizNo, String address, String email, String tel) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
@@ -52,6 +57,8 @@ public class CompanyEntity {
         this.companyType = companyType;
         this.bizNo = bizNo;
         this.address = address;
+        this.email = email;
+        this.tel = tel;
     }
 
 }

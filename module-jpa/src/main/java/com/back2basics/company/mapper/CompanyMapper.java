@@ -16,6 +16,8 @@ public class CompanyMapper {
             .companyType(entity.getCompanyType())
             .bizNo(entity.getBizNo())
             .address(entity.getAddress())
+            .email(entity.getEmail())
+            .tel(entity.getTel())
             .build();
     }
 
@@ -28,6 +30,8 @@ public class CompanyMapper {
             .companyType(domain.getCompanyType())
             .bizNo(domain.getBizNo())
             .address(domain.getAddress())
+            .email(domain.getEmail())
+            .tel(domain.getTel())
             .build();
     }
 

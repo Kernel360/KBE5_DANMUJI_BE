@@ -33,6 +33,8 @@ public class CompanyServiceImpl implements CreateCompanyUseCase, DeleteCompanyUs
             .companyType(companyCreateCommand.getCompanyType())
             .bizNo(companyCreateCommand.getBizNo())
             .address(companyCreateCommand.getAddress())
+            .email(companyCreateCommand.getEmail())
+            .tel(companyCreateCommand.getTel())
             .build();
         return companyRepositoryPort.save(company);
     }

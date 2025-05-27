@@ -14,10 +14,12 @@ public class Company {
     private CompanyType companyType;
     private Integer bizNo;
     private String address;
+    private String email;
+    private String tel;
 
     @Builder
     public Company(Long id, String name, String ceoName, String bio, CompanyType companyType,
-        Integer bizNo, String address) {
+        Integer bizNo, String address, String email, String tel) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
@@ -25,6 +27,8 @@ public class Company {
         this.companyType = companyType;
         this.bizNo = bizNo;
         this.address = address;
+        this.email = email;
+        this.tel = tel;
     }
 
     public void update(CompanyUpdateCommand command) {
@@ -41,10 +45,16 @@ public class Company {
             this.bizNo = command.getBizNo();
         }
         if (command.getCompanyType() != null) {
-            this.companyType = CompanyType.valueOf(command.getCompanyType());
+            this.companyType = command.getCompanyType();
         }
         if (command.getAddress() != null) {
             this.address = command.getAddress();
+        }
+        if (command.getEmail() != null) {
+            this.email = command.getEmail();
+        }
+        if (command.getTel() != null) {
+            this.tel = command.getTel();
         }
     }
 

@@ -15,11 +15,13 @@ public class CompanyResponseDto {
     private final CompanyType companyType;
     private final Integer bizNo;
     private final String address;
+    private final String email;
+    private final String tel;
 
     @Builder
     public CompanyResponseDto(Long id, String name, String ceoName, String bio,
         CompanyType companyType,
-        Integer bizNo, String address) {
+        Integer bizNo, String address, String email, String tel) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
@@ -27,6 +29,8 @@ public class CompanyResponseDto {
         this.companyType = companyType;
         this.bizNo = bizNo;
         this.address = address;
+        this.email = email;
+        this.tel = tel;
     }
 
     public static CompanyResponseDto from(Company company) {
