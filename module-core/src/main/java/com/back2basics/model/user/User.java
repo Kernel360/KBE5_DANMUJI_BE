@@ -1,6 +1,5 @@
 package com.back2basics.model.user;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,19 +8,12 @@ public class User {
 
     private Long id;
 
-    @NotNull
     private String username;
-    @NotNull
     private String password;
-    @NotNull
     private String name;
-    @NotNull
     private String email;
-    @NotNull
     private String phone;
-    @NotNull
     private String position;
-    @NotNull
     private Role role;
 
     private boolean isDeleted;
