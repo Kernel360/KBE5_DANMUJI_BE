@@ -2,9 +2,11 @@ package com.back2basics.user.controller;
 
 import com.back2basics.port.in.user.ChangePasswordUseCase;
 import com.back2basics.response.global.result.ApiResponse;
-import com.back2basics.service.user.command.UserChangePasswordCommand;
+import com.back2basics.service.user.command.ChangePasswordCommand;
+import com.back2basics.service.user.command.ResetPasswordCommand;
 import com.back2basics.service.user.response.UserResponseCode;
-import com.back2basics.user.dto.request.UserPasswordChangeRequest;
+import com.back2basics.user.dto.request.ChangePasswordRequest;
+import com.back2basics.user.dto.request.ResetPasswordRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +24,23 @@ public class UserController {
     private final ChangePasswordUseCase changePasswordUseCase;
 
     // todo: user 인증 객체 사용
-    // 비밀번호 변경
     @PostMapping("/change-password/{userId}")
     public ResponseEntity<ApiResponse<Void>> changePassword(@PathVariable Long userId,
-        @Valid @RequestBody UserPasswordChangeRequest request) {
-        UserChangePasswordCommand command = new UserChangePasswordCommand(
+        @Valid @RequestBody ChangePasswordRequest request) {
+        ChangePasswordCommand command = new ChangePasswordCommand(
             request.getCurrentPassword(), request.getNewPassword());
 
         changePasswordUseCase.changePassword(userId, command);
         return ApiResponse.success(UserResponseCode.USER_CHANGE_PASSWORD_SUCCESS);
     }
 
-    // 비밀번호 찾기
+    // 비밀번호 재설정
+    @PostMapping("/reset-password/{userId}")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(@PathVariable Long userId,
+        @Valid @RequestBody ResetPasswordRequest request) {
+        ResetPasswordCommand command = new ResetPasswordCommand(request.getEmail());
+
+        return ApiResponse.success(UserResponseCode.USER_RESET_PASSWORD_SUCCESS);
+    }
 
 }

@@ -9,7 +9,7 @@ import com.back2basics.port.in.user.DeleteUserUseCase;
 import com.back2basics.port.in.user.GetUserUseCase;
 import com.back2basics.port.in.user.UpdateUserUseCase;
 import com.back2basics.port.out.user.UserRepositoryPort;
-import com.back2basics.service.user.command.UserChangePasswordCommand;
+import com.back2basics.service.user.command.ChangePasswordCommand;
 import com.back2basics.service.user.command.UserCreateCommand;
 import com.back2basics.service.user.command.UserUpdateCommand;
 import com.back2basics.service.user.result.UserCreateResult;
@@ -84,7 +84,7 @@ public class UserServiceImpl implements CreateUserUseCase,
     }
 
     @Override
-    public void changePassword(Long userId, UserChangePasswordCommand command) {
+    public void changePassword(Long userId, ChangePasswordCommand command) {
         User user = userValidator.findUserById(userId);
         userValidator.validateCurrentPassword(user, command.getCurrentPassword());
 

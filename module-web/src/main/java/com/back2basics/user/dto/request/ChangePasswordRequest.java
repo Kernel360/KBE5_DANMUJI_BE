@@ -1,15 +1,15 @@
 package com.back2basics.user.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class UserPasswordChangeRequest {
+public class ChangePasswordRequest {
 
-    @NotNull
+    @NotBlank
     private String currentPassword;
 
-    @NotNull
+    @NotBlank
     private String newPassword;
 
 }

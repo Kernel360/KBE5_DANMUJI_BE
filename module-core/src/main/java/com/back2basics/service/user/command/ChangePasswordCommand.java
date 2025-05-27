@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserChangePasswordCommand {
+public class ChangePasswordCommand {
 
     private String currentPassword;
     private String newPassword;
 
     @Builder
-    public UserChangePasswordCommand(String currentPassword, String newPassword) {
+    public ChangePasswordCommand(String currentPassword, String newPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
     }
