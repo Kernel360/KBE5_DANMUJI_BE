@@ -1,6 +1,6 @@
 package com.back2basics.service.company;
 
-import com.back2basics.infra.company.validation.CompanyValidator;
+import com.back2basics.infra.validation.CompanyValidator;
 import com.back2basics.model.company.Company;
 import com.back2basics.port.in.company.CreateCompanyUseCase;
 import com.back2basics.port.in.company.DeleteCompanyUseCase;

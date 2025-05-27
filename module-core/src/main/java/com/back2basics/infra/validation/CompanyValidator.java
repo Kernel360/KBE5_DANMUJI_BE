@@ -1,4 +1,4 @@
-package com.back2basics.infra.company.validation;
+package com.back2basics.infra.validation;
 
 import com.back2basics.model.company.Company;
 import com.back2basics.port.out.company.CompanyRepositoryPort;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class CompanyValidator {
 
     private final CompanyRepositoryPort companyRepositoryPort;
- 
+
     public Company findCompany(Long id) {
         return companyRepositoryPort.findById(id)
             .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));
