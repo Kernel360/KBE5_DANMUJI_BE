@@ -1,4 +1,4 @@
-package com.back2basics.adapter.persistence.company.entity;
+package com.back2basics.adapter.persistence.company;
 
 import com.back2basics.company.model.CompanyType;
 import jakarta.persistence.Column;

@@ -1,6 +1,5 @@
-package com.back2basics.adapter.persistence.company.mapper;
+package com.back2basics.adapter.persistence.company;
 
-import com.back2basics.adapter.persistence.company.entity.CompanyEntity;
 import com.back2basics.company.model.Company;
 import org.springframework.stereotype.Component;
 
