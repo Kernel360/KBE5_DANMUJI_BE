@@ -1,4 +1,4 @@
-package com.back2basics.service.project.exception;
+package com.back2basics.infra.exception.project;
 
 import com.back2basics.global.response.code.ErrorCode;
 import lombok.Getter;

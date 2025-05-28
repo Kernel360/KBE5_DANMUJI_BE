@@ -17,12 +17,11 @@ public class UserMapper {
             .phone(entity.getPhone())
             .position(entity.getPosition())
             .role(entity.getRole())
-            .isDeleted(entity.getDeletedAt() != null)
             .build();
     }
 
     public UserEntity toEntity(User user) {
-        UserEntity entity = UserEntity.builder()
+        return UserEntity.builder()
             .id(user.getId())
             .username(user.getUsername())
             .password(user.getPassword())
@@ -32,10 +31,6 @@ public class UserMapper {
             .position(user.getPosition())
             .role(user.getRole())
             .build();
-        if (user.isDeleted()) {
-            entity.markDeleted();
-        }
-        return entity;
     }
 
 }
