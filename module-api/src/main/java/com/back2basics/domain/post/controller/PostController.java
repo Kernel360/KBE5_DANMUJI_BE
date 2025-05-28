@@ -2,8 +2,10 @@ package com.back2basics.domain.post.controller;
 
 import com.back2basics.domain.post.controller.code.PostResponseCode;
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
+import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateApiResponse;
+import com.back2basics.domain.post.dto.response.PostDeleteApiResponse;
 import com.back2basics.domain.post.dto.response.PostDetailsApiResponse;
 import com.back2basics.domain.post.dto.response.PostSimpleApiResponse;
 import com.back2basics.domain.post.dto.response.PostUpdateApiResponse;
@@ -13,8 +15,8 @@ import com.back2basics.post.port.in.DeletePostUseCase;
 import com.back2basics.post.port.in.GetPostDetailsUseCase;
 import com.back2basics.post.port.in.GetPostListUseCase;
 import com.back2basics.post.port.in.UpdatePostUseCase;
-import com.back2basics.post.port.in.command.PostSoftDeleteCommand;
 import com.back2basics.post.service.result.PostCreateResult;
+import com.back2basics.post.service.result.PostDeleteResult;
 import com.back2basics.post.service.result.PostDetailsResult;
 import com.back2basics.post.service.result.PostSimpleResult;
 import com.back2basics.post.service.result.PostUpdateResult;
@@ -80,9 +82,11 @@ public class PostController {
     }
 
     @PutMapping("delete/{postId}")
-    public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long postId,
-        @RequestBody PostSoftDeleteCommand command) {
-        deletePostUseCase.softDeletePost(postId, command.getRequesterId());
-        return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
+    public ResponseEntity<ApiResponse<PostDeleteApiResponse>> deletePost(@PathVariable Long postId,
+        @RequestBody PostDeleteApiRequest request) {
+        PostDeleteResult result = deletePostUseCase.softDeletePost(postId,
+            request.toCommand().getRequesterId());
+        PostDeleteApiResponse response = PostDeleteApiResponse.toResponse(result);
+        return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS, response);
     }
 }

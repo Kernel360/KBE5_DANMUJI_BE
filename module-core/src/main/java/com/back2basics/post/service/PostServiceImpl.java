@@ -15,6 +15,7 @@ import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.port.out.PostSoftDeletePort;
 import com.back2basics.post.port.out.PostUpdatePort;
 import com.back2basics.post.service.result.PostCreateResult;
+import com.back2basics.post.service.result.PostDeleteResult;
 import com.back2basics.post.service.result.PostDetailsResult;
 import com.back2basics.post.service.result.PostSimpleResult;
 import com.back2basics.post.service.result.PostUpdateResult;
@@ -81,10 +82,11 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     }
 
     @Override
-    public void softDeletePost(Long id, Long requesterId) {
+    public PostDeleteResult softDeletePost(Long id, Long requesterId) {
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, requesterId);
         post.markDeleted();
         postSoftDeletePort.softDelete(post);
+        return PostDeleteResult.toResult(post);
     }
 }
