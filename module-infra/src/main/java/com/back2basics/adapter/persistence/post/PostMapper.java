@@ -73,4 +73,16 @@ public class PostMapper {
             .map(commentMapper::fromDomain)
             .collect(Collectors.toList());
     }
+
+    public void updateEntityFields(PostEntity entity, Post domain) {
+        entity.update(
+            domain.getTitle(),
+            domain.getContent(),
+            domain.getType(),
+            domain.getStatus(),
+            domain.getPriority(),
+            domain.getCompletedAt(),
+            domain.isDelete()
+        );
+    }
 }

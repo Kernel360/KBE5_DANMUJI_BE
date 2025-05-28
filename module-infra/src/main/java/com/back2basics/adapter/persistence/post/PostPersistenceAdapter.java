@@ -1,6 +1,8 @@
 package com.back2basics.adapter.persistence.post;
 
 
+import com.back2basics.infra.exception.post.PostErrorCode;
+import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostCreatePort;
 import com.back2basics.post.port.out.PostReadPort;
@@ -41,7 +43,11 @@ public class PostPersistenceAdapter implements PostCreatePort,
 
     @Override
     public void update(Post post) {
-        postRepository.save(mapper.toEntity(post));
+        PostEntity entity = postRepository.findById(post.getId())
+            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
+
+        mapper.updateEntityFields(entity, post);
+        postRepository.save(entity);
     }
 
 
