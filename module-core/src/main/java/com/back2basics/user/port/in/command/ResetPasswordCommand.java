@@ -1,5 +1,6 @@
 package com.back2basics.user.port.in.command;
 
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResetPasswordCommand {
 
-    private String email;
+    private String newPassword;
 
     @Builder
-    public ResetPasswordCommand(String email) {
-        this.email = email;
+    public ResetPasswordCommand(String newPassword) {
+        this.newPassword = newPassword;
     }
 }
