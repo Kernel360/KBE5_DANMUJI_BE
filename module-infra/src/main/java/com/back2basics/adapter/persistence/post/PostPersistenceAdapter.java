@@ -2,7 +2,10 @@ package com.back2basics.adapter.persistence.post;
 
 
 import com.back2basics.post.model.Post;
-import com.back2basics.post.port.out.PostRepositoryPort;
+import com.back2basics.post.port.out.PostCreatePort;
+import com.back2basics.post.port.out.PostReadPort;
+import com.back2basics.post.port.out.PostSoftDeletePort;
+import com.back2basics.post.port.out.PostUpdatePort;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,7 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PostPersistenceAdapter implements PostRepositoryPort {
+public class PostPersistenceAdapter implements PostCreatePort, PostReadPort,
+    PostUpdatePort, PostSoftDeletePort {
 
     private final PostEntityRepository postRepository;
     private final PostMapper mapper;
