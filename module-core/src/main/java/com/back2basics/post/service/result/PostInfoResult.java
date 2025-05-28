@@ -17,7 +17,7 @@ import lombok.Getter;
 public class PostInfoResult {
 
     private final Long id;
-    private final String authorName;
+    private final Long authorId;
     private final String title;
     private final String content;
     private final PostType type;
@@ -34,7 +34,7 @@ public class PostInfoResult {
     public static PostInfoResult from(Post post) {
         return PostInfoResult.builder()
             .id(post.getId())
-            .authorName(post.getAuthorName())
+            .authorId(post.getAuthorId())
             .title(post.getTitle())
             .content(post.getContent())
             .type(post.getType())

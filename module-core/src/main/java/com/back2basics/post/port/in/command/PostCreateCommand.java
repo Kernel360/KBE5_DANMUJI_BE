@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostCreateCommand {
 
-    @NotBlank(message = "작성자는 필수입니다.")
-    private String authorName;
+    @NotNull(message = "작성자는 필수입니다.")
+    private Long authorId;
 
     @NotBlank(message = "제목은 필수입니다.")
     private String title;

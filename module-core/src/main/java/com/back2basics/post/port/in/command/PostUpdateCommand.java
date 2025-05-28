@@ -4,6 +4,7 @@ import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.infra.validation.custom.CustomNotBlank;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostUpdateCommand {
 
-    private String requesterName;
+    @NotNull(message = "요청자는 필수입니다.")
+    private Long requesterId;
 
     @CustomNotBlank(message = "제목은 공백일 수 없습니다.")
     private String title;

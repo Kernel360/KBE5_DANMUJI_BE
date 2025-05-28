@@ -19,7 +19,7 @@ public class PostMapper {
     public Post toDomain(PostEntity entity) {
         return Post.builder()
             .id(entity.getId())
-            .authorName(entity.getAuthorName())
+            .authorId(entity.getAuthorId())
             .title(entity.getTitle())
             .content(entity.getContent())
             .type(entity.getType())
@@ -38,7 +38,7 @@ public class PostMapper {
 
         PostEntity entity = PostEntity.builder()
             .id(domain.getId())
-            .authorName(domain.getAuthorName())
+            .authorId(domain.getAuthorId())
             .title(domain.getTitle())
             .content(domain.getContent())
             .type(domain.getType())

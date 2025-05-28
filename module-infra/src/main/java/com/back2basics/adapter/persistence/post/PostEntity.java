@@ -35,8 +35,8 @@ public class PostEntity extends BaseTimeEntity {
     private Long id;
 
     // todo : UserEntity생기면 @ManyToOne 필드로 수정
-    @Column(name = "author_name", nullable = false)
-    private String authorName;
+    @Column(name = "author_id", nullable = false)
+    private Long authorId;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -62,11 +62,11 @@ public class PostEntity extends BaseTimeEntity {
     private LocalDateTime completedAt = null;
 
     @Builder
-    public PostEntity(Long id, String authorName, String title, String content, PostType type,
+    public PostEntity(Long id, Long authorId, String title, String content, PostType type,
         Integer priority, PostStatus status, LocalDateTime completedAt,
         List<CommentEntity> comments) {
         this.id = id;
-        this.authorName = authorName;
+        this.authorId = authorId;
         this.title = title;
         this.content = content;
         this.type = type;

@@ -30,7 +30,7 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     @Override
     public Long createPost(PostCreateCommand command) {
         Post post = Post.builder()
-            .authorName(command.getAuthorName())
+            .authorId(command.getAuthorId())
             .title(command.getTitle())
             .content(command.getContent())
             .type(command.getType())
@@ -58,16 +58,16 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     @Override // todo : requesterName은 시큐리티 연결되면 컨트롤러에서 파라미터로 넘겨주는 걸로? 현재는 updateCommand에 일단 넣어서 사용
     public void updatePost(Long id, PostUpdateCommand command) {
         Post post = postValidator.findPost(id);
-        postValidator.isAuthor(post, command.getRequesterName());
+        postValidator.isAuthor(post, command.getRequesterId());
 
         post.update(command);
         postRepository.update(post);
     }
 
     @Override
-    public void softDeletePost(Long id, String requesterName) {
+    public void softDeletePost(Long id, Long requesterId) {
         Post post = postValidator.findPost(id);
-        postValidator.isAuthor(post, requesterName);
+        postValidator.isAuthor(post, requesterId);
         post.markDeleted();
         postRepository.softDelete(post);
     }
