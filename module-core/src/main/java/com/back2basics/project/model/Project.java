@@ -49,18 +49,10 @@ public class Project {
 
     // todo: http 메서드 put으로 변경, null 체크 안함
     public void update(ProjectUpdateCommand command) {
-        if (command.getName() != null) {
-            this.name = command.getName();
-        }
-        if (command.getDescription() != null) {
-            this.description = command.getDescription();
-        }
-        if (command.getStartDate() != null) {
-            this.startDate = command.getStartDate();
-        }
-        if (command.getEndDate() != null) {
-            this.endDate = command.getEndDate();
-        }
+        this.name = command.getName();
+        this.description = command.getDescription();
+        this.startDate = command.getStartDate();
+        this.endDate = command.getEndDate();
     }
 
     // todo: project 상태변경
