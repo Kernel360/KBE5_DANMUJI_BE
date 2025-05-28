@@ -1,4 +1,4 @@
-package com.back2basics.adapter.persistence.company.adapter.out;
+package com.back2basics.adapter.persistence.company.adapter;
 
 import com.back2basics.adapter.persistence.company.entity.CompanyEntity;
 import com.back2basics.adapter.persistence.company.mapper.CompanyMapper;
