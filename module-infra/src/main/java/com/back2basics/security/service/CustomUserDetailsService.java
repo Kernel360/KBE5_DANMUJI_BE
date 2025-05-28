@@ -1,7 +1,8 @@
-package com.back2basics.security;
+package com.back2basics.security.service;
 
-import com.back2basics.infra.exception.user.UserErrorCode;
-import com.back2basics.user.port.out.UserRepositoryPort;
+import com.back2basics.security.model.CustomUserDetails;
+import com.back2basics.user.model.User;
+import com.back2basics.user.port.in.UserQueryUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,13 +13,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserQueryUseCase userQueryUseCase;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepositoryPort.findByUsername(username)
-            .map(CustomUserDetails::new)
-            .orElseThrow(
-                () -> new UsernameNotFoundException(UserErrorCode.USER_NOT_FOUND.getMessage()));
+        User user = userQueryUseCase.findByUsername(username);
+        return new CustomUserDetails(user);
     }
 }

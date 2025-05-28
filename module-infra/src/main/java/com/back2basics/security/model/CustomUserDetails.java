@@ -1,4 +1,4 @@
-package com.back2basics.security;
+package com.back2basics.security.model;
 
 
 import com.back2basics.user.model.User;
