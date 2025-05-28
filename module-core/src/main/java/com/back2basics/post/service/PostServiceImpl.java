@@ -9,7 +9,10 @@ import com.back2basics.post.port.in.GetPostUseCase;
 import com.back2basics.post.port.in.UpdatePostUseCase;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
-import com.back2basics.post.port.out.PostRepositoryPort;
+import com.back2basics.post.port.out.PostCreatePort;
+import com.back2basics.post.port.out.PostReadPort;
+import com.back2basics.post.port.out.PostSoftDeletePort;
+import com.back2basics.post.port.out.PostUpdatePort;
 import com.back2basics.post.service.result.PostInfoResult;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +27,10 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     UpdatePostUseCase,
     DeletePostUseCase {
 
-    private final PostRepositoryPort postRepository;
+    private final PostCreatePort postCreatePort;
+    private final PostReadPort postReadPort;
+    private final PostUpdatePort postUpdatePort;
+    private final PostSoftDeletePort postSoftDeletePort;
     private final PostValidator postValidator;
 
     @Override
@@ -39,7 +45,7 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
             .completedAt(null)
             .deletedAt(null)
             .build();
-        return postRepository.save(post);
+        return postCreatePort.save(post);
     }
 
     @Override
@@ -50,7 +56,7 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
 
     @Override
     public List<PostInfoResult> getAllPosts() {
-        return postRepository.findAll().stream()
+        return postReadPort.findAll().stream()
             .map(PostInfoResult::from)
             .collect(Collectors.toList());
     }
@@ -61,7 +67,7 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
         postValidator.isAuthor(post, command.getRequesterId());
 
         post.update(command);
-        postRepository.update(post);
+        postUpdatePort.update(post);
     }
 
     @Override
@@ -69,6 +75,6 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, requesterId);
         post.markDeleted();
-        postRepository.softDelete(post);
+        postSoftDeletePort.softDelete(post);
     }
 }

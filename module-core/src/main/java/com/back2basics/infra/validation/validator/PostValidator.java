@@ -3,7 +3,7 @@ package com.back2basics.infra.validation.validator;
 import com.back2basics.infra.exception.post.PostErrorCode;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.port.out.PostRepositoryPort;
+import com.back2basics.post.port.out.PostReadPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class PostValidator {
 
-    private final PostRepositoryPort postRepository;
+    private final PostReadPort postReadPort;
 
     public Post findPost(Long id) {
-        return postRepository.findById(id)
+        return postReadPort.findById(id)
             .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
     }
 
