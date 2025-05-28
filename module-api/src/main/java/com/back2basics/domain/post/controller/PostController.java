@@ -15,9 +15,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,16 +52,16 @@ public class PostController {
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, posts);
     }
 
-    @PatchMapping("/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<ApiResponse<Long>> updatePost(@PathVariable Long postId,
         @Valid @RequestBody PostUpdateCommand command) {
         updatePostUseCase.updatePost(postId, command);
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, postId);
     }
 
-    @PatchMapping("/{postId}/delete")
+    @PutMapping("delete/{postId}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long postId,
-        @RequestBody PostSoftDeleteCommand command) { // requesterName : 임시 파라미터
+        @RequestBody PostSoftDeleteCommand command) {
         deletePostUseCase.softDeletePost(postId, command.getRequesterId());
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }

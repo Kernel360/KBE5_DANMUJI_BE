@@ -47,21 +47,12 @@ public class Post {
     }
 
     public void update(PostUpdateCommand command) {
-        if (command.getTitle() != null) {
-            this.title = command.getTitle();
-        }
-        if (command.getContent() != null) {
-            this.content = command.getContent();
-        }
-        if (command.getType() != null) {
-            this.type = command.getType();
-        }
-        if (command.getStatus() != null) {
-            this.status = command.getStatus();
-        }
-        if (command.getPriority() != null) {
-            this.priority = command.getPriority();
-        }
+        this.title = command.getTitle();
+        this.content = command.getContent();
+        this.type = command.getType();
+        this.status = command.getStatus();
+        this.priority = command.getPriority();
+
     }
 
     public void markDeleted() {

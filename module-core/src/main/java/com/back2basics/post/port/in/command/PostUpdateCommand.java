@@ -27,7 +27,7 @@ public class PostUpdateCommand {
     @CustomEnumCheck(enumClass = PostType.class, message = "올바른 enum type이 아닙니다")
     private PostType type;
 
-    @CustomEnumCheck(enumClass = PostType.class, message = "올바른 enum type이 아닙니다")
+    @CustomEnumCheck(enumClass = PostStatus.class, message = "올바른 enum type이 아닙니다")
     private PostStatus status;
 
     private Integer priority;
