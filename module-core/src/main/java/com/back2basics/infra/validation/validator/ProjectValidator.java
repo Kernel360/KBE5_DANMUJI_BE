@@ -1,9 +1,9 @@
-package com.back2basics.service.project.validation;
+package com.back2basics.infra.validation.validator;
 
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.out.ProjectRepositoryPort;
-import com.back2basics.service.project.exception.ProjectErrorCode;
-import com.back2basics.service.project.exception.ProjectException;
+import com.back2basics.infra.exception.project.ProjectErrorCode;
+import com.back2basics.infra.exception.project.ProjectException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
