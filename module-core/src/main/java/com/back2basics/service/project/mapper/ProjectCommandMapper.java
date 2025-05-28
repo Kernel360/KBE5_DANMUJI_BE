@@ -1,6 +1,6 @@
 package com.back2basics.service.project.mapper;
 
-import com.back2basics.model.project.Project;
+import com.back2basics.project.model.Project;
 import com.back2basics.service.project.dto.ProjectCreateCommand;
 import com.back2basics.service.project.dto.ProjectResponseDto;
 import org.springframework.stereotype.Component;
