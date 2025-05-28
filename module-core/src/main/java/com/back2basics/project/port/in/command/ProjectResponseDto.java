@@ -1,9 +1,8 @@
-package com.back2basics.service.project.dto;
+package com.back2basics.project.port.in.command;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.back2basics.project.model.Project;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -36,5 +35,18 @@ public class ProjectResponseDto {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+    }
+
+    public static ProjectResponseDto from(Project project) {
+        return ProjectResponseDto.builder()
+            .id(project.getId())
+            .name(project.getName())
+            .description(project.getDescription())
+            .startDate(project.getStartDate())
+            .endDate(project.getEndDate())
+            .createdAt(project.getCreatedAt())
+            .updatedAt(project.getUpdatedAt())
+            .deletedAt(project.getDeletedAt())
+            .build();
     }
 }

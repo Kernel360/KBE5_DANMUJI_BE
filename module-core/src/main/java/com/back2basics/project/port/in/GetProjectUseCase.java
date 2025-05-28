@@ -1,6 +1,6 @@
 package com.back2basics.project.port.in;
 
-import com.back2basics.service.project.dto.ProjectResponseDto;
+import com.back2basics.project.port.in.command.ProjectResponseDto;
 import java.util.List;
 
 public interface GetProjectUseCase {

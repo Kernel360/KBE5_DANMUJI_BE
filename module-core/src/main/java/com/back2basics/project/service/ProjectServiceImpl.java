@@ -6,11 +6,10 @@ import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.GetProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.out.ProjectRepositoryPort;
-import com.back2basics.service.project.dto.ProjectCreateCommand;
-import com.back2basics.service.project.dto.ProjectResponseDto;
-import com.back2basics.service.project.dto.ProjectUpdateCommand;
-import com.back2basics.service.project.mapper.ProjectCommandMapper;
-import com.back2basics.service.project.validation.ProjectValidator;
+import com.back2basics.project.port.in.command.ProjectCreateCommand;
+import com.back2basics.project.port.in.command.ProjectResponseDto;
+import com.back2basics.project.port.in.command.ProjectUpdateCommand;
+import com.back2basics.infra.validation.validator.ProjectValidator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,20 +28,26 @@ public class ProjectServiceImpl implements
 
     @Override
     public void createProject(ProjectCreateCommand command) {
-        Project project = ProjectCommandMapper.to(command);
+        Project project = Project.builder()
+            .name(command.getName())
+            .description(command.getDescription())
+            .startDate(command.getStartDate())
+            .endDate(command.getEndDate())
+            .isDeleted(false)
+            .build(); // todo: 여기서 build
         projectRepositoryPort.save(project);
     }
 
     @Override
     public ProjectResponseDto getProjectById(Long id) {
         Project project = projectValidator.findProject(id);
-        return ProjectCommandMapper.from(project);
+        return ProjectResponseDto.from(project);
     }
 
     @Override
     public List<ProjectResponseDto> getAllProjects() {
         return projectRepositoryPort.findAll().stream()
-            .map(ProjectCommandMapper::from)
+            .map(ProjectResponseDto::from)
             .collect(Collectors.toList());
     }
 
@@ -58,12 +63,13 @@ public class ProjectServiceImpl implements
         Project project = projectValidator.findProject(id);
         project.update(projectUpdateCommand);
         projectRepositoryPort.update(project);
-        return ProjectCommandMapper.from(project);
+        return ProjectResponseDto.from(project);
     }
 
     @Override
     public void deleteProject(Long id) {
         Project project = projectValidator.findProject(id);
-        projectRepositoryPort.softDeleted(project);
+        // project.softDeleted();
+        projectRepositoryPort.update(project);
     }
 }
