@@ -9,7 +9,6 @@ import com.back2basics.project.port.out.ProjectRepositoryPort;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
 import com.back2basics.project.port.in.command.ProjectResponseDto;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
-import com.back2basics.service.project.mapper.ProjectCommandMapper;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,13 +41,13 @@ public class ProjectServiceImpl implements
     @Override
     public ProjectResponseDto getProjectById(Long id) {
         Project project = projectValidator.findProject(id);
-        return ProjectCommandMapper.from(project);
+        return ProjectResponseDto.from(project);
     }
 
     @Override
     public List<ProjectResponseDto> getAllProjects() {
         return projectRepositoryPort.findAll().stream()
-            .map(ProjectCommandMapper::from)
+            .map(ProjectResponseDto::from)
             .collect(Collectors.toList());
     }
 
@@ -64,7 +63,7 @@ public class ProjectServiceImpl implements
         Project project = projectValidator.findProject(id);
         project.update(projectUpdateCommand);
         projectRepositoryPort.update(project);
-        return ProjectCommandMapper.from(project);
+        return ProjectResponseDto.from(project);
     }
 
     @Override
