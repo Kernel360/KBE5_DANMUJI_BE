@@ -17,6 +17,7 @@ public class ProjectMapper {
             .createdAt(projectEntity.getCreatedAt())
             .updatedAt(projectEntity.getUpdatedAt())
             .deletedAt(projectEntity.getDeletedAt())
+            .isDeleted(projectEntity.isDeleted())
             .build();
     }
 
@@ -27,6 +28,8 @@ public class ProjectMapper {
             .description(project.getDescription())
             .startDate(project.getStartDate())
             .endDate(project.getEndDate())
+            .deletedAt(project.getDeletedAt())
+            .isDeleted(project.isDeleted())
             .build();
     }
 }
