@@ -32,7 +32,7 @@ public class ProjectController {
     private final DeleteProjectUseCase deleteProjectUseCase;
 
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateCommand command) {
         createProjectUseCase.createProject(command);
@@ -46,7 +46,7 @@ public class ProjectController {
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_SUCCESS, projectDto);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<ApiResponse<List<ProjectResponseDto>>> getAllProjects() {
         List<ProjectResponseDto> list = getProjectUseCase.getAllProjects();
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, list);
@@ -65,5 +65,12 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
         deleteProjectUseCase.deleteProject(projectId);
         return ApiResponse.success(ProjectResponseCode.PROJECT_DELETE_SUCCESS);
+    }
+
+    @PatchMapping("/{projectId}/status")
+    public ResponseEntity<ApiResponse<ProjectResponseDto>> changedStatus(
+        @PathVariable Long projectId) {
+        ProjectResponseDto dto = updateProjectUseCase.changedStatus(projectId);
+        return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS, dto);
     }
 }

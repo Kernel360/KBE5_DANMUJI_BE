@@ -1,8 +1,11 @@
 package com.back2basics.adapter.persistence.project.entity;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
+import com.back2basics.project.model.ProjectStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,10 +47,13 @@ public class ProjectEntity extends BaseTimeEntity {
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
-    @Builder
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private ProjectStatus status;
 
+    @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
-        LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted) {
+        LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status) {
 
         this.id = id;
         this.name = name;
@@ -56,5 +62,6 @@ public class ProjectEntity extends BaseTimeEntity {
         this.endDate = endDate;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
+        this.status = status;
     }
 }

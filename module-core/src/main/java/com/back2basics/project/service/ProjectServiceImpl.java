@@ -1,6 +1,7 @@
 package com.back2basics.project.service;
 
 import com.back2basics.project.model.Project;
+import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.GetProjectUseCase;
@@ -34,10 +35,11 @@ public class ProjectServiceImpl implements
             .startDate(command.getStartDate())
             .endDate(command.getEndDate())
             .isDeleted(false)
-            .build(); // todo: 여기서 build
+            .build();
         projectRepositoryPort.save(project);
     }
 
+    // todo : get 조건 - isDeleted false, filtering - status IN_PROGRESS / COMPLETED
     @Override
     public ProjectResponseDto getProjectById(Long id) {
         Project project = projectValidator.findProject(id);
@@ -66,10 +68,24 @@ public class ProjectServiceImpl implements
         return ProjectResponseDto.from(project);
     }
 
+    // todo : softDelete 의견 공유
     @Override
     public void deleteProject(Long id) {
         Project project = projectValidator.findProject(id);
-        // project.softDeleted();
+        project.softDeleted();
         projectRepositoryPort.update(project);
+    }
+
+    @Override
+    public ProjectResponseDto changedStatus(Long projectId) {
+        Project project = projectValidator.findProject(projectId);
+
+        if (project.getStatus().equals(ProjectStatus.IN_PROGRESS)) {
+            project.statusCompleted();
+        } else {
+            project.statusInProgress();
+        }
+        projectRepositoryPort.update(project);
+        return ProjectResponseDto.from(project);
     }
 }
