@@ -18,8 +18,8 @@ public class PostDeleteApiResponse {
         return PostDeleteApiResponse.builder()
             .id(result.getId())
             .title(result.getTitle())
-            .isDeleted(result.isDeleted())
-            .deletedAt(result.getDeletedAt())
+            .isDeleted(true)
+            .deletedAt(LocalDateTime.now())
             .build();
     }
 
