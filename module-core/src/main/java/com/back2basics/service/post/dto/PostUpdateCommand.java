@@ -1,9 +1,9 @@
 package com.back2basics.service.post.dto;
 
-import com.back2basics.infra.custom.CustomEnumCheck;
-import com.back2basics.infra.custom.CustomNotBlank;
-import com.back2basics.model.post.PostStatus;
-import com.back2basics.model.post.PostType;
+import com.back2basics.infra.validation.custom.CustomEnumCheck;
+import com.back2basics.infra.validation.custom.CustomNotBlank;
+import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostType;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

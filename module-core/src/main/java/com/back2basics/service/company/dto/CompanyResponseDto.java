@@ -1,7 +1,7 @@
 package com.back2basics.service.company.dto;
 
-import com.back2basics.model.company.Company;
-import com.back2basics.model.company.CompanyType;
+import com.back2basics.company.model.Company;
+import com.back2basics.company.model.CompanyType;
 import lombok.Builder;
 import lombok.Getter;
 

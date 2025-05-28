@@ -1,6 +1,6 @@
 package com.back2basics.service.project.exception;
 
-import com.back2basics.response.global.code.ErrorCode;
+import com.back2basics.global.response.code.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
