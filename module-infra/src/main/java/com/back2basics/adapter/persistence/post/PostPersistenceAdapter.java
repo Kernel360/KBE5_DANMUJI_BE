@@ -53,15 +53,10 @@ public class PostPersistenceAdapter implements PostCreatePort,
 
     @Override
     public void softDelete(Post post) {
-
-        Optional<PostEntity> existingEntity = postRepository.findById(post.getId());
-        if (existingEntity.isPresent()) {
-            PostEntity entityToUpdate = existingEntity.get();
-            entityToUpdate.markDeleted();
-            postRepository.save(entityToUpdate);
-        } else {
-            postRepository.save(mapper.toEntity(post));
-        }
-
+        PostEntity entity = postRepository.findById(post.getId())
+            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
+        
+        entity.markDeleted();
+        postRepository.save(entity);
     }
 }
