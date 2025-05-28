@@ -9,6 +9,7 @@ import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.DeleteUserUseCase;
 import com.back2basics.user.port.in.GetUserUseCase;
+import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.user.port.in.command.UserUpdateCommand;
 import com.back2basics.user.service.result.UserCreateResult;
@@ -34,6 +35,7 @@ public class AdminController {
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final GetUserUseCase getUserUseCase;
+    private final ResetPasswordUseCase resetPasswordUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserCreateResponse>> createUser(
@@ -65,6 +67,9 @@ public class AdminController {
             UserInfoResponse.from(result));
     }
 
-    // 비밀번호 초기화
-
+    @PutMapping("/reset-password/{userId}")
+    public ResponseEntity<ApiResponse<String>> resetPassword(@PathVariable Long userId) {
+        String generatedPassword = resetPasswordUseCase.resetByAdmin(userId);
+        return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS, generatedPassword);
+    }
 }

@@ -1,7 +1,5 @@
 package com.back2basics.user.model;
 
-import com.back2basics.infra.exception.user.UserErrorCode;
-import com.back2basics.infra.exception.user.UserException;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -50,14 +48,11 @@ public class User {
         this.position = position;
     }
 
-    public void validatePassword(String inputPassword) {
-        if (!this.password.equals(inputPassword)) {
-            throw new UserException(UserErrorCode.PASSWORD_MISMATCH);
-        }
+    public boolean validateCurrentPassword(String currentPassword) {
+        return this.password.equals(currentPassword);
     }
 
-    public void changePassword(String currentPassword, String newPassword) {
-        validatePassword(currentPassword);
+    public void changePassword(String newPassword) {
         this.password = newPassword;
     }
 }
