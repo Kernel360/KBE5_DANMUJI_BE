@@ -1,7 +1,7 @@
 package com.back2basics.service.company.exception;
 
-import com.back2basics.response.global.error.CustomException;
-import com.back2basics.response.global.error.ErrorResponse.FieldError;
+import com.back2basics.global.response.error.CustomException;
+import com.back2basics.global.response.error.ErrorResponse.FieldError;
 import java.util.List;
 
 public class CompanyException extends CustomException {

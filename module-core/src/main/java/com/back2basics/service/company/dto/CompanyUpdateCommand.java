@@ -1,8 +1,8 @@
 package com.back2basics.service.company.dto;
 
-import com.back2basics.infra.custom.CustomEnumCheck;
-import com.back2basics.infra.custom.CustomNotBlank;
-import com.back2basics.model.company.CompanyType;
+import com.back2basics.company.model.CompanyType;
+import com.back2basics.infra.validation.custom.CustomEnumCheck;
+import com.back2basics.infra.validation.custom.CustomNotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

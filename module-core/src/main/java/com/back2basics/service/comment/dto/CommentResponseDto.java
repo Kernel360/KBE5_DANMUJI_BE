@@ -1,6 +1,6 @@
 package com.back2basics.service.comment.dto;
 
-import com.back2basics.model.comment.Comment;
+import com.back2basics.comment.model.Comment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

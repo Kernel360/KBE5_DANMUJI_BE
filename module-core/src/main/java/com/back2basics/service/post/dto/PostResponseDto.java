@@ -1,8 +1,8 @@
 package com.back2basics.service.post.dto;
 
-import com.back2basics.model.post.Post;
-import com.back2basics.model.post.PostStatus;
-import com.back2basics.model.post.PostType;
+import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostType;
+import com.back2basics.post.model.Post;
 import com.back2basics.service.comment.dto.CommentResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
