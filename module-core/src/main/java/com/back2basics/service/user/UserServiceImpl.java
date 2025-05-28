@@ -7,6 +7,7 @@ import com.back2basics.port.in.user.ChangePasswordUseCase;
 import com.back2basics.port.in.user.CreateUserUseCase;
 import com.back2basics.port.in.user.DeleteUserUseCase;
 import com.back2basics.port.in.user.GetUserUseCase;
+import com.back2basics.port.in.user.ResetPasswordUseCase;
 import com.back2basics.port.in.user.UpdateUserUseCase;
 import com.back2basics.port.out.user.UserRepositoryPort;
 import com.back2basics.service.user.command.ChangePasswordCommand;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements CreateUserUseCase,
     UpdateUserUseCase,
     DeleteUserUseCase,
     GetUserUseCase,
-    ChangePasswordUseCase {
+    ChangePasswordUseCase, ResetPasswordUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
     private final UserValidator userValidator;

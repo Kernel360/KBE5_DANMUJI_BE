@@ -16,6 +16,7 @@ public class UserJpaAdapter implements UserRepositoryPort {
     private final UserEntityRepository userEntityRepository;
     private final UserMapper userMapper;
 
+    // todo port 분리
     @Override
     public User save(User user) {
         UserEntity entity = userMapper.toEntity(user);
