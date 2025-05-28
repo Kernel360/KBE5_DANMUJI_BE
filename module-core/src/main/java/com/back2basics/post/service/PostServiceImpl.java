@@ -15,6 +15,7 @@ import com.back2basics.post.port.out.PostSoftDeletePort;
 import com.back2basics.post.port.out.PostUpdatePort;
 import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostInfoResult;
+import com.back2basics.post.service.result.PostUpdateResult;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -66,12 +67,14 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     }
 
     @Override // todo : requesterName은 시큐리티 연결되면 컨트롤러에서 파라미터로 넘겨주는 걸로? 현재는 updateCommand에 일단 넣어서 사용
-    public void updatePost(Long id, PostUpdateCommand command) {
+    public PostUpdateResult updatePost(Long id, PostUpdateCommand command) {
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, command.getRequesterId());
 
         post.update(command);
+        
         postUpdatePort.update(post);
+        return PostUpdateResult.toResult(post);
     }
 
     @Override
