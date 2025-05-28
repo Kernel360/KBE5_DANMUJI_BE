@@ -1,23 +1,13 @@
 package com.back2basics.domain.user.dto.request;
 
 import com.back2basics.user.port.in.command.UserUpdateCommand;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 
-@Getter
-public class UserUpdateRequest {
-
-    @NotNull
-    private String username;
-    @NotNull
-    private String name;
-    @NotNull
-    private String email;
-    @NotNull
-    private String phone;
-    @NotNull
-    private String position;
-
+public record UserUpdateRequest(@NotEmpty String username, @NotEmpty String name,
+                                @NotEmpty @Email String email,
+                                @NotEmpty String phone,
+                                @NotEmpty String position) {
 
     public UserUpdateCommand toCommand() {
         return UserUpdateCommand.builder()

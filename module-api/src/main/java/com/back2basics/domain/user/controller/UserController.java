@@ -27,7 +27,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> changePassword(@PathVariable Long userId,
         @Valid @RequestBody ChangePasswordRequest request) {
         ChangePasswordCommand command = new ChangePasswordCommand(
-            request.getCurrentPassword(), request.getNewPassword());
+            request.currentPassword(), request.newPassword());
 
 //        changePasswordUseCase.change(userId, command);
         return ApiResponse.success(UserResponseCode.USER_CHANGE_PASSWORD_SUCCESS);
@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping("/reset-password/{userId}")
     public ResponseEntity<ApiResponse<Void>> resetPassword(@PathVariable Long userId,
         @Valid @RequestBody ResetPasswordRequest request) {
-        ResetPasswordCommand command = new ResetPasswordCommand(request.getEmail());
+        ResetPasswordCommand command = new ResetPasswordCommand(request.email());
 
         return ApiResponse.success(UserResponseCode.USER_RESET_PASSWORD_SUCCESS);
     }

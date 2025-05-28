@@ -32,7 +32,6 @@ public class CreateUserService implements CreateUserUseCase {
             .phone(command.getPhone())
             .position(command.getPosition())
             .role(Role.USER)
-            .isDeleted(false)
             .build();
 
         User saved = userRepositoryPort.save(user);

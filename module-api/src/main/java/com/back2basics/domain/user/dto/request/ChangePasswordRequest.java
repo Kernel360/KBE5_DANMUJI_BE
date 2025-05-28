@@ -1,14 +1,9 @@
 package com.back2basics.domain.user.dto.request;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import jakarta.validation.constraints.NotEmpty;
 
-@Getter
-public class ChangePasswordRequest {
-
-    @NotNull
-    private String currentPassword;
-    @NotNull
-    private String newPassword;
+public record ChangePasswordRequest(
+    @NotEmpty String currentPassword,
+    @NotEmpty String newPassword) {
 
 }
