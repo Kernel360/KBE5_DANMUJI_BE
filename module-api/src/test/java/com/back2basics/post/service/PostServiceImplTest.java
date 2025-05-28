@@ -9,15 +9,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.back2basics.infra.exception.post.PostErrorCode;
+import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.port.in.command.PostCreateCommand;
+import com.back2basics.post.port.in.command.PostUpdateCommand;
 import com.back2basics.post.port.out.PostRepositoryPort;
-import com.back2basics.service.post.dto.PostCreateCommand;
-import com.back2basics.service.post.dto.PostResponseDto;
-import com.back2basics.service.post.dto.PostUpdateCommand;
-import com.back2basics.service.post.exception.PostErrorCode;
-import com.back2basics.service.post.exception.PostException;
+import com.back2basics.post.service.result.PostInfoResult;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -87,7 +87,7 @@ class PostServiceImplTest {
         when(postValidator.findPost(1L)).thenReturn(samplePost);
 
         // then
-        PostResponseDto result = postService.getPost(1L);
+        PostInfoResult result = postService.getPost(1L);
 
         assertThat(result.getId()).isEqualTo(samplePost.getId());
         verify(postValidator).findPost(1L);
@@ -100,7 +100,7 @@ class PostServiceImplTest {
         when(postRepository.findAll()).thenReturn(List.of(samplePost, samplePost2));
 
         // then
-        List<PostResponseDto> resultList = postService.getAllPosts();
+        List<PostInfoResult> resultList = postService.getAllPosts();
 
         assertThat(resultList).hasSize(2);
         verify(postRepository).findAll();

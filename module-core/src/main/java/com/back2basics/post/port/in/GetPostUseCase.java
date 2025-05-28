@@ -1,11 +1,11 @@
 package com.back2basics.post.port.in;
 
-import com.back2basics.service.post.dto.PostResponseDto;
+import com.back2basics.post.service.result.PostInfoResult;
 import java.util.List;
 
 public interface GetPostUseCase {
 
-    PostResponseDto getPost(Long id);
+    PostInfoResult getPost(Long id);
 
-    List<PostResponseDto> getAllPosts();
+    List<PostInfoResult> getAllPosts();
 }

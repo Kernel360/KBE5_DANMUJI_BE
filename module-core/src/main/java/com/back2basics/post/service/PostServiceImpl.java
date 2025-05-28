@@ -7,10 +7,10 @@ import com.back2basics.post.port.in.CreatePostUseCase;
 import com.back2basics.post.port.in.DeletePostUseCase;
 import com.back2basics.post.port.in.GetPostUseCase;
 import com.back2basics.post.port.in.UpdatePostUseCase;
+import com.back2basics.post.port.in.command.PostCreateCommand;
+import com.back2basics.post.port.in.command.PostUpdateCommand;
 import com.back2basics.post.port.out.PostRepositoryPort;
-import com.back2basics.service.post.dto.PostCreateCommand;
-import com.back2basics.service.post.dto.PostResponseDto;
-import com.back2basics.service.post.dto.PostUpdateCommand;
+import com.back2basics.post.service.result.PostInfoResult;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -43,15 +43,15 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     }
 
     @Override
-    public PostResponseDto getPost(Long id) {
+    public PostInfoResult getPost(Long id) {
         Post post = postValidator.findPost(id);
-        return PostResponseDto.from(post);
+        return PostInfoResult.from(post);
     }
 
     @Override
-    public List<PostResponseDto> getAllPosts() {
+    public List<PostInfoResult> getAllPosts() {
         return postRepository.findAll().stream()
-            .map(PostResponseDto::from)
+            .map(PostInfoResult::from)
             .collect(Collectors.toList());
     }
 

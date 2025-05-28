@@ -1,4 +1,4 @@
-package com.back2basics.service.post.dto;
+package com.back2basics.post.port.in.command;
 
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.infra.validation.custom.CustomNotBlank;
