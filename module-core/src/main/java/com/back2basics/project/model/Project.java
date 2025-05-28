@@ -1,6 +1,6 @@
 package com.back2basics.project.model;
 
-import com.back2basics.service.project.dto.ProjectUpdateCommand;
+import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
