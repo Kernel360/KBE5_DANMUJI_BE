@@ -19,7 +19,12 @@ public class UserCreateRequest {
     private String position;
 
     public UserCreateCommand toCommand() {
-        return UserCreateCommand.builder().username(username).name(name).email(email).phone(phone)
-            .position(position).build();
+        return UserCreateCommand.builder()
+            .username(username)
+            .name(name)
+            .email(email)
+            .phone(phone)
+            .position(position)
+            .build();
     }
 }

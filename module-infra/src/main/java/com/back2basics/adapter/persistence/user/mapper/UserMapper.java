@@ -32,6 +32,7 @@ public class UserMapper {
             .position(user.getPosition())
             .role(user.getRole())
             .build();
+        // 로그 관리 매핑....
         if (user.isDeleted()) {
             entity.markDeleted();
         }

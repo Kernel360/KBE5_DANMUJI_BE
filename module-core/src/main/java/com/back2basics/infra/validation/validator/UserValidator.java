@@ -13,15 +13,16 @@ public class UserValidator {
 
     private final UserRepositoryPort userRepositoryPort;
 
-    public User findUserById(Long userId) {
-        return userRepositoryPort.findById(userId)
-            .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
-    }
-
     public void validateDuplicateUsername(String username) {
         boolean exists = userRepositoryPort.existsByUsername(username);
         if (exists) {
             throw new UserException(UserErrorCode.DUPLICATE_USERNAME);
+        }
+    }
+
+    public void validateCurrentPassword(User user, String currentPassword) {
+        if (!user.getPassword().equals(currentPassword)) {
+            throw new UserException(UserErrorCode.PASSWORD_MISMATCH);
         }
     }
 }
