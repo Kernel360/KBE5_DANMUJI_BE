@@ -13,6 +13,7 @@ import com.back2basics.post.port.out.PostCreatePort;
 import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.port.out.PostSoftDeletePort;
 import com.back2basics.post.port.out.PostUpdatePort;
+import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostInfoResult;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
     private final PostValidator postValidator;
 
     @Override
-    public Long createPost(PostCreateCommand command) {
+    public PostCreateResult createPost(PostCreateCommand command) {
         Post post = Post.builder()
             .authorId(command.getAuthorId())
             .title(command.getTitle())
@@ -45,7 +46,10 @@ public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴
             .completedAt(null)
             .deletedAt(null)
             .build();
-        return postCreatePort.save(post);
+
+        postCreatePort.save(post);
+        return PostCreateResult.toResult(post);
+
     }
 
     @Override

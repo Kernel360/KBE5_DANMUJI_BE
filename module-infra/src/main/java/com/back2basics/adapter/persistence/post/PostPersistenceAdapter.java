@@ -14,16 +14,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PostPersistenceAdapter implements PostCreatePort, PostReadPort,
-    PostUpdatePort, PostSoftDeletePort {
+public class PostPersistenceAdapter implements PostCreatePort,
+    PostReadPort,
+    PostUpdatePort,
+    PostSoftDeletePort {
 
     private final PostEntityRepository postRepository;
     private final PostMapper mapper;
 
     @Override
-    public Long save(Post post) {
-        PostEntity entity = mapper.toEntity(post);
-        return postRepository.save(entity).getId();
+    public void save(Post post) {
+        postRepository.save(mapper.toEntity(post));
     }
 
     @Override

@@ -1,14 +1,16 @@
 package com.back2basics.domain.post.controller;
 
 import com.back2basics.domain.post.controller.code.PostResponseCode;
+import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
+import com.back2basics.domain.post.dto.response.PostCreateApiResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.port.in.CreatePostUseCase;
 import com.back2basics.post.port.in.DeletePostUseCase;
 import com.back2basics.post.port.in.GetPostUseCase;
 import com.back2basics.post.port.in.UpdatePostUseCase;
-import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.in.command.PostSoftDeleteCommand;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
+import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostInfoResult;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -34,10 +36,12 @@ public class PostController {
     private final DeletePostUseCase deletePostUseCase;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createPost(
-        @RequestBody @Valid PostCreateCommand command) {
-        Long id = createPostUseCase.createPost(command);
-        return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, id);
+    public ResponseEntity<ApiResponse<PostCreateApiResponse>> createPost(
+        @RequestBody @Valid PostCreateApiRequest request) {
+        PostCreateResult result = createPostUseCase.createPost(request.toCommand());
+        PostCreateApiResponse response = PostCreateApiResponse.toResponse(result);
+
+        return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, response);
     }
 
     @GetMapping("/{postId}")
