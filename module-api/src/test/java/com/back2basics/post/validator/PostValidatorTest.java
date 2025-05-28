@@ -3,12 +3,12 @@ package com.back2basics.post.validator;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import com.back2basics.infra.exception.post.PostErrorCode;
+import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.port.out.PostRepositoryPort;
-import com.back2basics.service.post.exception.PostErrorCode;
-import com.back2basics.service.post.exception.PostException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

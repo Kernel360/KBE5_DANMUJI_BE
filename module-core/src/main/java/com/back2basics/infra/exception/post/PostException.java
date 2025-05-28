@@ -1,4 +1,4 @@
-package com.back2basics.service.post.exception;
+package com.back2basics.infra.exception.post;
 
 import com.back2basics.global.response.error.CustomException;
 import com.back2basics.global.response.error.ErrorResponse.FieldError;
