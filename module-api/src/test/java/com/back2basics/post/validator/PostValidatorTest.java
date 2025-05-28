@@ -8,7 +8,6 @@ import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
-import com.back2basics.post.port.out.PostRepositoryPort;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PostValidatorTest {
 
     @Mock
-    private PostRepositoryPort postRepository;
+    private PostOutPort postRepository;
 
     @InjectMocks
     private PostValidator postValidator;
