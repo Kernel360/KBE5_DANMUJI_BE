@@ -1,8 +1,8 @@
-package com.back2basics.service.post.dto;
+package com.back2basics.post.service.result;
 
+import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import com.back2basics.post.model.Post;
 import com.back2basics.service.comment.dto.CommentResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +14,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class PostResponseDto {
+public class PostInfoResult {
 
     private final Long id;
     private final String authorName;
@@ -31,8 +31,8 @@ public class PostResponseDto {
 
     private final List<CommentResponseDto> comments;
 
-    public static PostResponseDto from(Post post) {
-        return PostResponseDto.builder()
+    public static PostInfoResult from(Post post) {
+        return PostInfoResult.builder()
             .id(post.getId())
             .authorName(post.getAuthorName())
             .title(post.getTitle())

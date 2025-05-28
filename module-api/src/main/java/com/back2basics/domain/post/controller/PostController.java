@@ -1,14 +1,14 @@
 package com.back2basics.domain.post.controller;
 
+import com.back2basics.domain.post.controller.code.PostResponseCode;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.port.in.CreatePostUseCase;
 import com.back2basics.post.port.in.DeletePostUseCase;
 import com.back2basics.post.port.in.GetPostUseCase;
 import com.back2basics.post.port.in.UpdatePostUseCase;
-import com.back2basics.service.post.dto.PostCreateCommand;
-import com.back2basics.service.post.dto.PostResponseDto;
-import com.back2basics.service.post.dto.PostUpdateCommand;
-import com.back2basics.service.post.response.PostResponseCode;
+import com.back2basics.post.port.in.command.PostCreateCommand;
+import com.back2basics.post.port.in.command.PostUpdateCommand;
+import com.back2basics.post.service.result.PostInfoResult;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -41,14 +41,14 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<ApiResponse<PostResponseDto>> getPost(@PathVariable Long postId) {
-        PostResponseDto post = getPostUseCase.getPost(postId);
+    public ResponseEntity<ApiResponse<PostInfoResult>> getPost(@PathVariable Long postId) {
+        PostInfoResult post = getPostUseCase.getPost(postId);
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, post);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PostResponseDto>>> getAllPosts() {
-        List<PostResponseDto> posts = getPostUseCase.getAllPosts();
+    public ResponseEntity<ApiResponse<List<PostInfoResult>>> getAllPosts() {
+        List<PostInfoResult> posts = getPostUseCase.getAllPosts();
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, posts);
     }
 
