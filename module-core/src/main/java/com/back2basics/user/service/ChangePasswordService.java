@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChangePasswordUserService implements ChangePasswordUseCase {
+public class ChangePasswordService implements ChangePasswordUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
 
