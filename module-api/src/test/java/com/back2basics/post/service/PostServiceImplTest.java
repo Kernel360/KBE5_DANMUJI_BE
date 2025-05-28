@@ -16,7 +16,6 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
-import com.back2basics.post.port.out.PostRepositoryPort;
 import com.back2basics.post.service.result.PostInfoResult;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +30,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PostServiceImplTest {
 
     @Mock
-    private PostRepositoryPort postRepository;
+    private PostOutPort postRepository;
 
     @Mock
     private PostValidator postValidator;
