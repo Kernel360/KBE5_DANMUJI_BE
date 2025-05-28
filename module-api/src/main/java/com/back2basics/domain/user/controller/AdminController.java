@@ -18,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,29 +38,29 @@ public class AdminController {
     @PostMapping
     public ResponseEntity<ApiResponse<UserCreateResponse>> createUser(
         @RequestBody @Valid UserCreateRequest request) {
-        UserCreateResult result = createUserUseCase.createUser(request.toCommand());
+        UserCreateResult result = createUserUseCase.create(request.toCommand());
         return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS,
             UserCreateResponse.from(result));
     }
 
-    @PatchMapping("/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> updateUser(
         @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
         UserUpdateCommand command = new UserUpdateCommand(request.getUsername(),
             request.getName(), request.getEmail(), request.getPhone(), request.getPosition());
-        updateUserUseCase.updateUser(userId, command);
+        updateUserUseCase.update(userId, command);
         return ApiResponse.success(UserResponseCode.USER_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
-        deleteUserUseCase.deleteUser(userId);
+        deleteUserUseCase.delete(userId);
         return ApiResponse.success(UserResponseCode.USER_DELETE_SUCCESS);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserInfoResponse>> getUser(@PathVariable Long userId) {
-        UserInfoResult result = getUserUseCase.getUser(userId);
+        UserInfoResult result = getUserUseCase.getUserInfo(userId);
         return ApiResponse.success(UserResponseCode.USER_READ_SUCCESS,
             UserInfoResponse.from(result));
     }

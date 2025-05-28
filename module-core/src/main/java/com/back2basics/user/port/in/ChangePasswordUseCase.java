@@ -4,5 +4,5 @@ import com.back2basics.user.port.in.command.ChangePasswordCommand;
 
 public interface ChangePasswordUseCase {
 
-    void changePassword(Long userId, ChangePasswordCommand command);
+    void change(Long userId, ChangePasswordCommand command);
 }

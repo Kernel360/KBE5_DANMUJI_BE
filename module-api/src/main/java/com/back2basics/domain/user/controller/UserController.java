@@ -29,7 +29,7 @@ public class UserController {
         ChangePasswordCommand command = new ChangePasswordCommand(
             request.getCurrentPassword(), request.getNewPassword());
 
-//        changePasswordUseCase.changePassword(userId, command);
+//        changePasswordUseCase.change(userId, command);
         return ApiResponse.success(UserResponseCode.USER_CHANGE_PASSWORD_SUCCESS);
     }
 

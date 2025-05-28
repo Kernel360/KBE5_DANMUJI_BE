@@ -13,11 +13,6 @@ public class UserValidator {
 
     private final UserRepositoryPort userRepositoryPort;
 
-    public User findUserById(Long userId) {
-        return userRepositoryPort.findById(userId)
-            .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
-    }
-
     public void validateDuplicateUsername(String username) {
         boolean exists = userRepositoryPort.existsByUsername(username);
         if (exists) {
