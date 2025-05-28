@@ -28,8 +28,18 @@ public class PostDetailsResult {
     private final boolean isDeleted;
 
     private final List<CommentResponseDto> comments;
-
+    
     public static PostDetailsResult toResult(Post post) {
+        List<CommentResponseDto> comments = post.getComments().stream()
+            .map(comment -> CommentResponseDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .authorName(comment.getAuthorName())
+                //.authorId(comment.getAuthorId())
+                .createdAt(comment.getCreatedAt())
+                .build())
+            .collect(Collectors.toList());
+
         return PostDetailsResult.builder()
             .id(post.getId())
             .authorId(post.getAuthorId())
@@ -38,14 +48,12 @@ public class PostDetailsResult {
             .type(post.getType())
             .status(post.getStatus())
             .priority(post.getPriority())
-            .deletedAt(post.getDeletedAt())
-            .completedAt(post.getCompletedAt())
             .createdAt(post.getCreatedAt())
             .updatedAt(post.getUpdatedAt())
-            .comments(post.getComments().stream()
-                .map(CommentResponseDto::from)
-                .collect(Collectors.toList()))
-            .isDeleted(post.getDeletedAt() != null)
+            .deletedAt(post.getDeletedAt())
+            .completedAt(post.getCompletedAt())
+            .comments(comments)
+            .isDeleted(post.isDelete())
             .build();
     }
 }

@@ -1,4 +1,4 @@
-package com.back2basics.post.port.in.command;
+package com.back2basics.post.port.in.dto;
 
 import lombok.Builder;
 import lombok.Getter;

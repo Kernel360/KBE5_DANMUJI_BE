@@ -3,7 +3,7 @@ package com.back2basics.domain.post.dto.request;
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import com.back2basics.post.port.in.command.PostCreateCommand;
+import com.back2basics.post.port.in.dto.PostCreateCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

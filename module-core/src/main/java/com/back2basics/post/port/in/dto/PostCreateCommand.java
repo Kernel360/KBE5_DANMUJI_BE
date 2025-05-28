@@ -1,4 +1,4 @@
-package com.back2basics.post.port.in.command;
+package com.back2basics.post.port.in.dto;
 
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;

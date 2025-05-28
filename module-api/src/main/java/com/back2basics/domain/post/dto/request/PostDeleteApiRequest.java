@@ -1,6 +1,6 @@
 package com.back2basics.domain.post.dto.request;
 
-import com.back2basics.post.port.in.command.PostSoftDeleteCommand;
+import com.back2basics.post.port.in.dto.PostSoftDeleteCommand;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 

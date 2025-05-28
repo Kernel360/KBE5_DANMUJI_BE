@@ -2,7 +2,7 @@ package com.back2basics.post.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.back2basics.post.port.in.command.PostUpdateCommand;
+import com.back2basics.post.port.in.dto.PostUpdateCommand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

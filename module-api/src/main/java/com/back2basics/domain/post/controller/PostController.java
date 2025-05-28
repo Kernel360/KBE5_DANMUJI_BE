@@ -10,11 +10,8 @@ import com.back2basics.domain.post.dto.response.PostDetailsApiResponse;
 import com.back2basics.domain.post.dto.response.PostSimpleApiResponse;
 import com.back2basics.domain.post.dto.response.PostUpdateApiResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.post.port.in.CreatePostUseCase;
-import com.back2basics.post.port.in.DeletePostUseCase;
-import com.back2basics.post.port.in.GetPostDetailsUseCase;
-import com.back2basics.post.port.in.GetPostListUseCase;
-import com.back2basics.post.port.in.UpdatePostUseCase;
+import com.back2basics.post.port.in.PostCommandUseCase;
+import com.back2basics.post.port.in.PostQueryUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostDeleteResult;
 import com.back2basics.post.service.result.PostDetailsResult;
@@ -33,58 +30,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
 public class PostController {
 
-    private final CreatePostUseCase createPostUseCase;
-    private final GetPostDetailsUseCase getPostDetailsUseCase;
-    private final GetPostListUseCase getPostListUseCase;
-    private final UpdatePostUseCase updatePostUseCase;
-    private final DeletePostUseCase deletePostUseCase;
+    private final PostCommandUseCase postCommandUseCase;
+    private final PostQueryUseCase postQueryUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateApiResponse>> createPost(
         @RequestBody @Valid PostCreateApiRequest request) {
-        PostCreateResult result = createPostUseCase.createPost(request.toCommand());
+        PostCreateResult result = postCommandUseCase.createPost(request.toCommand());
         PostCreateApiResponse response = PostCreateApiResponse.toResponse(result);
-
         return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, response);
     }
 
     @GetMapping("/{postId}")
     public ResponseEntity<ApiResponse<PostDetailsApiResponse>> getPost(@PathVariable Long postId) {
-        PostDetailsResult result = getPostDetailsUseCase.getPost(postId);
+        PostDetailsResult result = postQueryUseCase.getPost(postId);
         PostDetailsApiResponse response = PostDetailsApiResponse.toResponse(result);
-
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PostSimpleApiResponse>>> getAllPosts() {
-        List<PostSimpleResult> resultList = getPostListUseCase.getPostList();
+        List<PostSimpleResult> resultList = postQueryUseCase.getPostList();
         List<PostSimpleApiResponse> responseList = resultList.stream()
             .map(PostSimpleApiResponse::toResponse)
             .collect(Collectors.toList());
-
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responseList);
     }
 
     @PutMapping("/{postId}")
     public ResponseEntity<ApiResponse<PostUpdateApiResponse>> updatePost(@PathVariable Long postId,
         @Valid @RequestBody PostUpdateApiRequest request) {
-        PostUpdateResult result = updatePostUseCase.updatePost(postId, request.toCommand());
+        PostUpdateResult result = postCommandUseCase.updatePost(postId, request.toCommand());
         PostUpdateApiResponse response = PostUpdateApiResponse.toResponse(result);
-
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, response);
     }
 
     @PutMapping("delete/{postId}")
     public ResponseEntity<ApiResponse<PostDeleteApiResponse>> deletePost(@PathVariable Long postId,
         @RequestBody PostDeleteApiRequest request) {
-        PostDeleteResult result = deletePostUseCase.softDeletePost(postId,
+        PostDeleteResult result = postCommandUseCase.softDeletePost(postId,
             request.toCommand().getRequesterId());
         PostDeleteApiResponse response = PostDeleteApiResponse.toResponse(result);
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS, response);
