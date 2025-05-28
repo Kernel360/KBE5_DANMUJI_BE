@@ -1,9 +1,9 @@
 package com.back2basics.infra.validation.validator;
 
+import com.back2basics.infra.exception.post.PostErrorCode;
+import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostRepositoryPort;
-import com.back2basics.service.post.exception.PostErrorCode;
-import com.back2basics.service.post.exception.PostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

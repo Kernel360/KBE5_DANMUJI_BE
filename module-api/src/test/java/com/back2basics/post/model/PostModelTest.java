@@ -3,7 +3,7 @@ package com.back2basics.post.model;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.back2basics.comment.model.Comment;
-import com.back2basics.service.post.dto.PostUpdateCommand;
+import com.back2basics.post.port.in.command.PostUpdateCommand;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

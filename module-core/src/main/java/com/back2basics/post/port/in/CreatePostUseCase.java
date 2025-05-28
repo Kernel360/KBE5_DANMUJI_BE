@@ -1,6 +1,6 @@
 package com.back2basics.post.port.in;
 
-import com.back2basics.service.post.dto.PostCreateCommand;
+import com.back2basics.post.port.in.command.PostCreateCommand;
 
 public interface CreatePostUseCase {
 

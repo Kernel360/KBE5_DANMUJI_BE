@@ -4,10 +4,10 @@ import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostEntityRepository;
+import com.back2basics.infra.exception.post.PostErrorCode;
+import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.service.comment.exception.CommentErrorCode;
 import com.back2basics.service.comment.exception.CommentException;
-import com.back2basics.service.post.exception.PostErrorCode;
-import com.back2basics.service.post.exception.PostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
