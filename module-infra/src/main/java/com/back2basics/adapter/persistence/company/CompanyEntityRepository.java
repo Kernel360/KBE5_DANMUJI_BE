@@ -1,6 +1,5 @@
-package com.back2basics.adapter.persistence.company.repository;
+package com.back2basics.adapter.persistence.company;
 
-import com.back2basics.adapter.persistence.company.entity.CompanyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

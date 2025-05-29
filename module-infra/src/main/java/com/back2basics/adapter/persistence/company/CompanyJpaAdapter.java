@@ -1,8 +1,5 @@
-package com.back2basics.adapter.persistence.company.adapter.out;
+package com.back2basics.adapter.persistence.company;
 
-import com.back2basics.adapter.persistence.company.entity.CompanyEntity;
-import com.back2basics.adapter.persistence.company.mapper.CompanyMapper;
-import com.back2basics.adapter.persistence.company.repository.CompanyEntityRepository;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.out.CompanyRepositoryPort;
 import java.util.List;

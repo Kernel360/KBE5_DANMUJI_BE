@@ -1,6 +1,6 @@
 package com.back2basics.company.model;
 
-import com.back2basics.service.company.dto.CompanyUpdateCommand;
+import com.back2basics.company.port.in.command.CompanyUpdateCommand;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.back2basics.service.company.dto;
+package com.back2basics.company.port.in.command;
 
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
