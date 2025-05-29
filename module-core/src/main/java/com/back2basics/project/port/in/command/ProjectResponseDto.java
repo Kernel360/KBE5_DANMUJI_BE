@@ -1,6 +1,7 @@
 package com.back2basics.project.port.in.command;
 
 import com.back2basics.project.model.Project;
+import com.back2basics.project.model.ProjectStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -24,9 +25,13 @@ public class ProjectResponseDto {
 
     private final LocalDateTime deletedAt;
 
+    private final boolean isDeleted;
+
+    private final ProjectStatus status;
+
     @Builder
     public ProjectResponseDto(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
-        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,6 +40,8 @@ public class ProjectResponseDto {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
+        this.status = status;
     }
 
     public static ProjectResponseDto from(Project project) {
@@ -47,6 +54,8 @@ public class ProjectResponseDto {
             .createdAt(project.getCreatedAt())
             .updatedAt(project.getUpdatedAt())
             .deletedAt(project.getDeletedAt())
+            .isDeleted(project.isDeleted())
+            .status(project.getStatus())
             .build();
     }
 }

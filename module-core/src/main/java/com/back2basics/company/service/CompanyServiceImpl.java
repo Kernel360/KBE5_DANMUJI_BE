@@ -6,11 +6,11 @@ import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.GetAllCompaniesUseCase;
 import com.back2basics.company.port.in.GetCompanyByIdUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
+import com.back2basics.company.port.in.command.CompanyCreateCommand;
+import com.back2basics.company.port.in.command.CompanyUpdateCommand;
 import com.back2basics.company.port.out.CompanyRepositoryPort;
+import com.back2basics.company.service.result.CompanyInfoResult;
 import com.back2basics.infra.validation.validator.CompanyValidator;
-import com.back2basics.service.company.dto.CompanyCreateCommand;
-import com.back2basics.service.company.dto.CompanyResponseDto;
-import com.back2basics.service.company.dto.CompanyUpdateCommand;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,15 +40,15 @@ public class CompanyServiceImpl implements CreateCompanyUseCase, DeleteCompanyUs
     }
 
     @Override
-    public CompanyResponseDto getCompany(Long id) {
+    public CompanyInfoResult getCompany(Long id) {
         Company company = companyValidator.findCompany(id);
-        return CompanyResponseDto.from(company);
+        return CompanyInfoResult.from(company);
     }
 
     @Override
-    public List<CompanyResponseDto> getAllCompanies() {
+    public List<CompanyInfoResult> getAllCompanies() {
         return companyRepositoryPort.findAll().stream()
-            .map(CompanyResponseDto::from)
+            .map(CompanyInfoResult::from)
             .collect(Collectors.toList());
     }
 

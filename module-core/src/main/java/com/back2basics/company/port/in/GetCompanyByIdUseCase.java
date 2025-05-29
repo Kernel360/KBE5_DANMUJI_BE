@@ -1,9 +1,9 @@
 package com.back2basics.company.port.in;
 
-import com.back2basics.service.company.dto.CompanyResponseDto;
+import com.back2basics.company.service.result.CompanyInfoResult;
 
 public interface GetCompanyByIdUseCase {
 
-    CompanyResponseDto getCompany(Long id);
+    CompanyInfoResult getCompany(Long id);
 
 }
