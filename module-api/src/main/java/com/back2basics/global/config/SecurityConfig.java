@@ -3,7 +3,7 @@ package com.back2basics.global.config;
 import com.back2basics.security.jwt.JwtAuthenticationFilter;
 import com.back2basics.security.jwt.JwtAuthorizationFilter;
 import com.back2basics.security.jwt.JwtLogoutFilter;
-import com.back2basics.security.jwt.TokenProvider;
+import com.back2basics.security.jwt.JwtTokenProvider;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,15 +27,16 @@ public class SecurityConfig {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final JwtLogoutFilter jwtLogoutFilter;
-    private final TokenProvider tokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationConfiguration authenticationConfiguration;
 
     public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter,
         JwtLogoutFilter jwtLogoutFilter,
-        TokenProvider tokenProvider, AuthenticationConfiguration authenticationConfiguration) {
+        JwtTokenProvider jwtTokenProvider,
+        AuthenticationConfiguration authenticationConfiguration) {
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
         this.jwtLogoutFilter = jwtLogoutFilter;
-        this.tokenProvider = tokenProvider;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationConfiguration = authenticationConfiguration;
     }
 
@@ -64,7 +65,7 @@ public class SecurityConfig {
             )
             .addFilterAt(
                 new JwtAuthenticationFilter(authenticationManager(authenticationConfiguration),
-                    tokenProvider
+                    jwtTokenProvider
 //                    , cookieUtil
                 ), UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(jwtAuthorizationFilter, JwtAuthenticationFilter.class)
