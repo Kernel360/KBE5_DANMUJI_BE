@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CompanyCreateCommand {
+public class CreateCompanyCommand {
 
     private String name;
     private String ceoName;

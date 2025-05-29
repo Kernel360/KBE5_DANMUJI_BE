@@ -5,7 +5,7 @@ import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.GetAllCompaniesUseCase;
 import com.back2basics.company.port.in.GetCompanyByIdUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
-import com.back2basics.company.port.in.command.CompanyUpdateCommand;
+import com.back2basics.company.port.in.command.UpdateCompanyCommand;
 import com.back2basics.company.port.out.CompanyRepositoryPort;
 import com.back2basics.company.service.result.CompanyInfoResult;
 import com.back2basics.infra.validation.validator.CompanyValidator;
@@ -37,7 +37,7 @@ public class CompanyServiceImpl implements DeleteCompanyUseCase,
     }
 
     @Override
-    public void updateCompany(Long id, CompanyUpdateCommand command) {
+    public void updateCompany(Long id, UpdateCompanyCommand command) {
         Company company = companyValidator.findCompany(id);
 
         company.update(command);

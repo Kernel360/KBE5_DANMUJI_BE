@@ -5,10 +5,10 @@ import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.GetAllCompaniesUseCase;
 import com.back2basics.company.port.in.GetCompanyByIdUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
-import com.back2basics.company.port.in.command.CompanyUpdateCommand;
+import com.back2basics.company.port.in.command.UpdateCompanyCommand;
 import com.back2basics.company.service.result.CompanyInfoResult;
 import com.back2basics.domain.company.controller.code.CompanyResponseCode;
-import com.back2basics.domain.company.dto.request.CompanyCreateRequest;
+import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -36,7 +36,7 @@ public class CompanyController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createCompany(
-        @RequestBody @Valid CompanyCreateRequest request) {
+        @RequestBody @Valid CreateCompanyRequest request) {
         Long id = createCompanyUseCase.createCompany(request.toCommand());
         return ApiResponse.success(CompanyResponseCode.COMPANY_CREATE_SUCCESS, id);
     }
@@ -56,7 +56,7 @@ public class CompanyController {
 
     @PatchMapping("/{companyId}")
     public ResponseEntity<ApiResponse<Long>> updateCompany(@PathVariable Long companyId,
-        @Valid @RequestBody CompanyUpdateCommand command) {
+        @Valid @RequestBody UpdateCompanyCommand command) {
         updateCompanyUseCase.updateCompany(companyId, command);
         return ApiResponse.success(CompanyResponseCode.COMPANY_UPDATE_SUCCESS, companyId);
     }
