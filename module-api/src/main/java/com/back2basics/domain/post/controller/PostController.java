@@ -14,9 +14,9 @@ import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostReadResult;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,14 +54,12 @@ public class PostController {
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<PostReadResponse>>> getAllPosts() {
-        List<PostReadResult> resultList = postReadUseCase.getPostList();
-        List<PostReadResponse> responseList = resultList.stream()
-            .map(PostReadResponse::toResponse)
-            .collect(Collectors.toList());
+    @GetMapping()
+    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(Pageable pageable) {
+        Page<PostReadResult> resultPage = postReadUseCase.getPostList(pageable);
+        Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
-        return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responseList);
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
 
     @PutMapping("/{postId}")
