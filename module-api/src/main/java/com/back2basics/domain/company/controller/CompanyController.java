@@ -1,15 +1,15 @@
 package com.back2basics.domain.company.controller;
 
-import com.back2basics.domain.company.response.CompanyResponseCode;
 import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.GetAllCompaniesUseCase;
 import com.back2basics.company.port.in.GetCompanyByIdUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
+import com.back2basics.company.port.in.command.CompanyCreateCommand;
+import com.back2basics.company.port.in.command.CompanyUpdateCommand;
+import com.back2basics.company.service.result.CompanyInfoResult;
+import com.back2basics.domain.company.controller.code.CompanyResponseCode;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.service.company.dto.CompanyCreateCommand;
-import com.back2basics.service.company.dto.CompanyResponseDto;
-import com.back2basics.service.company.dto.CompanyUpdateCommand;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -42,15 +42,15 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}")
-    public ResponseEntity<ApiResponse<CompanyResponseDto>> getCompanyById(
+    public ResponseEntity<ApiResponse<CompanyInfoResult>> getCompanyById(
         @PathVariable Long companyId) {
-        CompanyResponseDto company = getCompanyByIdUseCase.getCompany(companyId);
+        CompanyInfoResult company = getCompanyByIdUseCase.getCompany(companyId);
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS, company);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CompanyResponseDto>>> getAllCompanies() {
-        List<CompanyResponseDto> companies = getAllCompaniesUseCase.getAllCompanies();
+    public ResponseEntity<ApiResponse<List<CompanyInfoResult>>> getAllCompanies() {
+        List<CompanyInfoResult> companies = getAllCompaniesUseCase.getAllCompanies();
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_ALL_SUCCESS, companies);
     }
 
@@ -61,7 +61,7 @@ public class CompanyController {
         return ApiResponse.success(CompanyResponseCode.COMPANY_UPDATE_SUCCESS, companyId);
     }
 
-    @DeleteMapping("/{deleteId}/delete")
+    @DeleteMapping("/{deleteId}")
     public ResponseEntity<ApiResponse<Void>> deleteCompany(@PathVariable Long deleteId) {
         deleteCompanyUseCase.deleteCompany(deleteId);
         return ApiResponse.success(CompanyResponseCode.COMPANY_DELETE_SUCCESS);

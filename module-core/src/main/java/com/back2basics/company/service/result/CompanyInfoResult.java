@@ -1,4 +1,4 @@
-package com.back2basics.service.company.dto;
+package com.back2basics.company.service.result;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.company.model.CompanyType;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CompanyResponseDto {
+public class CompanyInfoResult {
 
     private final Long id;
     private final String name;
@@ -19,7 +19,7 @@ public class CompanyResponseDto {
     private final String tel;
 
     @Builder
-    public CompanyResponseDto(Long id, String name, String ceoName, String bio,
+    public CompanyInfoResult(Long id, String name, String ceoName, String bio,
         CompanyType companyType,
         Integer bizNo, String address, String email, String tel) {
         this.id = id;
@@ -33,8 +33,8 @@ public class CompanyResponseDto {
         this.tel = tel;
     }
 
-    public static CompanyResponseDto from(Company company) {
-        return CompanyResponseDto.builder()
+    public static CompanyInfoResult from(Company company) {
+        return CompanyInfoResult.builder()
             .id(company.getId())
             .name(company.getName())
             .ceoName(company.getCeoName())
@@ -42,6 +42,8 @@ public class CompanyResponseDto {
             .companyType(company.getCompanyType())
             .bizNo(company.getBizNo())
             .address(company.getAddress())
+            .email(company.getEmail())
+            .tel(company.getTel())
             .build();
     }
 }

@@ -2,8 +2,8 @@ package com.back2basics.infra.validation.validator;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.out.CompanyRepositoryPort;
-import com.back2basics.service.company.exception.CompanyErrorCode;
-import com.back2basics.service.company.exception.CompanyException;
+import com.back2basics.infra.exception.company.CompanyErrorCode;
+import com.back2basics.infra.exception.company.CompanyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
