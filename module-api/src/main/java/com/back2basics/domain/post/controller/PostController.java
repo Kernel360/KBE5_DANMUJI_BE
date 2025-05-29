@@ -10,11 +10,10 @@ import com.back2basics.domain.post.dto.response.PostDetailsApiResponse;
 import com.back2basics.domain.post.dto.response.PostSimpleApiResponse;
 import com.back2basics.domain.post.dto.response.PostUpdateApiResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.post.port.in.CreatePostUseCase;
-import com.back2basics.post.port.in.DeletePostUseCase;
-import com.back2basics.post.port.in.GetPostDetailsUseCase;
-import com.back2basics.post.port.in.GetPostListUseCase;
-import com.back2basics.post.port.in.UpdatePostUseCase;
+import com.back2basics.post.port.in.PostCreateUseCase;
+import com.back2basics.post.port.in.PostDeleteUseCase;
+import com.back2basics.post.port.in.PostReadUseCase;
+import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostDeleteResult;
 import com.back2basics.post.service.result.PostDetailsResult;
@@ -39,11 +38,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final CreatePostUseCase createPostUseCase;
+    private final PostCreateUseCase createPostUseCase;
     private final GetPostDetailsUseCase getPostDetailsUseCase;
-    private final GetPostListUseCase getPostListUseCase;
-    private final UpdatePostUseCase updatePostUseCase;
-    private final DeletePostUseCase deletePostUseCase;
+    private final PostReadUseCase getPostListUseCase;
+    private final PostUpdateUseCase updatePostUseCase;
+    private final PostDeleteUseCase deletePostUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateApiResponse>> createPost(

@@ -3,11 +3,10 @@ package com.back2basics.post.service;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
-import com.back2basics.post.port.in.CreatePostUseCase;
-import com.back2basics.post.port.in.DeletePostUseCase;
-import com.back2basics.post.port.in.GetPostDetailsUseCase;
-import com.back2basics.post.port.in.GetPostListUseCase;
-import com.back2basics.post.port.in.UpdatePostUseCase;
+import com.back2basics.post.port.in.PostCreateUseCase;
+import com.back2basics.post.port.in.PostDeleteUseCase;
+import com.back2basics.post.port.in.PostReadUseCase;
+import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
 import com.back2basics.post.port.out.PostCreatePort;
@@ -27,11 +26,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements // todo : 각 CRUD 기능 별 뭘 리턴할지 정해봐야할듯
-    CreatePostUseCase,
+    PostCreateUseCase,
     GetPostDetailsUseCase,
-    GetPostListUseCase,
-    UpdatePostUseCase,
-    DeletePostUseCase {
+    PostReadUseCase,
+    PostUpdateUseCase,
+    PostDeleteUseCase {
 
     private final PostCreatePort postCreatePort;
     private final PostReadPort postReadPort;
