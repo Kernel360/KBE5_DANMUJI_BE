@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PostCreateApiResponse {
+public class PostCreateResponse {
 
     private final Long authorId;
     private final String title;
@@ -17,8 +17,8 @@ public class PostCreateApiResponse {
     private final PostStatus status;
     private final Integer priority;
 
-    public static PostCreateApiResponse toResponse(PostCreateResult result) {
-        return PostCreateApiResponse.builder()
+    public static PostCreateResponse toResponse(PostCreateResult result) {
+        return PostCreateResponse.builder()
             .authorId(result.getAuthorId())
             .title(result.getTitle())
             .content(result.getContent())

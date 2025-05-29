@@ -2,7 +2,7 @@ package com.back2basics.domain.post.dto.response;
 
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import com.back2basics.post.service.result.PostDetailsResult;
+import com.back2basics.post.service.result.PostReadResult;
 import com.back2basics.service.comment.dto.CommentResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PostDetailsApiResponse {
+public class PostReadResponse {
 
     private final Long postId;
     private final Long authorId;
@@ -27,8 +27,8 @@ public class PostDetailsApiResponse {
     private final List<CommentResponseDto> comments;
     private final boolean isDelete;
 
-    public static PostDetailsApiResponse toResponse(PostDetailsResult postDetails) {
-        return PostDetailsApiResponse.builder()
+    public static PostReadResponse toResponse(PostReadResult postDetails) {
+        return PostReadResponse.builder()
             .postId(postDetails.getId())
             .authorId(postDetails.getAuthorId())
             .title(postDetails.getTitle())
