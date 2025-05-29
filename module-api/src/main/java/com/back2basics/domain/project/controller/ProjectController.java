@@ -6,7 +6,7 @@ import com.back2basics.domain.project.dto.response.ProjectGetResponse;
 import com.back2basics.domain.project.dto.response.ProjectUpdateResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
-import com.back2basics.project.port.in.GetProjectUseCase;
+import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
@@ -35,7 +35,7 @@ public class ProjectController {
 
     private final CreateProjectUseCase createProjectUseCase;
     private final UpdateProjectUseCase updateProjectUseCase;
-    private final GetProjectUseCase getProjectUseCase;
+    private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
 
 
@@ -50,14 +50,14 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectGetResponse>> getProjectById(
         @PathVariable Long projectId) {
-        ProjectGetResult result = getProjectUseCase.getProjectById(projectId);
+        ProjectGetResult result = readProjectUseCase.getProjectById(projectId);
         ProjectGetResponse response = ProjectGetResponse.toResponse(result);
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_SUCCESS, response);
     }
 
     @GetMapping()
     public ResponseEntity<ApiResponse<List<ProjectGetResponse>>> getAllProjects() {
-        List<ProjectGetResult> result = getProjectUseCase.getAllProjects();
+        List<ProjectGetResult> result = readProjectUseCase.getAllProjects();
         List<ProjectGetResponse> list = result.stream().map(ProjectGetResponse::toResponse)
             .collect(Collectors.toList());
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, list);
