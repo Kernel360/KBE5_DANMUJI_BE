@@ -3,7 +3,6 @@ package com.back2basics.domain.project.controller;
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
-import com.back2basics.domain.project.dto.response.ProjectUpdateResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
@@ -13,7 +12,6 @@ import com.back2basics.project.port.in.command.ProjectCreateCommand;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.domain.project.controller.code.ProjectResponseCode;
 import com.back2basics.project.service.result.ProjectGetResult;
-import com.back2basics.project.service.result.ProjectUpdateResult;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,13 +62,12 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<ProjectUpdateResponse>> updateProject(
+    public ResponseEntity<ApiResponse<Void>> updateProject(
         @PathVariable Long projectId,
         @RequestBody @Valid ProjectUpdateRequest request) {
         ProjectUpdateCommand command = request.toCommand();
-        ProjectUpdateResult result = updateProjectUseCase.updateProject(projectId, command);
-        ProjectUpdateResponse response = ProjectUpdateResponse.toResponse(result);
-        return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS, response);
+        updateProjectUseCase.updateProject(projectId, command);
+        return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS);
     }
 
     @PatchMapping("/{projectId}/delete")
@@ -80,10 +77,9 @@ public class ProjectController {
     }
 
     @PatchMapping("/{projectId}/status")
-    public ResponseEntity<ApiResponse<ProjectUpdateResponse>> changedStatus(
+    public ResponseEntity<ApiResponse<Void>> changedStatus(
         @PathVariable Long projectId) {
-        ProjectUpdateResult result = updateProjectUseCase.changedStatus(projectId);
-        ProjectUpdateResponse response = ProjectUpdateResponse.toResponse(result);
-        return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS, response);
+        updateProjectUseCase.changedStatus(projectId);
+        return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS);
     }
 }
