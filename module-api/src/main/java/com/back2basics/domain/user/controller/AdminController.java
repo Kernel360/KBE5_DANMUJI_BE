@@ -9,6 +9,7 @@ import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.DeleteUserUseCase;
 import com.back2basics.user.port.in.GetUserUseCase;
+import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.user.port.in.command.UserUpdateCommand;
 import com.back2basics.user.service.result.UserCreateResult;
@@ -18,9 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,37 +35,41 @@ public class AdminController {
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final GetUserUseCase getUserUseCase;
+    private final ResetPasswordUseCase resetPasswordUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserCreateResponse>> createUser(
         @RequestBody @Valid UserCreateRequest request) {
-        UserCreateResult result = createUserUseCase.createUser(request.toCommand());
+        UserCreateResult result = createUserUseCase.create(request.toCommand());
         return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS,
             UserCreateResponse.from(result));
     }
 
-    @PatchMapping("/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> updateUser(
         @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
-        UserUpdateCommand command = new UserUpdateCommand(request.getUsername(),
-            request.getName(), request.getEmail(), request.getPhone(), request.getPosition());
-        updateUserUseCase.updateUser(userId, command);
+        UserUpdateCommand command = new UserUpdateCommand(request.username(),
+            request.name(), request.email(), request.phone(), request.position());
+        updateUserUseCase.update(userId, command);
         return ApiResponse.success(UserResponseCode.USER_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
-        deleteUserUseCase.deleteUser(userId);
+        deleteUserUseCase.delete(userId);
         return ApiResponse.success(UserResponseCode.USER_DELETE_SUCCESS);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserInfoResponse>> getUser(@PathVariable Long userId) {
-        UserInfoResult result = getUserUseCase.getUser(userId);
+        UserInfoResult result = getUserUseCase.getUserInfo(userId);
         return ApiResponse.success(UserResponseCode.USER_READ_SUCCESS,
             UserInfoResponse.from(result));
     }
 
-    // 비밀번호 초기화
-
+    @PutMapping("/reset-password/{userId}")
+    public ResponseEntity<ApiResponse<String>> resetPassword(@PathVariable Long userId) {
+        String generatedPassword = resetPasswordUseCase.resetByAdmin(userId);
+        return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS, generatedPassword);
+    }
 }

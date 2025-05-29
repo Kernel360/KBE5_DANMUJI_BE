@@ -12,7 +12,7 @@ import lombok.Getter;
 public class Post {
 
     private final Long id;
-    private String authorName;
+    private Long authorId;
     private String title;
     private String content;
     private PostType type;
@@ -26,13 +26,13 @@ public class Post {
     private boolean isDelete;
 
     @Builder
-    public Post(Long id, String authorName, String title, String content, PostType type,
+    public Post(Long id, Long authorId, String title, String content, PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments,
         boolean isDelete) {
         this.id = id;
-        this.authorName = authorName;
+        this.authorId = authorId;
         this.title = title;
         this.content = content;
         this.type = type;
@@ -47,21 +47,12 @@ public class Post {
     }
 
     public void update(PostUpdateCommand command) {
-        if (command.getTitle() != null) {
-            this.title = command.getTitle();
-        }
-        if (command.getContent() != null) {
-            this.content = command.getContent();
-        }
-        if (command.getType() != null) {
-            this.type = command.getType();
-        }
-        if (command.getStatus() != null) {
-            this.status = command.getStatus();
-        }
-        if (command.getPriority() != null) {
-            this.priority = command.getPriority();
-        }
+        this.title = command.getTitle();
+        this.content = command.getContent();
+        this.type = command.getType();
+        this.status = command.getStatus();
+        this.priority = command.getPriority();
+
     }
 
     public void markDeleted() {
