@@ -11,7 +11,6 @@ import static org.mockito.Mockito.spy;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.post.PostMapper;
-import com.back2basics.adapter.persistence.post.PostPersistenceAdapter;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostType;
