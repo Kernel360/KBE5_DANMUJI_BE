@@ -1,12 +1,11 @@
 package com.back2basics.post.port.in;
 
-import com.back2basics.post.service.result.PostDetailsResult;
-import com.back2basics.post.service.result.PostSimpleResult;
+import com.back2basics.post.service.result.PostReadResult;
 import java.util.List;
 
 public interface PostReadUseCase {
 
-    PostDetailsResult getPost(Long id);
+    PostReadResult getPost(Long id);
 
-    List<PostSimpleResult> getPostList();
+    List<PostReadResult> getPostList();
 }

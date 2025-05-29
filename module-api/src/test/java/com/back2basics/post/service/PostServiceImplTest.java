@@ -22,10 +22,7 @@ import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.port.out.PostSoftDeletePort;
 import com.back2basics.post.port.out.PostUpdatePort;
 import com.back2basics.post.service.result.PostCreateResult;
-import com.back2basics.post.service.result.PostDeleteResult;
-import com.back2basics.post.service.result.PostDetailsResult;
-import com.back2basics.post.service.result.PostSimpleResult;
-import com.back2basics.post.service.result.PostUpdateResult;
+import com.back2basics.post.service.result.PostReadResult;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,7 +110,7 @@ class PostServiceImplTest {
         given(postValidator.findPost(1L)).willReturn(samplePost);
 
         // when
-        PostDetailsResult result = postService.getPost(1L);
+        PostReadResult result = postService.getPost(1L);
 
         // then
         assertThat(result).isNotNull();

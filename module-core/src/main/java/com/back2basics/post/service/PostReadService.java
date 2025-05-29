@@ -4,8 +4,7 @@ import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostReadUseCase;
 import com.back2basics.post.port.out.PostReadPort;
-import com.back2basics.post.service.result.PostDetailsResult;
-import com.back2basics.post.service.result.PostSimpleResult;
+import com.back2basics.post.service.result.PostReadResult;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +18,15 @@ public class PostReadService implements PostReadUseCase {
     private final PostValidator postValidator;
 
     @Override
-    public PostDetailsResult getPost(Long id) {
+    public PostReadResult getPost(Long id) {
         Post post = postValidator.findPost(id);
-        return PostDetailsResult.toResult(post);
+        return PostReadResult.toResult(post);
     }
 
     @Override
-    public List<PostSimpleResult> getPostList() {
+    public List<PostReadResult> getPostList() {
         return postReadPort.findAll().stream()
-            .map(PostSimpleResult::toResult)
+            .map(PostReadResult::toResult)
             .collect(Collectors.toList());
     }
 }

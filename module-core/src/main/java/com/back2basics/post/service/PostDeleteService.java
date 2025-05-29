@@ -4,7 +4,6 @@ import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostDeleteUseCase;
 import com.back2basics.post.port.out.PostSoftDeletePort;
-import com.back2basics.post.service.result.PostDeleteResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +15,12 @@ public class PostDeleteService implements PostDeleteUseCase {
     private final PostValidator postValidator;
 
     @Override
-    public PostDeleteResult softDeletePost(Long id, Long requesterId) {
+    public void softDeletePost(Long id, Long requesterId) {
         Post post = postValidator.findPost(id);
         postValidator.isAuthor(post, requesterId);
 
         post.markDeleted();
 
         postSoftDeletePort.softDelete(post);
-        return PostDeleteResult.toResult(post);
     }
 }
