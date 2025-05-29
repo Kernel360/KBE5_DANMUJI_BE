@@ -5,10 +5,10 @@ import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.GetAllCompaniesUseCase;
 import com.back2basics.company.port.in.GetCompanyByIdUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
-import com.back2basics.company.port.in.command.CompanyCreateCommand;
 import com.back2basics.company.port.in.command.CompanyUpdateCommand;
 import com.back2basics.company.service.result.CompanyInfoResult;
 import com.back2basics.domain.company.controller.code.CompanyResponseCode;
+import com.back2basics.domain.company.dto.request.CompanyCreateRequest;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -36,8 +36,8 @@ public class CompanyController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createCompany(
-        @RequestBody @Valid CompanyCreateCommand command) {
-        Long id = createCompanyUseCase.createCompany(command);
+        @RequestBody @Valid CompanyCreateRequest request) {
+        Long id = createCompanyUseCase.createCompany(request.toCommand());
         return ApiResponse.success(CompanyResponseCode.COMPANY_CREATE_SUCCESS, id);
     }
 

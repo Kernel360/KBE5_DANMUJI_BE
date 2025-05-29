@@ -6,7 +6,6 @@ import java.util.Optional;
 
 public interface CompanyRepositoryPort {
 
-    Long save(Company company);
 
     Optional<Company> findById(Long id);
 
