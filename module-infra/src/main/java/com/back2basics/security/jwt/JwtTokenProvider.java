@@ -1,8 +1,18 @@
 package com.back2basics.security.jwt;
 
+import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_EXPIRED;
+import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_INVALID;
+import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_MALFORMED;
+import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_SIGNATURE_INVALID;
+import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_UNSUPPORTED;
+
+import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.model.CustomUserDetails;
-import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -76,17 +86,24 @@ public class JwtTokenProvider {
             .getSubject();
     }
 
-    // 액세스 토큰이 유효한지 확인 TODO: EXCEPTION 처리 추가
-    public boolean validateAccessToken(String accessToken) {
+    // 액세스 토큰이 유효한지 확인
+    public void validateAccessToken(String accessToken) {
         try {
             Jwts.parser()
                 .clockSkewSeconds(180)
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(accessToken);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        } catch (ExpiredJwtException e) {
+            throw new InvalidTokenException(TOKEN_EXPIRED);
+        } catch (UnsupportedJwtException e) {
+            throw new InvalidTokenException(TOKEN_UNSUPPORTED);
+        } catch (MalformedJwtException e) {
+            throw new InvalidTokenException(TOKEN_MALFORMED);
+        } catch (SecurityException | SignatureException e) {
+            throw new InvalidTokenException(TOKEN_SIGNATURE_INVALID);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidTokenException(TOKEN_INVALID);
         }
     }
 }

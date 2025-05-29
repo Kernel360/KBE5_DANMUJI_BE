@@ -1,11 +1,10 @@
 package com.back2basics.security.jwt;
 
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_INVALID;
 import static com.back2basics.global.response.code.AuthResponseCode.SUCCESS_LOGOUT;
 
-import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.global.response.util.ResponseUtil;
+import com.back2basics.security.exception.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.GenericFilter;
 import jakarta.servlet.ServletException;
@@ -47,10 +46,10 @@ public class JwtLogoutFilter extends GenericFilter {
         }
 
         String accessToken = jwtTokenProvider.resolveAccessToken(request);
-        if ((accessToken == null) || !jwtTokenProvider.validateAccessToken(accessToken)) {
-            ResponseEntity<ApiResponse<ErrorResponse>> apiResponse = ApiResponse.error(
-                TOKEN_INVALID);
-            ResponseUtil.writeJson(response, apiResponse);
+        try {
+            jwtTokenProvider.validateAccessToken(accessToken);
+        } catch (InvalidTokenException e) {
+            ResponseUtil.writeJson(response, ApiResponse.error(e.getErrorCode(), e.getMessage()));
             return;
         }
 
