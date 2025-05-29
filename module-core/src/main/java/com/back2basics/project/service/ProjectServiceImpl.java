@@ -4,7 +4,7 @@ import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
-import com.back2basics.project.port.in.GetProjectUseCase;
+import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.out.ProjectRepositoryPort;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements
     CreateProjectUseCase,
-    GetProjectUseCase,
+    ReadProjectUseCase,
     UpdateProjectUseCase,
     DeleteProjectUseCase {
 
@@ -48,15 +48,15 @@ public class ProjectServiceImpl implements
     }
 
     @Override
+    public List<ProjectGetResult> getAllProjectsByUserId(Long userId) {
+        return List.of();
+    }
+
+    @Override
     public List<ProjectGetResult> getAllProjects() {
         return projectRepositoryPort.findAll().stream()
             .map(ProjectGetResult::toResult)
             .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProjectGetResult> getAllProjectsByUserId(Long userId) {
-        return List.of();
     }
 
     // todo : 사용자 인증 로직 추가
