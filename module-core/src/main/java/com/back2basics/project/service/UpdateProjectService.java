@@ -6,7 +6,6 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.port.out.ProjectRepositoryPort;
-import com.back2basics.project.service.result.ProjectUpdateResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +18,15 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
     // todo : 사용자 인증 로직 추가
     @Override
-    public ProjectUpdateResult updateProject(Long id,
+    public void updateProject(Long id,
         ProjectUpdateCommand projectUpdateCommand) {
         Project project = projectValidator.findProjectById(id);
         project.update(projectUpdateCommand);
         projectRepositoryPort.update(project);
-        return ProjectUpdateResult.toResult(project);
     }
 
     @Override
-    public ProjectUpdateResult changedStatus(Long projectId) {
+    public void changedStatus(Long projectId) {
         Project project = projectValidator.findProjectById(projectId);
 
         if (project.getStatus() == ProjectStatus.IN_PROGRESS) {
@@ -37,6 +35,5 @@ public class UpdateProjectService implements UpdateProjectUseCase {
             project.statusInProgress();
         }
         projectRepositoryPort.update(project);
-        return ProjectUpdateResult.toResult(project);
     }
 }
