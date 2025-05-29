@@ -1,6 +1,5 @@
 package com.back2basics.project.port.in;
 
-import com.back2basics.project.port.in.command.ProjectResponseDto;
 import com.back2basics.project.service.result.ProjectGetResult;
 import java.util.List;
 

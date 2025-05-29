@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ProjectUpdateResult {
+
     private final Long id;
     private final String name;
     private final String description;
@@ -21,7 +22,7 @@ public class ProjectUpdateResult {
     private final boolean isDeleted;
     private final ProjectStatus status;
 
-    public  static ProjectUpdateResult toResult(Project project) {
+    public static ProjectUpdateResult toResult(Project project) {
         return ProjectUpdateResult.builder()
             .id(project.getId())
             .name(project.getName())
@@ -29,7 +30,7 @@ public class ProjectUpdateResult {
             .startDate(project.getStartDate())
             .endDate(project.getEndDate())
             .createdAt(project.getCreatedAt())
-            .updatedAt(project.getUpdatedAt())
+            .updatedAt(LocalDateTime.now())
             .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
             .status(project.getStatus())
