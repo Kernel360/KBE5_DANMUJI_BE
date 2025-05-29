@@ -1,0 +1,41 @@
+package com.back2basics.util;
+
+import java.util.concurrent.TimeUnit;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+@Component
+public class RedisUtil {
+
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    public void save(String key, Object val, Long time, TimeUnit timeUnit) {
+        redisTemplate.opsForValue().set(key, val, time, timeUnit);
+    }
+
+    public void setDataExpire(String key, String value, long durationMillis) {
+        redisTemplate.opsForValue().set(key, value, durationMillis);
+    }
+
+    public String getData(String key) {
+        Object value = redisTemplate.opsForValue().get(key);
+        return value != null ? value.toString() : null;
+    }
+
+    public boolean hasKey(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
+
+    public Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    public boolean delete(String key) {
+        return Boolean.TRUE.equals(redisTemplate.delete(key));
+    }
+
+}
