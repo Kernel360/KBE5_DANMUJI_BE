@@ -9,6 +9,7 @@ import com.back2basics.user.port.out.UserRepositoryPort;
 import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,15 +19,17 @@ public class CreateUserService implements CreateUserUseCase {
     private final UserRepositoryPort userRepositoryPort;
     private final UserValidator userValidator;
     private final PasswordGenerator passwordGenerator;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserCreateResult create(UserCreateCommand command) {
         userValidator.validateDuplicateUsername(command.getUsername());
         String generatedPassword = passwordGenerator.generate();
+        String encodedPassword = bCryptPasswordEncoder.encode(generatedPassword);
 
         User user = User.builder()
             .username(command.getUsername())
-            .password(generatedPassword)
+            .password(encodedPassword)
             .email(command.getEmail())
             .name(command.getName())
             .phone(command.getPhone())
