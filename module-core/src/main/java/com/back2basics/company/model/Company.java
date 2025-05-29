@@ -1,6 +1,6 @@
 package com.back2basics.company.model;
 
-import com.back2basics.company.port.in.command.CompanyUpdateCommand;
+import com.back2basics.company.port.in.command.UpdateCompanyCommand;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -31,7 +31,7 @@ public class Company {
         this.tel = tel;
     }
 
-    public void update(CompanyUpdateCommand command) {
+    public void update(UpdateCompanyCommand command) {
         if (command.getName() != null) {
             this.name = command.getName();
         }
