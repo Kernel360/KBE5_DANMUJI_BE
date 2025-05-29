@@ -4,22 +4,15 @@ import com.back2basics.domain.post.controller.code.PostResponseCode;
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
 import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
-import com.back2basics.domain.post.dto.response.PostCreateApiResponse;
-import com.back2basics.domain.post.dto.response.PostDeleteApiResponse;
-import com.back2basics.domain.post.dto.response.PostDetailsApiResponse;
-import com.back2basics.domain.post.dto.response.PostSimpleApiResponse;
-import com.back2basics.domain.post.dto.response.PostUpdateApiResponse;
+import com.back2basics.domain.post.dto.response.PostCreateResponse;
+import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.post.port.in.CreatePostUseCase;
-import com.back2basics.post.port.in.DeletePostUseCase;
-import com.back2basics.post.port.in.GetPostDetailsUseCase;
-import com.back2basics.post.port.in.GetPostListUseCase;
-import com.back2basics.post.port.in.UpdatePostUseCase;
+import com.back2basics.post.port.in.PostCreateUseCase;
+import com.back2basics.post.port.in.PostDeleteUseCase;
+import com.back2basics.post.port.in.PostReadUseCase;
+import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
-import com.back2basics.post.service.result.PostDeleteResult;
-import com.back2basics.post.service.result.PostDetailsResult;
-import com.back2basics.post.service.result.PostSimpleResult;
-import com.back2basics.post.service.result.PostUpdateResult;
+import com.back2basics.post.service.result.PostReadResult;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,54 +32,50 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final CreatePostUseCase createPostUseCase;
-    private final GetPostDetailsUseCase getPostDetailsUseCase;
-    private final GetPostListUseCase getPostListUseCase;
-    private final UpdatePostUseCase updatePostUseCase;
-    private final DeletePostUseCase deletePostUseCase;
+    private final PostCreateUseCase createPostUseCase;
+    private final PostReadUseCase postReadUseCase;
+    private final PostUpdateUseCase postUpdateUseCase;
+    private final PostDeleteUseCase postDeleteUseCase;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PostCreateApiResponse>> createPost(
+    public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @RequestBody @Valid PostCreateApiRequest request) {
         PostCreateResult result = createPostUseCase.createPost(request.toCommand());
-        PostCreateApiResponse response = PostCreateApiResponse.toResponse(result);
+        PostCreateResponse response = PostCreateResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, response);
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<ApiResponse<PostDetailsApiResponse>> getPost(@PathVariable Long postId) {
-        PostDetailsResult result = getPostDetailsUseCase.getPost(postId);
-        PostDetailsApiResponse response = PostDetailsApiResponse.toResponse(result);
+    public ResponseEntity<ApiResponse<PostReadResponse>> getPost(@PathVariable Long postId) {
+        PostReadResult result = postReadUseCase.getPost(postId);
+        PostReadResponse response = PostReadResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PostSimpleApiResponse>>> getAllPosts() {
-        List<PostSimpleResult> resultList = getPostListUseCase.getPostList();
-        List<PostSimpleApiResponse> responseList = resultList.stream()
-            .map(PostSimpleApiResponse::toResponse)
+    public ResponseEntity<ApiResponse<List<PostReadResponse>>> getAllPosts() {
+        List<PostReadResult> resultList = postReadUseCase.getPostList();
+        List<PostReadResponse> responseList = resultList.stream()
+            .map(PostReadResponse::toResponse)
             .collect(Collectors.toList());
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responseList);
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<ApiResponse<PostUpdateApiResponse>> updatePost(@PathVariable Long postId,
+    public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long postId,
         @Valid @RequestBody PostUpdateApiRequest request) {
-        PostUpdateResult result = updatePostUseCase.updatePost(postId, request.toCommand());
-        PostUpdateApiResponse response = PostUpdateApiResponse.toResponse(result);
+        postUpdateUseCase.updatePost(postId, request.toCommand());
 
-        return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS, response);
+        return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS);
     }
 
-    @PutMapping("delete/{postId}")
-    public ResponseEntity<ApiResponse<PostDeleteApiResponse>> deletePost(@PathVariable Long postId,
+    @PutMapping("/delete/{postId}")
+    public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long postId,
         @RequestBody PostDeleteApiRequest request) {
-        PostDeleteResult result = deletePostUseCase.softDeletePost(postId,
-            request.toCommand().getRequesterId());
-        PostDeleteApiResponse response = PostDeleteApiResponse.toResponse(result);
-        return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS, response);
+        postDeleteUseCase.softDeletePost(postId, request.toCommand().getRequesterId());
+        return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }
 }

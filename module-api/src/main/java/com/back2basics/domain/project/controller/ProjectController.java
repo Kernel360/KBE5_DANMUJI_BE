@@ -10,7 +10,6 @@ import com.back2basics.project.port.in.GetProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
-import com.back2basics.project.port.in.command.ProjectResponseDto;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.domain.project.controller.code.ProjectResponseCode;
 import com.back2basics.project.service.result.ProjectGetResult;
@@ -64,7 +63,6 @@ public class ProjectController {
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, list);
     }
 
-    // todo : response 에는 updatedAt 이 반영이 안됨. get 에서 반영된 response 출력
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectUpdateResponse>> updateProject(
         @PathVariable Long projectId,
