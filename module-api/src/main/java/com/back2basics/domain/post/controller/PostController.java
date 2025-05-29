@@ -16,6 +16,7 @@ import com.back2basics.post.service.result.PostReadResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -54,8 +56,13 @@ public class PostController {
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
-    @GetMapping()
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(Pageable pageable) {
+    @GetMapping
+    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
         Page<PostReadResult> resultPage = postReadUseCase.getPostList(pageable);
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
