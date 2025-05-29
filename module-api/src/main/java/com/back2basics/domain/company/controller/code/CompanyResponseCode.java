@@ -1,4 +1,4 @@
-package com.back2basics.domain.company.response;
+package com.back2basics.domain.company.controller.code;
 
 import com.back2basics.global.response.code.ResponseCode;
 import lombok.Getter;
