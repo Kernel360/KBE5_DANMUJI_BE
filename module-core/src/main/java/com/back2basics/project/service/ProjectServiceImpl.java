@@ -4,11 +4,10 @@ import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
-import com.back2basics.project.port.in.GetProjectUseCase;
+import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.out.ProjectRepositoryPort;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
-import com.back2basics.project.port.in.command.ProjectResponseDto;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.service.result.ProjectGetResult;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements
     CreateProjectUseCase,
-    GetProjectUseCase,
+    ReadProjectUseCase,
     UpdateProjectUseCase,
     DeleteProjectUseCase {
 
@@ -41,7 +40,7 @@ public class ProjectServiceImpl implements
         projectRepositoryPort.save(project);
     }
 
-    // todo : get 조건 - isDeleted false, filtering - status IN_PROGRESS / COMPLETED
+    // todo : filtering - status IN_PROGRESS / COMPLETED
     @Override
     public ProjectGetResult getProjectById(Long id) {
         Project project = projectValidator.findProjectById(id);
@@ -49,15 +48,15 @@ public class ProjectServiceImpl implements
     }
 
     @Override
-    public List<ProjectGetResult> getAllProjects() {
-        return projectValidator.findProject().stream()
-            .map(ProjectGetResult::toResult)
-            .collect(Collectors.toList());
+    public List<ProjectGetResult> getAllProjectsByUserId(Long userId) {
+        return List.of();
     }
 
     @Override
-    public List<ProjectGetResult> getAllProjectsByUserId(Long userId) {
-        return List.of();
+    public List<ProjectGetResult> getAllProjects() {
+        return projectRepositoryPort.findAll().stream()
+            .map(ProjectGetResult::toResult)
+            .collect(Collectors.toList());
     }
 
     // todo : 사용자 인증 로직 추가
@@ -78,7 +77,6 @@ public class ProjectServiceImpl implements
         projectRepositoryPort.update(project);
     }
 
-    // todo: equals 비교연산자로 변경
     @Override
     public ProjectUpdateResult changedStatus(Long projectId) {
         Project project = projectValidator.findProjectById(projectId);
