@@ -42,6 +42,8 @@ public class CompanyInfoResult {
             .companyType(company.getCompanyType())
             .bizNo(company.getBizNo())
             .address(company.getAddress())
+            .email(company.getEmail())
+            .tel(company.getTel())
             .build();
     }
 }
