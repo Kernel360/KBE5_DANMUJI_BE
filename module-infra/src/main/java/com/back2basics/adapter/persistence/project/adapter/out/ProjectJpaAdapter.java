@@ -26,16 +26,14 @@ public class ProjectJpaAdapter implements ProjectRepositoryPort {
 
     @Override
     public Optional<Project> findById(Long id) {
-        return projectEntityRepository.findById(id)
-            .filter(it -> !it.isDeleted())
+        return projectEntityRepository.findByIdAndIsDeletedFalse(id)
             .map(projectMapper::toDomain);
     }
 
     @Override
     public List<Project> findAll() {
-        return projectEntityRepository.findAll()
+        return projectEntityRepository.findAllByIsDeletedFalse()
             .stream()
-            .filter(it -> !it.isDeleted())
             .map(projectMapper::toDomain)
             .collect(Collectors.toList());
     }

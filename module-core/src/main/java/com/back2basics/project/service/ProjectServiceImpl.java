@@ -8,7 +8,6 @@ import com.back2basics.project.port.in.GetProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.out.ProjectRepositoryPort;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
-import com.back2basics.project.port.in.command.ProjectResponseDto;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.service.result.ProjectGetResult;
@@ -41,7 +40,7 @@ public class ProjectServiceImpl implements
         projectRepositoryPort.save(project);
     }
 
-    // todo : get 조건 - isDeleted false, filtering - status IN_PROGRESS / COMPLETED
+    // todo : filtering - status IN_PROGRESS / COMPLETED
     @Override
     public ProjectGetResult getProjectById(Long id) {
         Project project = projectValidator.findProjectById(id);
@@ -50,7 +49,7 @@ public class ProjectServiceImpl implements
 
     @Override
     public List<ProjectGetResult> getAllProjects() {
-        return projectValidator.findProject().stream()
+        return projectRepositoryPort.findAll().stream()
             .map(ProjectGetResult::toResult)
             .collect(Collectors.toList());
     }
@@ -78,7 +77,6 @@ public class ProjectServiceImpl implements
         projectRepositoryPort.update(project);
     }
 
-    // todo: equals 비교연산자로 변경
     @Override
     public ProjectUpdateResult changedStatus(Long projectId) {
         Project project = projectValidator.findProjectById(projectId);

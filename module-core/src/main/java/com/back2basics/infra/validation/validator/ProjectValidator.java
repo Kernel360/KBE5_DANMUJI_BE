@@ -18,14 +18,4 @@ public class ProjectValidator {
         return projectRepositoryPort.findById(id)
             .orElseThrow(() -> new ProjectException(ProjectErrorCode.PROJECT_NOT_FOUND));
     }
-
-    public List<Project> findProject() {
-        List<Project> projects = projectRepositoryPort.findAll();
-
-        if (projects.isEmpty()) {
-            throw new ProjectException(ProjectErrorCode.PROJECT_NOT_FOUND);
-        }
-
-        return projects;
-    }
 }
