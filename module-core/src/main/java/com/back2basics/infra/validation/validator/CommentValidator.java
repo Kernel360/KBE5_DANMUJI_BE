@@ -18,8 +18,8 @@ public class CommentValidator {
             .orElseThrow(() -> new CommentException(CommentErrorCode.COMMENT_NOT_FOUND));
     }
 
-    public void isAuthor(Comment comment, String requesterName) {
-        if (!comment.getAuthorName().equals(requesterName)) {
+    public void isAuthor(Comment comment, Long requesterId) {
+        if (!comment.getAuthorId().equals(requesterId)) {
             throw new CommentException(CommentErrorCode.INVALID_COMMENT_AUTHOR);
         }
     }

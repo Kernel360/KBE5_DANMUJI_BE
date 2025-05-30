@@ -14,9 +14,8 @@ public class CommentCreateRequest {
 
     @Nullable
     private Long parentId; // 이게 null이 아니면 대댓글임
-
-    // todo : 식별값 id로 변경 예정
-    private String authorName;
+    
+    private Long authorId;
 
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
@@ -25,7 +24,7 @@ public class CommentCreateRequest {
         return CommentCreateCommand.builder()
             .postId(postId)
             .parentId(parentId)
-            .authorName(authorName)
+            .authorId(authorId)
             .content(content)
             .build();
     }

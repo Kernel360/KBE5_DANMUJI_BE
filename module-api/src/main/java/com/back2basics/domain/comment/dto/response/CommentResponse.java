@@ -13,7 +13,7 @@ public class CommentResponse {
     private Long id;
     private Long postId;
     private Long parentCommentId; // 대댓글의 경우 부모 댓글 ID
-    private final String authorName;
+    private final Long authorId;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -24,7 +24,7 @@ public class CommentResponse {
             .id(result.getId())
             .postId(result.getPostId())
             .parentCommentId(result.getParentCommentId())
-            .authorName(result.getAuthorName())
+            .authorId(result.getAuthorId())
             .content(result.getContent())
             .createdAt(result.getCreatedAt())
             .updatedAt(result.getUpdatedAt())

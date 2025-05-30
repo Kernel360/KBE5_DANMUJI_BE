@@ -18,7 +18,7 @@ public class CommentCreateService implements CommentCreateUseCase {
     public Long createComment(CommentCreateCommand command) {
         Comment comment = Comment.builder()
             .postId(command.getPostId())
-            .authorName(command.getAuthorName())
+            .authorId(command.getAuthorId())
             .content(command.getContent())
             .parentCommentId(command.getParentId())
             .build();

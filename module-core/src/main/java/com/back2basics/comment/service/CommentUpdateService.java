@@ -19,7 +19,7 @@ public class CommentUpdateService implements CommentUpdateUseCase {
     @Override
     public void updateComment(Long id, CommentUpdateCommand command) {
         Comment comment = commentValidator.findComment(id);
-        commentValidator.isAuthor(comment, command.getRequesterName());
+        commentValidator.isAuthor(comment, command.getRequesterId());
 
         comment.update(command);
         commentUpdatePort.update(comment);

@@ -15,9 +15,9 @@ public class CommentDeleteService implements CommentDeleteUseCase {
     private final CommentDeletePort commentDeletePort;
 
     @Override
-    public void deleteComment(Long id, String requesterName) {
+    public void deleteComment(Long id, Long requesterId) {
         Comment comment = commentValidator.findComment(id);
-        commentValidator.isAuthor(comment, requesterName);
+        commentValidator.isAuthor(comment, requesterId);
 
         commentDeletePort.delete(comment);
     }

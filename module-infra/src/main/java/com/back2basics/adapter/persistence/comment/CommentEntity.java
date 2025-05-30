@@ -30,8 +30,8 @@ public class CommentEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "author_name", nullable = false)
-    private String authorName;
+    @Column(name = "author_id", nullable = false)
+    private Long authorId;
 
     @Column(name = "content", nullable = false)
     private String content;
@@ -48,10 +48,10 @@ public class CommentEntity extends BaseTimeEntity {
     private List<CommentEntity> childrenComments = new ArrayList<>();
 
     @Builder
-    public CommentEntity(Long id, String authorName, String content, PostEntity post,
+    public CommentEntity(Long id, Long authorId, String content, PostEntity post,
         CommentEntity parentComment) {
         this.id = id;
-        this.authorName = authorName;
+        this.authorId = authorId;
         this.content = content;
         this.post = post;
         this.parentCommentId = parentComment;

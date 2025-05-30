@@ -16,7 +16,7 @@ public class CommentReadResult {
     private Long id;
     private Long postId;
     private Long parentCommentId; // 대댓글의 경우 부모 댓글 ID
-    private final String authorName;
+    private final Long authorId;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -27,7 +27,7 @@ public class CommentReadResult {
             .id(comment.getId())
             .postId(comment.getPostId())
             .parentCommentId(comment.getParentCommentId())
-            .authorName(comment.getAuthorName())
+            .authorId(comment.getAuthorId())
             .content(comment.getContent())
             .createdAt(comment.getCreatedAt())
             .updatedAt(comment.getUpdatedAt())

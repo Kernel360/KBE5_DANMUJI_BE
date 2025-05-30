@@ -5,6 +5,7 @@ import com.back2basics.comment.port.in.CommentDeleteUseCase;
 import com.back2basics.comment.port.in.CommentUpdateUseCase;
 import com.back2basics.domain.comment.controller.code.CommentResponseCode;
 import com.back2basics.domain.comment.dto.request.CommentCreateRequest;
+import com.back2basics.domain.comment.dto.request.CommentDeleteRequest;
 import com.back2basics.domain.comment.dto.request.CommentUpdateRequest;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -47,9 +47,10 @@ public class CommentController {
     @DeleteMapping("/delete/{commentId}")
     public ResponseEntity<ApiResponse<Void>> deleteComment(
         @PathVariable Long commentId,
-        @RequestParam String requesterName
+        @Valid @RequestBody CommentDeleteRequest request
     ) {
-        commentDeleteUseCase.deleteComment(commentId, requesterName);
+        Long requesterId = request.getRequesterId();
+        commentDeleteUseCase.deleteComment(commentId, requesterId);
         return ApiResponse.success(CommentResponseCode.COMMENT_DELETE_SUCCESS);
     }
 
