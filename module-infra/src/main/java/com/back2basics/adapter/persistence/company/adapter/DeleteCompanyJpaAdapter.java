@@ -1,19 +1,19 @@
-package com.back2basics.adapter.persistence.company;
+package com.back2basics.adapter.persistence.company.adapter;
 
-import com.back2basics.company.port.out.CompanyRepositoryPort;
+import com.back2basics.adapter.persistence.company.CompanyEntityRepository;
+import com.back2basics.company.port.out.DeleteCompanyPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CompanyJpaAdapter implements CompanyRepositoryPort {
+public class DeleteCompanyJpaAdapter implements DeleteCompanyPort {
 
     private final CompanyEntityRepository companyEntityRepository;
-    private final CompanyMapper mapper;
-
 
     @Override
     public void deleteById(Long id) {
         companyEntityRepository.deleteById(id);
     }
+
 }

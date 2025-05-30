@@ -1,19 +1,20 @@
 package com.back2basics.company.service;
 
 import com.back2basics.company.port.in.DeleteCompanyUseCase;
-import com.back2basics.company.port.out.CompanyRepositoryPort;
+import com.back2basics.company.port.out.DeleteCompanyPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CompanyServiceImpl implements DeleteCompanyUseCase {
+public class DeleteCompanyService implements DeleteCompanyUseCase {
 
-    private final CompanyRepositoryPort companyRepositoryPort;
+    private final DeleteCompanyPort deleteCompanyPort;
 
 
     @Override
     public void deleteCompany(Long id) {
-        companyRepositoryPort.deleteById(id);
+        deleteCompanyPort.deleteById(id);
     }
+
 }
