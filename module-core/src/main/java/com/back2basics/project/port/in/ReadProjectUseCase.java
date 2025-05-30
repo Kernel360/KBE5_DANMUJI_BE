@@ -1,10 +1,9 @@
 package com.back2basics.project.port.in;
 
-import com.back2basics.project.port.in.command.ProjectResponseDto;
 import com.back2basics.project.service.result.ProjectGetResult;
 import java.util.List;
 
-public interface GetProjectUseCase {
+public interface ReadProjectUseCase {
 
     /* 프로젝트 상세 조회 */
     ProjectGetResult getProjectById(Long projectId);

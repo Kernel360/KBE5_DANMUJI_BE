@@ -4,9 +4,7 @@ import com.back2basics.post.service.result.PostReadResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface PostReadUseCase {
+public interface PostSearchUseCase {
 
-    PostReadResult getPost(Long id);
-
-    Page<PostReadResult> getPostList(Pageable pageable);
+    Page<PostReadResult> searchPost(String keyword, Pageable pageable);
 }

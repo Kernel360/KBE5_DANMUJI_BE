@@ -43,11 +43,10 @@ public class Project {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
-        this.isDeleted = false;
+        this.isDeleted = isDeleted;
         this.status = status != null ? status : ProjectStatus.IN_PROGRESS;
     }
 
-    // todo: http 메서드 put으로 변경, null 체크 안함
     public void update(ProjectUpdateCommand command) {
         this.name = command.getName();
         this.description = command.getDescription();
@@ -55,17 +54,17 @@ public class Project {
         this.endDate = command.getEndDate();
     }
 
-    // todo: project 상태변경
-    public void statusCompleted(){
+    public void statusCompleted() {
         this.status = ProjectStatus.COMPLETED;
 
-    }public void statusInProgress(){
+    }
+
+    public void statusInProgress() {
         this.status = ProjectStatus.IN_PROGRESS;
     }
 
-    // 삭제를 더 직관적이게 나타내기 위헤 isDeleted 추가
     public void softDeleted() {
-        this.isDeleted = true; // 만약 도메인에서 localDatetime을 변경한다면 entity에도 isDeleted 추가하는거 어떨지..
+        this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
     }
 }

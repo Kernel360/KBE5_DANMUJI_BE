@@ -1,28 +1,23 @@
-package com.back2basics.adapter.persistence.project.adapter.out;
+package com.back2basics.adapter.persistence.project.adapter;
 
-import com.back2basics.adapter.persistence.project.entity.ProjectEntity;
+import com.back2basics.adapter.persistence.post.PostEntityRepository;
+import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.adapter.persistence.project.mapper.ProjectMapper;
 import com.back2basics.adapter.persistence.project.repository.ProjectEntityRepository;
 import com.back2basics.project.model.Project;
-import com.back2basics.project.port.out.ProjectRepositoryPort;
+import com.back2basics.project.port.out.ReadProjectPort;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class ProjectJpaAdapter implements ProjectRepositoryPort {
+public class ReadProjectAdapter implements ReadProjectPort {
 
     private final ProjectEntityRepository projectEntityRepository;
     private final ProjectMapper projectMapper;
-
-    @Override
-    public void save(Project project) {
-        ProjectEntity entity = projectMapper.fromDomain(project);
-        projectEntityRepository.save(entity);
-    }
 
     @Override
     public Optional<Project> findById(Long id) {
@@ -36,10 +31,5 @@ public class ProjectJpaAdapter implements ProjectRepositoryPort {
             .stream()
             .map(projectMapper::toDomain)
             .collect(Collectors.toList());
-    }
-
-    @Override
-    public void update(Project project) {
-        projectEntityRepository.save(projectMapper.fromDomain(project));
     }
 }
