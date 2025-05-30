@@ -1,11 +1,11 @@
 package com.back2basics.domain.comment.controller;
 
-import com.back2basics.comment.port.command.CommentCreateCommand;
-import com.back2basics.comment.port.command.CommentUpdateCommand;
 import com.back2basics.comment.port.in.CreateCommentUseCase;
 import com.back2basics.comment.port.in.DeleteCommentUseCase;
 import com.back2basics.comment.port.in.UpdateCommentUseCase;
 import com.back2basics.domain.comment.controller.code.CommentResponseCode;
+import com.back2basics.domain.comment.dto.request.CommentCreateRequest;
+import com.back2basics.domain.comment.dto.request.CommentUpdateRequest;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,17 +30,17 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createComment(
-        @RequestBody @Valid CommentCreateCommand command) {
-        Long createdId = createCommentUseCase.createComment(command);
+        @RequestBody @Valid CommentCreateRequest request) {
+        Long createdId = createCommentUseCase.createComment(request.toCommand());
         return ApiResponse.success(CommentResponseCode.COMMENT_CREATE_SUCCESS, createdId);
     }
 
     @PatchMapping("/{commentId}")
     public ResponseEntity<ApiResponse<Void>> updateComment(
         @PathVariable Long commentId,
-        @Valid @RequestBody CommentUpdateCommand command
+        @Valid @RequestBody CommentUpdateRequest request
     ) {
-        updateCommentUseCase.updateComment(commentId, command);
+        updateCommentUseCase.updateComment(commentId, request.toCommand());
         return ApiResponse.success(CommentResponseCode.COMMENT_UPDATE_SUCCESS);
     }
 
