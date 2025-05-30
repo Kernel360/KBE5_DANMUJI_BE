@@ -7,6 +7,7 @@ import com.back2basics.infra.exception.user.UserErrorCode;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserRepositoryPort;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,12 @@ public class UserJpaAdapter implements UserRepositoryPort {
             .orElseThrow(() -> new UserException(
                 UserErrorCode.USER_NOT_FOUND));
         userEntity.markDeleted();
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userEntityRepository.findByUsername(username)
+            .map(userMapper::toDomain);
     }
 
 }
