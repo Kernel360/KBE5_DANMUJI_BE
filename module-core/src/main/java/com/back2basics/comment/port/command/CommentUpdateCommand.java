@@ -10,4 +10,5 @@ public class CommentUpdateCommand {
     // todo : 식별값 id로 변경
     private Long requesterId;
     private String content;
+
 }
