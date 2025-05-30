@@ -8,9 +8,11 @@ import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.security.service.CustomUserDetailsService;
 import com.back2basics.util.CookieUtil;
+import com.back2basics.util.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
     private final CookieUtil cookieUtil;
+    private final RedisUtil redisUtil;
 
     public String reissue(HttpServletRequest request, HttpServletResponse response,
         String refreshToken) throws IOException {
@@ -46,13 +49,19 @@ public class AuthService {
         String username = jwtTokenProvider.getSubject(refreshToken);
         UserDetails customUserDetails = customUserDetailsService.loadUserByUsername(username);
 
-        // 3. 새로운 Access Token과 Refresh Token 생성
+        // 3. 기존 Access Token을 블랙리스트에 추가, 쿠키에서 Refresh Token 삭제
+        String accessToken = jwtTokenProvider.resolveAccessToken(request);
+        long remainTime = jwtTokenProvider.getAccessTokenRemainingTime(accessToken);
+        redisUtil.save("BL:" + accessToken, "logout", remainTime, TimeUnit.MILLISECONDS);
+        cookieUtil.deleteRefreshTokenCookie(response);
+
+        // 4. 새로운 Access Token과 Refresh Token 생성
         String newAccessToken = jwtTokenProvider.createAccessToken(
             (CustomUserDetails) customUserDetails);
         String newRefreshToken = jwtTokenProvider.createRefreshToken(
             (CustomUserDetails) customUserDetails);
 
-        // 4. 응답 헤더와 쿠키에 새로운 토큰 설정
+        // 5. 응답 헤더와 쿠키에 새로운 토큰 설정
         response.setHeader("Authorization", "Bearer " + newAccessToken);
         response.addCookie(cookieUtil.createCookie(newRefreshToken));
 
