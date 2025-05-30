@@ -1,7 +1,7 @@
 package com.back2basics.adapter.persistence.company;
 
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.company.model.CompanyType;
-import com.back2basics.user.model.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,8 +52,8 @@ public class CompanyEntity {
     @Column(name = "tel", nullable = false)
     private String tel;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User> members = new ArrayList<>();
+    @OneToMany(mappedBy = "companyEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserEntity> userEntities = new ArrayList<>();
 
     @Builder
     public CompanyEntity(Long id, String name, String ceoName, String bio,
