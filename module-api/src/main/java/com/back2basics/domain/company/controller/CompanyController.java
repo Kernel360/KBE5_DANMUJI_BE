@@ -56,7 +56,7 @@ public class CompanyController {
         @PageableDefault(
             page = 0,
             size = 10,
-            sort = "name", // 🔄 예: name 필드가 있다면 사용 가능
+            sort = "name",
             direction = Sort.Direction.ASC
         )
         Pageable pageable) {
