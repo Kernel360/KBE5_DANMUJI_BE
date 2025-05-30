@@ -34,9 +34,8 @@ public class Comment {
     }
 
     public void update(CommentUpdateCommand command) {
-        if (command.getContent() != null) {
-            this.content = command.getContent();
-        }
+        this.content = command.getContent();
+
     }
 
     public void assignPost(Post post) {
