@@ -10,6 +10,7 @@ import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
 import com.back2basics.post.port.in.PostReadUseCase;
+import com.back2basics.post.port.in.PostSearchUseCase;
 import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostReadResult;
@@ -38,6 +39,7 @@ public class PostController {
     private final PostReadUseCase postReadUseCase;
     private final PostUpdateUseCase postUpdateUseCase;
     private final PostDeleteUseCase postDeleteUseCase;
+    private final PostSearchUseCase postSearchUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -82,5 +84,18 @@ public class PostController {
         @RequestBody PostDeleteApiRequest request) {
         postDeleteUseCase.softDeletePost(postId, request.toCommand().getRequesterId());
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostReadResult> resultPage = postSearchUseCase.searchPost(keyword, pageable);
+        Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
+
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
 }
