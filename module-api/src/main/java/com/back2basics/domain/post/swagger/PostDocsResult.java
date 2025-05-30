@@ -1,4 +1,4 @@
-package com.back2basics.domain.post.docs;
+package com.back2basics.domain.post.swagger;
 
 public class PostDocsResult {
 
