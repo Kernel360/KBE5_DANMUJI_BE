@@ -1,14 +1,13 @@
-package com.back2basics.company.port.in.command;
+package com.back2basics.domain.company.dto.request;
 
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.company.port.in.command.CreateCompanyCommand;
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.infra.validation.custom.CustomNotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-public class CompanyCreateCommand {
+public class CreateCompanyRequest {
 
     @CustomNotBlank(message = "회사 이름은 공백일 수 없습니다.")
     private String name;
@@ -26,16 +25,17 @@ public class CompanyCreateCommand {
     @CustomNotBlank(message = "회사 전화번호는 공백일 수 없습니다.")
     private String tel;
 
-    public CompanyCreateCommand(String name, String ceoName, String bio, CompanyType companyType,
-        Integer bizNo, String address, String email, String tel) {
-        this.name = name;
-        this.ceoName = ceoName;
-        this.bio = bio;
-        this.companyType = companyType;
-        this.bizNo = bizNo;
-        this.address = address;
-        this.email = email;
-        this.tel = tel;
+    public CreateCompanyCommand toCommand() {
+        return CreateCompanyCommand.builder()
+            .name(name)
+            .ceoName(ceoName)
+            .bio(bio)
+            .companyType(companyType)
+            .bizNo(bizNo)
+            .address(address)
+            .email(email)
+            .tel(tel)
+            .build();
     }
 
 }
