@@ -1,8 +1,8 @@
 package com.back2basics.comment.port.in;
 
-import com.back2basics.service.comment.dto.CommentUpdateCommand;
+import com.back2basics.comment.port.command.CommentUpdateCommand;
 
-public interface UpdateCommentUseCase {
+public interface CommentUpdateUseCase {
 
     void updateComment(Long id, CommentUpdateCommand command);
 

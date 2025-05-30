@@ -1,9 +1,9 @@
 package com.back2basics.domain.post.dto.response;
 
+import com.back2basics.comment.service.result.CommentReadResult;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostReadResult;
-import com.back2basics.service.comment.dto.CommentResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -24,7 +24,7 @@ public class PostReadResponse {
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
     private final LocalDateTime completedAt;
-    private final List<CommentResponseDto> comments;
+    private final List<CommentReadResult> comments;
     private final boolean isDelete;
 
     public static PostReadResponse toResponse(PostReadResult postDetails) {
