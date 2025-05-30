@@ -11,8 +11,7 @@ import com.back2basics.adapter.persistence.post.adapter.PostReadJpaAdapter;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import java.util.Arrays;
-import java.util.List;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +27,9 @@ class PostReadJpaAdapterTest {
 
     @Mock
     private PostEntityRepository postRepository;
+
+    @Mock
+    private JPAQueryFactory queryFactory;
 
     @Mock
     private PostMapper mapper;
@@ -119,42 +121,5 @@ class PostReadJpaAdapterTest {
         verify(postRepository).findById(postId);
     }
 
-    @Test
-    @DisplayName("모든 게시글 조회 성공")
-    void findAll_Success() {
-        // given
-        List<PostEntity> entities = Arrays.asList(postEntity1, postEntity2);
-        given(postRepository.findAll()).willReturn(entities);
-        given(mapper.toDomain(postEntity1)).willReturn(post1);
-        given(mapper.toDomain(postEntity2)).willReturn(post2);
-
-        // when
-        List<Post> results = postReadJpaAdapter.findAll();
-
-        // then
-        assertThat(results).hasSize(2);
-        assertThat(results.get(0).getId()).isEqualTo(1L);
-        assertThat(results.get(0).getTitle()).isEqualTo("첫 번째 게시글");
-        assertThat(results.get(1).getId()).isEqualTo(2L);
-        assertThat(results.get(1).getTitle()).isEqualTo("두 번째 게시글");
-
-        verify(postRepository).findAll();
-        verify(mapper).toDomain(postEntity1);
-        verify(mapper).toDomain(postEntity2);
-    }
-
-    @Test
-    @DisplayName("모든 게시글 조회 - 빈 리스트")
-    void findAll_EmptyList() {
-        // given
-        given(postRepository.findAll()).willReturn(Arrays.asList());
-
-        // when
-        List<Post> results = postReadJpaAdapter.findAll();
-
-        // then
-        assertThat(results).isEmpty();
-
-        verify(postRepository).findAll();
-    }
+    // todo : query dsl 사용한 페이징 테스트 필요. 어케하는지 알아봐야됨
 }

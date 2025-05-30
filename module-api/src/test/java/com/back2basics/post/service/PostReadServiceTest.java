@@ -19,6 +19,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PostReadService 테스트")
@@ -80,36 +84,71 @@ class PostReadServiceTest {
     }
 
     @Test
-    @DisplayName("게시글 전체 조회 성공")
+    @DisplayName("게시글 페이징 조회 성공")
     void getPostList_Success() {
         // given
+        Pageable pageable = PageRequest.of(0, 10);
         List<Post> posts = Arrays.asList(samplePost1, samplePost2);
-        given(postReadPort.findAll()).willReturn(posts);
+        Page<Post> postPage = new PageImpl<>(posts, pageable, 2);
+
+        given(postReadPort.findAllWithPaging(pageable)).willReturn(postPage);
 
         // when
-        List<PostReadResult> results = postReadService.getPostList();
+        Page<PostReadResult> results = postReadService.getPostList(pageable);
 
         // then
-        assertThat(results).hasSize(2);
-        assertThat(results.get(0).getId()).isEqualTo(1L);
-        assertThat(results.get(0).getTitle()).isEqualTo("첫 번째 게시글");
-        assertThat(results.get(1).getId()).isEqualTo(2L);
-        assertThat(results.get(1).getTitle()).isEqualTo("두 번째 게시글");
+        assertThat(results).isNotNull();
+        assertThat(results.getContent()).hasSize(2);
+        assertThat(results.getTotalElements()).isEqualTo(2);
+        assertThat(results.getContent().get(0).getId()).isEqualTo(1L);
+        assertThat(results.getContent().get(0).getTitle()).isEqualTo("첫 번째 게시글");
+        assertThat(results.getContent().get(1).getId()).isEqualTo(2L);
+        assertThat(results.getContent().get(1).getTitle()).isEqualTo("두 번째 게시글");
 
-        verify(postReadPort).findAll();
+        verify(postReadPort).findAllWithPaging(pageable);
     }
 
     @Test
-    @DisplayName("빈 게시글 리스트 조회")
-    void getPostList_EmptyList() {
+    @DisplayName("빈 게시글 페이지 조회")
+    void getPostList_EmptyPage() {
         // given
-        given(postReadPort.findAll()).willReturn(Arrays.asList());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Post> emptyPage = new PageImpl<>(Arrays.asList(), pageable, 0);
+
+        given(postReadPort.findAllWithPaging(pageable)).willReturn(emptyPage);
 
         // when
-        List<PostReadResult> results = postReadService.getPostList();
+        Page<PostReadResult> results = postReadService.getPostList(pageable);
 
         // then
-        assertThat(results).isEmpty();
-        verify(postReadPort).findAll();
+        assertThat(results).isNotNull();
+        assertThat(results.getContent()).isEmpty();
+        assertThat(results.getTotalElements()).isEqualTo(0);
+
+        verify(postReadPort).findAllWithPaging(pageable);
+    }
+
+    @Test
+    @DisplayName("게시글 페이징 조회 - 두 번째 페이지")
+    void getPostList_SecondPage() {
+        // given
+        Pageable pageable = PageRequest.of(1, 1); // 1개씩, 두 번째 페이지
+        List<Post> posts = Arrays.asList(samplePost2);
+        Page<Post> postPage = new PageImpl<>(posts, pageable, 2);
+
+        given(postReadPort.findAllWithPaging(pageable)).willReturn(postPage);
+
+        // when
+        Page<PostReadResult> results = postReadService.getPostList(pageable);
+
+        // then
+        assertThat(results).isNotNull();
+        assertThat(results.getContent()).hasSize(1);
+        assertThat(results.getTotalElements()).isEqualTo(2);
+        assertThat(results.getNumber()).isEqualTo(1); // 현재 페이지 번호
+        assertThat(results.getContent().get(0).getId()).isEqualTo(2L);
+        assertThat(results.getContent().get(0).getTitle()).isEqualTo("두 번째 게시글");
+
+        verify(postReadPort).findAllWithPaging(pageable);
     }
 }
