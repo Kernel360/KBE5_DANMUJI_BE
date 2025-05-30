@@ -30,9 +30,15 @@ dependencies {
     // QueryDSL for test
     testImplementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     testAnnotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    testImplementation("org.springframework.security:spring-security-test")
 
 }
 
 bootJar {
     archiveFileName = "${rootProject.name}.jar"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    systemProperty 'spring.profiles.active', 'test'
 }
