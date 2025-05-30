@@ -11,6 +11,7 @@ import lombok.Getter;
 @Builder
 public class ReadCompanyResponse {
 
+    private Long id;
     private String name;
     private String ceoName;
     private String bio;
@@ -22,6 +23,7 @@ public class ReadCompanyResponse {
 
     public static ReadCompanyResponse toResponse(ReadCompanyResult result) {
         return ReadCompanyResponse.builder()
+            .id(result.getId())
             .name(result.getName())
             .ceoName(result.getCeoName())
             .bio(result.getBio())
