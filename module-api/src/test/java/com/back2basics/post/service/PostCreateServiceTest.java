@@ -2,6 +2,7 @@ package com.back2basics.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import com.back2basics.post.model.Post;
@@ -13,6 +14,7 @@ import com.back2basics.post.service.result.PostCreateResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,6 +41,10 @@ class PostCreateServiceTest {
             .priority(1)
             .build();
 
+        // given(postCreatePort.save(any(Post.class))).willReturn(1L);
+        doNothing().when(postCreatePort).save(any(Post.class));
+        // todo: port는 void인데 코어쪽에서 result 반환하고있음 -> 이거 수정해야함
+
         // when
         PostCreateResult result = postCreateService.createPost(command);
 
@@ -50,7 +56,16 @@ class PostCreateServiceTest {
         assertThat(result.getPriority()).isEqualTo(1);
         assertThat(result.getAuthorId()).isEqualTo(1L);
 
-        verify(postCreatePort).save(any(Post.class));
+        // ArgumentCaptor로 전달된 Post 객체 검증
+        ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+        verify(postCreatePort).save(postCaptor.capture());
+
+        Post capturedPost = postCaptor.getValue();
+        assertThat(capturedPost.getAuthorId()).isEqualTo(1L);
+        assertThat(capturedPost.getTitle()).isEqualTo("테스트 제목");
+        assertThat(capturedPost.getContent()).isEqualTo("테스트 내용");
+        assertThat(capturedPost.getType()).isEqualTo(PostType.GENERAL);
+        assertThat(capturedPost.getPriority()).isEqualTo(1);
     }
 
     @Test
@@ -65,11 +80,21 @@ class PostCreateServiceTest {
             .priority(2)
             .build();
 
+        // given(postCreatePort.save(any(Post.class))).willReturn(2L);
+        doNothing().when(postCreatePort).save(any(Post.class));
+        // todo: port는 void인데 코어쪽에서 result 반환하고있음 -> 이거 수정해야함
+
         // when
         PostCreateResult result = postCreateService.createPost(command);
 
         // then
         assertThat(result.getStatus()).isEqualTo(PostStatus.PENDING);
-        verify(postCreatePort).save(any(Post.class));
+
+        // ArgumentCaptor로 저장된 Post의 상태 검증
+        ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+        verify(postCreatePort).save(postCaptor.capture());
+
+        Post capturedPost = postCaptor.getValue();
+        assertThat(capturedPost.getStatus()).isEqualTo(PostStatus.PENDING);
     }
 }

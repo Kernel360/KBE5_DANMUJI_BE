@@ -6,6 +6,24 @@ spring:
   application:
     name: module-api
 
+# Swagger 설정
+# http://localhost:8080/danmuji-ui.html
+springdoc:
+  swagger-ui:
+    path: /danmuji-ui.html
+    operations-sorter: alpha                    # api 알바펫 순 정렬
+    tags-sorter: alpha                          # 태그 알파벳 순 정렬
+    disable-swagger-default-url: true           # Swagger UI 첫 로딩 시 default URL 사용 안함
+    display-query-params-without-oauth2: true   # OAuth2 미사용 시에도 query 파라미터 표시
+    doc-expansion: none                         # api 목록들 상태 -> 접힘으로 설정
+
+    api-docs:
+      path: /api-docs
+
+  # 기본 요청/응답 - application/json
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
 ---
 
 spring:
@@ -30,7 +48,6 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
@@ -88,7 +105,7 @@ spring:
       hibernate:
         format_sql: false
         highlight_sql: false
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 
 logging:
   level:

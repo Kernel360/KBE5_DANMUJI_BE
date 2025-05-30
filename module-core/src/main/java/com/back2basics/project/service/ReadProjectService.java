@@ -3,7 +3,7 @@ package com.back2basics.project.service;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.ReadProjectUseCase;
-import com.back2basics.project.port.out.ProjectRepositoryPort;
+import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.service.result.ProjectGetResult;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReadProjectService implements ReadProjectUseCase {
 
-    private final ProjectRepositoryPort projectRepositoryPort;
+    private final ReadProjectPort port;
     private final ProjectValidator projectValidator;
 
     // todo : filtering - status IN_PROGRESS / COMPLETED
@@ -26,7 +26,7 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     @Override
     public List<ProjectGetResult> getAllProjects() {
-        return projectRepositoryPort.findAll().stream()
+        return port.findAll().stream()
             .map(ProjectGetResult::toResult)
             .collect(Collectors.toList());
     }

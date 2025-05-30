@@ -1,7 +1,7 @@
 package com.back2basics.adapter.persistence.project.adapter;
 
-import com.back2basics.adapter.persistence.project.mapper.ProjectMapper;
-import com.back2basics.adapter.persistence.project.repository.ProjectEntityRepository;
+import com.back2basics.adapter.persistence.project.ProjectMapper;
+import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.out.UpdateProjectPort;
 import lombok.RequiredArgsConstructor;
