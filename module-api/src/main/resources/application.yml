@@ -30,7 +30,7 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 
 # SMTP
 #  mail:
@@ -78,7 +78,7 @@ spring:
       hibernate:
         format_sql: false
         highlight_sql: false
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 
 logging:
   level:
