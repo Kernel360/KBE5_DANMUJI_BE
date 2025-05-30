@@ -16,7 +16,7 @@ public class CommentDocsResult {
           "postId": 1,
           "parentId": 1,
           "authorId": 2,
-          "content": "@홍길동 확인했습니다"
+          "content": "@홍길동 확인했습니다!"
         }
         """;
 
@@ -66,7 +66,7 @@ public class CommentDocsResult {
                   "id": 2,
                   "postId": 1,
                   "authorId": 2,
-                  "content": "@홍길동 확인했습니다",
+                  "content": "@홍길동 확인했습니다!",
                   "parentCommentId": 1,
                   "createdAt": "2024-01-01T10:05:00",
                   "updatedAt": "2024-01-01T10:05:00",
