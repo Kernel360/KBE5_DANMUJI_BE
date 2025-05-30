@@ -18,7 +18,9 @@ public enum AuthErrorCode implements ErrorCode {
     TOKEN_BLACKLISTED(HttpStatus.UNAUTHORIZED, "A009", "차단된 JWT 토큰입니다."),
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "A010", "존재하지 않는 JWT 토큰입니다."),
 
-    ACCESS_DENIED(HttpStatus.FORBIDDEN, "A011", "접근 권한이 없습니다.");
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "A011", "접근 권한이 없습니다."),
+
+    ALREADY_LOGOUT(HttpStatus.BAD_REQUEST, "A012", "이미 로그아웃된 사용자입니다.");
 
     private final HttpStatus status;
     private final String code;
