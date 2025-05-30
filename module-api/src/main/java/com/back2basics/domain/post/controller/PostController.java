@@ -1,6 +1,7 @@
 package com.back2basics.domain.post.controller;
 
 import com.back2basics.domain.post.controller.code.PostResponseCode;
+import com.back2basics.domain.post.docs.PostApiDocs;
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
 import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController {
+public class PostController implements PostApiDocs {
 
     private final PostCreateUseCase createPostUseCase;
     private final PostReadUseCase postReadUseCase;
