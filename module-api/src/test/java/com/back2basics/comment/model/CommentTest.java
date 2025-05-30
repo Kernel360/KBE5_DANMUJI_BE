@@ -2,7 +2,7 @@ package com.back2basics.comment.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.back2basics.comment.port.command.CommentUpdateCommand;
+import com.back2basics.comment.port.in.command.CommentUpdateCommand;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;

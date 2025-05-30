@@ -1,8 +1,8 @@
 package com.back2basics.comment.service;
 
 import com.back2basics.comment.model.Comment;
-import com.back2basics.comment.port.command.CommentCreateCommand;
 import com.back2basics.comment.port.in.CommentCreateUseCase;
+import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.comment.port.out.CommentCreatePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

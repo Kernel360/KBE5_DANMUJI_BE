@@ -1,7 +1,7 @@
 package com.back2basics.comment.service;
 
 import com.back2basics.comment.model.Comment;
-import com.back2basics.comment.port.command.CommentCreateCommand;
+import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.infra.validation.validator.CommentValidator;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
