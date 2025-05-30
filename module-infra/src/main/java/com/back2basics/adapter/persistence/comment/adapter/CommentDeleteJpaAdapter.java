@@ -7,9 +7,9 @@ import com.back2basics.adapter.persistence.comment.utils.CommentDeleteHelper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentDeletePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CommentDeleteJpaAdapter implements CommentDeletePort {
 

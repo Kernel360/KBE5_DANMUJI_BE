@@ -6,9 +6,9 @@ import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentReadPort;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CommentReadJpaAdapter implements CommentReadPort {
 

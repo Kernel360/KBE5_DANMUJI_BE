@@ -7,9 +7,9 @@ import com.back2basics.adapter.persistence.comment.utils.CommentUpdateHelper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentUpdatePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CommentUpdateJpaAdapter implements CommentUpdatePort {
 
