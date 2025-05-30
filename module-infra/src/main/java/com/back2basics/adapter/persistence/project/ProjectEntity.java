@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.project;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
+import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.project.model.ProjectStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,10 +10,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,9 +55,13 @@ public class ProjectEntity extends BaseTimeEntity {
     @Column(name = "status", nullable = false)
     private ProjectStatus status;
 
+    @OneToMany(mappedBy = "project")
+    private List<ProjectStepEntity> steps = new ArrayList<>();
+
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
-        LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status) {
+        LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status,
+        List<ProjectStepEntity> steps) {
 
         this.id = id;
         this.name = name;
@@ -63,5 +71,6 @@ public class ProjectEntity extends BaseTimeEntity {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status;
+        this.steps = steps;
     }
 }
