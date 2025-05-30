@@ -1,8 +1,8 @@
 package com.back2basics.domain.comment.controller;
 
-import com.back2basics.comment.port.in.CreateCommentUseCase;
-import com.back2basics.comment.port.in.DeleteCommentUseCase;
-import com.back2basics.comment.port.in.UpdateCommentUseCase;
+import com.back2basics.comment.port.in.CommentCreateUseCase;
+import com.back2basics.comment.port.in.CommentDeleteUseCase;
+import com.back2basics.comment.port.in.CommentUpdateUseCase;
 import com.back2basics.domain.comment.controller.code.CommentResponseCode;
 import com.back2basics.domain.comment.dto.request.CommentCreateRequest;
 import com.back2basics.domain.comment.dto.request.CommentUpdateRequest;
@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CommentController {
 
-    private final CreateCommentUseCase createCommentUseCase;
-    private final DeleteCommentUseCase deleteCommentUseCase;
-    private final UpdateCommentUseCase updateCommentUseCase;
+    private final CommentCreateUseCase createCommentUseCase;
+    private final CommentDeleteUseCase commentDeleteUseCase;
+    private final CommentUpdateUseCase updateCommentUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createComment(
@@ -49,7 +49,7 @@ public class CommentController {
         @PathVariable Long commentId,
         @RequestParam String requesterName
     ) {
-        deleteCommentUseCase.deleteComment(commentId, requesterName);
+        commentDeleteUseCase.deleteComment(commentId, requesterName);
         return ApiResponse.success(CommentResponseCode.COMMENT_DELETE_SUCCESS);
     }
 

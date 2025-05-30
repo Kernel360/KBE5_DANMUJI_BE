@@ -4,14 +4,14 @@ import com.back2basics.adapter.persistence.comment.utils.CommentDeleteHelper;
 import com.back2basics.adapter.persistence.comment.utils.CommentRelationHelper;
 import com.back2basics.adapter.persistence.comment.utils.CommentUpdateHelper;
 import com.back2basics.comment.model.Comment;
-import com.back2basics.comment.port.out.CommentRepositoryPort;
+import com.back2basics.comment.port.out.CommentReadPort;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CommentJpaAdapter implements CommentRepositoryPort {
+public class CommentJpaAdapter implements CommentReadPort {
 
     private final CommentEntityRepository commentRepository;
     private final CommentRelationHelper commentRelationHelper;
