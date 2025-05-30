@@ -1,7 +1,7 @@
 package com.back2basics.domain.post.swagger;
 
 public class PostDocsResult {
-    
+
     public static final String POST_CREATE_REQUEST = """
         {
           "authorId": 1,
@@ -40,7 +40,7 @@ public class PostDocsResult {
           "code": "P202",
           "message": "게시글 조회 완료",
           "data": {
-            "id": 1,
+            "postId": 1,
             "authorId": 1,
             "title": "게시글 제목",
             "content": "게시글 내용",
@@ -48,7 +48,33 @@ public class PostDocsResult {
             "status": "PENDING",
             "priority": 1,
             "createdAt": "2024-01-01T10:00:00",
-            "updatedAt": "2024-01-01T10:00:00"
+            "updatedAt": "2024-01-01T10:00:00",
+            "deletedAt": null,
+            "completedAt": null,
+            "comments": [
+              {
+                "id": 1,
+                "postId": 1,
+                "authorId": 1,
+                "content": "그거 버그 아니고 기능인데요.",
+                "parentCommentId": null,
+                "createdAt": "2024-01-01T10:05:00",
+                "updatedAt": "2024-01-01T10:05:00",
+                "childComments": [
+                  {
+                    "id": 2,
+                    "postId": 1,
+                    "authorId": 2,
+                    "content": "@홍길동 확인했습니다!",
+                    "parentCommentId": 1,
+                    "createdAt": "2024-01-01T10:10:00",
+                    "updatedAt": "2024-01-01T10:10:00",
+                    "childComments": []
+                  }
+                ]
+              }
+            ],
+            "isDelete": false
           }
         }
         """;
@@ -70,13 +96,17 @@ public class PostDocsResult {
           "data": {
             "content": [
               {
-                "id": 1,
+                "postId": 1,
                 "authorId": 1,
                 "title": "첫 번째 게시글",
                 "content": "첫 번째 내용",
                 "type": "GENERAL",
                 "status": "PENDING",
-                "priority": 1
+                "priority": 1,
+                "createdAt": "2024-01-01T10:00:00",
+                "updatedAt": "2024-01-01T10:00:00",
+                "comments": [],
+                "isDelete": false
               }
             ],
             "pageable": {
@@ -141,13 +171,17 @@ public class PostDocsResult {
           "data": {
             "content": [
               {
-                "id": 1,
+                "postId": 1,
                 "authorId": 1,
                 "title": "검색된 게시글",
                 "content": "키워드가 포함된 내용",
                 "type": "GENERAL",
                 "status": "PENDING",
-                "priority": 1
+                "priority": 1,
+                "createdAt": "2024-01-01T10:00:00",
+                "updatedAt": "2024-01-01T10:00:00",
+                "comments": [],
+                "isDelete": false
               }
             ],
             "pageable": {
