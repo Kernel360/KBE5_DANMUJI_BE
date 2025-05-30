@@ -1,0 +1,42 @@
+package com.back2basics.domain.company.dto.response;
+
+import com.back2basics.company.model.CompanyType;
+import com.back2basics.company.service.result.ReadCompanyResult;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class ReadCompanyResponse {
+
+    private String name;
+    private String ceoName;
+    private String bio;
+    private CompanyType companyType;
+    private Integer bizNo;
+    private String address;
+    private String email;
+    private String tel;
+
+    public static ReadCompanyResponse toResponse(ReadCompanyResult result) {
+        return ReadCompanyResponse.builder()
+            .name(result.getName())
+            .ceoName(result.getCeoName())
+            .bio(result.getBio())
+            .companyType(result.getCompanyType())
+            .bizNo(result.getBizNo())
+            .address(result.getAddress())
+            .email(result.getEmail())
+            .tel(result.getTel())
+            .build();
+    }
+
+    public static List<ReadCompanyResponse> toResponse(List<ReadCompanyResult> result) {
+        return result.stream()
+            .map(ReadCompanyResponse::toResponse)
+            .collect(Collectors.toList());
+    }
+
+}

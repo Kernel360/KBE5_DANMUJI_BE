@@ -1,5 +1,8 @@
-package com.back2basics.adapter.persistence.company;
+package com.back2basics.adapter.persistence.company.adapter;
 
+import com.back2basics.adapter.persistence.company.CompanyEntity;
+import com.back2basics.adapter.persistence.company.CompanyEntityRepository;
+import com.back2basics.adapter.persistence.company.CompanyMapper;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.out.CreateCompanyPort;
 import lombok.RequiredArgsConstructor;

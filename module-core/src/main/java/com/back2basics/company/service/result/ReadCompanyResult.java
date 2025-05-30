@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CompanyInfoResult {
+public class ReadCompanyResult {
 
     private final Long id;
     private final String name;
@@ -19,7 +19,7 @@ public class CompanyInfoResult {
     private final String tel;
 
     @Builder
-    public CompanyInfoResult(Long id, String name, String ceoName, String bio,
+    public ReadCompanyResult(Long id, String name, String ceoName, String bio,
         CompanyType companyType,
         Integer bizNo, String address, String email, String tel) {
         this.id = id;
@@ -33,8 +33,8 @@ public class CompanyInfoResult {
         this.tel = tel;
     }
 
-    public static CompanyInfoResult from(Company company) {
-        return CompanyInfoResult.builder()
+    public static ReadCompanyResult toResult(Company company) {
+        return ReadCompanyResult.builder()
             .id(company.getId())
             .name(company.getName())
             .ceoName(company.getCeoName())

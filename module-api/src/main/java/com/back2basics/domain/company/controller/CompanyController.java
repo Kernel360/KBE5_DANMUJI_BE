@@ -2,13 +2,13 @@ package com.back2basics.domain.company.controller;
 
 import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.DeleteCompanyUseCase;
-import com.back2basics.company.port.in.GetAllCompaniesUseCase;
-import com.back2basics.company.port.in.GetCompanyByIdUseCase;
+import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
 import com.back2basics.company.port.in.command.UpdateCompanyCommand;
-import com.back2basics.company.service.result.CompanyInfoResult;
+import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.domain.company.controller.code.CompanyResponseCode;
 import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
+import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -30,8 +30,7 @@ public class CompanyController {
 
     private final CreateCompanyUseCase createCompanyUseCase;
     private final DeleteCompanyUseCase deleteCompanyUseCase;
-    private final GetCompanyByIdUseCase getCompanyByIdUseCase;
-    private final GetAllCompaniesUseCase getAllCompaniesUseCase;
+    private final ReadCompanyUseCase readCompanyUseCase;
     private final UpdateCompanyUseCase updateCompanyUseCase;
 
     @PostMapping
@@ -42,16 +41,18 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}")
-    public ResponseEntity<ApiResponse<CompanyInfoResult>> getCompanyById(
+    public ResponseEntity<ApiResponse<ReadCompanyResponse>> getCompanyById(
         @PathVariable Long companyId) {
-        CompanyInfoResult company = getCompanyByIdUseCase.getCompany(companyId);
-        return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS, company);
+        ReadCompanyResult result = readCompanyUseCase.getCompany(companyId);
+        return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS,
+            ReadCompanyResponse.toResponse(result));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CompanyInfoResult>>> getAllCompanies() {
-        List<CompanyInfoResult> companies = getAllCompaniesUseCase.getAllCompanies();
-        return ApiResponse.success(CompanyResponseCode.COMPANY_READ_ALL_SUCCESS, companies);
+    public ResponseEntity<ApiResponse<List<ReadCompanyResponse>>> getAllCompanies() {
+        List<ReadCompanyResult> companies = readCompanyUseCase.getAllCompanies();
+        return ApiResponse.success(CompanyResponseCode.COMPANY_READ_ALL_SUCCESS,
+            ReadCompanyResponse.toResponse(companies));
     }
 
     @PatchMapping("/{companyId}")
