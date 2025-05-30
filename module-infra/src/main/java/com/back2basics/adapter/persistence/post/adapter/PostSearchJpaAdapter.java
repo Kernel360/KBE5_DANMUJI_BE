@@ -6,6 +6,7 @@ import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostSearchPort;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,12 +30,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
-            .where(
-                postEntity.deletedAt.isNull()
-                    .and(keyword == null || keyword.isBlank() ? null :
-                        postEntity.title.contains(keyword)
-                            .or(postEntity.content.contains(keyword)))
-            )
+            .where(activePosts().and(matchesKeyword(keyword)))
             .orderBy(postEntity.createdAt.desc(), postEntity.id.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -45,12 +41,9 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .selectFrom(postEntity)
             .distinct()
             .leftJoin(postEntity.comments, commentEntity).fetchJoin()
-            .where(
-                postEntity.deletedAt.isNull()
-                    .and(postEntity.id.in(ids))
-                    .and(keyword == null || keyword.isBlank() ? null :
-                        postEntity.title.contains(keyword)
-                            .or(postEntity.content.contains(keyword)))
+            .where(postEntity.id.in(ids)
+                .and(activePosts())
+                .and(matchesKeyword(keyword))
             )
             .orderBy(postEntity.createdAt.desc(), postEntity.id.desc())
             .fetch()
@@ -62,15 +55,22 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         Long total = queryFactory
             .select(postEntity.count())
             .from(postEntity)
-            .where(
-                postEntity.deletedAt.isNull()
-                    .and(keyword == null || keyword.isBlank() ? null :
-                        postEntity.title.contains(keyword)
-                            .or(postEntity.content.contains(keyword)))
-            )
+            .where(activePosts().and(matchesKeyword(keyword)))
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
 
+    }
+
+    private BooleanExpression activePosts() {
+        return postEntity.deletedAt.isNull();
+    }
+
+    private BooleanExpression matchesKeyword(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return null;
+        }
+        return postEntity.title.contains(keyword)
+            .or(postEntity.content.contains(keyword));
     }
 }
