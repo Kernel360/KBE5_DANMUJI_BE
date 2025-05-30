@@ -5,9 +5,9 @@ import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.out.ReadCompanyPort;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.infra.validation.validator.CompanyValidator;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,10 +25,9 @@ public class ReadCompanyService implements ReadCompanyUseCase {
     }
 
     @Override
-    public List<ReadCompanyResult> getAllCompanies() {
-        return readCompanyPort.findAll().stream()
-            .map(ReadCompanyResult::toResult)
-            .collect(Collectors.toList());
+    public Page<ReadCompanyResult> getAllCompanies(Pageable pageable) {
+        return readCompanyPort.findAll(pageable)
+            .map(ReadCompanyResult::toResult);
     }
 
 }

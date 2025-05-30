@@ -1,8 +1,8 @@
 package com.back2basics.comment.service;
 
 import com.back2basics.comment.model.Comment;
-import com.back2basics.comment.port.command.CommentUpdateCommand;
 import com.back2basics.comment.port.in.CommentUpdateUseCase;
+import com.back2basics.comment.port.in.command.CommentUpdateCommand;
 import com.back2basics.comment.port.out.CommentUpdatePort;
 import com.back2basics.infra.validation.validator.CommentValidator;
 import lombok.RequiredArgsConstructor;
