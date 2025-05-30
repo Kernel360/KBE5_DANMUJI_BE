@@ -2,39 +2,20 @@ package com.back2basics.company.service;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.DeleteCompanyUseCase;
-import com.back2basics.company.port.in.GetAllCompaniesUseCase;
-import com.back2basics.company.port.in.GetCompanyByIdUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
 import com.back2basics.company.port.in.command.UpdateCompanyCommand;
 import com.back2basics.company.port.out.CompanyRepositoryPort;
-import com.back2basics.company.service.result.CompanyInfoResult;
 import com.back2basics.infra.validation.validator.CompanyValidator;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements DeleteCompanyUseCase,
-    GetCompanyByIdUseCase, GetAllCompaniesUseCase, UpdateCompanyUseCase {
+    UpdateCompanyUseCase {
 
     private final CompanyRepositoryPort companyRepositoryPort;
     private final CompanyValidator companyValidator;
-
-
-    @Override
-    public CompanyInfoResult getCompany(Long id) {
-        Company company = companyValidator.findCompany(id);
-        return CompanyInfoResult.from(company);
-    }
-
-    @Override
-    public List<CompanyInfoResult> getAllCompanies() {
-        return companyRepositoryPort.findAll().stream()
-            .map(CompanyInfoResult::from)
-            .collect(Collectors.toList());
-    }
 
     @Override
     public void updateCompany(Long id, UpdateCompanyCommand command) {

@@ -1,7 +1,7 @@
 package com.back2basics.infra.validation.validator;
 
 import com.back2basics.company.model.Company;
-import com.back2basics.company.port.out.CompanyRepositoryPort;
+import com.back2basics.company.port.out.ReadCompanyPort;
 import com.back2basics.infra.exception.company.CompanyErrorCode;
 import com.back2basics.infra.exception.company.CompanyException;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CompanyValidator {
 
-    private final CompanyRepositoryPort companyRepositoryPort;
+    private final ReadCompanyPort readCompanyPort;
 
     public Company findCompany(Long id) {
-        return companyRepositoryPort.findById(id)
+        return readCompanyPort.findById(id)
             .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));
     }
 
