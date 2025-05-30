@@ -8,6 +8,7 @@ import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_UNSUPPORT
 
 import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.model.CustomUserDetails;
+import com.back2basics.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -30,14 +32,16 @@ public class JwtTokenProvider {
     private final SecretKey secretKey;
     private final Long accessTokenExpirationMs;
     private final Long refreshTokenExpirationMs;
+    private final RedisUtil redisUtil;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey,
         @Value("${jwt.access}") Long accessTokenExpirationMs,
-        @Value("${jwt.refresh}") Long refreshTokenExpirationMs) {
+        @Value("${jwt.refresh}") Long refreshTokenExpirationMs, RedisUtil redisUtil) {
         this.secretKey = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8),
             Jwts.SIG.HS256.key().build().getAlgorithm());
         this.accessTokenExpirationMs = accessTokenExpirationMs;
         this.refreshTokenExpirationMs = refreshTokenExpirationMs;
+        this.redisUtil = redisUtil;
     }
 
     public String createToken(CustomUserDetails customUserDetails, Instant expiration) {
@@ -64,7 +68,14 @@ public class JwtTokenProvider {
     }
 
     public String createRefreshToken(CustomUserDetails userDetails) {
-        return createToken(userDetails, Instant.now().plusMillis(refreshTokenExpirationMs));
+        Instant expiration = Instant.now().plusMillis(refreshTokenExpirationMs);
+        String refreshToken = createToken(userDetails, expiration);
+
+        // 레디스에 저장
+        redisUtil.save("RT:" + userDetails.getUsername(), refreshToken,
+            refreshTokenExpirationMs, TimeUnit.MILLISECONDS);
+
+        return refreshToken;
     }
 
     // HTTP 요청의 'Authorization' 헤더에서 JWT 액세스 토큰을 검색
@@ -104,6 +115,50 @@ public class JwtTokenProvider {
             throw new InvalidTokenException(TOKEN_SIGNATURE_INVALID);
         } catch (IllegalArgumentException e) {
             throw new InvalidTokenException(TOKEN_INVALID);
+        }
+    }
+
+    // refresh token이 유효한지 확인
+    public void validateRefreshToken(String refreshToken) {
+        try {
+            // 토큰 파싱 및 서명 검증
+            Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(refreshToken);
+
+        } catch (ExpiredJwtException e) {
+            throw new InvalidTokenException(TOKEN_EXPIRED);
+        } catch (UnsupportedJwtException e) {
+            throw new InvalidTokenException(TOKEN_UNSUPPORTED);
+        } catch (MalformedJwtException e) {
+            throw new InvalidTokenException(TOKEN_MALFORMED);
+        } catch (SignatureException | SecurityException e) {
+            throw new InvalidTokenException(TOKEN_SIGNATURE_INVALID);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidTokenException(TOKEN_INVALID);
+        }
+
+    }
+
+    public long getAccessTokenRemainingTime(String accessToken) {
+        Date expiration = Jwts.parser()
+            .clockSkewSeconds(180)
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(accessToken)
+            .getPayload()
+            .getExpiration();
+
+        return expiration.getTime() - System.currentTimeMillis();
+    }
+
+    public boolean hasRedisRefreshToken(String refreshToken) {
+        try {
+            String username = getSubject(refreshToken);
+            return redisUtil.hasKey("RT:" + username);
+        } catch (Exception e) {
+            return false;
         }
     }
 }
