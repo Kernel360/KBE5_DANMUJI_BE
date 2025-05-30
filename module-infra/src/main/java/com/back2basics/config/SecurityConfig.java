@@ -1,4 +1,4 @@
-package com.back2basics.global.config;
+package com.back2basics.config;
 
 import com.back2basics.security.jwt.JwtAuthenticationFilter;
 import com.back2basics.security.jwt.JwtAuthorizationFilter;
