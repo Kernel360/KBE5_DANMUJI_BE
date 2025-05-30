@@ -1,13 +1,13 @@
 package com.back2basics.comment.service;
 
 import com.back2basics.comment.model.Comment;
+import com.back2basics.comment.port.command.CommentCreateCommand;
+import com.back2basics.comment.port.command.CommentUpdateCommand;
 import com.back2basics.comment.port.in.CreateCommentUseCase;
 import com.back2basics.comment.port.in.DeleteCommentUseCase;
 import com.back2basics.comment.port.in.UpdateCommentUseCase;
 import com.back2basics.comment.port.out.CommentRepositoryPort;
 import com.back2basics.infra.validation.validator.CommentValidator;
-import com.back2basics.service.comment.dto.CommentCreateCommand;
-import com.back2basics.service.comment.dto.CommentUpdateCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

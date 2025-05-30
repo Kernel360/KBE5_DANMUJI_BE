@@ -1,12 +1,12 @@
-package com.back2basics.service.comment.dto;
+package com.back2basics.comment.port.command;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@Builder
 public class CommentCreateCommand {
 
     @NotNull
@@ -18,11 +18,4 @@ public class CommentCreateCommand {
 
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
-
-    public CommentCreateCommand(Long postId, Long parentId, String authorName, String content) {
-        this.postId = postId;
-        this.parentId = parentId;
-        this.authorName = authorName;
-        this.content = content;
-    }
 }

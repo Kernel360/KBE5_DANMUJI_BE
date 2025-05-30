@@ -1,8 +1,7 @@
-package com.back2basics.service.comment.dto;
+package com.back2basics.comment.service.result;
 
 import com.back2basics.comment.model.Comment;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -12,30 +11,29 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class CommentResponseDto {
+public class CommentReadResult {
 
-    private final Long id;
-    private final Long postId;
-    private final Long parentId;
+    private Long id;
+    private Long postId;
+    private Long parentCommentId; // 대댓글의 경우 부모 댓글 ID
     private final String authorName;
-    private final String content;
+    private String content;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
+    private List<CommentReadResult> children;
 
-    private final List<CommentResponseDto> children;
-
-    public static CommentResponseDto from(Comment comment) {
-        return CommentResponseDto.builder()
+    public static CommentReadResult toResult(Comment comment) {
+        return CommentReadResult.builder()
             .id(comment.getId())
             .postId(comment.getPostId())
-            .parentId(comment.getParentCommentId())
+            .parentCommentId(comment.getParentCommentId())
             .authorName(comment.getAuthorName())
             .content(comment.getContent())
             .createdAt(comment.getCreatedAt())
             .updatedAt(comment.getUpdatedAt())
             .children(comment.getChildren().stream()
-                .map(CommentResponseDto::from)
-                .collect(Collectors.toCollection((ArrayList::new))))
+                .map(CommentReadResult::toResult)
+                .collect(Collectors.toList()))
             .build();
     }
 }

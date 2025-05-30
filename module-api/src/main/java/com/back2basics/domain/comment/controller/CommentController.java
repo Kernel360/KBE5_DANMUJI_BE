@@ -1,12 +1,12 @@
 package com.back2basics.domain.comment.controller;
 
+import com.back2basics.comment.port.command.CommentCreateCommand;
+import com.back2basics.comment.port.command.CommentUpdateCommand;
 import com.back2basics.comment.port.in.CreateCommentUseCase;
 import com.back2basics.comment.port.in.DeleteCommentUseCase;
 import com.back2basics.comment.port.in.UpdateCommentUseCase;
 import com.back2basics.domain.comment.controller.code.CommentResponseCode;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.service.comment.dto.CommentCreateCommand;
-import com.back2basics.service.comment.dto.CommentUpdateCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

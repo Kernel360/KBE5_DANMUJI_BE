@@ -1,7 +1,7 @@
 package com.back2basics.comment.model;
 
+import com.back2basics.comment.port.command.CommentUpdateCommand;
 import com.back2basics.post.model.Post;
-import com.back2basics.service.comment.dto.CommentUpdateCommand;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
