@@ -1,4 +1,4 @@
-package com.back2basics.global.config;
+package com.back2basics.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
