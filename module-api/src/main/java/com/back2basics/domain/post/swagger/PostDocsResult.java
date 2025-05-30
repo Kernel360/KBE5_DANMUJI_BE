@@ -1,10 +1,7 @@
 package com.back2basics.domain.post.swagger;
 
 public class PostDocsResult {
-
-    public PostDocsResult() {
-    }
-
+    
     public static final String POST_CREATE_REQUEST = """
         {
           "authorId": 1,
