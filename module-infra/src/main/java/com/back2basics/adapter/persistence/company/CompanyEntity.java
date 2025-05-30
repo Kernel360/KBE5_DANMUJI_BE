@@ -1,6 +1,8 @@
 package com.back2basics.adapter.persistence.company;
 
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.user.model.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,7 +10,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +51,9 @@ public class CompanyEntity {
     private String email;
     @Column(name = "tel", nullable = false)
     private String tel;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> members = new ArrayList<>();
 
     @Builder
     public CompanyEntity(Long id, String name, String ceoName, String bio,
