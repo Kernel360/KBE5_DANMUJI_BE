@@ -4,10 +4,10 @@ import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
-import com.back2basics.company.port.in.command.UpdateCompanyCommand;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.domain.company.controller.code.CompanyResponseCode;
 import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
+import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
@@ -57,14 +57,14 @@ public class CompanyController {
 
     @PatchMapping("/{companyId}")
     public ResponseEntity<ApiResponse<Long>> updateCompany(@PathVariable Long companyId,
-        @Valid @RequestBody UpdateCompanyCommand command) {
-        updateCompanyUseCase.updateCompany(companyId, command);
+        @Valid @RequestBody UpdateCompanyRequest request) {
+        updateCompanyUseCase.updateCompany(companyId, request.toCommand());
         return ApiResponse.success(CompanyResponseCode.COMPANY_UPDATE_SUCCESS, companyId);
     }
 
-    @DeleteMapping("/{deleteId}")
-    public ResponseEntity<ApiResponse<Void>> deleteCompany(@PathVariable Long deleteId) {
-        deleteCompanyUseCase.deleteCompany(deleteId);
+    @DeleteMapping("/{companyId}")
+    public ResponseEntity<ApiResponse<Void>> deleteCompany(@PathVariable Long companyId) {
+        deleteCompanyUseCase.deleteCompany(companyId);
         return ApiResponse.success(CompanyResponseCode.COMPANY_DELETE_SUCCESS);
     }
 
