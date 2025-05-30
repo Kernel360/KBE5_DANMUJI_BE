@@ -120,4 +120,6 @@ class PostReadJpaAdapterTest {
 
         verify(postRepository).findById(postId);
     }
+
+    // todo : query dsl 사용한 페이징 테스트 필요. 어케하는지 알아봐야됨
 }
