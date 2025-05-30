@@ -4,6 +4,7 @@ import com.back2basics.security.jwt.JwtAuthenticationFilter;
 import com.back2basics.security.jwt.JwtAuthorizationFilter;
 import com.back2basics.security.jwt.JwtLogoutFilter;
 import com.back2basics.security.jwt.JwtTokenProvider;
+import com.back2basics.util.CookieUtil;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,19 +26,23 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final String[] allowedUrls = {"/", "/login", "/error"};
+
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final JwtLogoutFilter jwtLogoutFilter;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final CookieUtil cookieUtil;
 
     public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter,
         JwtLogoutFilter jwtLogoutFilter,
         JwtTokenProvider jwtTokenProvider,
-        AuthenticationConfiguration authenticationConfiguration) {
+        AuthenticationConfiguration authenticationConfiguration, CookieUtil cookieUtil) {
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
         this.jwtLogoutFilter = jwtLogoutFilter;
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationConfiguration = authenticationConfiguration;
+        this.cookieUtil = cookieUtil;
     }
 
     @Bean
@@ -61,13 +66,16 @@ public class SecurityConfig {
                 session -> session.sessionCreationPolicy(
                     SessionCreationPolicy.STATELESS)) // 세션 비활성화
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // TODO
+                    .requestMatchers(allowedUrls).permitAll()
+                    .requestMatchers("/static/**", "/assets/**")
+                    .permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
+                    .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
+//                    .anyRequest().permitAll() // todo
             )
             .addFilterAt(
                 new JwtAuthenticationFilter(authenticationManager(authenticationConfiguration),
-                    jwtTokenProvider
-//                    , cookieUtil
-                ), UsernamePasswordAuthenticationFilter.class)
+                    jwtTokenProvider, cookieUtil), UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(jwtAuthorizationFilter, JwtAuthenticationFilter.class)
             .addFilterBefore(jwtLogoutFilter, LogoutFilter.class)
             .build();
@@ -81,7 +89,7 @@ public class SecurityConfig {
         configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true); // 인증 정보 포함 허용 (Cookies 등)
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
