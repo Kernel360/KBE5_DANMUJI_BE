@@ -36,7 +36,6 @@ public class ProjectController {
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
 
-
     @PostMapping()
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateRequest request) {
@@ -53,6 +52,7 @@ public class ProjectController {
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_SUCCESS, response);
     }
 
+    // todo: paging 적용
     @GetMapping()
     public ResponseEntity<ApiResponse<List<ProjectGetResponse>>> getAllProjects() {
         List<ProjectGetResult> result = readProjectUseCase.getAllProjects();
@@ -60,6 +60,11 @@ public class ProjectController {
             .collect(Collectors.toList());
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, list);
     }
+
+    // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민..
+
+    // todo: search + paging list
+
 
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
