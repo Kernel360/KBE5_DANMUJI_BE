@@ -1,7 +1,7 @@
 package com.back2basics.company.port.out;
 
-public interface CompanyRepositoryPort {
-
+public interface DeleteCompanyPort {
 
     void deleteById(Long id);
+
 }
