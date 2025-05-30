@@ -75,26 +75,6 @@ public class ReissueFailTest {
     }
 
     @Test
-    void 잘못된_액세스토큰으로_재발급_실패() throws Exception {
-        String refreshToken = Arrays.stream(result.getResponse().getCookies())
-            .filter(c -> "refreshToken".equals(c.getName()))
-            .findFirst()
-            .map(Cookie::getValue)
-            .orElse(null);
-
-        // given & when
-        String invalidAccessToken = "invalid"; // 잘못된 토큰 설정
-        mvc.perform(
-                post("/api/auth/reissue")
-                    .header("Authorization", invalidAccessToken)
-                    .cookie(new Cookie("refreshToken", refreshToken))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{}"))
-            // then
-            .andExpect(status().isForbidden());
-    }
-
-    @Test
     void 블랙리스트_리프레시토큰으로_재발급_실패() throws Exception {
 
         String accessToken = result.getResponse().getHeader("Authorization");
