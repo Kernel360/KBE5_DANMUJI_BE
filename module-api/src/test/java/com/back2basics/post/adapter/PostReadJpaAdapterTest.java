@@ -12,8 +12,6 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,9 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PostReadJpaAdapter 테스트")
@@ -34,10 +29,10 @@ class PostReadJpaAdapterTest {
     private PostEntityRepository postRepository;
 
     @Mock
-    private PostMapper mapper;
+    private JPAQueryFactory queryFactory;
 
     @Mock
-    private JPAQueryFactory queryFactory;
+    private PostMapper mapper;
 
     @InjectMocks
     private PostReadJpaAdapter postReadJpaAdapter;
@@ -91,12 +86,11 @@ class PostReadJpaAdapterTest {
     }
 
     @Test
-    @DisplayName("ID로 댓글 포함 게시글 조회 성공")
-    void findByIdWithComments_Success() {
+    @DisplayName("ID로 게시글 조회 성공")
+    void findById_Success() {
         // given
         Long postId = 1L;
-        given(postRepository.findActivePostWithComments(postId)).willReturn(
-            Optional.of(postEntity1));
+        given(postRepository.findById(postId)).willReturn(Optional.of(postEntity1));
         given(mapper.toDomain(postEntity1)).willReturn(post1);
 
         // when
@@ -107,7 +101,7 @@ class PostReadJpaAdapterTest {
         assertThat(result.get().getId()).isEqualTo(1L);
         assertThat(result.get().getTitle()).isEqualTo("첫 번째 게시글");
 
-        verify(postRepository).findActivePostWithComments(postId);
+        verify(postRepository).findById(postId);
         verify(mapper).toDomain(postEntity1);
     }
 
@@ -116,7 +110,7 @@ class PostReadJpaAdapterTest {
     void findById_NotFound() {
         // given
         Long postId = 999L;
-        given(postRepository.findActivePostWithComments(postId)).willReturn(Optional.empty());
+        given(postRepository.findById(postId)).willReturn(Optional.empty());
 
         // when
         Optional<Post> result = postReadJpaAdapter.findById(postId);
@@ -124,79 +118,6 @@ class PostReadJpaAdapterTest {
         // then
         assertThat(result).isNotPresent();
 
-        verify(postRepository).findActivePostWithComments(postId);
-    }
-
-    @Test
-    @DisplayName("페이징으로 댓글 포함 게시글 목록 조회 성공")
-    void findAllWithPaging_Success() {
-        // given
-        Pageable pageable = PageRequest.of(0, 10);
-        List<Long> postIds = Arrays.asList(1L, 2L);
-        List<PostEntity> entities = Arrays.asList(postEntity1, postEntity2);
-
-        given(postRepository.findActivePostIds(pageable)).willReturn(postIds);
-        given(postRepository.findActivePostsWithCommentsByIds(postIds)).willReturn(entities);
-        given(postRepository.countActivePosts()).willReturn(2L);
-        given(mapper.toDomain(postEntity1)).willReturn(post1);
-        given(mapper.toDomain(postEntity2)).willReturn(post2);
-
-        // when
-        Page<Post> result = postReadJpaAdapter.findAllWithPaging(pageable);
-
-        // then
-        assertThat(result.getContent()).hasSize(2);
-        assertThat(result.getTotalElements()).isEqualTo(2L);
-        assertThat(result.getContent().get(0).getId()).isEqualTo(1L);
-        assertThat(result.getContent().get(1).getId()).isEqualTo(2L);
-
-        verify(postRepository).findActivePostIds(pageable);
-        verify(postRepository).findActivePostsWithCommentsByIds(postIds);
-        verify(postRepository).countActivePosts();
-        verify(mapper).toDomain(postEntity1);
-        verify(mapper).toDomain(postEntity2);
-    }
-
-    @Test
-    @DisplayName("페이징 조회 - 빈 결과")
-    void findAllWithPaging_EmptyResult() {
-        // given
-        Pageable pageable = PageRequest.of(0, 10);
-        List<Long> emptyIds = Arrays.asList();
-
-        given(postRepository.findActivePostIds(pageable)).willReturn(emptyIds);
-        given(postRepository.countActivePosts()).willReturn(0L);
-
-        // when
-        Page<Post> result = postReadJpaAdapter.findAllWithPaging(pageable);
-
-        // then
-        assertThat(result.getContent()).isEmpty();
-        assertThat(result.getTotalElements()).isEqualTo(0L);
-
-        verify(postRepository).findActivePostIds(pageable);
-        verify(postRepository).countActivePosts();
-    }
-
-    @Test
-    @DisplayName("활성 게시글 전체 조회")
-    void findAll_Success() {
-        // given
-        List<PostEntity> entities = Arrays.asList(postEntity1, postEntity2);
-        given(postRepository.findAllActivePosts()).willReturn(entities);
-        given(mapper.toDomain(postEntity1)).willReturn(post1);
-        given(mapper.toDomain(postEntity2)).willReturn(post2);
-
-        // when
-        List<Post> results = postReadJpaAdapter.findAll();
-
-        // then
-        assertThat(results).hasSize(2);
-        assertThat(results.get(0).getId()).isEqualTo(1L);
-        assertThat(results.get(1).getId()).isEqualTo(2L);
-
-        verify(postRepository).findAllActivePosts();
-        verify(mapper).toDomain(postEntity1);
-        verify(mapper).toDomain(postEntity2);
+        verify(postRepository).findById(postId);
     }
 }
