@@ -4,10 +4,10 @@ import com.back2basics.adapter.persistence.company.CompanyEntityRepository;
 import com.back2basics.adapter.persistence.company.CompanyMapper;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.out.ReadCompanyPort;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,10 +23,9 @@ public class ReadCompanyJpaAdapter implements ReadCompanyPort {
     }
 
     @Override
-    public List<Company> findAll() {
-        return companyEntityRepository.findAll().stream()
-            .map(companyMapper::toDomain)
-            .collect(Collectors.toList());
+    public Page<Company> findAll(Pageable pageable) {
+        return companyEntityRepository.findAll(pageable)
+            .map(companyMapper::toDomain);
     }
 
 }
