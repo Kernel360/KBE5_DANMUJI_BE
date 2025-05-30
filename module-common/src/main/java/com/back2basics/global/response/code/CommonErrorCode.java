@@ -15,7 +15,8 @@ public enum CommonErrorCode implements ErrorCode {
     BAD_CREDENTIALS(HttpStatus.BAD_REQUEST, "C005", "Invalid username or password"),
     NOT_FOUND(HttpStatus.NOT_FOUND, "C006", "Resource not found"),
     MISSING_PARAMETER(HttpStatus.BAD_REQUEST, "C007", "Missing request parameter"),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "C008", "Bad Request");
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "C008", "Bad Request"),
+    REDIS_CONNECTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C009", "Redis connection error");
 
     private final HttpStatus status;
     private final String code;
