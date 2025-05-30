@@ -1,6 +1,5 @@
-package com.back2basics.adapter.persistence.project.mapper;
+package com.back2basics.adapter.persistence.project;
 
-import com.back2basics.adapter.persistence.project.entity.ProjectEntity;
 import com.back2basics.project.model.Project;
 import org.springframework.stereotype.Component;
 

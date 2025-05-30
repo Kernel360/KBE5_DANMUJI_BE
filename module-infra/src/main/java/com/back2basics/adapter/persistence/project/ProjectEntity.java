@@ -1,4 +1,4 @@
-package com.back2basics.adapter.persistence.project.entity;
+package com.back2basics.adapter.persistence.project;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.project.model.ProjectStatus;

@@ -1,7 +1,5 @@
-package com.back2basics.adapter.persistence.project.repository;
+package com.back2basics.adapter.persistence.project;
 
-import com.back2basics.adapter.persistence.project.entity.ProjectEntity;
-import com.back2basics.project.model.Project;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
