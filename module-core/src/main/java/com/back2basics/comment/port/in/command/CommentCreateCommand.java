@@ -1,4 +1,4 @@
-package com.back2basics.comment.port.command;
+package com.back2basics.comment.port.in.command;
 
 import lombok.Builder;
 import lombok.Getter;

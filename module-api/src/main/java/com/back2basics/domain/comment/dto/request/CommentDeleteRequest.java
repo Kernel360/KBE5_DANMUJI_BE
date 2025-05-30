@@ -1,6 +1,6 @@
 package com.back2basics.domain.comment.dto.request;
 
-import com.back2basics.comment.port.command.CommentDeleteCommand;
+import com.back2basics.comment.port.in.command.CommentDeleteCommand;
 import lombok.Getter;
 
 @Getter

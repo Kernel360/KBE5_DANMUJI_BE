@@ -1,6 +1,6 @@
 package com.back2basics.comment.port.in;
 
-import com.back2basics.comment.port.command.CommentCreateCommand;
+import com.back2basics.comment.port.in.command.CommentCreateCommand;
 
 public interface CommentCreateUseCase {
 
