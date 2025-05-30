@@ -1,29 +1,42 @@
 package com.back2basics.security.jwt;
 
+import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_BLACKLISTED;
+import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_INVALID;
+
+import com.back2basics.global.response.error.ErrorResponse;
+import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.global.response.util.ResponseUtil;
+import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
+import com.back2basics.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Slf4j
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserQueryUseCase userQueryUseCase;
+    private final RedisUtil redisUtil;
 
     public JwtAuthorizationFilter(JwtTokenProvider jwtTokenProvider,
-        UserQueryUseCase userQueryUseCase) {
+        UserQueryUseCase userQueryUseCase, RedisUtil redisUtil) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userQueryUseCase = userQueryUseCase;
+        this.redisUtil = redisUtil;
     }
 
     @Override
@@ -37,15 +50,34 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtTokenProvider.getSubject(accessToken);
+        try {
+            jwtTokenProvider.validateAccessToken(accessToken);
+        } catch (InvalidTokenException e) {
+            log.error("InvalidTokenException: {}", e.getMessage());
+            response.sendError(TOKEN_INVALID.getStatus().value(), TOKEN_INVALID.getMessage());
+            return;
+        }
 
-        User user = userQueryUseCase.findByUsername(username);
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        if (redisUtil.hasKey("BL:" + accessToken)) {
+            ResponseEntity<ApiResponse<ErrorResponse>> apiResponse = ApiResponse.error(
+                TOKEN_BLACKLISTED);
+            ResponseUtil.writeJson(response, apiResponse);
+            return;
+        }
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails,
-            null, customUserDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            Authentication authentication = getAuthentication(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
         filterChain.doFilter(request, response);
+    }
+
+    private Authentication getAuthentication(String token) {
+        String username = jwtTokenProvider.getSubject(token);
+        User user = userQueryUseCase.findByUsername(username);
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+        return new UsernamePasswordAuthenticationToken(userDetails, null,
+            userDetails.getAuthorities());
     }
 }

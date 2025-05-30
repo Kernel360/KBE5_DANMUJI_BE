@@ -10,6 +10,7 @@ import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.global.response.util.ResponseUtil;
 import com.back2basics.security.exception.CustomBadCredentialsException;
 import com.back2basics.security.model.CustomUserDetails;
+import com.back2basics.util.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,11 +27,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CookieUtil cookieUtil;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
-        JwtTokenProvider jwtTokenProvider) {
+        JwtTokenProvider jwtTokenProvider, CookieUtil cookieUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.cookieUtil = cookieUtil;
     }
 
     @Override
@@ -58,7 +61,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         String access = jwtTokenProvider.createAccessToken(customUserDetails);
+        String refresh = jwtTokenProvider.createRefreshToken(customUserDetails);
         response.setHeader("Authorization", "Bearer " + access);
+        response.addCookie(cookieUtil.createCookie(refresh));
 
         ResponseEntity<ApiResponse<Void>> apiResponse = ApiResponse.success(SUCCESS_LOGIN);
         ResponseUtil.writeJson(response, apiResponse);
