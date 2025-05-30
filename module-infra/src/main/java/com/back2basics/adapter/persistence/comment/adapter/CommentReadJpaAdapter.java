@@ -1,0 +1,22 @@
+package com.back2basics.adapter.persistence.comment.adapter;
+
+import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
+import com.back2basics.adapter.persistence.comment.CommentMapper;
+import com.back2basics.comment.model.Comment;
+import com.back2basics.comment.port.out.CommentReadPort;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class CommentReadJpaAdapter implements CommentReadPort {
+
+    private final CommentEntityRepository commentEntityRepository;
+    private final CommentMapper mapper;
+
+    @Override
+    public Optional<Comment> findById(Long id) {
+        return commentEntityRepository.findById(id).map(mapper::toDomain);
+    }
+}
