@@ -19,11 +19,6 @@ public class CompanyJpaAdapter implements CompanyRepositoryPort {
     private final CompanyEntityRepository companyEntityRepository;
     private final CompanyMapper mapper;
 
-    @Override
-    public Long save(Company company) {
-        CompanyEntity entity = mapper.toEntity(company);
-        return companyEntityRepository.save(entity).getId();
-    }
 
     @Override
     public Optional<Company> findById(Long id) {

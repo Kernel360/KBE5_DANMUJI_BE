@@ -1,11 +1,12 @@
 package com.back2basics.post.port.in;
 
 import com.back2basics.post.service.result.PostReadResult;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PostReadUseCase {
 
     PostReadResult getPost(Long id);
 
-    List<PostReadResult> getPostList();
+    Page<PostReadResult> getPostList(Pageable pageable);
 }

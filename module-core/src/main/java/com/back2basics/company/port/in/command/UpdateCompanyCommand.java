@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyUpdateCommand {
+public class UpdateCompanyCommand {
 
     @CustomNotBlank(message = "회사 이름은 공백일 수 없습니다.")
     private String name;

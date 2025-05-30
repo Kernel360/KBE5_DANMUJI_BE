@@ -5,9 +5,9 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostReadUseCase;
 import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.service.result.PostReadResult;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,9 +24,8 @@ public class PostReadService implements PostReadUseCase {
     }
 
     @Override
-    public List<PostReadResult> getPostList() {
-        return postReadPort.findAll().stream()
-            .map(PostReadResult::toResult)
-            .collect(Collectors.toList());
+    public Page<PostReadResult> getPostList(Pageable pageable) {
+        return postReadPort.findAllWithPaging(pageable)
+            .map(PostReadResult::toResult);
     }
 }
