@@ -75,7 +75,7 @@ public class LoginSuccessTest {
             .andExpect(cookie().exists("refreshToken")); // 쿠키 확인
 
         // Redis에 refreshToken이 저장되었는지 확인
-        boolean hasKey = redisUtil.hasKey("RT:" + loginRequest.username());
+        boolean hasKey = redisUtil.hasKey(redisUtil.buildRefreshTokenKey(loginRequest.username()));
         assertTrue(hasKey, "Redis에 키가 존재합니다.");
     }
 

@@ -10,6 +10,7 @@ import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -72,7 +73,7 @@ public class JwtTokenProvider {
         String refreshToken = createToken(userDetails, expiration);
 
         // 레디스에 저장
-        redisUtil.save("RT:" + userDetails.getUsername(), refreshToken,
+        redisUtil.save(redisUtil.buildRefreshTokenKey(userDetails.getUsername()), refreshToken,
             refreshTokenExpirationMs, TimeUnit.MILLISECONDS);
 
         return refreshToken;
@@ -89,12 +90,33 @@ public class JwtTokenProvider {
 
     // TOKEN에서 USERNAME 추출
     public String getSubject(String token) {
-        return Jwts.parser()
-            .verifyWith(secretKey)
-            .build()
-            .parseSignedClaims(token)
-            .getPayload()
-            .getSubject();
+        try {
+            return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+        } catch (ExpiredJwtException e) {
+            // 액세스 토큰이 만료된 경우
+            throw new InvalidTokenException(TOKEN_EXPIRED);
+        } catch (JwtException e) {
+            // 변조된 토큰 등 기타 문제
+            throw new InvalidTokenException(TOKEN_INVALID);
+        }
+    }
+
+    public String getSubjectIgnoringExpiration(String token) {
+        try {
+            return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().getSubject(); // 만료된 경우에도 subject는 읽을 수 있음
+        }
     }
 
     // 액세스 토큰이 유효한지 확인
@@ -142,21 +164,31 @@ public class JwtTokenProvider {
     }
 
     public long getAccessTokenRemainingTime(String accessToken) {
-        Date expiration = Jwts.parser()
-            .clockSkewSeconds(180)
-            .verifyWith(secretKey)
-            .build()
-            .parseSignedClaims(accessToken)
-            .getPayload()
-            .getExpiration();
+        try {
+            Date expiration = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(accessToken)
+                .getPayload()
+                .getExpiration();
 
-        return expiration.getTime() - System.currentTimeMillis();
+            return Math.max(expiration.getTime() - System.currentTimeMillis(), 360000L);
+        } catch (ExpiredJwtException e) {
+            return 360000L;
+        }
     }
 
-    public boolean hasRedisRefreshToken(String refreshToken) {
+    public boolean isRefreshTokenValidInRedis(String refreshToken) {
         try {
             String username = getSubject(refreshToken);
-            return redisUtil.hasKey("RT:" + username);
+            String redisKey = redisUtil.buildRefreshTokenKey(username);
+
+            if (!redisUtil.hasKey(redisKey)) {
+                return false;
+            }
+
+            String savedToken = String.valueOf(redisUtil.get(redisKey));
+            return savedToken.equals(refreshToken);
         } catch (Exception e) {
             return false;
         }

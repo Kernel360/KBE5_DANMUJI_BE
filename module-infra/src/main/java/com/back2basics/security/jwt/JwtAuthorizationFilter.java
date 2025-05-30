@@ -1,9 +1,7 @@
 package com.back2basics.security.jwt;
 
 import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_BLACKLISTED;
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_EXPIRED;
 import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_INVALID;
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_NOT_FOUND;
 
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
@@ -55,7 +53,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (redisUtil.hasKey("BL:" + accessToken)) {
+        if (redisUtil.hasKey(redisUtil.buildBlacklistTokenKey(accessToken))) {
             ResponseEntity<ApiResponse<ErrorResponse>> apiResponse = ApiResponse.error(
                 TOKEN_BLACKLISTED);
             ResponseUtil.writeJson(response, apiResponse);
@@ -64,23 +62,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         try {
             jwtTokenProvider.validateAccessToken(accessToken);
-        } catch (InvalidTokenException e) {
-            if (e.getErrorCode().equals(TOKEN_EXPIRED)) {
-                silentReissueAccessToken(accessToken, request, response, filterChain);
-                return;
+
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                Authentication authentication = getAuthentication(accessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
+            filterChain.doFilter(request, response);
+        } catch (InvalidTokenException e) {
             log.error("InvalidTokenException: {}", e.getMessage());
-            response.sendError(TOKEN_INVALID.getStatus().value(), TOKEN_INVALID.getMessage());
-            return;
+            ResponseEntity<ApiResponse<ErrorResponse>> apiResponse = ApiResponse.error(
+                TOKEN_INVALID);
+            ResponseUtil.writeJson(response, apiResponse);
         }
 
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            Authentication authentication = getAuthentication(accessToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-
-        filterChain.doFilter(request, response);
     }
 
     private Authentication getAuthentication(String token) {
@@ -89,31 +84,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         CustomUserDetails userDetails = new CustomUserDetails(user);
         return new UsernamePasswordAuthenticationToken(userDetails, null,
             userDetails.getAuthorities());
-    }
-
-    private void silentReissueAccessToken(String accessToken, HttpServletRequest request,
-        HttpServletResponse response, FilterChain filterChain)
-        throws IOException, ServletException {
-        String username = jwtTokenProvider.getSubject(accessToken);
-
-        if (redisUtil.hasKey("RT:" + username)) {
-            User user = userQueryUseCase.findByUsername(username);
-            CustomUserDetails userDetails = new CustomUserDetails(user);
-
-            String newAccessToken = jwtTokenProvider.createAccessToken(userDetails);
-            String newRefreshToken = jwtTokenProvider.createRefreshToken(userDetails);
-
-            response.setHeader("Authorization", "Bearer " + newAccessToken);
-            response.addCookie(cookieUtil.createCookie(newRefreshToken));
-
-            Authentication auth = new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-            filterChain.doFilter(request, response);
-        } else {
-            response.sendError(TOKEN_NOT_FOUND.getStatus().value(), TOKEN_NOT_FOUND.getMessage());
-        }
     }
 
 }

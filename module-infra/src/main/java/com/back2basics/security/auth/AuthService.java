@@ -40,7 +40,7 @@ public class AuthService {
             return null;
         }
 
-        if (!jwtTokenProvider.hasRedisRefreshToken(refreshToken)) {
+        if (!jwtTokenProvider.isRefreshTokenValidInRedis(refreshToken)) {
             response.sendError(TOKEN_NOT_FOUND.getStatus().value(), TOKEN_NOT_FOUND.getMessage());
             return null;
         }
@@ -52,7 +52,9 @@ public class AuthService {
         // 3. 기존 Access Token을 블랙리스트에 추가, 쿠키에서 Refresh Token 삭제
         String accessToken = jwtTokenProvider.resolveAccessToken(request);
         long remainTime = jwtTokenProvider.getAccessTokenRemainingTime(accessToken);
-        redisUtil.save("BL:" + accessToken, "logout", remainTime, TimeUnit.MILLISECONDS);
+        redisUtil.save(redisUtil.buildBlacklistTokenKey(accessToken), "logout",
+            remainTime, TimeUnit.MILLISECONDS);
+        redisUtil.delete(redisUtil.buildRefreshTokenKey(username));
         cookieUtil.deleteRefreshTokenCookie(response);
 
         // 4. 새로운 Access Token과 Refresh Token 생성

@@ -63,16 +63,18 @@ public class JwtLogoutFilter extends GenericFilter {
             return;
         }
 
-        if (redisUtil.hasKey("BL:" + accessToken)) {
+        if (redisUtil.hasKey(redisUtil.buildBlacklistTokenKey(accessToken))) {
             ResponseEntity<ApiResponse<ErrorResponse>> apiResponse = ApiResponse.error(
                 ALREADY_LOGOUT);
             ResponseUtil.writeJson(response, apiResponse);
             return;
         }
 
+        String username = jwtTokenProvider.getSubjectIgnoringExpiration(accessToken);
         long remainTime = jwtTokenProvider.getAccessTokenRemainingTime(accessToken);
-        redisUtil.save("BL:" + accessToken, "logout", remainTime, TimeUnit.MILLISECONDS);
-        redisUtil.delete("RT:" + jwtTokenProvider.getSubject(accessToken));
+        redisUtil.save(redisUtil.buildBlacklistTokenKey(accessToken), "logout",
+            remainTime, TimeUnit.MILLISECONDS);
+        redisUtil.delete(redisUtil.buildRefreshTokenKey(username));
 
         cookieUtil.deleteRefreshTokenCookie(response);
         ResponseEntity<ApiResponse<Void>> apiResponse = ApiResponse.success(SUCCESS_LOGOUT);

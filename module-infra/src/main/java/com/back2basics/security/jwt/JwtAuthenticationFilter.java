@@ -9,6 +9,7 @@ import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.global.response.util.ResponseUtil;
 import com.back2basics.security.exception.CustomBadCredentialsException;
+import com.back2basics.security.exception.CustomRedisConnectionException;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.util.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,14 +60,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletResponse response, FilterChain chain, Authentication authentication)
         throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        try {
+            String access = jwtTokenProvider.createAccessToken(customUserDetails);
+            String refresh = jwtTokenProvider.createRefreshToken(customUserDetails);
 
-        String access = jwtTokenProvider.createAccessToken(customUserDetails);
-        String refresh = jwtTokenProvider.createRefreshToken(customUserDetails);
-        response.setHeader("Authorization", "Bearer " + access);
-        response.addCookie(cookieUtil.createCookie(refresh));
+            response.setHeader("Authorization", "Bearer " + access);
+            response.addCookie(cookieUtil.createCookie(refresh));
 
-        ResponseEntity<ApiResponse<Void>> apiResponse = ApiResponse.success(SUCCESS_LOGIN);
-        ResponseUtil.writeJson(response, apiResponse);
+            ResponseEntity<ApiResponse<Void>> apiResponse = ApiResponse.success(SUCCESS_LOGIN);
+            ResponseUtil.writeJson(response, apiResponse);
+
+        } catch (CustomRedisConnectionException e) {
+            ResponseEntity<ApiResponse<ErrorResponse>> apiResponse = ApiResponse.error(
+                e.getErrorCode());
+            ResponseUtil.writeJson(response, apiResponse);
+        }
     }
 
     @Override

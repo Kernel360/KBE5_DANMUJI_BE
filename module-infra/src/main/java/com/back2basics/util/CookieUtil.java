@@ -13,7 +13,7 @@ public class CookieUtil {
         cookie.setMaxAge(24 * 60 * 60);
         // https 설정 시
 //        cookie.setSecure(true);
-//        cookie.setPath("/");
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
 
         return cookie;
