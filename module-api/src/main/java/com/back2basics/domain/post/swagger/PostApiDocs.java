@@ -1,4 +1,4 @@
-package com.back2basics.domain.post.docs;
+package com.back2basics.domain.post.swagger;
 
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
 import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;

@@ -7,6 +7,7 @@ import com.back2basics.domain.comment.controller.code.CommentResponseCode;
 import com.back2basics.domain.comment.dto.request.CommentCreateRequest;
 import com.back2basics.domain.comment.dto.request.CommentDeleteRequest;
 import com.back2basics.domain.comment.dto.request.CommentUpdateRequest;
+import com.back2basics.domain.comment.swagger.CommentApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
-public class CommentController {
+public class CommentController implements CommentApiDocs {
 
     private final CommentCreateUseCase createCommentUseCase;
     private final CommentDeleteUseCase commentDeleteUseCase;
