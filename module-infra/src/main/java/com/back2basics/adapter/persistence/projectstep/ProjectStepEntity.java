@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.projectstep;
 
+import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.projectstep.model.ApprovalStatus;
@@ -23,9 +24,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @Table(name = "project_steps")
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectStepEntity {
 
@@ -52,4 +51,19 @@ public class ProjectStepEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_status")
     private ApprovalStatus approvalStatus;
+
+    @Builder
+    public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
+        StepStatus stepStatus, ApprovalStatus approvalStatus) {
+        this.stepId = stepId;
+        this.project = project;
+        this.user = user;
+        this.name = name;
+        this.stepStatus = stepStatus;
+        this.approvalStatus = approvalStatus;
+    }
+
+    public void assignProjectEntity(ProjectEntity project) {
+        this.project = project;
+    }
 }

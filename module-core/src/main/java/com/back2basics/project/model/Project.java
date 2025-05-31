@@ -2,8 +2,11 @@ package com.back2basics.project.model;
 
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
+import com.back2basics.projectstep.model.ProjectStep;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -31,10 +34,12 @@ public class Project {
 
     private ProjectStatus status;
 
+    private List<ProjectStep> steps = new ArrayList<>();
+
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-        boolean isDeleted, ProjectStatus status) {
+        boolean isDeleted, ProjectStatus status, List<ProjectStep> steps) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -45,6 +50,7 @@ public class Project {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status != null ? status : ProjectStatus.IN_PROGRESS;
+        this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
     }
 
     public void update(ProjectUpdateCommand command) {
@@ -56,7 +62,6 @@ public class Project {
 
     public void statusCompleted() {
         this.status = ProjectStatus.COMPLETED;
-
     }
 
     public void statusInProgress() {
