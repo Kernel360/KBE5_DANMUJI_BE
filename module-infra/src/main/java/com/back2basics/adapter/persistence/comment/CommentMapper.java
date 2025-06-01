@@ -4,6 +4,7 @@ import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.comment.model.Comment;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,6 @@ import org.springframework.stereotype.Component;
 public class CommentMapper {
 
     public Comment toDomain(CommentEntity entity) {
-
-        List<Comment> children = entity.getChildrenComments().stream()
-            .map(this::toDomain)
-            .collect(Collectors.toCollection(ArrayList::new));
-
         return Comment.builder()
             .id(entity.getId())
             .postId(entity.getPost().getId())
@@ -25,8 +21,31 @@ public class CommentMapper {
             .content(entity.getContent())
             .createdAt(entity.getCreatedAt())
             .updatedAt(entity.getUpdatedAt())
-            .children(children)
+            .children(new ArrayList<>())
             .build();
+    }
+
+    public List<Comment> toDomainHierarchy(List<CommentEntity> entities) {
+        // 1. CommentEntity → Comment 변환 (children 없음)
+        Map<Long, Comment> commentMap = entities.stream()
+            .map(this::toDomain)
+            .collect(Collectors.toMap(Comment::getId, c -> c));
+
+        // 2. 계층 트리 구성
+        List<Comment> roots = new ArrayList<>();
+        for (Comment comment : commentMap.values()) {
+            Long parentId = comment.getParentCommentId();
+            if (parentId == null) {
+                roots.add(comment);
+            } else {
+                Comment parent = commentMap.get(parentId);
+                if (parent != null) {
+                    parent.getChildren().add(comment);
+                }
+            }
+        }
+
+        return roots;
     }
 
     public CommentEntity toEntity(Comment domain) {

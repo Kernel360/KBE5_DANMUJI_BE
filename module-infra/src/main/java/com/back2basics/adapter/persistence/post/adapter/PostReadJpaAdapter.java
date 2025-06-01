@@ -4,9 +4,11 @@ import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 
 import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
+import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.post.PostMapper;
+import com.back2basics.comment.model.Comment;
 import com.back2basics.infra.exception.post.PostErrorCode;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
@@ -29,6 +31,7 @@ public class PostReadJpaAdapter implements PostReadPort {
     private final CommentEntityRepository commentRepository;
     private final JPAQueryFactory queryFactory;
     private final PostMapper mapper;
+    private final CommentMapper commentMapper;
 
     @Override
     public Optional<Post> findById(Long id) {
@@ -36,7 +39,8 @@ public class PostReadJpaAdapter implements PostReadPort {
             .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
 
         List<CommentEntity> commentEntities = commentRepository.findByPostId(entity.getId());
-        return Optional.of(mapper.toDomain(entity, commentEntities));
+        List<Comment> commentTree = commentMapper.toDomainHierarchy(commentEntities);
+        return Optional.of(mapper.toDomain(entity, commentTree));
     }
 
     @Override
