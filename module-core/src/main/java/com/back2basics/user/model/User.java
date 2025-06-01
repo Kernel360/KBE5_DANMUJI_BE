@@ -49,7 +49,7 @@ public class User {
     }
 
     public boolean validateCurrentPassword(String currentPassword) {
-        return this.password.equals(currentPassword);
+        return this.password.matches(currentPassword);
     }
 
     public void changePassword(String newPassword) {

@@ -1,32 +1,26 @@
 package com.back2basics.adapter.persistence.post;
 
-import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "posts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 // todo : ERD에 기반한 따른 필드 값 추가
 public class PostEntity extends BaseTimeEntity {
 
@@ -34,7 +28,6 @@ public class PostEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // todo : UserEntity생기면 @ManyToOne 필드로 수정
     @Column(name = "author_id", nullable = false)
     private Long authorId;
 
@@ -43,9 +36,6 @@ public class PostEntity extends BaseTimeEntity {
 
     @Column(name = "content", nullable = false)
     private String content;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<CommentEntity> comments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
@@ -63,8 +53,7 @@ public class PostEntity extends BaseTimeEntity {
 
     @Builder
     public PostEntity(Long id, Long authorId, String title, String content, PostType type,
-        Integer priority, PostStatus status, LocalDateTime completedAt,
-        List<CommentEntity> comments) {
+        Integer priority, PostStatus status, LocalDateTime completedAt) {
         this.id = id;
         this.authorId = authorId;
         this.title = title;
@@ -73,17 +62,6 @@ public class PostEntity extends BaseTimeEntity {
         this.priority = priority;
         this.status = status;
         this.completedAt = completedAt;
-        this.comments = comments;
-    }
-
-    public void addComment(CommentEntity comment) {
-        comments.add(comment);
-        comment.assignPost(this);
-    }
-
-    public void removeComment(CommentEntity comment) {
-        comments.remove(comment);
-        comment.assignPost(null);
     }
 
     public void update(String title, String content, PostType type, PostStatus status,

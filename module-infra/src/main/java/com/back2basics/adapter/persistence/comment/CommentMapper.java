@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.comment;
 
+import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.comment.model.Comment;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class CommentMapper {
 
         return Comment.builder()
             .id(entity.getId())
-            .postId(entity.getPost() != null ? entity.getPost().getId() : null)
+            .postId(entity.getPost().getId())
             .parentCommentId(
                 entity.getParentCommentId() != null ? entity.getParentCommentId().getId() : null)
             .authorId(entity.getAuthorId())
@@ -28,10 +29,10 @@ public class CommentMapper {
             .build();
     }
 
-    public CommentEntity fromDomain(Comment domain) {
+    public CommentEntity toEntity(Comment domain) {
 
         List<CommentEntity> children = domain.getChildren().stream()
-            .map(this::fromDomain)
+            .map(this::toEntity)
             .collect(Collectors.toCollection(ArrayList::new));
 
         CommentEntity entity = CommentEntity.builder()
@@ -40,7 +41,10 @@ public class CommentMapper {
             .content(domain.getContent())
             .build();
 
+        entity.assignPost(PostEntity.builder().id(domain.getPostId()).build());
+
         children.forEach(child -> entity.addChildComment(child));
         return entity;
     }
+
 }

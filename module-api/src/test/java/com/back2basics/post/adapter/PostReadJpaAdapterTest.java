@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.post.PostMapper;
@@ -12,6 +13,7 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +32,9 @@ class PostReadJpaAdapterTest {
 
     @Mock
     private JPAQueryFactory queryFactory;
+
+    @Mock
+    private CommentEntityRepository commentRepository;
 
     @Mock
     private PostMapper mapper;
@@ -91,7 +96,8 @@ class PostReadJpaAdapterTest {
         // given
         Long postId = 1L;
         given(postRepository.findById(postId)).willReturn(Optional.of(postEntity1));
-        given(mapper.toDomain(postEntity1)).willReturn(post1);
+        given(commentRepository.findByPostId(postId)).willReturn(Collections.emptyList());
+        given(mapper.toDomain(postEntity1, Collections.emptyList())).willReturn(post1);
 
         // when
         Optional<Post> result = postReadJpaAdapter.findById(postId);
@@ -102,24 +108,10 @@ class PostReadJpaAdapterTest {
         assertThat(result.get().getTitle()).isEqualTo("첫 번째 게시글");
 
         verify(postRepository).findById(postId);
-        verify(mapper).toDomain(postEntity1);
+        verify(commentRepository).findByPostId(postId);
+        verify(mapper).toDomain(postEntity1, Collections.emptyList());
     }
 
-    @Test
-    @DisplayName("ID로 게시글 조회 - 존재하지 않는 경우")
-    void findById_NotFound() {
-        // given
-        Long postId = 999L;
-        given(postRepository.findById(postId)).willReturn(Optional.empty());
-
-        // when
-        Optional<Post> result = postReadJpaAdapter.findById(postId);
-
-        // then
-        assertThat(result).isNotPresent();
-
-        verify(postRepository).findById(postId);
-    }
-
+    // 없는id로 조회하는거 validator에서 해주는데 여기서 해줄 필요가 없음
     // todo : query dsl 사용한 페이징 테스트 필요. 어케하는지 알아봐야됨
 }

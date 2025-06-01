@@ -9,6 +9,7 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.out.PostReadPort;
+import com.back2basics.post.service.result.PostListReadResult;
 import com.back2basics.post.service.result.PostReadResult;
 import java.util.Arrays;
 import java.util.List;
@@ -94,7 +95,7 @@ class PostReadServiceTest {
         given(postReadPort.findAllWithPaging(pageable)).willReturn(postPage);
 
         // when
-        Page<PostReadResult> results = postReadService.getPostList(pageable);
+        Page<PostListReadResult> results = postReadService.getPostList(pageable);
 
         // then
         assertThat(results).isNotNull();
@@ -118,7 +119,7 @@ class PostReadServiceTest {
         given(postReadPort.findAllWithPaging(pageable)).willReturn(emptyPage);
 
         // when
-        Page<PostReadResult> results = postReadService.getPostList(pageable);
+        Page<PostListReadResult> results = postReadService.getPostList(pageable);
 
         // then
         assertThat(results).isNotNull();
@@ -139,7 +140,7 @@ class PostReadServiceTest {
         given(postReadPort.findAllWithPaging(pageable)).willReturn(postPage);
 
         // when
-        Page<PostReadResult> results = postReadService.getPostList(pageable);
+        Page<PostListReadResult> results = postReadService.getPostList(pageable);
 
         // then
         assertThat(results).isNotNull();

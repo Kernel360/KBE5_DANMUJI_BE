@@ -9,6 +9,9 @@ import static org.mockito.Mockito.verify;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.comment.port.out.CommentCreatePort;
+import com.back2basics.infra.validation.validator.CommentValidator;
+import com.back2basics.infra.validation.validator.PostValidator;
+import com.back2basics.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +26,10 @@ class CommentCreateServiceTest {
     private CommentCreatePort commentCreatePort;
 
     @Mock
-    private CommentModelRelationHelper commentModelRelationHelper;
+    private PostValidator postValidator;
+
+    @Mock
+    private CommentValidator commentValidator;
 
     @InjectMocks
     private CommentCreateService commentCreateService;
@@ -39,14 +45,13 @@ class CommentCreateServiceTest {
             .build();
 
         given(commentCreatePort.save(any(Comment.class))).willReturn(1L);
+        given(postValidator.findPost(1L)).willReturn(Post.builder().id(1L).authorId(1L).build());
 
         // when
         Long result = commentCreateService.createComment(command);
 
         // then
         assertThat(result).isEqualTo(1L);
-        verify(commentModelRelationHelper).assignRelations(any(CommentCreateCommand.class),
-            any(Comment.class));
         verify(commentCreatePort).save(any(Comment.class));
     }
 
@@ -62,14 +67,15 @@ class CommentCreateServiceTest {
             .build();
 
         given(commentCreatePort.save(any(Comment.class))).willReturn(3L);
+        given(postValidator.findPost(1L)).willReturn(Post.builder().id(1L).authorId(1L).build());
+        given(commentValidator.findComment(2L)).willReturn(
+            Comment.builder().id(2L).authorId(2L).build());
 
         // when
         Long result = commentCreateService.createComment(command);
 
         // then
         assertThat(result).isEqualTo(3L);
-        verify(commentModelRelationHelper).assignRelations(any(CommentCreateCommand.class),
-            any(Comment.class));
         verify(commentCreatePort).save(any(Comment.class));
     }
 
@@ -85,6 +91,7 @@ class CommentCreateServiceTest {
             .build();
 
         given(commentCreatePort.save(any(Comment.class))).willReturn(1L);
+        given(postValidator.findPost(1L)).willReturn(Post.builder().id(1L).authorId(1L).build());
 
         // when
         commentCreateService.createComment(command);
