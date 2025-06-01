@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
+import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.post.PostMapper;
@@ -38,6 +39,9 @@ class PostReadJpaAdapterTest {
 
     @Mock
     private PostMapper mapper;
+
+    @Mock
+    private CommentMapper commentMapper;
 
     @InjectMocks
     private PostReadJpaAdapter postReadJpaAdapter;
