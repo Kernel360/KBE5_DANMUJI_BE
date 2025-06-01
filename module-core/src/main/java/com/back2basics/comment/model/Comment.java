@@ -39,7 +39,7 @@ public class Comment {
 
     }
 
-    public void assignPost(Post post) {
+    public void assignPostId(Post post) {
         this.postId = post.getId();
     }
 
