@@ -10,6 +10,7 @@ import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.comment.adapter.CommentCreateJpaAdapter;
 import com.back2basics.comment.model.Comment;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -78,6 +79,20 @@ class CommentCreateJpaAdapterTest {
             .createdAt(LocalDateTime.now())
             .build();
 
+        Comment parentReply = Comment.builder()
+            .postId(1L)
+            .parentCommentId(2L)
+            .authorId(1L)
+            .content("부모 댓글")
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        CommentEntity parentEntity = CommentEntity.builder()
+            .id(2L)
+            .authorId(1L)
+            .content("부모 댓글")
+            .build();
+
         CommentEntity entity = CommentEntity.builder()
             .id(null)
             .authorId(1L)
@@ -90,15 +105,16 @@ class CommentCreateJpaAdapterTest {
             .content("대댓글")
             .build();
 
-        given(mapper.toEntity(reply)).willReturn(entity);
+        given(commentRepository.findById(2L)).willReturn(Optional.of(parentEntity));
+        given(mapper.toEntity(parentReply)).willReturn(entity);
         given(commentRepository.save(entity)).willReturn(savedEntity);
 
         // when
-        Long result = commentCreateJpaAdapter.save(reply);
+        Long result = commentCreateJpaAdapter.save(parentReply);
 
         // then
         assertThat(result).isEqualTo(3L);
-        verify(mapper).toEntity(reply);
+        verify(mapper).toEntity(parentReply);
         verify(commentRepository).save(entity);
     }
 

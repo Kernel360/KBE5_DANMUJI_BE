@@ -8,6 +8,7 @@ import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.comment.adapter.CommentDeleteJpaAdapter;
 import com.back2basics.comment.model.Comment;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +46,7 @@ class CommentDeleteJpaAdapterTest {
             .content("테스트 댓글")
             .build();
 
-        given(mapper.toEntity(comment)).willReturn(entity);
+        given(commentRepository.findById(commentId)).willReturn(Optional.of(entity));
 
         // when
         commentDeleteJpaAdapter.delete(comment);

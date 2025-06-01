@@ -89,7 +89,7 @@ class CommentUpdateJpaAdapterTest {
             .content("수정된 대댓글")
             .build();
 
-        given(commentRepository.findById(1L)).willReturn(Optional.of(updatedEntity));
+        given(commentRepository.findById(2L)).willReturn(Optional.of(updatedEntity));
         given(commentRepository.save(updatedEntity)).willReturn(savedEntity);
 
         // when
