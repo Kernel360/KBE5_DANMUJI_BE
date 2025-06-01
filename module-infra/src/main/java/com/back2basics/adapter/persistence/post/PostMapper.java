@@ -1,9 +1,11 @@
 package com.back2basics.adapter.persistence.post;
 
+import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.post.model.Post;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,12 @@ public class PostMapper {
 
     private final CommentMapper commentMapper;
 
-    public Post toDomain(PostEntity entity, List<Comment> comments) {
+    public Post toDomain(PostEntity entity, List<CommentEntity> commentEntities) {
+
+        List<Comment> comments = commentEntities.stream()
+            .map(commentMapper::toDomain)
+            .collect(Collectors.toList());
+
         return Post.builder()
             .id(entity.getId())
             .authorId(entity.getAuthorId())
