@@ -18,9 +18,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "posts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 // todo : ERD에 기반한 따른 필드 값 추가
 public class PostEntity extends BaseTimeEntity {
 
@@ -28,7 +28,6 @@ public class PostEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // todo : UserEntity생기면 @ManyToOne 필드로 수정
     @Column(name = "author_id", nullable = false)
     private Long authorId;
 

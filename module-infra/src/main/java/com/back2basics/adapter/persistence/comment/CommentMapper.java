@@ -17,7 +17,7 @@ public class CommentMapper {
 
         return Comment.builder()
             .id(entity.getId())
-            .postId(entity.getPost() != null ? entity.getPost().getId() : null)
+            .postId(entity.getPost().getId())
             .parentCommentId(
                 entity.getParentCommentId() != null ? entity.getParentCommentId().getId() : null)
             .authorId(entity.getAuthorId())
@@ -28,10 +28,10 @@ public class CommentMapper {
             .build();
     }
 
-    public CommentEntity fromDomain(Comment domain) {
+    public CommentEntity toEntity(Comment domain) {
 
         List<CommentEntity> children = domain.getChildren().stream()
-            .map(this::fromDomain)
+            .map(this::toEntity)
             .collect(Collectors.toCollection(ArrayList::new));
 
         CommentEntity entity = CommentEntity.builder()
