@@ -1,5 +1,6 @@
 package com.back2basics.user.model;
 
+import com.back2basics.company.model.Company;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +17,8 @@ public class User {
     private String position;
     private final Role role;
 
+    private Company company;
+
 //    private boolean isDeleted;
 //
 //    public void markDeleted() {
@@ -28,7 +31,7 @@ public class User {
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
-        String position, Role role) {
+        String position, Role role, Company company) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -37,15 +40,17 @@ public class User {
         this.phone = phone;
         this.position = position;
         this.role = role;
+        this.company = company;
     }
 
     public void updateUser(String username, String name, String email, String phone,
-        String position) {
+        String position, Company company) {
         this.username = username;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.position = position;
+        this.company = company;
     }
 
     public boolean validateCurrentPassword(String currentPassword) {

@@ -58,7 +58,7 @@ public class UserEntity extends BaseTimeEntity {
 
     @Builder
     public UserEntity(Long id, String username, String password, String name, String email,
-        String phone, String position, Role role) {
+        String phone, String position, Role role, CompanyEntity companyEntity) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -67,5 +67,6 @@ public class UserEntity extends BaseTimeEntity {
         this.phone = phone;
         this.position = position;
         this.role = role;
+        this.companyEntity = companyEntity;
     }
 }
