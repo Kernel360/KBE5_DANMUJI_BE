@@ -1,7 +1,6 @@
 package com.back2basics.comment.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -11,6 +10,7 @@ import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.comment.adapter.CommentCreateJpaAdapter;
 import com.back2basics.comment.model.Comment;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,50 +27,43 @@ class CommentCreateJpaAdapterTest {
     @Mock
     private CommentMapper mapper;
 
-    @Mock
-    private CommentRelationHelper commentRelationHelper;
-
     @InjectMocks
     private CommentCreateJpaAdapter commentCreateJpaAdapter;
+
+    private Comment comment;
+    private CommentEntity existingEntity;
+
+    @BeforeEach
+    void setUp() {
+        comment = Comment.builder()
+            .id(1L)
+            .postId(1L)
+            .authorId(1L)
+            .content("수정된 댓글")
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        existingEntity = CommentEntity.builder()
+            .id(1L)
+            .authorId(1L)
+            .content("기존 댓글")
+            .build();
+    }
 
     @Test
     @DisplayName("댓글 생성 성공")
     void save_Success() {
         // given
-        Comment comment = Comment.builder()
-            .postId(1L)
-            .authorId(1L)
-            .content("새 댓글")
-            .createdAt(LocalDateTime.now())
-            .build();
-
-        CommentEntity entity = CommentEntity.builder()
-            .id(null)
-            .authorId(1L)
-            .content("새 댓글")
-            .build();
-
-        CommentEntity savedEntity = CommentEntity.builder()
-            .id(1L)
-            .authorId(1L)
-            .content("새 댓글")
-            .build();
-
-        given(mapper.fromDomain(comment)).willReturn(entity);
-        given(commentRepository.save(entity)).willReturn(savedEntity);
+        given(mapper.toEntity(comment)).willReturn(existingEntity);
+        given(commentRepository.save(existingEntity)).willReturn(existingEntity);
 
         // when
         Long result = commentCreateJpaAdapter.save(comment);
 
         // then
         assertThat(result).isEqualTo(1L);
-        verify(mapper).fromDomain(comment);
-        verify(commentRelationHelper).assignRelations(
-            eq(entity),
-            eq(comment.getPostId()),
-            eq(comment.getParentCommentId())
-        );
-        verify(commentRepository).save(entity);
+        verify(mapper).toEntity(comment);
+        verify(commentRepository).save(existingEntity);
     }
 
     @Test
@@ -97,7 +90,7 @@ class CommentCreateJpaAdapterTest {
             .content("대댓글")
             .build();
 
-        given(mapper.fromDomain(reply)).willReturn(entity);
+        given(mapper.toEntity(reply)).willReturn(entity);
         given(commentRepository.save(entity)).willReturn(savedEntity);
 
         // when
@@ -105,42 +98,8 @@ class CommentCreateJpaAdapterTest {
 
         // then
         assertThat(result).isEqualTo(3L);
-        verify(mapper).fromDomain(reply);
-        verify(commentRelationHelper).assignRelations(eq(entity), eq(1L), eq(2L));
+        verify(mapper).toEntity(reply);
         verify(commentRepository).save(entity);
-    }
-
-    @Test
-    @DisplayName("댓글 생성 시 관계 설정이 호출됨")
-    void save_RelationAssignmentCalled() {
-        // given
-        Comment comment = Comment.builder()
-            .postId(5L)
-            .authorId(2L)
-            .content("테스트 댓글")
-            .parentCommentId(null)
-            .createdAt(LocalDateTime.now())
-            .build();
-
-        CommentEntity entity = CommentEntity.builder()
-            .authorId(2L)
-            .content("테스트 댓글")
-            .build();
-
-        CommentEntity savedEntity = CommentEntity.builder()
-            .id(10L)
-            .authorId(2L)
-            .content("테스트 댓글")
-            .build();
-
-        given(mapper.fromDomain(comment)).willReturn(entity);
-        given(commentRepository.save(entity)).willReturn(savedEntity);
-
-        // when
-        commentCreateJpaAdapter.save(comment);
-
-        // then
-        verify(commentRelationHelper).assignRelations(entity, 5L, null);
     }
 
     @Test
@@ -165,14 +124,14 @@ class CommentCreateJpaAdapterTest {
             .content("매퍼 테스트")
             .build();
 
-        given(mapper.fromDomain(comment)).willReturn(entity);
+        given(mapper.toEntity(comment)).willReturn(entity);
         given(commentRepository.save(entity)).willReturn(savedEntity);
 
         // when
         commentCreateJpaAdapter.save(comment);
 
         // then
-        verify(mapper).fromDomain(comment);
+        verify(mapper).toEntity(comment);
     }
 
     @Test
@@ -197,7 +156,7 @@ class CommentCreateJpaAdapterTest {
             .content("ID 반환 테스트")
             .build();
 
-        given(mapper.fromDomain(comment)).willReturn(entity);
+        given(mapper.toEntity(comment)).willReturn(entity);
         given(commentRepository.save(entity)).willReturn(savedEntity);
 
         // when

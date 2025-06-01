@@ -24,9 +24,6 @@ class CommentDeleteJpaAdapterTest {
     @Mock
     private CommentMapper mapper;
 
-    @Mock
-    private CommentDeleteHelper commentDeleteHelper;
-
     @InjectMocks
     private CommentDeleteJpaAdapter commentDeleteJpaAdapter;
 
@@ -48,13 +45,12 @@ class CommentDeleteJpaAdapterTest {
             .content("테스트 댓글")
             .build();
 
-        given(mapper.fromDomain(comment)).willReturn(entity);
+        given(mapper.toEntity(comment)).willReturn(entity);
 
         // when
         commentDeleteJpaAdapter.delete(comment);
 
         // then
-        verify(commentDeleteHelper).deleteCommentWithOrphanKeep(commentId);
         verify(commentRepository).delete(entity);
     }
 }
