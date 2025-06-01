@@ -2,7 +2,7 @@ package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 
-import com.back2basics.adapter.persistence.post.PostMapper;
+import com.back2basics.adapter.persistence.post.mapper.PostMapper;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostSearchPort;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -44,7 +44,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
-            .map(mapper::toDomain)
+            .map(mapper::toDomainList)
             .collect(Collectors.toList());
 
         // 카운트 쿼리

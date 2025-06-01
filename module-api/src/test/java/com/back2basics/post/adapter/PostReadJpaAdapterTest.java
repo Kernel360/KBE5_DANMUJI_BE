@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verify;
 
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostEntityRepository;
-import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.adapter.persistence.post.adapter.PostReadJpaAdapter;
+import com.back2basics.adapter.persistence.post.mapper.PostMapper;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
