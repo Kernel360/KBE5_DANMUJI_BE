@@ -3,6 +3,7 @@ package com.back2basics.adapter.persistence.comment;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.comment.model.Comment;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,12 +27,12 @@ public class CommentMapper {
     }
 
     public List<Comment> toDomainHierarchy(List<CommentEntity> entities) {
-        // 1. CommentEntity → Comment 변환 (children 없음)
-        Map<Long, Comment> commentMap = entities.stream()
-            .map(this::toDomain)
-            .collect(Collectors.toMap(Comment::getId, c -> c));
+        Map<Long, Comment> commentMap = new HashMap<>();
+        for (CommentEntity entity : entities) {
+            Comment comment = toDomain(entity);
+            commentMap.put(comment.getId(), comment); // put:덮어쓰기
+        }
 
-        // 2. 계층 트리 구성
         List<Comment> roots = new ArrayList<>();
         for (Comment comment : commentMap.values()) {
             Long parentId = comment.getParentCommentId();
