@@ -1,8 +1,7 @@
-package com.back2basics.adapter.persistence.post.mapper;
+package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentMapper;
-import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.post.model.Post;
 import java.util.List;
@@ -43,13 +42,10 @@ public class PostMapper {
             .id(entity.getId())
             .authorId(entity.getAuthorId())
             .title(entity.getTitle())
-            .content(entity.getContent())
             .type(entity.getType())
             .status(entity.getStatus())
             .priority(entity.getPriority())
             .createdAt(entity.getCreatedAt())
-            .updatedAt(entity.getUpdatedAt())
-            .deletedAt(entity.getDeletedAt())
             .completedAt(entity.getCompletedAt())
             .build();
     }
