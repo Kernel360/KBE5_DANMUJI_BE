@@ -1,6 +1,11 @@
 package com.back2basics.adapter.persistence.post;
 
+import com.back2basics.adapter.persistence.comment.CommentEntity;
+import com.back2basics.adapter.persistence.comment.CommentMapper;
+import com.back2basics.comment.model.Comment;
 import com.back2basics.post.model.Post;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +13,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PostMapper {
 
-    public Post toDomain(PostEntity entity) {
+    private final CommentMapper commentMapper;
+
+    public Post toDomain(PostEntity entity, List<CommentEntity> commentEntities) {
+
+        List<Comment> comments = commentEntities.stream()
+            .map(commentMapper::toDomain)
+            .collect(Collectors.toList());
+
         return Post.builder()
             .id(entity.getId())
             .authorId(entity.getAuthorId())
@@ -21,7 +33,7 @@ public class PostMapper {
             .updatedAt(entity.getUpdatedAt())
             .deletedAt(entity.getDeletedAt())
             .completedAt(entity.getCompletedAt())
-            .isDelete(entity.getDeletedAt() != null)
+            .comments(comments)
             .build();
     }
 
