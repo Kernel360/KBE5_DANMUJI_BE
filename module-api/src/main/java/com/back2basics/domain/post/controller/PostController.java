@@ -5,6 +5,7 @@ import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
 import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
+import com.back2basics.domain.post.dto.response.PostListReadResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
@@ -14,6 +15,7 @@ import com.back2basics.post.port.in.PostReadUseCase;
 import com.back2basics.post.port.in.PostSearchUseCase;
 import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
+import com.back2basics.post.service.result.PostListReadResult;
 import com.back2basics.post.service.result.PostReadResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,14 +62,14 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
+    public ResponseEntity<ApiResponse<Page<PostListReadResponse>>> getPostsByPaging(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<PostReadResult> resultPage = postReadUseCase.getPostList(pageable);
-        Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
+        Page<PostListReadResult> resultPage = postReadUseCase.getPostList(pageable);
+        Page<PostListReadResponse> responsePage = resultPage.map(PostListReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
@@ -88,14 +90,14 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
+    public ResponseEntity<ApiResponse<Page<PostListReadResponse>>> searchPosts(
         @RequestParam(required = false) String keyword,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PostReadResult> resultPage = postSearchUseCase.searchPost(keyword, pageable);
-        Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
+        Page<PostListReadResult> resultPage = postSearchUseCase.searchPost(keyword, pageable);
+        Page<PostListReadResponse> responsePage = resultPage.map(PostListReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
