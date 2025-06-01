@@ -29,53 +29,28 @@ public class PostReadJpaAdapter implements PostReadPort {
         return postRepository.findById(id).map(mapper::toDomain);
     }
 
-
     @Override
     public Page<Post> findAllWithPaging(Pageable pageable) {
-        // id만 페이징
-        List<Long> ids = queryFactory.select(postEntity.id)
-            .from(postEntity)
+        // 페이징 조회
+        List<Post> posts = queryFactory
+            .selectFrom(postEntity)
             .where(postEntity.deletedAt.isNull())
-            .orderBy(postEntity.createdAt.desc(), postEntity.id.desc())
+            .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
-            .fetch();
-
-        // fetch join
-        List<Post> posts = queryFactory.selectFrom(postEntity)
-            .distinct()
-            .leftJoin(postEntity.comments).fetchJoin()
-            .where(postEntity.id.in(ids), postEntity.deletedAt.isNull())
-            .orderBy(postEntity.createdAt.desc(), postEntity.id.desc())
             .fetch()
             .stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
 
         // 카운트 쿼리
-        Long total = queryFactory.select(postEntity.count())
+        Long total = queryFactory
+            .select(postEntity.count())
             .from(postEntity)
             .where(postEntity.deletedAt.isNull())
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
     }
-//    쿼리 3개 나눈거랑 쿼리 로그 비교할 수 있게 만들어둔 메소드
-//    @ToMany 관계 때문에 fetch join을 쓰고 limit + offset 로 페이징 시도 하는 경우
-//    public Page<Post> findAllWithPaging(Pageable pageable) {
-//        List<Post> posts = queryFactory
-//            .selectFrom(postEntity)
-//            .distinct()
-//            .leftJoin(postEntity.comments).fetchJoin()
-//            .where(postEntity.deletedAt.isNull())
-//            .orderBy(postEntity.createdAt.desc(), postEntity.id.desc())
-//            .offset(pageable.getOffset())
-//            .limit(pageable.getPageSize())
-//            .fetch()
-//            .stream()
-//            .map(mapper::toDomain)
-//            .collect(Collectors.toList());
-//
-//        return new PageImpl<>(posts, pageable, posts.size());
-//    }
+
 }
