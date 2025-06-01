@@ -25,7 +25,6 @@ public class CommentDeleteJpaAdapter implements CommentDeletePort {
         // 자식 댓글들의 부모 참조 제거
         entity.getChildrenComments().forEach(child ->
             child.assignParentComment(null));
-        entity.getChildrenComments().clear();
 
         commentRepository.delete(entity);
     }
