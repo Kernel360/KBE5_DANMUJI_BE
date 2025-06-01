@@ -9,7 +9,6 @@ import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.comment.adapter.CommentCreateJpaAdapter;
-import com.back2basics.adapter.persistence.comment.utils.CommentRelationHelper;
 import com.back2basics.comment.model.Comment;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;

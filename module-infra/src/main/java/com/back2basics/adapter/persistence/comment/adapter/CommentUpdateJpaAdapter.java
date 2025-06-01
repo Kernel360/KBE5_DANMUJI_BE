@@ -2,8 +2,6 @@ package com.back2basics.adapter.persistence.comment.adapter;
 
 import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
-import com.back2basics.adapter.persistence.comment.utils.CommentRelationHelper;
-import com.back2basics.adapter.persistence.comment.utils.CommentUpdateHelper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentUpdatePort;
 import lombok.RequiredArgsConstructor;

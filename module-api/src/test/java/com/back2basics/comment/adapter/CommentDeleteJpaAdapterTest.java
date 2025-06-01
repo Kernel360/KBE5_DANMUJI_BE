@@ -7,7 +7,6 @@ import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.comment.adapter.CommentDeleteJpaAdapter;
-import com.back2basics.adapter.persistence.comment.utils.CommentDeleteHelper;
 import com.back2basics.comment.model.Comment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
