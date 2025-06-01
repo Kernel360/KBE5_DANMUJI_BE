@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.comment;
 
+import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.comment.model.Comment;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class CommentMapper {
             .authorId(domain.getAuthorId())
             .content(domain.getContent())
             .build();
+
+        entity.assignPost(PostEntity.builder().id(domain.getPostId()).build());
 
         children.forEach(child -> entity.addChildComment(child));
         return entity;

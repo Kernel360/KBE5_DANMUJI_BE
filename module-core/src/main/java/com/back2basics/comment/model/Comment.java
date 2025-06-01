@@ -21,7 +21,8 @@ public class Comment {
     private List<Comment> children;
 
     @Builder
-    public Comment(Long id, Long postId, Long parentCommentId, Long authorId, String content,
+    public Comment(Long id, Long postId, Long parentCommentId, Long authorId,
+        String content,
         LocalDateTime createdAt, LocalDateTime updatedAt, List<Comment> children) {
         this.id = id;
         this.postId = postId;
