@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/answers")
 @RequiredArgsConstructor
 public class AnswerController {
 
@@ -50,7 +50,7 @@ public class AnswerController {
         @Valid @RequestBody AnswerDeleteRequest request
     ) {
         Long requesterId = request.getRequesterId();
-        deleteAnswerUseCase.deletAnswer(answerId, requesterId);
+        deleteAnswerUseCase.deleteAnswer(answerId, requesterId);
         return ApiResponse.success(AnswerResponseCode.ANSWER_DELETE_SUCCESS);
     }
 
