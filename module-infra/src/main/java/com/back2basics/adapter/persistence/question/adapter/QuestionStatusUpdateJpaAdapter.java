@@ -3,7 +3,6 @@ package com.back2basics.adapter.persistence.question.adapter;
 
 import com.back2basics.adapter.persistence.question.QuestionEntity;
 import com.back2basics.adapter.persistence.question.QuestionEntityRepository;
-import com.back2basics.adapter.persistence.question.QuestionMapper;
 import com.back2basics.infra.exception.question.QuestionErrorCode;
 import com.back2basics.infra.exception.question.QuestionException;
 import com.back2basics.question.model.QuestionStatus;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 public class QuestionStatusUpdateJpaAdapter implements QuestionStatusUpdatePort {
 
     private final QuestionEntityRepository questionRepository;
-    private final QuestionMapper mapper;
 
     @Override
     public void markAsAnswered(Long questionId) {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class QuestionMapper {
 
-    public static QuestionEntity toEntity(Question domain) {
+    public QuestionEntity toEntity(Question domain) {
 
         QuestionEntity entity = QuestionEntity.builder()
             .id(domain.getId())
@@ -26,7 +26,7 @@ public class QuestionMapper {
         return entity;
     }
 
-    public static Question toDomain(QuestionEntity entity) {
+    public Question toDomain(QuestionEntity entity) {
         return Question.builder()
             .id(entity.getId())
             .postId(entity.getPostId())

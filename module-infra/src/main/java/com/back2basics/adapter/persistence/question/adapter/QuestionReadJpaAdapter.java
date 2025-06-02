@@ -7,6 +7,7 @@ import com.back2basics.infra.exception.question.QuestionErrorCode;
 import com.back2basics.infra.exception.question.QuestionException;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.out.QuestionReadPort;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,21 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
             .orElseThrow(() -> new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND));
 
         return Optional.of(mapper.toDomain(entity));
+    }
+    
+    @Override
+    public List<Question> findAllQuestions(Long postId) {
+        return questionRepository.findAllQuestionsByPostId(postId)
+            .stream()
+            .map(mapper::toDomain)
+            .toList();
+    }
+
+    @Override
+    public List<Question> findAll() {
+        return questionRepository.findAllNotDeleted().stream()
+            .map(mapper::toDomain)
+            .toList();
     }
 }
 

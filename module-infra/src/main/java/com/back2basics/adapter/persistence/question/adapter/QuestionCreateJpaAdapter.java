@@ -13,10 +13,11 @@ import org.springframework.stereotype.Repository;
 public class QuestionCreateJpaAdapter implements QuestionCreatePort {
 
     private final QuestionEntityRepository questionRepository;
+    private final QuestionMapper mapper;
 
     @Override
     public Long save(Question question) {
-        QuestionEntity entity = QuestionMapper.toEntity(question);
+        QuestionEntity entity = mapper.toEntity(question);
         return questionRepository.save(entity).getId();
     }
 }
