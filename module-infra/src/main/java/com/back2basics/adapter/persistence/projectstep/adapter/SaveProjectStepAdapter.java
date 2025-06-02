@@ -31,7 +31,6 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
     //todo: project 생성 시 디폴트 save - user(승인자) null
     @Override
     public void defaultSave(ProjectStep projectStep) {
-        // todo: projectStepEntity 이용해서 post 연관 설정
         // 1. project 연관 안들어간 step entity
         ProjectStepEntity projectStepEntity = mapper.toEntity(projectStep);
         // 2. project Entity 찾기
@@ -45,6 +44,13 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
     //todo: 단계 추가 시 save - user not null
     @Override
     public void save(ProjectStep projectStep) {
-
+        ProjectStepEntity projectStepEntity = mapper.toEntity(projectStep);
+        // 2. project Entity 찾기
+        ProjectEntity projectEntity = projectRepository.findById(projectStep.getProjectId())
+            .orElseThrow(() -> new ProjectException(ProjectErrorCode.PROJECT_NOT_FOUND));
+        // 3. project 연관
+        projectStepEntity.assignProjectEntity(projectEntity);
+        // todo: 4. user Entity 찾기 5. user 연관
+        stepRepository.save(projectStepEntity);
     }
 }
