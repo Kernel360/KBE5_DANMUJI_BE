@@ -1,5 +1,6 @@
 package com.back2basics.projectstep.model;
 
+import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -27,5 +28,11 @@ public class ProjectStep {
         this.userId = userId;
         this.stepStatus = stepStatus;
         this.approvalStatus = approvalStatus;
+    }
+
+    public void update(UpdateProjectStepCommand command) {
+        this.name = command.getName();
+        this.stepStatus = command.getStepStatus();
+        this.approvalStatus = command.getApprovalStatus();
     }
 }

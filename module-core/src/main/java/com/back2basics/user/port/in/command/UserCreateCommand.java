@@ -23,5 +23,4 @@ public class UserCreateCommand {
         this.phone = phone;
         this.position = position;
     }
-
 }

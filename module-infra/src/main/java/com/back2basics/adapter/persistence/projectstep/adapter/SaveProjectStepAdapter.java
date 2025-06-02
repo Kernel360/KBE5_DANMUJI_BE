@@ -44,6 +44,7 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
     //todo: 단계 추가 시 save - user not null
     @Override
     public void save(ProjectStep projectStep) {
+        // 1. project 연관 안들어간 step entity
         ProjectStepEntity projectStepEntity = mapper.toEntity(projectStep);
         // 2. project Entity 찾기
         ProjectEntity projectEntity = projectRepository.findById(projectStep.getProjectId())
