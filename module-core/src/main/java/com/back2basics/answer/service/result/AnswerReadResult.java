@@ -15,7 +15,7 @@ public class AnswerReadResult {
 
     private Long id;
     private Long questionId;
-    private Long parentAnswerId; // 대댓글의 경우 부모 댓글 ID
+    private Long parentAnswerId;
     private final Long authorId;
     private String content;
     private final LocalDateTime createdAt;
