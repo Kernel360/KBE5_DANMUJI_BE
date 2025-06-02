@@ -1,5 +1,6 @@
 package com.back2basics.question.service;
 
+import static com.mysema.commons.lang.Assert.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -30,8 +31,8 @@ public class QuestionDeleteServiceTest {
     private QuestionDeleteService questionDeleteService;
 
     @Test
-    @DisplayName("작성자가 질문을 삭제할 수 있다")
-    void deleteQuestion_Success() {
+    @DisplayName("작성자가 질문을 소프트 삭제할 수 있다")
+    void deleteQuestion_SoftDelete_Success() {
         // given
         Long questionId = 1L;
         Long authorId = 2L;
@@ -50,9 +51,9 @@ public class QuestionDeleteServiceTest {
         questionDeleteService.delete(questionId, authorId);
 
         // then
-        verify(questionValidator).findById(questionId);
         verify(questionValidator).validateAuthor(question, authorId);
-        verify(questionDeletePort).delete(questionId);
+        assertThat(question.isDeleted()).isTrue();
+        verify(questionDeletePort).delte(question);
     }
 
     @Test
