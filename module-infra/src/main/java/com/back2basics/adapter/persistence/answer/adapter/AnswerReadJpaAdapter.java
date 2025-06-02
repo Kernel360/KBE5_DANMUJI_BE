@@ -24,7 +24,7 @@ public class AnswerReadJpaAdapter implements AnswerReadPort {
 
     @Override
     public List<Answer> findAll() {
-        return answerRepository.findAllNotDeletedAnswers().stream()
+        return answerRepository.findAllAnswersNotDeleted().stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
     }

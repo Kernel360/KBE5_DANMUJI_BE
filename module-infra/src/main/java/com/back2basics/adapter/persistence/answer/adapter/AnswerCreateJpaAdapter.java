@@ -5,6 +5,8 @@ import com.back2basics.adapter.persistence.answer.AnswerEntityRepository;
 import com.back2basics.adapter.persistence.answer.AnswerMapper;
 import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.out.AnswerCreatePort;
+import com.back2basics.infra.exception.answer.AnswerErrorCode;
+import com.back2basics.infra.exception.answer.AnswerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +21,8 @@ public class AnswerCreateJpaAdapter implements AnswerCreatePort {
     public Long save(Answer answer) {
         AnswerEntity entity = mapper.toEntity(answer);
 
-        if (answer.getParentAnswertId() != null) {
-            AnswerEntity parent = answerRepository.findById(answer.getParentAnswertId())
+        if (answer.getParentAnswerId() != null) {
+            AnswerEntity parent = answerRepository.findById(answer.getParentAnswerId())
                 .orElseThrow(() -> new AnswerException(AnswerErrorCode.ANSWER_NOT_FOUND));
             entity.assignParentAnswer(parent);
         }

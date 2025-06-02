@@ -1,6 +1,9 @@
 package com.back2basics.question.model;
 
+import com.back2basics.answer.model.Answer;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,10 +16,12 @@ public class Question {
     private String content;
     private QuestionStatus status;
     private LocalDateTime createdAt;
+    private List<Answer> answers;
     private boolean isDeleted;
 
     @Builder
     public Question(Long id, Long postId, Long authorId, String content, LocalDateTime createdAt,
+        List<Answer> answers,
         boolean isDeleted) {
         this.id = id;
         this.postId = postId;
@@ -24,6 +29,7 @@ public class Question {
         this.content = content;
         this.createdAt = createdAt;
         this.status = status != null ? status : QuestionStatus.WAITING;
+        this.answers = answers != null ? new ArrayList<>(answers) : new ArrayList<>();
         this.isDeleted = false;
     }
 
@@ -41,5 +47,10 @@ public class Question {
 
     public void markAsResolved() {
         this.status = QuestionStatus.RESOLVED;
+    }
+
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
+        answer.assignQuestionId(this);
     }
 }

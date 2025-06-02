@@ -4,6 +4,8 @@ import com.back2basics.adapter.persistence.answer.AnswerEntity;
 import com.back2basics.adapter.persistence.answer.AnswerEntityRepository;
 import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.out.AnswerUpdatePort;
+import com.back2basics.infra.exception.answer.AnswerErrorCode;
+import com.back2basics.infra.exception.answer.AnswerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

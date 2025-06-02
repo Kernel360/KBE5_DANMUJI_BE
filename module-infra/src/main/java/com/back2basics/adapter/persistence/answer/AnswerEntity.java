@@ -2,7 +2,7 @@ package com.back2basics.adapter.persistence.answer;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.question.QuestionEntity;
-import com.back2basics.question.model.Question;
+import com.back2basics.answer.model.Answer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -71,8 +71,8 @@ public class AnswerEntity extends BaseTimeEntity {
         child.assignParentAnswer(this);
     }
 
-    public void update(Question question) {
+    public void update(Answer answer) {
 
-        this.content = question.getContent();
+        this.content = answer.getContent();
     }
 }
