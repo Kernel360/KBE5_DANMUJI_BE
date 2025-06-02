@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +30,10 @@ public interface QuestionApiDocs {
                 examples = @ExampleObject(value = QuestionDocsResult.QUESTION_LIST_READ_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<List<QuestionResponse>>> getAllQuestions();
+    ResponseEntity<ApiResponse<Page<QuestionResponse>>> getAllQuestions(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    );
 
     @Operation(summary = "게시글 질문 목록 조회", description = "게시글 ID로 질문 목록을 조회합니다.")
     @ApiResponses(value = {
@@ -40,8 +43,10 @@ public interface QuestionApiDocs {
                 examples = @ExampleObject(value = QuestionDocsResult.QUESTION_READ_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<List<QuestionResponse>>> getQuestionsByPostId(
-        @Parameter(description = "게시글 ID", example = "1") @PathVariable Long postId);
+    ResponseEntity<ApiResponse<Page<QuestionResponse>>> getQuestionsByPostId(
+        @Parameter(description = "게시글 ID", example = "1") @PathVariable Long postId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size);
 
     @Operation(summary = "질문 생성", description = "새로운 질문을 생성합니다.",
         requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(

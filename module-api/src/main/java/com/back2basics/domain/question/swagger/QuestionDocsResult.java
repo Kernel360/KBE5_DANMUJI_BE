@@ -24,19 +24,27 @@ public class QuestionDocsResult {
           "success": true,
           "code": "Q002",
           "message": "질문 조회 성공",
-          "data": [
-            {
-              "id": 1,
-              "postId": 1,
-              "authorId": 2,
-              "content": "질문 내용입니다.",
-              "status": "WAITING",
-              "createdAt": "2024-01-01T10:00:00",
-              "updatedAt": null,
-              "deletedAt": null,
-              "isDeleted": false
-            }
-          ]
+          "data": {
+            "content": [
+              {
+                "id": 1,
+                "postId": 1,
+                "authorId": 2,
+                "content": "질문 내용입니다.",
+                "status": "WAITING",
+                "createdAt": "2024-01-01T10:00:00",
+                "updatedAt": null,
+                "deletedAt": null,
+                "isDeleted": false
+              }
+            ],
+            "pageable": {
+              "pageNumber": 0,
+              "pageSize": 10
+            },
+            "totalElements": 1,
+            "totalPages": 1
+          }
         }
         """;
 
@@ -45,16 +53,24 @@ public class QuestionDocsResult {
           "success": true,
           "code": "Q002",
           "message": "질문 조회 성공",
-          "data": [
-            {
-              "id": 1,
-              "content": "전체 질문 리스트 예시입니다.",
-              "authorId": 2,
-              "postId": 1,
-              "status": "ANSWERED",
-              "createdAt": "2024-01-01T12:00:00"
-            }
-          ]
+          "data": {
+            "content": [
+              {
+                "id": 1,
+                "content": "전체 질문 리스트 예시입니다.",
+                "authorId": 2,
+                "postId": 1,
+                "status": "ANSWERED",
+                "createdAt": "2024-01-01T12:00:00"
+              }
+            ],
+            "pageable": {
+              "pageNumber": 0,
+              "pageSize": 10
+            },
+            "totalElements": 1,
+            "totalPages": 1
+          }
         }
         """;
 
