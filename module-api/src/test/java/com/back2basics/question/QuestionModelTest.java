@@ -4,6 +4,7 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import java.time.LocalDateTime;
+import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,7 @@ public class QuestionModelTest {
             .postId(1L)
             .authorId(authorId)
             .content(content)
+            .status(QuestionStatus.WAITING)
             .createdAt(now)
             .build();
 
@@ -35,6 +37,7 @@ public class QuestionModelTest {
         assertThat(question.getPostId()).isEqualTo(1L);
         assertThat(question.getAuthorId()).isEqualTo(authorId);
         assertThat(question.getContent()).isEqualTo(content);
+        assertThat(question.getStatus()).isEqualTo(QuestionStatus.WAITING);
         assertThat(question.getCreatedAt()).isEqualTo(now);
         assertThat(question.getChildren()).isEmpty();
     }
@@ -60,6 +63,7 @@ public class QuestionModelTest {
             .postId(post.getId())
             .authorId(2L)
             .content("게시글에 대한 질문입니다.")
+            .status(QuestionStatus.WAITING)
             .createdAt(LocalDateTime.now())
             .build();
 
@@ -78,6 +82,7 @@ public class QuestionModelTest {
             .postId(10L)
             .authorId(2L)
             .content("질문입니다.")
+            .status(QuestionStatus.WAITING)
             .createdAt(LocalDateTime.now())
             .build();
 
