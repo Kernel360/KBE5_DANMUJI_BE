@@ -21,13 +21,39 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // 잘못된 json 구조를 body로 전달할 경우
+    @ExceptionHandler(com.fasterxml.jackson.databind.JsonMappingException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleJsonMappingException(
+        com.fasterxml.jackson.databind.JsonMappingException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("JsonMappingException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
+
+    // json body에서 타입 잘못 넣었을 경우(id 필드에 문자열값 넣고 이런거)
+    @ExceptionHandler(com.fasterxml.jackson.core.JsonParseException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleJsonParseException(
+        com.fasterxml.jackson.core.JsonParseException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("JsonParseException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
+
+    // DB 제약조건 위배하는 경우
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleDataIntegrityViolationException(
+        org.springframework.dao.DataIntegrityViolationException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("DataIntegrityViolationException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
+
     // 찾는거 없는 경우(Optional.orElseThrow 같은거)
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleNoSuchElementException(
         NoSuchElementException ex) {
         ErrorCode errorCode = CommonErrorCode.NOT_FOUND;
-        log.error("NoSuchElementException 발생 {}: {}", ex.getClass().getSimpleName(),
-            ex.getMessage(), ex);
+        log.error("NoSuchElementException 발생: {}", ex.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode);
         return ApiResponse.error(errorCode, errorResponse);
     }
@@ -37,8 +63,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleMethodArgumentTypeMismatchException(
         MethodArgumentTypeMismatchException ex) {
         ErrorCode errorCode = CommonErrorCode.INVALID_TYPE_VALUE;
-        log.error("MethodArgumentTypeMismatchException 발생 {}: {}", ex.getClass().getSimpleName(),
-            ex.getMessage(), ex);
+        log.error("MethodArgumentTypeMismatchException 발생:{}", ex.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(ex);
         return ApiResponse.error(errorCode, errorResponse);
     }
@@ -48,8 +73,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleHttpRequestMethodNotSupportedException(
         HttpRequestMethodNotSupportedException ex) {
         ErrorCode errorCode = CommonErrorCode.METHOD_NOT_ALLOWED;
-        log.error("HttpRequestMethodNotSupportedException 발생 {}: {}", ex.getClass().getSimpleName(),
-            ex.getMessage(), ex);
+        log.error("HttpRequestMethodNotSupportedException 발생: {}", ex.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode);
         return ApiResponse.error(errorCode, errorResponse);
     }
@@ -59,8 +83,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleMissingServletRequestParameterException(
         MissingServletRequestParameterException ex) {
         ErrorCode errorCode = CommonErrorCode.METHOD_NOT_ALLOWED;
-        log.error("HttpRequestMethodNotSupportedException 발생 {}: {}", ex.getClass().getSimpleName(),
-            ex.getMessage(), ex);
+        log.error("HttpRequestMethodNotSupportedException 발생: {}", ex.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode);
         return ApiResponse.error(errorCode, errorResponse);
     }
@@ -69,7 +92,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleBindException(BindException ex) {
         ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
-        log.error("BindException 발생 {}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
+        log.error("BindException 발생: {}", ex.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getBindingResult());
         return ApiResponse.error(errorCode, errorResponse);
     }
@@ -79,8 +102,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleConstraintViolationException(
         ConstraintViolationException ex) {
         ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
-        log.error("ConstraintViolationException 발생 {}: {}", ex.getClass().getSimpleName(),
-            ex.getMessage(), ex);
+        log.error("ConstraintViolationException 발생: {}", ex.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getConstraintViolations());
         return ApiResponse.error(errorCode, errorResponse);
     }
@@ -91,7 +113,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleMethodArgumentNotValidException(
         MethodArgumentNotValidException ex) {
         ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
-        log.error("MethodArgumentNotValidException 발생: {}", errorCode.getMessage());
+        log.error("MethodArgumentNotValidException 발생: {}", errorCode.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getBindingResult());
         return ApiResponse.error(errorCode, errorResponse);
     }
@@ -100,7 +122,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleCustomException(CustomException ex) {
         ErrorCode errorCode = ex.getErrorCode();
-        log.error("CustomException 발생 {}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
+        log.error("CustomException 발생: {}", ex.getMessage(), ex);
         return ex.getErrors().isEmpty()
             ? ApiResponse.error(errorCode, ErrorResponse.of(errorCode))
             : ApiResponse.error(errorCode, ErrorResponse.of(errorCode, ex.getErrors()));
@@ -110,8 +132,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleException(Exception ex) {
         ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
-        log.error("UnhandledException 발생 {}: {}", ex.getClass().getSimpleName(), ex.getMessage(),
-            ex);
+        log.error("UnhandledException 발생: {}", ex.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode);
         return ApiResponse.error(errorCode, errorResponse);
     }
