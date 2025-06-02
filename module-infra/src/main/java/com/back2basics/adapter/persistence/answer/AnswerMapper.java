@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.answer;
 
 import com.back2basics.adapter.persistence.question.QuestionEntity;
+import com.back2basics.answer.model.Answer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +64,7 @@ public class AnswerMapper {
 
         entity.assignQuestion(QuestionEntity.builder().id(domain.getQuestionId()).build());
 
-        children.forEach(child -> entity.addChildQuestion(child));
+        children.forEach(child -> entity.addChildAnswer(child));
         return entity;
     }
 

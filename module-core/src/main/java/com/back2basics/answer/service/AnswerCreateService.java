@@ -4,6 +4,7 @@ import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.in.AnswerCreateUseCase;
 import com.back2basics.answer.port.in.command.AnswerCreateCommand;
 import com.back2basics.answer.port.out.AnswerCreatePort;
+import com.back2basics.infra.validation.validator.AnswerValidator;
 import com.back2basics.infra.validation.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import lombok.RequiredArgsConstructor;

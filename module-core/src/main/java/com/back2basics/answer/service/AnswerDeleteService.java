@@ -3,6 +3,7 @@ package com.back2basics.answer.service;
 import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.in.AnswerDeleteUseCase;
 import com.back2basics.answer.port.out.AnswerDeletePort;
+import com.back2basics.infra.validation.validator.AnswerValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,6 @@ public class AnswerDeleteService implements AnswerDeleteUseCase {
         Answer answer = answerValidator.findAnswerById(id);
         answerValidator.isAuthor(answer, requesterId);
 
-        answerDeletePort.delete(answer);
+        answerDeletePort.delete(id);
     }
 }
