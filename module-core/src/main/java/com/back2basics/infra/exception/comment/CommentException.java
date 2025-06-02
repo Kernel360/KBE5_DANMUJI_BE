@@ -1,4 +1,4 @@
-package com.back2basics.service.comment.exception;
+package com.back2basics.infra.exception.comment;
 
 import com.back2basics.global.response.error.CustomException;
 

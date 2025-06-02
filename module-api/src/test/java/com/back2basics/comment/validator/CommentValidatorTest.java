@@ -6,8 +6,8 @@ import static org.mockito.BDDMockito.given;
 
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentReadPort;
-import com.back2basics.service.comment.exception.CommentErrorCode;
-import com.back2basics.service.comment.exception.CommentException;
+import com.back2basics.infra.exception.comment.CommentErrorCode;
+import com.back2basics.infra.exception.comment.CommentException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
