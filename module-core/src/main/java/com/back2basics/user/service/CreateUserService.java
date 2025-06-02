@@ -1,6 +1,5 @@
 package com.back2basics.user.service;
 
-import com.back2basics.infra.validation.validator.CompanyValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
@@ -19,7 +18,6 @@ public class CreateUserService implements CreateUserUseCase {
     private final UserRepositoryPort userRepositoryPort;
     private final UserValidator userValidator;
     private final PasswordGenerator passwordGenerator;
-    private final CompanyValidator companyValidator;
 
     @Override
     public UserCreateResult create(UserCreateCommand command) {

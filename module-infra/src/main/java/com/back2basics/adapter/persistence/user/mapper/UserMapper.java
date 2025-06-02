@@ -27,7 +27,12 @@ public class UserMapper {
             .build();
     }
 
-    public UserEntity toEntity(User user, CompanyEntity companyEntity) {
+    public UserEntity toEntity(User user) {
+
+        CompanyEntity companyRef = CompanyEntity.builder()
+            .id(user.getCompanyId())
+            .build();
+
         return UserEntity.builder()
             .id(user.getId())
             .username(user.getUsername())
@@ -37,7 +42,7 @@ public class UserMapper {
             .phone(user.getPhone())
             .position(user.getPosition())
             .role(user.getRole())
-            .companyEntity(companyEntity)
+            .companyEntity(companyRef)
             .build();
     }
 
