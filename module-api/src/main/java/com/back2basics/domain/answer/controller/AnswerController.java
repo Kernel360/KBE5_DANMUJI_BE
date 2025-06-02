@@ -7,6 +7,7 @@ import com.back2basics.domain.answer.controller.code.AnswerResponseCode;
 import com.back2basics.domain.answer.dto.request.AnswerCreateRequest;
 import com.back2basics.domain.answer.dto.request.AnswerDeleteRequest;
 import com.back2basics.domain.answer.dto.request.AnswerUpdateRequest;
+import com.back2basics.domain.answer.swagger.AnswerApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/answers")
 @RequiredArgsConstructor
-public class AnswerController {
+public class AnswerController implements AnswerApiDocs {
 
     private final AnswerCreateUseCase createAnswerUseCase;
     private final AnswerUpdateUseCase updateAnswerUseCase;
