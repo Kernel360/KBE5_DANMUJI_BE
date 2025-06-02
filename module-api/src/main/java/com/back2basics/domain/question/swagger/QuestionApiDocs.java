@@ -22,6 +22,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "Question", description = "질문 관리 API")
 public interface QuestionApiDocs {
 
+    @Operation(summary = "질문 단건 조회", description = "질문 ID로 질문을 조회합니다.")
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", description = "질문 조회 성공 (Q002)",
+            content = @Content(mediaType = "application/json",
+                examples = @ExampleObject(value = QuestionDocsResult.QUESTION_READ_ONE_SUCCESS))
+        ),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404", description = "질문 없음 (Q001)",
+            content = @Content(mediaType = "application/json",
+                examples = @ExampleObject(value = QuestionDocsResult.QUESTION_NOT_FOUND))
+        )
+    })
+    ResponseEntity<ApiResponse<QuestionResponse>> getQuestionById(
+        @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId
+    );
+
     @Operation(summary = "전체 질문 목록 조회", description = "전체 질문 목록을 조회합니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
