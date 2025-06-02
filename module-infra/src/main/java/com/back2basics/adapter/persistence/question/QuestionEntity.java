@@ -38,9 +38,6 @@ public class QuestionEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private QuestionStatus status;
 
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
-
     @Builder
     public QuestionEntity(Long id, Long postId, Long authorId, String content,
         QuestionStatus status, boolean isDeleted) {
@@ -49,13 +46,11 @@ public class QuestionEntity extends BaseTimeEntity {
         this.authorId = authorId;
         this.content = content;
         this.status = status;
-        this.isDeleted = isDeleted;
     }
 
     public void update(Question question) {
         this.content = question.getContent();
         this.status = question.getStatus();
-        this.isDeleted = question.isDeleted();
     }
 
 }

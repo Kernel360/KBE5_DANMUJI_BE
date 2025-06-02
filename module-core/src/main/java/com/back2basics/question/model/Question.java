@@ -16,7 +16,8 @@ public class Question {
     private boolean isDeleted;
 
     @Builder
-    public Question(Long id, Long postId, Long authorId, String content, LocalDateTime createdAt) {
+    public Question(Long id, Long postId, Long authorId, String content, LocalDateTime createdAt,
+        boolean isDeleted) {
         this.id = id;
         this.postId = postId;
         this.authorId = authorId;

@@ -1,19 +1,29 @@
 package com.back2basics.adapter.persistence.question;
 
 import com.back2basics.question.model.Question;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class QuestionMapper {
 
     public static QuestionEntity toEntity(Question domain) {
-        return QuestionEntity.builder()
+
+        QuestionEntity entity = QuestionEntity.builder()
             .id(domain.getId())
             .postId(domain.getPostId())
             .authorId(domain.getAuthorId())
             .content(domain.getContent())
             .status(domain.getStatus())
-            .deleted(domain.isDeleted())
-            .createdAt(domain.getCreatedAt())
+            .isDeleted(domain.isDeleted())
             .build();
+
+        if (domain.isDeleted()) {
+            entity.markDeleted();
+        }
+
+        return entity;
     }
 
     public static Question toDomain(QuestionEntity entity) {
@@ -21,10 +31,8 @@ public class QuestionMapper {
             .id(entity.getId())
             .postId(entity.getPostId())
             .authorId(entity.getAuthorId())
-            .content(entity.getContent())
-            .status(entity.getStatus())
-            .deleted(entity.isDeleted())
             .createdAt(entity.getCreatedAt())
+            .content(entity.getContent())
             .build();
     }
 }
