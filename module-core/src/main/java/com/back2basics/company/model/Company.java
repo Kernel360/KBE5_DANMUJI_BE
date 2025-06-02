@@ -32,30 +32,14 @@ public class Company {
     }
 
     public void update(UpdateCompanyCommand command) {
-        if (command.getName() != null) {
-            this.name = command.getName();
-        }
-        if (command.getCeoName() != null) {
-            this.ceoName = command.getCeoName();
-        }
-        if (command.getBio() != null) {
-            this.bio = command.getBio();
-        }
-        if (command.getBizNo() != null) {
-            this.bizNo = command.getBizNo();
-        }
-        if (command.getCompanyType() != null) {
-            this.companyType = command.getCompanyType();
-        }
-        if (command.getAddress() != null) {
-            this.address = command.getAddress();
-        }
-        if (command.getEmail() != null) {
-            this.email = command.getEmail();
-        }
-        if (command.getTel() != null) {
-            this.tel = command.getTel();
-        }
+        this.name = command.getName();
+        this.ceoName = command.getCeoName();
+        this.bio = command.getBio();
+        this.bizNo = command.getBizNo();
+        this.companyType = command.getCompanyType();
+        this.address = command.getAddress();
+        this.email = command.getEmail();
+        this.tel = command.getTel();
     }
 
 }
