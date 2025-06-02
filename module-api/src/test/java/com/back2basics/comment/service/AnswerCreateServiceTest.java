@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CommentCreateServiceTest {
+class AnswerCreateServiceTest {
 
     @Mock
     private CommentCreatePort commentCreatePort;

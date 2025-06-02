@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CommentTest {
+class AnswerTest {
 
     @Test
     @DisplayName("댓글 생성 시 모든 필드가 올바르게 설정된다")

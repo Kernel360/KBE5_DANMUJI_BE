@@ -1,13 +1,10 @@
 package com.back2basics.comment.service;
 
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.back2basics.comment.model.Comment;
-import com.back2basics.comment.port.in.command.CommentUpdateCommand;
-import com.back2basics.comment.port.out.CommentUpdatePort;
+import com.back2basics.comment.port.out.CommentDeletePort;
 import com.back2basics.infra.validation.validator.CommentValidator;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -18,20 +15,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CommentUpdateServiceTest {
+class AnswerDeleteServiceTest {
 
     @Mock
     private CommentValidator commentValidator;
 
     @Mock
-    private CommentUpdatePort commentUpdatePort;
+    private CommentDeletePort commentDeletePort;
 
     @InjectMocks
-    private CommentUpdateService commentUpdateService;
+    private CommentDeleteService commentDeleteService;
 
     @Test
-    @DisplayName("댓글 수정 성공")
-    void updateComment_Success() {
+    @DisplayName("댓글 삭제 성공")
+    void deleteComment_Success() {
         // given
         Long commentId = 1L;
         Long requesterId = 1L;
@@ -39,29 +36,24 @@ class CommentUpdateServiceTest {
         Comment comment = Comment.builder()
             .id(commentId)
             .authorId(requesterId)
-            .content("원본 댓글")
+            .content("삭제할 댓글")
             .createdAt(LocalDateTime.now())
-            .build();
-
-        CommentUpdateCommand command = CommentUpdateCommand.builder()
-            .requesterId(requesterId)
-            .content("수정된 댓글")
             .build();
 
         given(commentValidator.findComment(commentId)).willReturn(comment);
 
         // when
-        commentUpdateService.updateComment(commentId, command);
+        commentDeleteService.deleteComment(commentId, requesterId);
 
         // then
         verify(commentValidator).findComment(commentId);
         verify(commentValidator).isAuthor(comment, requesterId);
-        verify(commentUpdatePort).update(comment);
+        verify(commentDeletePort).delete(comment);
     }
 
     @Test
-    @DisplayName("댓글 수정 시 작성자 검증")
-    void updateComment_VerifyAuthor() {
+    @DisplayName("댓글 삭제 시 작성자 검증")
+    void deleteComment_VerifyAuthor() {
         // given
         Long commentId = 1L;
         Long requesterId = 1L;
@@ -69,27 +61,22 @@ class CommentUpdateServiceTest {
         Comment comment = Comment.builder()
             .id(commentId)
             .authorId(requesterId)
-            .content("원본 댓글")
+            .content("삭제할 댓글")
             .createdAt(LocalDateTime.now())
-            .build();
-
-        CommentUpdateCommand command = CommentUpdateCommand.builder()
-            .requesterId(requesterId)
-            .content("수정된 댓글")
             .build();
 
         given(commentValidator.findComment(commentId)).willReturn(comment);
 
         // when
-        commentUpdateService.updateComment(commentId, command);
+        commentDeleteService.deleteComment(commentId, requesterId);
 
         // then
-        verify(commentValidator).isAuthor(eq(comment), eq(requesterId));
+        verify(commentValidator).isAuthor(comment, requesterId);
     }
 
     @Test
-    @DisplayName("댓글 수정 시 내용이 업데이트됨")
-    void updateComment_ContentUpdated() {
+    @DisplayName("댓글 삭제 시 정확한 댓글이 삭제됨")
+    void deleteComment_CorrectCommentDeleted() {
         // given
         Long commentId = 1L;
         Long requesterId = 1L;
@@ -97,23 +84,16 @@ class CommentUpdateServiceTest {
         Comment comment = Comment.builder()
             .id(commentId)
             .authorId(requesterId)
-            .content("원본 댓글")
+            .content("삭제할 댓글")
             .createdAt(LocalDateTime.now())
-            .build();
-
-        CommentUpdateCommand command = CommentUpdateCommand.builder()
-            .requesterId(requesterId)
-            .content("수정된 댓글")
             .build();
 
         given(commentValidator.findComment(commentId)).willReturn(comment);
 
         // when
-        commentUpdateService.updateComment(commentId, command);
+        commentDeleteService.deleteComment(commentId, requesterId);
 
         // then
-        verify(commentUpdatePort).update(argThat(updatedComment ->
-            updatedComment.getContent().equals("수정된 댓글")
-        ));
+        verify(commentDeletePort).delete(comment);
     }
 }

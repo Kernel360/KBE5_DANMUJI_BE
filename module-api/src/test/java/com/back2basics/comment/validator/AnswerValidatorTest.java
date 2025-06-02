@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CommentValidatorTest {
+class AnswerValidatorTest {
 
     @Mock
     private CommentReadPort commentRepository;
