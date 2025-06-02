@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.user.mapper;
 
+import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.adapter.persistence.company.CompanyMapper;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.user.model.User;
@@ -22,11 +23,11 @@ public class UserMapper {
             .phone(entity.getPhone())
             .position(entity.getPosition())
             .role(entity.getRole())
-            .company(companyMapper.toDomain(entity.getCompanyEntity()))
+            .companyId(entity.getCompanyEntity().getId())
             .build();
     }
 
-    public UserEntity toEntity(User user) {
+    public UserEntity toEntity(User user, CompanyEntity companyEntity) {
         return UserEntity.builder()
             .id(user.getId())
             .username(user.getUsername())
@@ -36,7 +37,7 @@ public class UserMapper {
             .phone(user.getPhone())
             .position(user.getPosition())
             .role(user.getRole())
-            .companyEntity(companyMapper.toEntity(user.getCompany()))
+            .companyEntity(companyEntity)
             .build();
     }
 

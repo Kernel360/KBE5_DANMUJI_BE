@@ -23,7 +23,7 @@ public class GetUserService implements GetUserUseCase {
             .email(user.getEmail())
             .phone(user.getPhone())
             .position(user.getPosition())
-            .companyId(user.getCompany().getId())
+            .companyId(user.getCompanyId())
             .build();
     }
 }
