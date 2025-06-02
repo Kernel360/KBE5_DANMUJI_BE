@@ -53,4 +53,8 @@ public class QuestionEntity extends BaseTimeEntity {
         this.status = question.getStatus();
     }
 
+    public void updateStatus(QuestionStatus status) {
+        this.status = status;
+    }
+
 }
