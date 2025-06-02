@@ -40,6 +40,33 @@ public class QuestionDocsResult {
         }
         """;
 
+    public static final String QUESTION_LIST_READ_SUCCESS = """
+        {
+          "success": true,
+          "code": "Q002",
+          "message": "질문 조회 성공",
+          "data": [
+            {
+              "id": 1,
+              "content": "전체 질문 리스트 예시입니다.",
+              "authorId": 2,
+              "postId": 1,
+              "status": "ANSWERED",
+              "createdAt": "2024-01-01T12:00:00"
+            }
+          ]
+        }
+        """;
+
+    public static final String INVALID_INPUT = """
+        {
+          "success": false,
+          "code": "C002",
+          "message": "Invalid input type",
+          "data": null
+        }
+        """;
+
     public static final String QUESTION_UPDATE_REQUEST = """
         {
           "requesterId": 2,

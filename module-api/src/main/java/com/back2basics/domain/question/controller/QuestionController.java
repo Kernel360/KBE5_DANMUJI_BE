@@ -3,6 +3,7 @@ package com.back2basics.domain.question.controller;
 import com.back2basics.domain.question.dto.request.QuestionCreateRequest;
 import com.back2basics.domain.question.dto.request.QuestionDeleteRequest;
 import com.back2basics.domain.question.dto.request.QuestionUpdateRequest;
+import com.back2basics.domain.question.swagger.QuestionApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.question.port.in.QuestionCreateUseCase;
 import com.back2basics.question.port.in.QuestionDeleteUseCase;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/questions")
-public class QuestionController {
+public class QuestionController implements QuestionApiDocs {
 
     private final QuestionReadUseCase questionReadUseCase;
     private final QuestionCreateUseCase questionCreateUseCase;
