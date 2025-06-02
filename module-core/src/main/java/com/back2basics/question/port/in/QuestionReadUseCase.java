@@ -9,4 +9,6 @@ public interface QuestionReadUseCase {
     Page<QuestionResult> getAllQuestions(Pageable pageable);
 
     Page<QuestionResult> getQuestionsByPostId(Long postId, Pageable pageable);
+
+    QuestionResult getQuestionById(Long questionId);
 }

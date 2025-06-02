@@ -40,6 +40,15 @@ public class QuestionController implements QuestionApiDocs {
     private final QuestionDeleteUseCase questionDeleteUseCase;
     private final QuestionStatusUpdateUseCase statusUpdateUseCase;
 
+    @GetMapping("/{questionId}")
+    public ResponseEntity<ApiResponse<QuestionResponse>> getQuestionById(
+        @PathVariable Long questionId
+    ) {
+        QuestionResult result = questionReadUseCase.getQuestionById(questionId);
+        QuestionResponse response = QuestionResponse.toResponse(result);
+        return ApiResponse.success(QuestionResponseCode.QUESTION_READ_SUCCESS, response);
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<Page<QuestionResponse>>> getAllQuestions(
         @RequestParam(defaultValue = "0") int page,

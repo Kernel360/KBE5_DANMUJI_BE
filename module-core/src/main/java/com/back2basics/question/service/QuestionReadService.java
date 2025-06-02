@@ -1,5 +1,7 @@
 package com.back2basics.question.service;
 
+import com.back2basics.infra.validation.validator.QuestionValidator;
+import com.back2basics.question.model.Question;
 import com.back2basics.question.port.in.QuestionReadUseCase;
 import com.back2basics.question.port.out.QuestionReadPort;
 import com.back2basics.question.service.result.QuestionResult;
@@ -13,11 +15,18 @@ import org.springframework.stereotype.Service;
 public class QuestionReadService implements QuestionReadUseCase {
 
     private final QuestionReadPort questionReadPort;
+    private final QuestionValidator questionValidator;
 
     @Override
     public Page<QuestionResult> getQuestionsByPostId(Long postId, Pageable pageable) {
         return questionReadPort.findAllByPostId(postId, pageable)
             .map(QuestionResult::toResult);
+    }
+
+    @Override
+    public QuestionResult getQuestionById(Long questionId) {
+        Question question = questionValidator.findById(questionId);
+        return QuestionResult.toResult(question);
     }
 
     @Override
