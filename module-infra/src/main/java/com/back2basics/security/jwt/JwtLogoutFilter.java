@@ -1,7 +1,7 @@
 package com.back2basics.security.jwt;
 
-import static com.back2basics.global.response.code.AuthErrorCode.ALREADY_LOGOUT;
-import static com.back2basics.global.response.code.AuthResponseCode.SUCCESS_LOGOUT;
+import static com.back2basics.security.auth.code.AuthErrorCode.ALREADY_LOGOUT;
+import static com.back2basics.security.auth.code.AuthResponseCode.SUCCESS_LOGOUT;
 
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;

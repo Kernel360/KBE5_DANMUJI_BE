@@ -1,7 +1,7 @@
 package com.back2basics.security.auth;
 
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_INVALID;
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_NOT_FOUND;
+import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_INVALID;
+import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_NOT_FOUND;
 
 import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.jwt.JwtTokenProvider;

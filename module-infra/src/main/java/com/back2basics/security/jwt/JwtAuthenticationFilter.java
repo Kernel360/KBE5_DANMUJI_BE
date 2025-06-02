@@ -1,8 +1,8 @@
 package com.back2basics.security.jwt;
 
-import static com.back2basics.global.response.code.AuthErrorCode.ACCESS_DENIED;
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_MALFORMED;
-import static com.back2basics.global.response.code.AuthResponseCode.SUCCESS_LOGIN;
+import static com.back2basics.security.auth.code.AuthErrorCode.ACCESS_DENIED;
+import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_MALFORMED;
+import static com.back2basics.security.auth.code.AuthResponseCode.SUCCESS_LOGIN;
 
 import com.back2basics.auth.LoginRequest;
 import com.back2basics.global.response.error.ErrorResponse;

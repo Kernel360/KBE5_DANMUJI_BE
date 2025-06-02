@@ -1,7 +1,7 @@
 package com.back2basics.security.jwt;
 
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_BLACKLISTED;
-import static com.back2basics.global.response.code.AuthErrorCode.TOKEN_INVALID;
+import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_BLACKLISTED;
+import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_INVALID;
 
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;

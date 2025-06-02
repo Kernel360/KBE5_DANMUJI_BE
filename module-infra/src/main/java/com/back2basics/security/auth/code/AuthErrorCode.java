@@ -1,5 +1,6 @@
-package com.back2basics.global.response.code;
+package com.back2basics.security.auth.code;
 
+import com.back2basics.global.response.code.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

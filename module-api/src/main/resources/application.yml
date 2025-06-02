@@ -5,6 +5,9 @@ spring:
     active: ${ACTIVE_PROFILES}
   application:
     name: module-api
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
 # Swagger 설정
 # http://localhost:8080/danmuji-ui.html
@@ -48,9 +51,6 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
   jackson:
     date-format: yyyy-MM-dd
     serialization:

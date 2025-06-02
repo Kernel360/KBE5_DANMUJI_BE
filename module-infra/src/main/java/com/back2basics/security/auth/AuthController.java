@@ -1,6 +1,6 @@
 package com.back2basics.security.auth;
 
-import static com.back2basics.global.response.code.AuthResponseCode.SUCCESS_REISSUE;
+import static com.back2basics.security.auth.code.AuthResponseCode.SUCCESS_REISSUE;
 
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
