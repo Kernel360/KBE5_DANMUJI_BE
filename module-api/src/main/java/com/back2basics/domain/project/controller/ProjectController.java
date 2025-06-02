@@ -48,7 +48,6 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<ProjectGetResponse>> getProjectById(
         @PathVariable Long projectId) {
         ProjectGetResult result = readProjectUseCase.getProjectById(projectId);
-
         ProjectGetResponse response = ProjectGetResponse.toResponse(result);
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_SUCCESS, response);
     }

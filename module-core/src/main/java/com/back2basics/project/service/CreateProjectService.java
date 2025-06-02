@@ -29,13 +29,13 @@ public class CreateProjectService implements CreateProjectUseCase {
             .build();
         Project saved = saveProjectPort.save(project);
 
-        /* todo: 디폴트 단계 추가되면 nameList로 반복
+        /* todo: 디폴트 단계 추가되면 nameList로 반복 (승인자는 고객사 담당자로 할지)
         *   default는 받아올 command가 없어서 도메인모델로 직접 생성 */
 
         ProjectStep projectStep = ProjectStep.builder()
             .name("요구사항정의")
             .projectId(saved.getId())
-            .userId(null)
+            //.userId(null)
             .stepStatus(StepStatus.PENDING)
             .approvalStatus(null)
             .build();

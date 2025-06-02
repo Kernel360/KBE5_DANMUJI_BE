@@ -34,7 +34,7 @@ public class Project {
 
     private ProjectStatus status;
 
-    private List<ProjectStep> steps = new ArrayList<>();
+    private List<ProjectStep> steps; // = new ArrayList<>;
 
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
@@ -51,6 +51,11 @@ public class Project {
         this.isDeleted = isDeleted;
         this.status = status != null ? status : ProjectStatus.IN_PROGRESS;
         this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
+    }
+
+    // todo: 조회 시 steps 세팅해주는데 먼가 맘에 안듦. 위에서 값 초기화를 해주는거 같은데 안먹혀서 일단 해놓음
+    public void setSteps(List<ProjectStep> steps) {
+        this.steps = steps;
     }
 
     public void update(ProjectUpdateCommand command) {

@@ -3,9 +3,11 @@ package com.back2basics.project.service.result;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.projectstep.service.result.ReadProjectStepResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -33,7 +35,7 @@ public class ProjectGetResult {
 
     private final ProjectStatus status;
 
-    private final List<ProjectStep> steps;
+    private final List<ReadProjectStepResult> steps;
 
     public  static ProjectGetResult toResult(Project project) {
         return ProjectGetResult.builder()
@@ -47,7 +49,9 @@ public class ProjectGetResult {
             .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
             .status(project.getStatus())
-            .steps(project.getSteps())
+            .steps(project.getSteps().stream()
+                .map(ReadProjectStepResult::toResult)
+                .collect(Collectors.toList()))
             .build();
     }
 }
