@@ -22,8 +22,6 @@ public class QuestionCreateService implements QuestionCreateUseCase {
             .build();
 
         Long savedId = questionCreatePort.save(question);
-
-        questionCreatePort.save(question);
-        return question.getId();
+        return savedId;
     }
 }
