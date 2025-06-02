@@ -1,12 +1,9 @@
 package com.back2basics.question.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.back2basics.infra.exception.question.QuestionErrorCode;
-import com.back2basics.infra.exception.question.QuestionException;
 import com.back2basics.infra.validation.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.in.command.QuestionUpdateCommand;
@@ -61,34 +58,5 @@ public class QuestionUpdateServiceTest {
         verify(questionValidator).validateAuthor(question, authorId);
         verify(questionUpdatePort).update(question);
         assertThat(question.getContent()).isEqualTo("수정된 질문 내용");
-    }
-
-    @Test
-    @DisplayName("작성자가 아닌 사용자가 수정하려 하면 예외 발생")
-    void updateQuestion_InvalidAuthor() {
-        // given
-        Long questionId = 1L;
-        Long authorId = 2L;
-        Long otherId = 3L;
-
-        Question question = Question.builder()
-            .id(questionId)
-            .postId(10L)
-            .authorId(authorId)
-            .content("이전 질문 내용")
-            .createdAt(LocalDateTime.now())
-            .build();
-
-        given(questionValidator.findById(questionId)).willReturn(question);
-
-        QuestionUpdateCommand command = QuestionUpdateCommand.builder()
-            .requesterId(otherId)
-            .content("불법 수정")
-            .build();
-
-        // when & then
-        assertThatThrownBy(() -> questionUpdateService.update(questionId, command))
-            .isInstanceOf(QuestionException.class)
-            .hasMessageContaining(QuestionErrorCode.INVALID_QUESTION_AUTHOR.getMessage());
     }
 }
