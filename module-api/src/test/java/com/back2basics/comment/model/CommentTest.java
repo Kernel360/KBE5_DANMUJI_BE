@@ -83,7 +83,7 @@ class CommentTest {
             .build();
 
         // when
-        comment.assignPost(post);
+        comment.assignPostId(post);
 
         // then
         assertThat(comment.getPostId()).isEqualTo(2L);

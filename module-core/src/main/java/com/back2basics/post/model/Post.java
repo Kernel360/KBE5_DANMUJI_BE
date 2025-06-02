@@ -29,8 +29,7 @@ public class Post {
     public Post(Long id, Long authorId, String title, String content, PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments,
-        boolean isDelete) {
+        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments) {
         this.id = id;
         this.authorId = authorId;
         this.title = title;
@@ -62,6 +61,6 @@ public class Post {
 
     public void addComment(Comment comment) {
         comments.add(comment);
-        comment.assignPost(this);
+        comment.assignPostId(this);
     }
 }

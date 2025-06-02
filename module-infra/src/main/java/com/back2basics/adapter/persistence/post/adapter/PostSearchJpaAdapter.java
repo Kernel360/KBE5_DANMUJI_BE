@@ -1,6 +1,5 @@
 package com.back2basics.adapter.persistence.post.adapter;
 
-import static com.back2basics.adapter.persistence.comment.QCommentEntity.commentEntity;
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
@@ -31,24 +30,21 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .select(postEntity.id)
             .from(postEntity)
             .where(activePosts().and(matchesKeyword(keyword)))
-            .orderBy(postEntity.createdAt.desc(), postEntity.id.desc())
+            .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
 
-        // 조인
+        // post 조회
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
-            .distinct()
-            .leftJoin(postEntity.comments, commentEntity).fetchJoin()
             .where(postEntity.id.in(ids)
                 .and(activePosts())
-                .and(matchesKeyword(keyword))
-            )
-            .orderBy(postEntity.createdAt.desc(), postEntity.id.desc())
+                .and(matchesKeyword(keyword)))
+            .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
-            .map(mapper::toDomain)
+            .map(mapper::toDomainList)
             .collect(Collectors.toList());
 
         // 카운트 쿼리

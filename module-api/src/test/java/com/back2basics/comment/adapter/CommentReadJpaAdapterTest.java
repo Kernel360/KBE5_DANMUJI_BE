@@ -11,6 +11,7 @@ import com.back2basics.adapter.persistence.comment.adapter.CommentReadJpaAdapter
 import com.back2basics.comment.model.Comment;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,25 +31,35 @@ class CommentReadJpaAdapterTest {
     @InjectMocks
     private CommentReadJpaAdapter commentReadJpaAdapter;
 
-    @Test
-    @DisplayName("댓글 조회 성공")
-    void findById_Success() {
-        // given
-        Long commentId = 1L;
-        CommentEntity entity = CommentEntity.builder()
+    private CommentEntity entity;
+    private Comment comment;
+    private Long commentId;
+
+    @BeforeEach
+    void setUp() {
+        commentId = 1L;
+
+        entity = CommentEntity.builder()
             .id(commentId)
             .authorId(1L)
             .content("테스트 댓글")
             .build();
 
-        Comment comment = Comment.builder()
+        comment = Comment.builder()
             .id(commentId)
             .postId(1L)
             .authorId(1L)
             .content("테스트 댓글")
             .createdAt(LocalDateTime.now())
             .build();
+    }
 
+
+    @Test
+    @DisplayName("댓글 조회 성공")
+    void findById_Success() {
+        // given
+        Long commentId = 1L;
         given(commentEntityRepository.findById(commentId)).willReturn(Optional.of(entity));
         given(mapper.toDomain(entity)).willReturn(comment);
 
@@ -115,20 +126,6 @@ class CommentReadJpaAdapterTest {
     void findById_MapperToDomainCalled() {
         // given
         Long commentId = 1L;
-        CommentEntity entity = CommentEntity.builder()
-            .id(commentId)
-            .authorId(1L)
-            .content("매퍼 테스트")
-            .build();
-
-        Comment comment = Comment.builder()
-            .id(commentId)
-            .postId(1L)
-            .authorId(1L)
-            .content("매퍼 테스트")
-            .createdAt(LocalDateTime.now())
-            .build();
-
         given(commentEntityRepository.findById(commentId)).willReturn(Optional.of(entity));
         given(mapper.toDomain(entity)).willReturn(comment);
 
