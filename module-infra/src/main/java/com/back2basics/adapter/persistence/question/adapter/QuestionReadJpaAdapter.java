@@ -7,9 +7,10 @@ import com.back2basics.infra.exception.question.QuestionErrorCode;
 import com.back2basics.infra.exception.question.QuestionException;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.out.QuestionReadPort;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,20 +27,17 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
 
         return Optional.of(mapper.toDomain(entity));
     }
-    
+
     @Override
-    public List<Question> findAllQuestions(Long postId) {
-        return questionRepository.findAllQuestionsByPostId(postId)
-            .stream()
-            .map(mapper::toDomain)
-            .toList();
+    public Page<Question> findAllByPostId(Long postId, Pageable pageable) {
+        return questionRepository.findAllQuestionsByPostId(postId, pageable)
+            .map(mapper::toDomain);
     }
 
     @Override
-    public List<Question> findAll() {
-        return questionRepository.findAllNotDeleted().stream()
-            .map(mapper::toDomain)
-            .toList();
+    public Page<Question> findAll(Pageable pageable) {
+        return questionRepository.findAllNotDeleted(pageable)
+            .map(mapper::toDomain);
     }
 }
 

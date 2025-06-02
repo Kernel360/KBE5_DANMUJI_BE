@@ -3,6 +3,7 @@ package com.back2basics.domain.question.controller;
 import com.back2basics.domain.question.dto.request.QuestionCreateRequest;
 import com.back2basics.domain.question.dto.request.QuestionDeleteRequest;
 import com.back2basics.domain.question.dto.request.QuestionUpdateRequest;
+import com.back2basics.domain.question.dto.response.QuestionResponse;
 import com.back2basics.domain.question.swagger.QuestionApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.question.port.in.QuestionCreateUseCase;
@@ -12,8 +13,10 @@ import com.back2basics.question.port.in.QuestionStatusUpdateUseCase;
 import com.back2basics.question.port.in.QuestionUpdateUseCase;
 import com.back2basics.question.service.result.QuestionResult;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,17 +41,27 @@ public class QuestionController implements QuestionApiDocs {
     private final QuestionStatusUpdateUseCase statusUpdateUseCase;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<QuestionResult>>> getAllQuestions() {
-        List<QuestionResult> results = questionReadUseCase.getAllQuestions();
-        return ApiResponse.success(QuestionResponseCode.QUESTION_READ_SUCCESS, results);
+    public ResponseEntity<ApiResponse<Page<QuestionResponse>>> getAllQuestions(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<QuestionResult> results = questionReadUseCase.getAllQuestions(pageable);
+        Page<QuestionResponse> responses = results.map(QuestionResponse::toResponse);
+        return ApiResponse.success(QuestionResponseCode.QUESTION_READ_SUCCESS, responses);
     }
 
     @GetMapping("/post/{postId}") // 특정 게시글에 대한 질문 조회용 api
-    public ResponseEntity<ApiResponse<List<QuestionResult>>> getQuestionsByPostId(
-        @PathVariable Long postId
+    public ResponseEntity<ApiResponse<Page<QuestionResponse>>> getQuestionsByPostId(
+        @PathVariable Long postId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
     ) {
-        List<QuestionResult> results = questionReadUseCase.getQuestionsByPostId(postId);
-        return ApiResponse.success(QuestionResponseCode.QUESTION_READ_SUCCESS, results);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<QuestionResult> resultPage = questionReadUseCase.getQuestionsByPostId(postId,
+            pageable);
+        Page<QuestionResponse> responsePage = resultPage.map(QuestionResponse::toResponse);
+        return ApiResponse.success(QuestionResponseCode.QUESTION_READ_SUCCESS, responsePage);
     }
 
     @PostMapping

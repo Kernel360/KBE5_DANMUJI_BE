@@ -3,11 +3,11 @@ package com.back2basics.domain.question.dto.response;
 import com.back2basics.question.model.QuestionStatus;
 import com.back2basics.question.service.result.QuestionResult;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class QuestionResponse {
 
     private Long id;
@@ -17,12 +17,15 @@ public class QuestionResponse {
     private QuestionStatus status;
     private LocalDateTime createdAt;
 
-    public QuestionResponse(QuestionResult result) {
-        this.id = result.getId();
-        this.postId = result.getPostId();
-        this.authorId = result.getAuthorId();
-        this.content = result.getContent();
-        this.status = result.getStatus();
-        this.createdAt = result.getCreatedAt();
+
+    public static QuestionResponse toResponse(QuestionResult result) {
+        return QuestionResponse.builder()
+            .id(result.getId())
+            .postId(result.getPostId())
+            .authorId(result.getAuthorId())
+            .content(result.getContent())
+            .status(result.getStatus())
+            .createdAt(result.getCreatedAt())
+            .build();
     }
 }
