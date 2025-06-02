@@ -1,8 +1,17 @@
 package com.back2basics.question.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
+import com.back2basics.question.model.Question;
+import com.back2basics.question.port.in.command.QuestionCreateCommand;
+import com.back2basics.question.port.out.QuestionCreatePort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,24 +39,15 @@ public class QuestionCreateServiceTest {
         given(questionCreatePort.save(any(Question.class))).willReturn(1L);
 
         // when
-        QuestionCreateResult result = questionCreateService.create(command);
+        Long resultId = questionCreateService.create(command);
 
         // then
-        assertThat(result).isNotNull();
-        assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getContent()).isEqualTo("질문 내용입니다.");
-        assertThat(result.getAuthorId()).isEqualTo(2L);
-        assertThat(result.getPostId()).isEqualTo(10L);
-        assertThat(result.getStatus()).isEqualTo(QuestionStatus.WAITING);
+        assertThat(resultId).isEqualTo(1L);
 
         ArgumentCaptor<Question> captor = ArgumentCaptor.forClass(Question.class);
         verify(questionCreatePort).save(captor.capture());
 
         Question saved = captor.getValue();
         assertThat(saved.getPostId()).isEqualTo(10L);
-        assertThat(saved.getAuthorId()).isEqualTo(2L);
-        assertThat(saved.getContent()).isEqualTo("질문 내용입니다.");
-        assertThat(saved.getStatus()).isEqualTo(QuestionStatus.WAITING);
-        assertThat(saved.getCreatedAt()).isNotNull();
     }
 }

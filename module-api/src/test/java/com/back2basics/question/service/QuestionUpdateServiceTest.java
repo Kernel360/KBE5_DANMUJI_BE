@@ -5,11 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.back2basics.question.exception.QuestionException;
+import com.back2basics.infra.exception.question.QuestionErrorCode;
+import com.back2basics.infra.exception.question.QuestionException;
+import com.back2basics.infra.validation.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.in.command.QuestionUpdateCommand;
 import com.back2basics.question.port.out.QuestionUpdatePort;
-import com.back2basics.question.validator.QuestionValidator;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

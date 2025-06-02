@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class QuestionValidator {
 
-    private final QuestionReadPort questionLoadPort;
+    private final QuestionReadPort questionReadPort;
 
     public Question findById(Long id) {
-        return questionLoadPort.findById(id)
+        return questionReadPort.findById(id)
             .orElseThrow(() -> new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND));
     }
 

@@ -1,14 +1,14 @@
 package com.back2basics.question.service;
 
-import static com.mysema.commons.lang.Assert.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.back2basics.question.exception.QuestionException;
+import com.back2basics.infra.exception.question.QuestionErrorCode;
+import com.back2basics.infra.exception.question.QuestionException;
+import com.back2basics.infra.validation.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.out.QuestionDeletePort;
-import com.back2basics.question.validator.QuestionValidator;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,8 +52,7 @@ public class QuestionDeleteServiceTest {
 
         // then
         verify(questionValidator).validateAuthor(question, authorId);
-        assertThat(question.isDeleted()).isTrue();
-        verify(questionDeletePort).delte(question);
+        verify(questionDeletePort).delete(question.getId());
     }
 
     @Test
@@ -77,6 +76,6 @@ public class QuestionDeleteServiceTest {
         // when & then
         assertThatThrownBy(() -> questionDeleteService.delete(questionId, otherUserId))
             .isInstanceOf(QuestionException.class)
-            .hasMessageContaining(QustionErrorCode.INVALID_QUESTION_AUTHOR.getMessage());
+            .hasMessageContaining(QuestionErrorCode.INVALID_QUESTION_AUTHOR.getMessage());
     }
 }
