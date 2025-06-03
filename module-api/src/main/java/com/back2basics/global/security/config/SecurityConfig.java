@@ -24,6 +24,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final String[] allowedUrls = {"/", "/api/auth/**", "/error"};
+    private final String[] swaggerUrls = {"/danmuji-ui.html", "/v3/api-docs/**", "/swagger-ui/**",
+        "/swagger-ui.html", "/webjars/**", "/favicon.ico"};
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
@@ -49,6 +51,7 @@ public class SecurityConfig {
                     SessionCreationPolicy.STATELESS)) // 세션 비활성화
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(allowedUrls).permitAll()
+                    .requestMatchers(swaggerUrls).permitAll()
                     .requestMatchers("/static/**", "/assets/**")
                     .permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
