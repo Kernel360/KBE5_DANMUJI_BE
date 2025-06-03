@@ -26,7 +26,7 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
 
     @Override
     public List<ProjectStep> findAllByProjectId(Long projectId) {
-        return repository.findAllByProjectId(projectId)
+        return repository.findAllByProjectIdAndIsDeletedFalse(projectId)
             .stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
