@@ -13,5 +13,6 @@ public class UserInfoResult {
     private final String email;
     private final String phone;
     private final String position;
+    private final Long companyId;
 
 }

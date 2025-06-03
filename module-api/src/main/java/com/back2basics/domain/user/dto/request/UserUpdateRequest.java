@@ -7,7 +7,8 @@ import jakarta.validation.constraints.NotEmpty;
 public record UserUpdateRequest(@NotEmpty String username, @NotEmpty String name,
                                 @NotEmpty @Email String email,
                                 @NotEmpty String phone,
-                                @NotEmpty String position) {
+                                @NotEmpty String position,
+                                Long companyId) {
 
     public UserUpdateCommand toCommand() {
         return UserUpdateCommand.builder()
@@ -16,6 +17,7 @@ public record UserUpdateRequest(@NotEmpty String username, @NotEmpty String name
             .email(email)
             .phone(phone)
             .position(position)
+            .companyId(companyId)
             .build();
     }
 }
