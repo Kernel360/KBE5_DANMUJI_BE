@@ -11,6 +11,7 @@ import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class ProjectStepController {
         return ApiResponse.success(ProjectStepResponseCode.STEP_UPDATE_SUCCESS);
     }
 
-    @PatchMapping("/{stepId}")
+    @DeleteMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> deleteStep(@PathVariable Long stepId) {
         deleteProjectStepUseCase.softDelete(stepId);
         return ApiResponse.success(ProjectStepResponseCode.STEP_DELETE_SUCCESS);

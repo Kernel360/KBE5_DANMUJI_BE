@@ -7,7 +7,7 @@ import com.back2basics.infra.exception.project.ProjectException;
 
 public class ProjectStepException extends CustomException {
 
-    public ProjectStepException(ErrorCode errorCode) {
+    public ProjectStepException(ProjectStepErrorCode errorCode) {
         super(errorCode);
     }
 }
