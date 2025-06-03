@@ -20,7 +20,10 @@ public class UserMapper {
             .phone(entity.getPhone())
             .position(entity.getPosition())
             .role(entity.getRole())
+            .userType(entity.getUserType())
             .companyId(entity.getCompanyEntity() != null ? entity.getCompanyEntity().getId() : null)
+            .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
             .build();
     }
 
@@ -34,6 +37,7 @@ public class UserMapper {
             .phone(user.getPhone())
             .position(user.getPosition())
             .role(user.getRole())
+            .userType(user.getUserType())
             .companyEntity(companyEntity)
             .build();
     }

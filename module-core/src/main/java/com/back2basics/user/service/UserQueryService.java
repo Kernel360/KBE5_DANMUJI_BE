@@ -19,7 +19,8 @@ public class UserQueryService implements UserQueryUseCase {
     public UserInfoResult getUserInfo(Long userId) {
         User user = userRepositoryPort.findById(userId);
         return new UserInfoResult(userId, user.getUsername(), user.getName(), user.getEmail(),
-            user.getPhone(), user.getPosition(), user.getCompanyId());
+            user.getPhone(), user.getPosition(), user.getUserType(), user.getCompanyId(),
+            user.getCreatedAt(), user.getCreatedAt());
     }
 
     @Override
