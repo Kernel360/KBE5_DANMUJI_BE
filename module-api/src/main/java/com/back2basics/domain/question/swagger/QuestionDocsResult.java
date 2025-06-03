@@ -10,7 +10,15 @@ public class QuestionDocsResult {
           "data": {
             "id": 1,
             "postId": 1,
-            "authorId": 2,
+            "author": {
+              "id": 2,
+              "username": "johndoe",
+              "name": "홍길동",
+              "email": "johndoe@example.com",
+              "phone": "010-1234-5678",
+              "position": "백엔드 개발자",
+              "companyId": 1001
+            },
             "content": "질문 내용입니다.",
             "status": "WAITING",
             "createdAt": "2024-01-01T10:00:00",
@@ -18,16 +26,25 @@ public class QuestionDocsResult {
               {
                 "id": 100,
                 "questionId": 1,
-                "authorId": 3,
+                "parentAnswerId": null,
+                "author": {
+                  "id": 3,
+                  "username": "janedoe",
+                  "name": "김영희",
+                  "email": "janedoe@example.com",
+                  "phone": "010-5678-1234",
+                  "position": "프론트엔드 개발자",
+                  "companyId": 1002
+                },
                 "content": "답변입니다.",
                 "createdAt": "2024-01-01T11:00:00",
-                "updatedAt": null
+                "updatedAt": null,
+                "children": []
               }
             ]
           }
         }
         """;
-
     public static final String QUESTION_CREATE_REQUEST = """
         {
           "postId": 1,
