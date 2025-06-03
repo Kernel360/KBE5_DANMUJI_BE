@@ -4,8 +4,8 @@ import com.back2basics.adapter.persistence.comment.CommentEntity;
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentDeletePort;
-import com.back2basics.service.comment.exception.CommentErrorCode;
-import com.back2basics.service.comment.exception.CommentException;
+import com.back2basics.infra.exception.comment.CommentErrorCode;
+import com.back2basics.infra.exception.comment.CommentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

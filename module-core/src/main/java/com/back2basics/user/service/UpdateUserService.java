@@ -17,7 +17,7 @@ public class UpdateUserService implements UpdateUserUseCase {
     public void update(Long userId, UserUpdateCommand command) {
         User user = userRepositoryPort.findById(userId);
         user.updateUser(command.getUsername(), command.getName(), command.getEmail(),
-            command.getPhone(), command.getPosition());
+            command.getPhone(), command.getPosition(), command.getCompanyId());
 
         userRepositoryPort.save(user);
     }
