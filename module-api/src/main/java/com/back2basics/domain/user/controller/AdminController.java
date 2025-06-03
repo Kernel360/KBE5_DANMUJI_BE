@@ -49,7 +49,8 @@ public class AdminController {
     public ResponseEntity<ApiResponse<Void>> updateUser(
         @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
         UserUpdateCommand command = new UserUpdateCommand(request.username(),
-            request.name(), request.email(), request.phone(), request.position());
+            request.name(), request.email(), request.phone(), request.position(),
+            request.companyId());
         updateUserUseCase.update(userId, command);
         return ApiResponse.success(UserResponseCode.USER_UPDATE_SUCCESS);
     }

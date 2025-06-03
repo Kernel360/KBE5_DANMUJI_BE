@@ -32,6 +32,7 @@ public class CreateUserService implements CreateUserUseCase {
             .phone(command.getPhone())
             .position(command.getPosition())
             .role(Role.USER)
+            .companyId(command.getCompanyId())
             .build();
 
         User saved = userRepositoryPort.save(user);
@@ -39,6 +40,7 @@ public class CreateUserService implements CreateUserUseCase {
             .id(saved.getId())
             .username(saved.getUsername())
             .password(generatedPassword)
+            .companyId(saved.getCompanyId())
             .build();
     }
 }
