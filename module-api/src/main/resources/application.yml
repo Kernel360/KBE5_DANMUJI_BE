@@ -5,6 +5,9 @@ spring:
     active: ${ACTIVE_PROFILES}
   application:
     name: module-api
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
 # Swagger 설정
 # http://localhost:8080/danmuji-ui.html
@@ -48,7 +51,14 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
+  jackson:
+    date-format: yyyy-MM-dd
+    serialization:
+      write-dates-as-timestamps: false
+jwt:
+  secret: ${JWT_SECRET}
+  access: ${JWT_ACCESS_EXPIRATION}
+  refresh: ${JWT_REFRESH_EXPIRATION}
 
 # SMTP
 #  mail:
@@ -62,7 +72,6 @@ spring:
 #          starttls:
 #            enable: true
 #          auth: true
-
 
 #properties
 #props:

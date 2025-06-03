@@ -8,9 +8,9 @@ import com.back2basics.domain.user.dto.response.UserInfoResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.DeleteUserUseCase;
-import com.back2basics.user.port.in.GetUserUseCase;
 import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.UpdateUserUseCase;
+import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.port.in.command.UserUpdateCommand;
 import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
@@ -34,7 +34,7 @@ public class AdminController {
     private final CreateUserUseCase createUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
-    private final GetUserUseCase getUserUseCase;
+    private final UserQueryUseCase userQueryUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
 
     @PostMapping
@@ -63,7 +63,7 @@ public class AdminController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserInfoResponse>> getUser(@PathVariable Long userId) {
-        UserInfoResult result = getUserUseCase.getUserInfo(userId);
+        UserInfoResult result = userQueryUseCase.getUserInfo(userId);
         return ApiResponse.success(UserResponseCode.USER_READ_SUCCESS,
             UserInfoResponse.from(result));
     }
