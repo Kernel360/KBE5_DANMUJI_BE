@@ -11,7 +11,6 @@ import com.back2basics.user.port.in.DeleteUserUseCase;
 import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.user.port.in.UserQueryUseCase;
-import com.back2basics.user.port.in.command.UserUpdateCommand;
 import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
 import jakarta.validation.Valid;

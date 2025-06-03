@@ -1,7 +1,6 @@
 package com.back2basics.user.service;
 
 import com.back2basics.infra.validation.validator.UserValidator;
-import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.command.UserCreateCommand;
@@ -30,10 +29,6 @@ public class CreateUserService implements CreateUserUseCase {
         User user = User.create(command, encodedPassword);
 
         User saved = userRepositoryPort.save(user);
-        return UserCreateResult.builder()
-            .id(saved.getId())
-            .username(saved.getUsername())
-            .password(generatedPassword)
-            .build();
+        return new UserCreateResult(saved.getId(), saved.getUsername(), generatedPassword);
     }
 }

@@ -56,7 +56,7 @@ public class LoginSuccessTest {
             "01012345678", "PM");
 
         // 패스워드 가져오는 API 호출
-        password = createUserUseCase.create(request.toCommand()).getPassword();
+        password = createUserUseCase.create(request.toCommand()).password();
     }
 
     @Test
