@@ -1,6 +1,6 @@
 package com.back2basics.util;
 
-import static com.back2basics.security.auth.code.RedisErrorCode.REDIS_CONNECTION_ERROR;
+import static com.back2basics.security.code.RedisErrorCode.REDIS_CONNECTION_ERROR;
 
 import com.back2basics.security.exception.CustomRedisConnectionException;
 import io.lettuce.core.RedisConnectionException;

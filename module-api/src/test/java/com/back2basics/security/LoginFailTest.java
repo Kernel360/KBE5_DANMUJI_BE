@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.back2basics.auth.LoginRequest;
+import com.back2basics.domain.auth.dto.LoginRequest;
 import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;

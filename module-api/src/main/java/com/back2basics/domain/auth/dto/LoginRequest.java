@@ -1,4 +1,4 @@
-package com.back2basics.auth;
+package com.back2basics.domain.auth.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 

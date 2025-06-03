@@ -1,7 +1,8 @@
-package com.back2basics.security.auth;
+package com.back2basics.domain.auth.controller;
 
-import static com.back2basics.security.auth.code.AuthResponseCode.SUCCESS_REISSUE;
+import static com.back2basics.security.code.AuthResponseCode.SUCCESS_REISSUE;
 
+import com.back2basics.domain.auth.AuthService;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

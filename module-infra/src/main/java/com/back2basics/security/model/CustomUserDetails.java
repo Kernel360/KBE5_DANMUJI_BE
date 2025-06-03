@@ -1,6 +1,5 @@
 package com.back2basics.security.model;
 
-
 import com.back2basics.user.model.User;
 import java.util.Collection;
 import java.util.List;

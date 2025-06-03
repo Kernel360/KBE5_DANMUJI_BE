@@ -1,10 +1,10 @@
 package com.back2basics.security.jwt;
 
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_EXPIRED;
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_INVALID;
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_MALFORMED;
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_SIGNATURE_INVALID;
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_UNSUPPORTED;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_EXPIRED;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_INVALID;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_MALFORMED;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_SIGNATURE_INVALID;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_UNSUPPORTED;
 
 import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.model.CustomUserDetails;

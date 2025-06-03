@@ -1,8 +1,8 @@
-package com.back2basics.config;
+package com.back2basics.global.security.config;
 
-import com.back2basics.security.jwt.JwtAuthenticationFilter;
-import com.back2basics.security.jwt.JwtAuthorizationFilter;
-import com.back2basics.security.jwt.JwtLogoutFilter;
+import com.back2basics.global.security.filter.JwtAuthenticationFilter;
+import com.back2basics.global.security.filter.JwtAuthorizationFilter;
+import com.back2basics.global.security.filter.JwtLogoutFilter;
 import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.util.CookieUtil;
 import java.util.List;

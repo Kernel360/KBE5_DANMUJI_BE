@@ -2,7 +2,7 @@ package com.back2basics.security;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import com.back2basics.auth.LoginRequest;
+import com.back2basics.domain.auth.dto.LoginRequest;
 import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.out.UserRepositoryPort;

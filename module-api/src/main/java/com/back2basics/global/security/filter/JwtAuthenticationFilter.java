@@ -1,15 +1,16 @@
-package com.back2basics.security.jwt;
+package com.back2basics.global.security.filter;
 
-import static com.back2basics.security.auth.code.AuthErrorCode.ACCESS_DENIED;
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_MALFORMED;
-import static com.back2basics.security.auth.code.AuthResponseCode.SUCCESS_LOGIN;
+import static com.back2basics.security.code.AuthErrorCode.ACCESS_DENIED;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_MALFORMED;
+import static com.back2basics.security.code.AuthResponseCode.SUCCESS_LOGIN;
 
-import com.back2basics.auth.LoginRequest;
+import com.back2basics.domain.auth.dto.LoginRequest;
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.global.response.util.ResponseUtil;
-import com.back2basics.security.exception.CustomBadCredentialsException;
+import com.back2basics.global.security.exception.CustomBadCredentialsException;
 import com.back2basics.security.exception.CustomRedisConnectionException;
+import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.util.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

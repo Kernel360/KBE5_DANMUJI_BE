@@ -1,16 +1,16 @@
-package com.back2basics.security.jwt;
+package com.back2basics.global.security.filter;
 
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_BLACKLISTED;
-import static com.back2basics.security.auth.code.AuthErrorCode.TOKEN_INVALID;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_BLACKLISTED;
+import static com.back2basics.security.code.AuthErrorCode.TOKEN_INVALID;
 
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.global.response.util.ResponseUtil;
 import com.back2basics.security.exception.InvalidTokenException;
+import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
-import com.back2basics.util.CookieUtil;
 import com.back2basics.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,14 +32,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserQueryUseCase userQueryUseCase;
     private final RedisUtil redisUtil;
-    private final CookieUtil cookieUtil;
 
     public JwtAuthorizationFilter(JwtTokenProvider jwtTokenProvider,
-        UserQueryUseCase userQueryUseCase, RedisUtil redisUtil, CookieUtil cookieUtil) {
+        UserQueryUseCase userQueryUseCase, RedisUtil redisUtil) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userQueryUseCase = userQueryUseCase;
         this.redisUtil = redisUtil;
-        this.cookieUtil = cookieUtil;
     }
 
     @Override

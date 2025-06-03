@@ -1,4 +1,4 @@
-package com.back2basics.security.auth.code;
+package com.back2basics.security.code;
 
 import com.back2basics.global.response.code.ErrorCode;
 import lombok.Getter;

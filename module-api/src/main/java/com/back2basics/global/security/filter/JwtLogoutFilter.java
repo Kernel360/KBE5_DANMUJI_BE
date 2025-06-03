@@ -1,12 +1,13 @@
-package com.back2basics.security.jwt;
+package com.back2basics.global.security.filter;
 
-import static com.back2basics.security.auth.code.AuthErrorCode.ALREADY_LOGOUT;
-import static com.back2basics.security.auth.code.AuthResponseCode.SUCCESS_LOGOUT;
+import static com.back2basics.security.code.AuthErrorCode.ALREADY_LOGOUT;
+import static com.back2basics.security.code.AuthResponseCode.SUCCESS_LOGOUT;
 
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.global.response.util.ResponseUtil;
 import com.back2basics.security.exception.InvalidTokenException;
+import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.util.CookieUtil;
 import com.back2basics.util.RedisUtil;
 import jakarta.servlet.FilterChain;
