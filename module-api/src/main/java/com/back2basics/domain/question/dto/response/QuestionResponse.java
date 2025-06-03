@@ -1,6 +1,7 @@
 package com.back2basics.domain.question.dto.response;
 
 import com.back2basics.domain.answer.dto.response.AnswerResponse;
+import com.back2basics.domain.user.dto.response.UserInfoResponse;
 import com.back2basics.question.model.QuestionStatus;
 import com.back2basics.question.service.result.QuestionResult;
 import java.time.LocalDateTime;
@@ -15,12 +16,11 @@ public class QuestionResponse {
 
     private Long id;
     private Long postId;
-    private Long authorId;
+    private UserInfoResponse author;
     private String content;
     private QuestionStatus status;
     private LocalDateTime createdAt;
     private List<AnswerResponse> answers;
-
 
     public static QuestionResponse toResponse(QuestionResult result) {
         List<AnswerResponse> answerResponses = result.getAnswers().stream()
@@ -30,7 +30,7 @@ public class QuestionResponse {
         return QuestionResponse.builder()
             .id(result.getId())
             .postId(result.getPostId())
-            .authorId(result.getAuthorId())
+            .author(UserInfoResponse.from(result.getAuthor()))
             .content(result.getContent())
             .status(result.getStatus())
             .createdAt(result.getCreatedAt())

@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.question;
 
+import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.answer.model.Answer;
 import com.back2basics.question.model.Question;
 import java.util.List;
@@ -10,12 +11,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class QuestionMapper {
 
+    private final UserMapper userMapper;
+
     public QuestionEntity toEntity(Question domain) {
 
         QuestionEntity entity = QuestionEntity.builder()
             .id(domain.getId())
             .postId(domain.getPostId())
-            .authorId(domain.getAuthorId())
+            .author(userMapper.toEntity(domain.getAuthor()))
             .content(domain.getContent())
             .status(domain.getStatus())
             .isDeleted(domain.isDeleted())
@@ -32,7 +35,7 @@ public class QuestionMapper {
         return Question.builder()
             .id(entity.getId())
             .postId(entity.getPostId())
-            .authorId(entity.getAuthorId())
+            .author(userMapper.toDomain(entity.getAuthor()))
             .createdAt(entity.getCreatedAt())
             .content(entity.getContent())
             .build();
@@ -42,7 +45,7 @@ public class QuestionMapper {
         return Question.builder()
             .id(entity.getId())
             .postId(entity.getPostId())
-            .authorId(entity.getAuthorId())
+            .author(userMapper.toDomain(entity.getAuthor()))
             .createdAt(entity.getCreatedAt())
             .content(entity.getContent())
             .answers(answers)

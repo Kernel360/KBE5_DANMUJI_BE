@@ -20,7 +20,7 @@ public class QuestionValidator {
     }
 
     public void validateAuthor(Question question, Long requesterId) {
-        if (!question.getAuthorId().equals(requesterId)) {
+        if (!question.getAuthor().getId().equals(requesterId)) {
             throw new QuestionException(QuestionErrorCode.INVALID_QUESTION_AUTHOR);
         }
     }
