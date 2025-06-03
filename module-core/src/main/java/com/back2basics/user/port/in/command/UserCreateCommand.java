@@ -25,5 +25,4 @@ public class UserCreateCommand {
         this.position = position;
         this.companyId = companyId;
     }
-
 }
