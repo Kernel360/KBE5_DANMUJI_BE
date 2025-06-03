@@ -13,15 +13,16 @@ public class UserCreateCommand {
     private String email;
     private String phone;
     private String position;
+    private Long companyId;
 
     @Builder
     public UserCreateCommand(String username, String name,
-        String email, String phone, String position) {
+        String email, String phone, String position, Long companyId) {
         this.username = username;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.position = position;
+        this.companyId = companyId;
     }
-
 }

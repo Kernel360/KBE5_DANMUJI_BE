@@ -5,9 +5,10 @@ import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.out.UpdateProjectPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class UpdateProjectAdapter implements UpdateProjectPort {
 

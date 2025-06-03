@@ -99,14 +99,12 @@ public class PostDocsResult {
                 "postId": 1,
                 "authorId": 1,
                 "title": "첫 번째 게시글",
-                "content": "첫 번째 내용",
                 "type": "GENERAL",
                 "status": "PENDING",
                 "priority": 1,
                 "createdAt": "2024-01-01T10:00:00",
-                "updatedAt": "2024-01-01T10:00:00",
-                "comments": [],
-                "isDelete": false
+                "deletedAt": null,
+                "completedAt": null
               }
             ],
             "pageable": {
@@ -174,14 +172,12 @@ public class PostDocsResult {
                 "postId": 1,
                 "authorId": 1,
                 "title": "검색된 게시글",
-                "content": "키워드가 포함된 내용",
                 "type": "GENERAL",
                 "status": "PENDING",
                 "priority": 1,
                 "createdAt": "2024-01-01T10:00:00",
-                "updatedAt": "2024-01-01T10:00:00",
-                "comments": [],
-                "isDelete": false
+                "deletedAt": null,
+                "completedAt": null
               }
             ],
             "pageable": {

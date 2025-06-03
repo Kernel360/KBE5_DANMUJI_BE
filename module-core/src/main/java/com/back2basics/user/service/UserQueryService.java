@@ -25,6 +25,7 @@ public class UserQueryService implements UserQueryUseCase {
             .email(user.getEmail())
             .phone(user.getPhone())
             .position(user.getPosition())
+            .companyId(user.getCompanyId())
             .build();
     }
 

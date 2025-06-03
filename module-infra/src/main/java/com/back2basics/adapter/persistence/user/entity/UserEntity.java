@@ -1,14 +1,18 @@
 package com.back2basics.adapter.persistence.user.entity;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
+import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.user.model.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -48,9 +52,13 @@ public class UserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private CompanyEntity companyEntity;
+
     @Builder
     public UserEntity(Long id, String username, String password, String name, String email,
-        String phone, String position, Role role) {
+        String phone, String position, Role role, CompanyEntity companyEntity) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -59,5 +67,6 @@ public class UserEntity extends BaseTimeEntity {
         this.phone = phone;
         this.position = position;
         this.role = role;
+        this.companyEntity = companyEntity;
     }
 }
