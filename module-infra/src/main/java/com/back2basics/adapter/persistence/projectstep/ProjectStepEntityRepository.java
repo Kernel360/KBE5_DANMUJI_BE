@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface ProjectStepEntityRepository extends JpaRepository<ProjectStepEntity, Long> {
 
-    List<ProjectStepEntity> findAllByProjectId(Long projectId);
+    List<ProjectStepEntity> findAllByProjectIdAndIsDeletedFalse(Long projectId);
+
 }
