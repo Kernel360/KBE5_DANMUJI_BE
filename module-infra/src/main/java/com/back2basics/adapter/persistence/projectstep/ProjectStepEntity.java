@@ -58,18 +58,22 @@ public class ProjectStepEntity extends BaseTimeEntity {
     @Column(name = "approval_status")
     private ApprovalStatus approvalStatus;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     @Builder
     public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
-        StepStatus stepStatus, ApprovalStatus approvalStatus, LocalDateTime deletedAt) {
+        StepStatus stepStatus, ApprovalStatus approvalStatus, boolean isDeleted, LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.project = project;
         this.user = user;
         this.name = name;
         this.stepStatus = stepStatus;
         this.approvalStatus = approvalStatus;
+        this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }
 
