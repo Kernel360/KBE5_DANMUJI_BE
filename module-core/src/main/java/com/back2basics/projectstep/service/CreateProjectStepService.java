@@ -14,16 +14,17 @@ public class CreateProjectStepService implements CreateProjectStepUseCase {
 
     private final SaveProjectStepPort port;
 
-
     //todo: ApprovalStatus 승인자 있으면 REQUESTED, 없으면 null 나중에
     @Override
     public void createStep(CreateProjectStepCommand command, Long projectId) {
         ProjectStep step = ProjectStep.builder()
             .name(command.getName())
             .projectId(projectId)
+            .userId(1L)
             .stepStatus(command.getStepStatus())
             .approvalStatus(command.getApprovalStatus())
             .build();
+
         port.save(step);
     }
 }

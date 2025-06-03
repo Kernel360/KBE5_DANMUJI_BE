@@ -10,12 +10,10 @@ public class ProjectStepMapper {
         return ProjectStep.builder()
             .stepId(entity.getStepId())
             .projectId(entity.getProject().getId())
-            .userId(entity.getUser().getId())
+            .userId(1L) // todo: 나중에 수정할 예정 entity.getUser.getId로
             .name(entity.getName())
             .stepStatus(entity.getStepStatus())
             .approvalStatus(entity.getApprovalStatus())
-            .createdAt(entity.getCreatedAt())
-            .updatedAt(entity.getUpdatedAt())
             .isDeleted(entity.isDeleted())
             .deletedAt(entity.getDeletedAt())
             .build();
