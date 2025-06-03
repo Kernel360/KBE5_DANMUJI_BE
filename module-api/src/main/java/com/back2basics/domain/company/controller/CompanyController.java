@@ -11,6 +11,7 @@ import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,6 +52,15 @@ public class CompanyController {
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS,
             ReadCompanyResponse.toResponse(result));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<ReadCompanyResponse>>> getCompanyByName(
+        @RequestParam String name) {
+        List<ReadCompanyResult> result = readCompanyUseCase.getCompaniesByNameContaining(name);
+        return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS,
+            ReadCompanyResponse.toResponse(result));
+    }
+
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ReadCompanyResponse>>> getAllCompanies(
