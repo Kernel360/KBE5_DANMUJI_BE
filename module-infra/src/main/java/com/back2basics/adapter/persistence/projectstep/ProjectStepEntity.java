@@ -30,7 +30,7 @@ import org.springframework.cglib.core.Local;
 @Getter
 @Table(name = "project_steps")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectStepEntity extends BaseTimeEntity {
+public class ProjectStepEntity {
 
     @Id
     @Column(name = "step_id")

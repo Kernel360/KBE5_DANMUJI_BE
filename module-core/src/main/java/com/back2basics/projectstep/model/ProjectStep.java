@@ -21,25 +21,19 @@ public class ProjectStep {
 
     private ApprovalStatus approvalStatus;
 
-    private final LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     private boolean isDeleted;
 
     private LocalDateTime deletedAt;
 
     @Builder
     public ProjectStep(Long stepId, String name, Long projectId, Long userId, StepStatus stepStatus,
-        ApprovalStatus approvalStatus,LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, LocalDateTime deletedAt) {
+        ApprovalStatus approvalStatus, boolean isDeleted, LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.name = name;
         this.projectId = projectId;
         this.userId = userId;
         this.stepStatus = stepStatus;
         this.approvalStatus = approvalStatus;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }
