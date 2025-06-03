@@ -28,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 public class LoginSuccessTest {
 
-    @Autowired
+    @Autowired // 필요없음
     private MockMvc mvc;
 
     @Autowired
@@ -42,6 +42,9 @@ public class LoginSuccessTest {
 
     String password;
 
+    // 이상적인 방향
+    // Test용 유저 만들고 해야 됨
+    // DB 갔다오는 방법 말고 Password는 Mocking으로 처리
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -52,6 +55,7 @@ public class LoginSuccessTest {
             "test@email.com",
             "01012345678", "PM");
 
+        // 패스워드 가져오는 API 호출
         password = createUserUseCase.create(request.toCommand()).getPassword();
     }
 

@@ -19,7 +19,7 @@ public class CreateUserService implements CreateUserUseCase {
     private final UserRepositoryPort userRepositoryPort;
     private final UserValidator userValidator;
     private final PasswordGenerator passwordGenerator;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder; // 수정
 
     @Override
     public UserCreateResult create(UserCreateCommand command) {
