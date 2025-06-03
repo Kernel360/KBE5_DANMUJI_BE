@@ -1,5 +1,6 @@
 package com.back2basics.user.model;
 
+import com.back2basics.user.port.in.command.UserCreateCommand;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -41,6 +42,19 @@ public class User {
         this.position = position;
         this.role = role;
         this.companyId = companyId;
+    }
+
+    public static User create(UserCreateCommand command, String encodedPassword) {
+        return User.builder()
+            .username(command.getUsername())
+            .password(encodedPassword)
+            .name(command.getName())
+            .email(command.getEmail())
+            .phone(command.getPhone())
+            .position(command.getPosition())
+            .role(Role.USER)
+            .companyId(command.getCompanyId())
+            .build();
     }
 
     public void updateUser(String username, String name, String email, String phone,

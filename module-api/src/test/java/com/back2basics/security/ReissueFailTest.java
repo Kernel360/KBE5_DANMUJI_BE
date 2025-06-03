@@ -59,7 +59,7 @@ public class ReissueFailTest {
                     "reissueTest", "testname", "test@email.com",
                     "01012345678", "PM"
                 );
-                password = createUserUseCase.create(request.toCommand()).getPassword();
+                password = createUserUseCase.create(request.toCommand()).password();
             }
             initialized = true;
         }

@@ -18,15 +18,8 @@ public class UserQueryService implements UserQueryUseCase {
     @Override
     public UserInfoResult getUserInfo(Long userId) {
         User user = userRepositoryPort.findById(userId);
-        return UserInfoResult.builder()
-            .id(user.getId())
-            .username(user.getUsername())
-            .name(user.getName())
-            .email(user.getEmail())
-            .phone(user.getPhone())
-            .position(user.getPosition())
-            .companyId(user.getCompanyId())
-            .build();
+        return new UserInfoResult(userId, user.getUsername(), user.getName(), user.getEmail(),
+            user.getPhone(), user.getPosition(), user.getCompanyId());
     }
 
     @Override

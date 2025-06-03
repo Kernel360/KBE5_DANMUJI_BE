@@ -6,8 +6,8 @@ public record UserInfoResponse(Long id, String username, String name, String ema
                                String position, Long companyId) {
 
     public static UserInfoResponse from(UserInfoResult result) {
-        return new UserInfoResponse(result.getId(), result.getUsername(), result.getName(),
-            result.getEmail(),
-            result.getPhone(), result.getPosition(), result.getCompanyId());
+        return new UserInfoResponse(result.id(), result.username(), result.name(),
+            result.email(),
+            result.phone(), result.position(), result.companyId());
     }
 }
