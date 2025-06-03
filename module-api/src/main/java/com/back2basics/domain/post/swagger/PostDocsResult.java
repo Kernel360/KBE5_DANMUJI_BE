@@ -41,7 +41,11 @@ public class PostDocsResult {
           "message": "게시글 조회 완료",
           "data": {
             "postId": 1,
-            "authorId": 1,
+            "author": {
+              "id": 1,
+              "nickname": "홍길동",
+              "email": "hong@test.com"
+            },
             "title": "게시글 제목",
             "content": "게시글 내용",
             "type": "GENERAL",
@@ -97,7 +101,11 @@ public class PostDocsResult {
             "content": [
               {
                 "postId": 1,
-                "authorId": 1,
+                "author": {
+                  "id": 1,
+                  "nickname": "홍길동",
+                  "email": "hong@test.com"
+                },
                 "title": "첫 번째 게시글",
                 "type": "GENERAL",
                 "status": "PENDING",
@@ -170,8 +178,12 @@ public class PostDocsResult {
             "content": [
               {
                 "postId": 1,
-                "authorId": 1,
-                "title": "검색된 게시글",
+                "author": {
+                  "id": 1,
+                  "nickname": "홍길동",
+                  "email": "hong@test.com"
+                },
+                "title": "첫 번째 게시글",
                 "type": "GENERAL",
                 "status": "PENDING",
                 "priority": 1,
