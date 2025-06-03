@@ -2,6 +2,7 @@ package com.back2basics.post.model;
 
 import com.back2basics.comment.model.Comment;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
+import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import lombok.Getter;
 public class Post {
 
     private final Long id;
-    private Long authorId;
+    private User author;
     private String title;
     private String content;
     private PostType type;
@@ -26,12 +27,12 @@ public class Post {
     private boolean isDelete;
 
     @Builder
-    public Post(Long id, Long authorId, String title, String content, PostType type,
+    public Post(Long id, User author, String title, String content, PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments) {
         this.id = id;
-        this.authorId = authorId;
+        this.author = author;
         this.title = title;
         this.content = content;
         this.type = type;
