@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.projectstep;
 
+import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
@@ -17,31 +18,34 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 @Entity
 @Getter
 @Table(name = "project_steps")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectStepEntity {
+public class ProjectStepEntity extends BaseTimeEntity {
 
     @Id
     @Column(name = "step_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stepId;
 
+    // todo: step은 projectId 만 필요한데 여기서 연관을 맺어서 양방향으로 할 필요 없을 듯
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 
-    // todo: userid는 연관 끊어야할지 공부
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private UserEntity user;
+    // todo: LAZY와 EAGER의 차이? - 지연로딩, 즉시로딩?
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -54,18 +58,27 @@ public class ProjectStepEntity {
     @Column(name = "approval_status")
     private ApprovalStatus approvalStatus;
 
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     @Builder
-    public ProjectStepEntity(Long stepId, ProjectEntity project, String name,
-        StepStatus stepStatus, ApprovalStatus approvalStatus) {
+    public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
+        StepStatus stepStatus, ApprovalStatus approvalStatus, LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.project = project;
-       // this.user = user;
+        this.user = user;
         this.name = name;
         this.stepStatus = stepStatus;
         this.approvalStatus = approvalStatus;
+        this.deletedAt = deletedAt;
     }
 
     public void assignProjectEntity(ProjectEntity project) {
         this.project = project;
     }
+
+    public void assignUserEntity(UserEntity user) {
+        this.user = user;
+    }
 }
+
