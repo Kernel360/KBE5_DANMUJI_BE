@@ -83,9 +83,17 @@ public class QuestionDocsResult {
             "content": [
               {
                 "id": 1,
-                "content": "전체 질문 리스트 예시입니다.",
-                "authorId": 2,
                 "postId": 1,
+                "author": {
+                  "id": 2,
+                  "username": "johndoe",
+                  "name": "홍길동",
+                  "email": "johndoe@example.com",
+                  "phone": "010-1234-5678",
+                  "position": "백엔드 개발자",
+                  "companyId": 1001
+                },
+                "content": "전체 질문 리스트입니다.",
                 "status": "ANSWERED",
                 "createdAt": "2024-01-01T12:00:00"
               }
