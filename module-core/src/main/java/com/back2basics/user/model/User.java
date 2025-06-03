@@ -1,6 +1,7 @@
 package com.back2basics.user.model;
 
 import com.back2basics.user.port.in.command.UserCreateCommand;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,9 +17,10 @@ public class User {
     private String phone;
     private String position;
     private final Role role;
-    // TODO: 개발사 담당자/고객사 담당자 구분 필드 추가
-
+    private final UserType userType;
     private Long companyId;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
 //    private boolean isDeleted;
 //
@@ -32,7 +34,8 @@ public class User {
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
-        String position, Role role, Long companyId) {
+        String position, Role role, UserType userType, Long companyId, LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -41,7 +44,10 @@ public class User {
         this.phone = phone;
         this.position = position;
         this.role = role;
+        this.userType = userType;
         this.companyId = companyId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static User create(UserCreateCommand command, String encodedPassword) {
@@ -53,6 +59,7 @@ public class User {
             .phone(command.getPhone())
             .position(command.getPosition())
             .role(Role.USER)
+            .userType(command.getUserType())
             .companyId(command.getCompanyId())
             .build();
     }
