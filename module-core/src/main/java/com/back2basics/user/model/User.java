@@ -15,6 +15,7 @@ public class User {
     private String phone;
     private String position;
     private final Role role;
+    // TODO: 개발사 담당자/고객사 담당자 구분 필드 추가
 
     private Long companyId;
 
