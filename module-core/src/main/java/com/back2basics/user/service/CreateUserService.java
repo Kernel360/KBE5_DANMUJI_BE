@@ -27,23 +27,13 @@ public class CreateUserService implements CreateUserUseCase {
         String generatedPassword = passwordGenerator.generate();
         String encodedPassword = bCryptPasswordEncoder.encode(generatedPassword);
 
-        User user = User.builder()
-            .username(command.getUsername())
-            .password(encodedPassword)
-            .email(command.getEmail())
-            .name(command.getName())
-            .phone(command.getPhone())
-            .position(command.getPosition())
-            .role(Role.USER)
-            .companyId(command.getCompanyId())
-            .build();
+        User user = User.create(command, encodedPassword);
 
         User saved = userRepositoryPort.save(user);
         return UserCreateResult.builder()
             .id(saved.getId())
             .username(saved.getUsername())
             .password(generatedPassword)
-            .companyId(saved.getCompanyId())
             .build();
     }
 }
