@@ -1,8 +1,8 @@
 package com.back2basics.adapter.persistence.post;
 
-import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.post.model.Post;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PostMapper {
-
-    private final CommentMapper commentMapper;
 
     public Post toDomain(PostEntity entity, List<Comment> comments) {
         return Post.builder()
@@ -30,16 +28,21 @@ public class PostMapper {
             .build();
     }
 
-    public Post toDomainList(PostEntity entity) {
+    // 오버로딩용 메소드 (뭔가 더 좋은 방법이 있을거같음)
+    public Post toDomain(PostEntity entity) {
         return Post.builder()
             .id(entity.getId())
             .authorId(entity.getAuthorId())
             .title(entity.getTitle())
+            .content(entity.getContent())
             .type(entity.getType())
             .status(entity.getStatus())
             .priority(entity.getPriority())
             .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
+            .deletedAt(entity.getDeletedAt())
             .completedAt(entity.getCompletedAt())
+            .comments(new ArrayList<>())
             .build();
     }
 

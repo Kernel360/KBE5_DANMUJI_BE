@@ -54,7 +54,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .limit(pageable.getPageSize())
             .fetch()
             .stream()
-            .map(mapper::toDomainList)
+            .map(mapper::toDomain)
             .collect(Collectors.toList());
 
         // 카운트 쿼리
