@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.company;
 
+import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.company.model.CompanyType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "company")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CompanyEntity {
+public class CompanyEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
