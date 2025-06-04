@@ -15,7 +15,8 @@ public enum UserResponseCode implements ResponseCode {
     USER_UPDATE_SUCCESS(HttpStatus.OK, "U204", "사용자 수정 완료"),
     USER_DELETE_SUCCESS(HttpStatus.OK, "U205", "사용자 삭제 완료"),
     USER_CHANGE_PASSWORD_SUCCESS(HttpStatus.OK, "U206", "사용자 비밀번호 변경 완료"),
-    USER_RESET_PASSWORD_SUCCESS(HttpStatus.OK, "U206", "사용자 비밀번호 변경 완료");
+    USER_RESET_PASSWORD_SUCCESS(HttpStatus.OK, "U206", "사용자 비밀번호 변경 완료"),
+    USER_SEND_MAIL_SUCCESS(HttpStatus.OK, "U207", "사용자 비밀번호 재설정 이메일 발송 완료");
 
     private final HttpStatus status;
     private final String code;
