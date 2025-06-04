@@ -1,7 +1,6 @@
 package com.back2basics.domain.post.swagger;
 
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
-import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
