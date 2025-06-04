@@ -23,7 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final String[] allowedUrls = {"/", "/api/auth/**", "/error"};
+    private final String[] allowedUrls = {"/", "/api/auth/**", "/error", "/api/users/send-mail",
+        "/api/users/reset-password"};
     private final String[] swaggerUrls = {"/danmuji-ui.html", "/v3/api-docs/**", "/swagger-ui/**",
         "/swagger-ui.html", "/webjars/**", "/favicon.ico"};
 
@@ -52,11 +53,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(allowedUrls).permitAll()
                     .requestMatchers(swaggerUrls).permitAll()
-                    .requestMatchers("/static/**", "/assets/**")
-                    .permitAll()
-                    .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
-                    .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
-//                    .anyRequest().permitAll() // todo
+//                    .requestMatchers("/static/**", "/assets/**")
+//                    .permitAll()
+//                    .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
+//                    .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
+                    .anyRequest().permitAll() // todo
             )
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
