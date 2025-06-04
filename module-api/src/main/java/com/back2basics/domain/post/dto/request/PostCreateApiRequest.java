@@ -11,9 +11,6 @@ import lombok.Getter;
 @Getter
 public class PostCreateApiRequest {
 
-    @NotNull(message = "작성자는 필수입니다.")
-    private Long authorId;
-
     @NotBlank(message = "제목은 필수입니다.")
     private String title;
 
@@ -31,7 +28,6 @@ public class PostCreateApiRequest {
 
     public PostCreateCommand toCommand() {
         return PostCreateCommand.builder()
-            .authorId(authorId)
             .title(title)
             .content(content)
             .status(status)
