@@ -4,6 +4,7 @@ import com.back2basics.comment.service.result.CommentReadResult;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
+import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.user.service.result.UserInfoResult;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,7 @@ public class PostReadResult {
     private final LocalDateTime deletedAt;
     private final LocalDateTime completedAt;
     private final boolean isDeleted;
+    private final ProjectGetResult project;
 
     private final List<CommentReadResult> comments;
 
@@ -34,6 +36,7 @@ public class PostReadResult {
         return PostReadResult.builder()
             .id(post.getId())
             .author(UserInfoResult.toResult(post.getAuthor()))
+            .project(ProjectGetResult.toResult(post.getProject()))
             .title(post.getTitle())
             .content(post.getContent())
             .type(post.getType())

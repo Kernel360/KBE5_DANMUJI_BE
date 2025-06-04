@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
+import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
@@ -36,6 +37,10 @@ public class PostEntity extends BaseTimeEntity {
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private ProjectEntity project;
+
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -57,7 +62,8 @@ public class PostEntity extends BaseTimeEntity {
     private LocalDateTime completedAt = null;
 
     @Builder
-    public PostEntity(Long id, UserEntity author, String title, String content, PostType type,
+    public PostEntity(Long id, UserEntity author, ProjectEntity project, String title,
+        String content, PostType type,
         Integer priority, PostStatus status, LocalDateTime completedAt) {
         this.id = id;
         this.author = author;
@@ -67,6 +73,7 @@ public class PostEntity extends BaseTimeEntity {
         this.priority = priority;
         this.status = status;
         this.completedAt = completedAt;
+        this.project = project;
     }
 
     public void update(String title, String content, PostType type, PostStatus status,

@@ -55,7 +55,10 @@ public class PostReadJpaAdapter implements PostReadPort {
         // 페이징 조회
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
-            .where(postEntity.deletedAt.isNull(), postEntity.projectId.eq(projectId))
+            .where(
+                postEntity.deletedAt.isNull(),
+                postEntity.project.id.eq(projectId)
+            )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
