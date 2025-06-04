@@ -1,8 +1,6 @@
 package com.back2basics.domain.company.dto.request;
 
-import com.back2basics.company.model.CompanyType;
 import com.back2basics.company.port.in.command.CreateCompanyCommand;
-import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.infra.validation.custom.CustomNotBlank;
 import lombok.Getter;
 
@@ -15,8 +13,6 @@ public class CreateCompanyRequest {
     private String ceoName;
     @CustomNotBlank(message = "회사 소개는 공백일 수 없습니다.")
     private String bio;
-    @CustomEnumCheck(enumClass = CompanyType.class, message = "올바른 enum type이 아닙니다")
-    private CompanyType companyType;
     private Integer bizNo;
     @CustomNotBlank(message = "회사 주소는 공백일 수 없습니다.")
     private String address;
@@ -30,7 +26,6 @@ public class CreateCompanyRequest {
             .name(name)
             .ceoName(ceoName)
             .bio(bio)
-            .companyType(companyType)
             .bizNo(bizNo)
             .address(address)
             .email(email)

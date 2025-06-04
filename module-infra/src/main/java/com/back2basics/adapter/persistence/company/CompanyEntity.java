@@ -1,11 +1,8 @@
 package com.back2basics.adapter.persistence.company;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
-import com.back2basics.company.model.CompanyType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,9 +31,6 @@ public class CompanyEntity extends BaseTimeEntity {
     @Column(name = "bio", nullable = false)
     private String bio;
 
-    @Enumerated(EnumType.STRING)
-    private CompanyType companyType;
-
     @Column(name = "biz_no", nullable = false)
     private Integer bizNo;
 
@@ -50,12 +44,11 @@ public class CompanyEntity extends BaseTimeEntity {
 
     @Builder
     public CompanyEntity(Long id, String name, String ceoName, String bio,
-        CompanyType companyType, Integer bizNo, String address, String email, String tel) {
+        Integer bizNo, String address, String email, String tel) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
-        this.companyType = companyType;
         this.bizNo = bizNo;
         this.address = address;
         this.email = email;

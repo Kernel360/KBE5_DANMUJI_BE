@@ -4,6 +4,7 @@ import com.back2basics.comment.service.result.CommentReadResult;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
+import com.back2basics.user.service.result.UserInfoResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +16,7 @@ import lombok.Getter;
 public class PostReadResult {
 
     private final Long id;
-    private final Long authorId;
+    private final UserInfoResult author;
     private final String title;
     private final String content;
     private final PostType type;
@@ -32,7 +33,7 @@ public class PostReadResult {
     public static PostReadResult toResult(Post post) {
         return PostReadResult.builder()
             .id(post.getId())
-            .authorId(post.getAuthorId())
+            .author(UserInfoResult.toResult(post.getAuthor()))
             .title(post.getTitle())
             .content(post.getContent())
             .type(post.getType())

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,6 +51,24 @@ public class CompanyController {
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS,
             ReadCompanyResponse.toResponse(result));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<ReadCompanyResponse>>> getCompanyByName(
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "name",
+            direction = Sort.Direction.ASC
+        )
+        Pageable pageable,
+        @RequestParam String name) {
+        Page<ReadCompanyResult> companies = readCompanyUseCase.getCompaniesByNameContaining(
+            pageable,
+            name);
+        return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS,
+            companies.map(ReadCompanyResponse::toResponse));
+    }
+
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ReadCompanyResponse>>> getAllCompanies(

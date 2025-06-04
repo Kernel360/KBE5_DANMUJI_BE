@@ -25,7 +25,7 @@ public class PostCreateResult {
     public static PostCreateResult toResult(Post post) {
         return PostCreateResult.builder()
             .id(post.getId())
-            .authorId(post.getAuthorId())
+            .authorId(post.getAuthor().getId())
             .title(post.getTitle())
             .content(post.getContent())
             .type(post.getType())

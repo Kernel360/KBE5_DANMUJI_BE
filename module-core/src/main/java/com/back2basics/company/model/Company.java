@@ -12,7 +12,6 @@ public class Company {
     private String name;
     private String ceoName;
     private String bio;
-    private CompanyType companyType;
     private Integer bizNo;
     private String address;
     private String email;
@@ -23,14 +22,13 @@ public class Company {
     private boolean isDelete;
 
     @Builder
-    public Company(Long id, String name, String ceoName, String bio, CompanyType companyType,
+    public Company(Long id, String name, String ceoName, String bio,
         Integer bizNo, String address, String email, String tel,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
-        this.companyType = companyType;
         this.bizNo = bizNo;
         this.address = address;
         this.email = email;
@@ -46,7 +44,6 @@ public class Company {
         this.ceoName = command.getCeoName();
         this.bio = command.getBio();
         this.bizNo = command.getBizNo();
-        this.companyType = command.getCompanyType();
         this.address = command.getAddress();
         this.email = command.getEmail();
         this.tel = command.getTel();
