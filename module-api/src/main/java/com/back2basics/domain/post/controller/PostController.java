@@ -60,7 +60,7 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping("/projects/{projectId}")
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
+    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPagingByProjectId(
         @PathVariable Long projectId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
