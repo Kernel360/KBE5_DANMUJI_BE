@@ -9,6 +9,8 @@ public interface ReadCompanyPort {
 
     Optional<Company> findById(Long id);
 
+    Page<Company> findByNameContaining(Pageable pageable, String keyword);
+
     Page<Company> findAll(Pageable pageable);
 
 }

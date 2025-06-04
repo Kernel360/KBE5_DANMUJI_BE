@@ -8,6 +8,8 @@ public interface ReadCompanyUseCase {
 
     ReadCompanyResult getCompany(Long id);
 
+    Page<ReadCompanyResult> getCompaniesByNameContaining(Pageable pageable, String keyword);
+
     Page<ReadCompanyResult> getAllCompanies(Pageable pageable);
 
 }

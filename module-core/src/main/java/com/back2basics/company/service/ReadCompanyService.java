@@ -25,6 +25,13 @@ public class ReadCompanyService implements ReadCompanyUseCase {
     }
 
     @Override
+    public Page<ReadCompanyResult> getCompaniesByNameContaining(Pageable pageable, String keyword) {
+        return readCompanyPort.findByNameContaining(pageable, keyword)
+            .map(ReadCompanyResult::toResult);
+
+    }
+
+    @Override
     public Page<ReadCompanyResult> getAllCompanies(Pageable pageable) {
         return readCompanyPort.findAll(pageable)
             .map(ReadCompanyResult::toResult);
