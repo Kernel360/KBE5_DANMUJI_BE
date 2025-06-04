@@ -42,4 +42,12 @@ public class UserMapper {
             .build();
     }
 
+    public UserEntity toEntity(User user) {
+        CompanyEntity companyEntity = user.getCompanyId() != null
+            ? CompanyEntity.builder().id(user.getCompanyId()).build()
+            : null;
+        return toEntity(user, companyEntity);
+    }
+
+
 }
