@@ -10,7 +10,7 @@ import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.model.User;
-import com.back2basics.user.port.in.UserQueryUseCase;
+import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,13 +30,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserQueryUseCase userQueryUseCase;
+    private final UserQueryPort userQueryPort;
     private final RedisUtil redisUtil;
 
     public JwtAuthorizationFilter(JwtTokenProvider jwtTokenProvider,
-        UserQueryUseCase userQueryUseCase, RedisUtil redisUtil) {
+        UserQueryPort userQueryPort, RedisUtil redisUtil) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.userQueryUseCase = userQueryUseCase;
+        this.userQueryPort = userQueryPort;
         this.redisUtil = redisUtil;
     }
 
@@ -78,7 +78,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private Authentication getAuthentication(String token) {
         String username = jwtTokenProvider.getSubject(token);
-        User user = userQueryUseCase.findByUsername(username);
+        User user = userQueryPort.findByUsername(username);
         CustomUserDetails userDetails = new CustomUserDetails(user);
         return new UsernamePasswordAuthenticationToken(userDetails, null,
             userDetails.getAuthorities());

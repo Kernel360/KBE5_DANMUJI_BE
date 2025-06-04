@@ -9,8 +9,10 @@ import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.command.ChangePasswordCommand;
 import com.back2basics.user.port.in.command.ResetPasswordCommand;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,14 +27,14 @@ public class UserController {
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
 
-    // todo: user 인증 객체 사용
-    @PutMapping("/change-password/{userId}")
-    public ResponseEntity<ApiResponse<Void>> changePassword(@PathVariable Long userId,
-        @Valid @RequestBody ChangePasswordRequest request) {
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse<Void>> changePassword(
+        @Valid @RequestBody ChangePasswordRequest request,
+        @AuthenticationPrincipal Principal principal) {
         ChangePasswordCommand command = new ChangePasswordCommand(
             request.currentPassword(), request.newPassword());
 
-        changePasswordUseCase.change(userId, command);
+        changePasswordUseCase.change(principal.getName(), command);
         return ApiResponse.success(UserResponseCode.USER_CHANGE_PASSWORD_SUCCESS);
     }
 

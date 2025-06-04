@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.answer;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.question.QuestionEntity;
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.answer.model.Answer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,8 +32,9 @@ public class AnswerEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "author_id", nullable = false)
-    private Long authorId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    private UserEntity author;
 
     @Column(name = "content", nullable = false)
     private String content;
@@ -49,10 +51,10 @@ public class AnswerEntity extends BaseTimeEntity {
     private List<AnswerEntity> childrenAnswers = new ArrayList<>();
 
     @Builder
-    public AnswerEntity(Long id, Long authorId, String content, QuestionEntity question,
+    public AnswerEntity(Long id, UserEntity author, String content, QuestionEntity question,
         AnswerEntity parentAnswer) {
         this.id = id;
-        this.authorId = authorId;
+        this.author = author;
         this.content = content;
         this.question = question;
         this.parentAnswerId = parentAnswer;

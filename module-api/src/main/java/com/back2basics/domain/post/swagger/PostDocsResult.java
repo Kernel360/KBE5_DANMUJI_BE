@@ -41,7 +41,31 @@ public class PostDocsResult {
           "message": "게시글 조회 완료",
           "data": {
             "postId": 1,
-            "authorId": 1,
+            "author": {
+              "id": 1,
+              "username": "hongildong",
+              "name": "홍길동",
+              "email": "hong@test.com",
+              "phone": "010-1234-5678",
+              "position": "백엔드 개발자",
+              "userType": "MEMBER",
+              "companyId": 1001,
+              "createdAt": "2024-01-01T09:00:00",
+              "updatedAt": "2024-01-01T10:00:00"
+            },
+            "project": {
+              "id": 1,
+              "name": "백엔드 개선 프로젝트",
+              "description": "프로젝트 설명입니다",
+              "startDate": "2024-01-01",
+              "endDate": "2024-06-01",
+              "createdAt": "2024-01-01T08:00:00",
+              "updatedAt": "2024-01-01T09:00:00",
+              "deletedAt": null,
+              "isDeleted": false,
+              "status": "ACTIVE",
+              "steps": []
+            },
             "title": "게시글 제목",
             "content": "게시글 내용",
             "type": "GENERAL",
@@ -51,34 +75,11 @@ public class PostDocsResult {
             "updatedAt": "2024-01-01T10:00:00",
             "deletedAt": null,
             "completedAt": null,
-            "comments": [
-              {
-                "id": 1,
-                "postId": 1,
-                "authorId": 1,
-                "content": "그거 버그 아니고 기능인데요.",
-                "parentCommentId": null,
-                "createdAt": "2024-01-01T10:05:00",
-                "updatedAt": "2024-01-01T10:05:00",
-                "childComments": [
-                  {
-                    "id": 2,
-                    "postId": 1,
-                    "authorId": 2,
-                    "content": "@홍길동 확인했습니다!",
-                    "parentCommentId": 1,
-                    "createdAt": "2024-01-01T10:10:00",
-                    "updatedAt": "2024-01-01T10:10:00",
-                    "childComments": []
-                  }
-                ]
-              }
-            ],
+            "comments": [],
             "isDelete": false
           }
         }
         """;
-
     public static final String POST_NOT_FOUND = """
         {
           "success": false,
@@ -97,14 +98,42 @@ public class PostDocsResult {
             "content": [
               {
                 "postId": 1,
-                "authorId": 1,
+                "author": {
+                  "id": 1,
+                  "username": "hongildong",
+                  "name": "홍길동",
+                  "email": "hong@test.com",
+                  "phone": "010-1234-5678",
+                  "position": "백엔드 개발자",
+                  "userType": "MEMBER",
+                  "companyId": 1001,
+                  "createdAt": "2024-01-01T09:00:00",
+                  "updatedAt": "2024-01-01T10:00:00"
+                },
+                "project": {
+                  "id": 1,
+                  "name": "백엔드 개선 프로젝트",
+                  "description": "프로젝트 설명입니다",
+                  "startDate": "2024-01-01",
+                  "endDate": "2024-06-01",
+                  "createdAt": "2024-01-01T08:00:00",
+                  "updatedAt": "2024-01-01T09:00:00",
+                  "deletedAt": null,
+                  "isDeleted": false,
+                  "status": "ACTIVE",
+                  "steps": []
+                },
                 "title": "첫 번째 게시글",
+                "content": "게시글 내용입니다",
                 "type": "GENERAL",
                 "status": "PENDING",
                 "priority": 1,
                 "createdAt": "2024-01-01T10:00:00",
+                "updatedAt": "2024-01-01T10:00:00",
                 "deletedAt": null,
-                "completedAt": null
+                "completedAt": null,
+                "comments": [],
+                "isDelete": false
               }
             ],
             "pageable": {
@@ -170,8 +199,12 @@ public class PostDocsResult {
             "content": [
               {
                 "postId": 1,
-                "authorId": 1,
-                "title": "검색된 게시글",
+                "author": {
+                  "id": 1,
+                  "nickname": "홍길동",
+                  "email": "hong@test.com"
+                },
+                "title": "첫 번째 게시글",
                 "type": "GENERAL",
                 "status": "PENDING",
                 "priority": 1,

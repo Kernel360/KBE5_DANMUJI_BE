@@ -19,7 +19,7 @@ public class CommentValidator {
     }
 
     public void isAuthor(Comment comment, Long requesterId) {
-        if (!comment.getAuthorId().equals(requesterId)) {
+        if (!comment.getAuthor().getId().equals(requesterId)) {
             throw new CommentException(CommentErrorCode.INVALID_COMMENT_AUTHOR);
         }
     }

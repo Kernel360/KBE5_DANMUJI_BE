@@ -44,7 +44,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
-            .map(mapper::toDomainList)
+            .map(mapper::toDomain)
             .collect(Collectors.toList());
 
         // 카운트 쿼리

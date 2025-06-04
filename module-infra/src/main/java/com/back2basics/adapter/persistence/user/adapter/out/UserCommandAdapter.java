@@ -11,15 +11,14 @@ import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
 import com.back2basics.infra.exception.company.CompanyException;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
-import com.back2basics.user.port.out.UserRepositoryPort;
-import java.util.Optional;
+import com.back2basics.user.port.out.UserCommandPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class UserJpaAdapter implements UserRepositoryPort {
+public class UserCommandAdapter implements UserCommandPort {
 
     private final UserEntityRepository userEntityRepository;
     private final CompanyEntityRepository companyEntityRepository;
@@ -37,28 +36,11 @@ public class UserJpaAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public User findById(Long userId) {
-        return userEntityRepository.findById(userId).map(userMapper::toDomain)
-            .orElseThrow(() -> new UserException(USER_NOT_FOUND));
-    }
-
-    @Override
-    public boolean existsByUsername(String username) {
-        return userEntityRepository.existsByUsername(username);
-    }
-
-    @Override
     @Transactional
     public void deleteById(Long userId) {
         UserEntity userEntity = userEntityRepository.findById(userId)
             .orElseThrow(() -> new UserException(USER_NOT_FOUND));
         userEntity.markDeleted();
-    }
-
-    @Override
-    public Optional<User> findByUsername(String username) {
-        return userEntityRepository.findByUsername(username)
-            .map(userMapper::toDomain);
     }
 
 }

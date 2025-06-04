@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.comment;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.post.PostEntity;
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,14 +31,15 @@ public class CommentEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "author_id", nullable = false)
-    private Long authorId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    private UserEntity author;
 
     @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id")
     private PostEntity post;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,10 +50,10 @@ public class CommentEntity extends BaseTimeEntity {
     private List<CommentEntity> childrenComments = new ArrayList<>();
 
     @Builder
-    public CommentEntity(Long id, Long authorId, String content, PostEntity post,
+    public CommentEntity(Long id, UserEntity author, String content, PostEntity post,
         CommentEntity parentComment) {
         this.id = id;
-        this.authorId = authorId;
+        this.author = author;
         this.content = content;
         this.post = post;
         this.parentCommentId = parentComment;
@@ -68,11 +70,6 @@ public class CommentEntity extends BaseTimeEntity {
     public void addChildComment(CommentEntity child) {
         childrenComments.add(child);
         child.assignParentComment(this);
-    }
-
-    public void removeChildComment(CommentEntity child) {
-        childrenComments.remove(child);
-        child.assignParentComment(null);
     }
 
     public void updateContent(String content) {

@@ -19,12 +19,18 @@ public class ReadCompanyJpaAdapter implements ReadCompanyPort {
 
     @Override
     public Optional<Company> findById(Long id) {
-        return companyEntityRepository.findById(id).map(companyMapper::toDomain);
+        return companyEntityRepository.findByIdAndDeletedAtIsNull(id).map(companyMapper::toDomain);
+    }
+
+    @Override
+    public Page<Company> findByNameContaining(Pageable pageable, String keyword) {
+        return companyEntityRepository.findByNameContainingAndDeletedAtIsNull(pageable, keyword)
+            .map(companyMapper::toDomain);
     }
 
     @Override
     public Page<Company> findAll(Pageable pageable) {
-        return companyEntityRepository.findAll(pageable)
+        return companyEntityRepository.findByDeletedAtIsNull(pageable)
             .map(companyMapper::toDomain);
     }
 

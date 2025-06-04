@@ -19,7 +19,6 @@ public class CreateCompanyService implements CreateCompanyUseCase {
             .name(createCompanyCommand.getName())
             .ceoName(createCompanyCommand.getCeoName())
             .bio(createCompanyCommand.getBio())
-            .companyType(createCompanyCommand.getCompanyType())
             .bizNo(createCompanyCommand.getBizNo())
             .address(createCompanyCommand.getAddress())
             .email(createCompanyCommand.getEmail())
