@@ -1,7 +1,6 @@
 package com.back2basics.domain.question.swagger;
 
 import com.back2basics.domain.question.dto.request.QuestionCreateRequest;
-import com.back2basics.domain.question.dto.request.QuestionDeleteRequest;
 import com.back2basics.domain.question.dto.request.QuestionUpdateRequest;
 import com.back2basics.domain.question.dto.response.QuestionResponse;
 import com.back2basics.global.response.result.ApiResponse;
