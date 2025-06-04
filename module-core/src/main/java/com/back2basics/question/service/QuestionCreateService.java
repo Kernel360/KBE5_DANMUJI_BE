@@ -17,8 +17,8 @@ public class QuestionCreateService implements QuestionCreateUseCase {
     private final UserQueryPort userQueryPort;
 
     @Override
-    public Long create(QuestionCreateCommand command) {
-        User user = userQueryPort.findById(command.getAuthorId());
+    public Long create(Long userId, QuestionCreateCommand command) {
+        User user = userQueryPort.findById(userId);
         Question question = Question.builder()
             .postId(command.getPostId())
             .author(user)
