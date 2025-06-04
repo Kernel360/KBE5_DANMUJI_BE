@@ -14,18 +14,20 @@ import com.back2basics.domain.project.controller.code.ProjectResponseCode;
 import com.back2basics.project.service.result.ProjectGetResult;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -57,17 +59,31 @@ public class ProjectController {
     }
 
     // todo: paging 적용
-    @GetMapping()
-    public ResponseEntity<ApiResponse<List<ProjectGetResponse>>> getAllProjects() {
-        List<ProjectGetResult> result = readProjectUseCase.getAllProjects();
-        List<ProjectGetResponse> list = result.stream().map(ProjectGetResponse::toResponse)
-            .collect(Collectors.toList());
+    @GetMapping
+    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getAllProjects(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProjectGetResult> result = readProjectUseCase.getAllProjects(pageable);
+        Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
         return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, list);
     }
 
     // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민..
 
     // todo: search + paging list
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProjectGetResult> resultPage = readProjectUseCase.searchProjects(keyword, pageable);
+        Page<ProjectGetResponse> responsePage = resultPage.map(ProjectGetResponse::toResponse);
+
+        return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, responsePage);
+    }
 
 
     @PutMapping("/{projectId}")
