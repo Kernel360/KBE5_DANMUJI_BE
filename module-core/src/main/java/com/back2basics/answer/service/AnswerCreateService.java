@@ -22,8 +22,8 @@ public class AnswerCreateService implements AnswerCreateUseCase {
     private final UserQueryPort userQueryPort;
 
     @Override
-    public Long createAnswer(AnswerCreateCommand command) {
-        User user = userQueryPort.findById(command.getAuthorId());
+    public Long createAnswer(Long userId, AnswerCreateCommand command) {
+        User user = userQueryPort.findById(userId);
         Answer answer = Answer.builder()
             .questionId(command.getQuestionId())
             .author(user)
