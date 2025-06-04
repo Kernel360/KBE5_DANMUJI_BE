@@ -8,7 +8,7 @@ import com.back2basics.infra.validation.validator.CommentValidator;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.user.model.User;
-import com.back2basics.user.port.out.UserRepositoryPort;
+import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,11 @@ public class CommentCreateService implements CommentCreateUseCase {
     private final CommentCreatePort commentCreatePort;
     private final PostValidator postValidator;
     private final CommentValidator commentValidator;
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserQueryPort userQueryPort;
 
     @Override
-    public Long createComment(CommentCreateCommand command) {
-        User user = userRepositoryPort.findById(command.getAuthorId());
+    public Long createComment(Long userId, CommentCreateCommand command) {
+        User user = userQueryPort.findById(userId);
         Comment comment = Comment.builder()
             .postId(command.getPostId())
             .author(user)

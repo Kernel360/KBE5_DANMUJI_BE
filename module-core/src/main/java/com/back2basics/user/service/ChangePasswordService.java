@@ -5,7 +5,8 @@ import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.ChangePasswordUseCase;
 import com.back2basics.user.port.in.command.ChangePasswordCommand;
-import com.back2basics.user.port.out.UserRepositoryPort;
+import com.back2basics.user.port.out.UserCommandPort;
+import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,18 +15,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChangePasswordService implements ChangePasswordUseCase {
 
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserQueryPort userQueryPort;
+    private final UserCommandPort userCommandPort;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void change(Long userId, ChangePasswordCommand command) {
-        User user = userRepositoryPort.findById(userId);
+        User user = userQueryPort.findById(userId);
+
         if (!user.validateCurrentPassword(command.getCurrentPassword())) {
             throw new UserException(UserErrorCode.PASSWORD_MISMATCH);
         }
 
         String encodedNewPassword = bCryptPasswordEncoder.encode(command.getNewPassword());
         user.changePassword(encodedNewPassword);
-        userRepositoryPort.save(user);
+        userCommandPort.save(user);
     }
 }

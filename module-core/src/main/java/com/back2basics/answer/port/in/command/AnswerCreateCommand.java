@@ -9,6 +9,5 @@ public class AnswerCreateCommand {
 
     private Long questionId;
     private Long parentId;
-    private Long authorId;
     private String content;
 }

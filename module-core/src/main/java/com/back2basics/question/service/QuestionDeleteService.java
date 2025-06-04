@@ -15,9 +15,9 @@ public class QuestionDeleteService implements QuestionDeleteUseCase {
     private final QuestionDeletePort questionDeletePort;
 
     @Override
-    public void delete(Long questionId, Long requesterId) {
+    public void delete(Long userId, Long questionId) {
         Question question = questionValidator.findById(questionId);
-        questionValidator.validateAuthor(question, requesterId);
+        questionValidator.validateAuthor(question, userId);
 
         question.markAsDeleted();
         questionDeletePort.delete(questionId);

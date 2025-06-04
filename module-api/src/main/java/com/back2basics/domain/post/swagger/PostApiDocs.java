@@ -1,11 +1,11 @@
 package com.back2basics.domain.post.swagger;
 
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
-import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.security.model.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +51,7 @@ public interface PostApiDocs {
         )
     })
     ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid PostCreateApiRequest request);
 
     @Operation(summary = "게시글 단건 조회", description = "게시글 ID를 통해 특정 게시글을 조회합니다.")
@@ -69,6 +71,7 @@ public interface PostApiDocs {
         )
     })
     ResponseEntity<ApiResponse<PostReadResponse>> getPost(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "조회할 게시글 ID", required = true, example = "1") @PathVariable Long postId);
 
     @Operation(summary = "게시글 목록 조회 (페이징)", description = "페이징을 통해 게시글 목록을 조회합니다.")
@@ -81,7 +84,9 @@ public interface PostApiDocs {
                 examples = @ExampleObject(value = PostDocsResult.POST_READ_ALL_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
+    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPagingByProjectId(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Parameter(description = "연관된 프로젝트 ID", required = true, example = "1") @PathVariable Long projectId,
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);
 
@@ -115,18 +120,11 @@ public interface PostApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> updatePost(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "수정할 게시글 ID", required = true, example = "1") @PathVariable Long postId,
         @Valid @RequestBody PostUpdateApiRequest request);
 
-    @Operation(summary = "게시글 삭제", description = "게시글을 소프트 삭제합니다.",
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "게시글 삭제 요청",
-            required = true,
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = PostDeleteApiRequest.class),
-                examples = @ExampleObject(name = "게시글 삭제 예시", value = PostDocsResult.POST_DELETE_REQUEST))
-        )
-    )
+    @Operation(summary = "게시글 삭제", description = "게시글을 소프트 삭제합니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
@@ -148,8 +146,9 @@ public interface PostApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> deletePost(
-        @Parameter(description = "삭제할 게시글 ID", required = true, example = "1") @PathVariable Long postId,
-        @RequestBody PostDeleteApiRequest request);
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Parameter(description = "삭제할 게시글 ID", required = true, example = "1")
+        @PathVariable Long postId);
 
     @Operation(summary = "게시글 검색", description = "키워드를 통해 게시글을 검색합니다.")
     @ApiResponses(value = {
@@ -162,6 +161,7 @@ public interface PostApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "검색 키워드", example = "Spring") @RequestParam(required = false) String keyword,
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);

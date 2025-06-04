@@ -15,10 +15,10 @@ public class AnswerDeleteService implements AnswerDeleteUseCase {
     private final AnswerDeletePort answerDeletePort;
 
     @Override
-    public void deleteAnswer(Long id, Long requesterId) {
-        Answer answer = answerValidator.findAnswerById(id);
-        answerValidator.isAuthor(answer, requesterId);
+    public void deleteAnswer(Long userId, Long answerId) {
+        Answer answer = answerValidator.findAnswerById(answerId);
+        answerValidator.isAuthor(answer, userId);
 
-        answerDeletePort.delete(id);
+        answerDeletePort.delete(answerId);
     }
 }

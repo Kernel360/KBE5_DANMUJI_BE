@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface QuestionReadUseCase {
 
-    Page<QuestionResult> getAllQuestions(Pageable pageable);
+    Page<QuestionResult> getAllQuestions(Long userId, Pageable pageable);
 
-    Page<QuestionResult> getQuestionsByPostId(Long postId, Pageable pageable);
+    Page<QuestionResult> getQuestionsByPostId(Long userId, Long postId, Pageable pageable);
 
-    QuestionResult getQuestionById(Long questionId);
+    QuestionResult getQuestionById(Long userId, Long questionId);
 }

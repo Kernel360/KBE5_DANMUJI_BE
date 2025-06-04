@@ -2,6 +2,7 @@ package com.back2basics.post.model;
 
 import com.back2basics.comment.model.Comment;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
+import com.back2basics.project.model.Project;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,9 +26,10 @@ public class Post {
     private LocalDateTime completedAt;
     private List<Comment> comments;
     private boolean isDelete;
+    private Project project;
 
     @Builder
-    public Post(Long id, User author, String title, String content, PostType type,
+    public Post(Long id, User author, Project project, String title, String content, PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments) {
@@ -44,6 +46,7 @@ public class Post {
         this.completedAt = completedAt;
         this.comments = comments != null ? new ArrayList<>(comments) : new ArrayList<>();
         this.isDelete = false;
+        this.project = project;
     }
 
     public void update(PostUpdateCommand command) {

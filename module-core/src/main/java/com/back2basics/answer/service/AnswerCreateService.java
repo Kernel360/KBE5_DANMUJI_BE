@@ -8,7 +8,7 @@ import com.back2basics.infra.validation.validator.AnswerValidator;
 import com.back2basics.infra.validation.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.user.model.User;
-import com.back2basics.user.port.out.UserRepositoryPort;
+import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,11 @@ public class AnswerCreateService implements AnswerCreateUseCase {
     private final AnswerCreatePort answerCreatePort;
     private final QuestionValidator questionValidator;
     private final AnswerValidator answerValidator;
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserQueryPort userQueryPort;
 
     @Override
-    public Long createAnswer(AnswerCreateCommand command) {
-        User user = userRepositoryPort.findById(command.getAuthorId());
+    public Long createAnswer(Long userId, AnswerCreateCommand command) {
+        User user = userQueryPort.findById(userId);
         Answer answer = Answer.builder()
             .questionId(command.getQuestionId())
             .author(user)
