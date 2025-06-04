@@ -8,7 +8,18 @@ spring:
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
-
+  # SMTP
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: { SMTP_EMAIL }
+    password: { SMTP_PASSWORD }
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
 # Swagger 설정
 # http://localhost:8080/danmuji-ui.html
 springdoc:
@@ -60,18 +71,6 @@ jwt:
   access: ${JWT_ACCESS_EXPIRATION}
   refresh: ${JWT_REFRESH_EXPIRATION}
 
-# SMTP
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    username: { SMTP_EMAIL }
-#    password: { SMTP_PASSWORD }
-#    properties:
-#      mail:
-#        smtp:
-#          starttls:
-#            enable: true
-#          auth: true
 
 #properties
 #props:
