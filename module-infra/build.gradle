@@ -13,6 +13,7 @@ dependencies {
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // security && jwt
     implementation 'org.springframework.boot:spring-boot-starter-security'
