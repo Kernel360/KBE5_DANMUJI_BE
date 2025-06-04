@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,6 +37,16 @@ public class GlobalExceptionHandler {
         com.fasterxml.jackson.core.JsonParseException ex) {
         ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
         log.error("JsonParseException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
+
+    //형 변환 실패 시
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleHttpMessageNotReadableException(
+        HttpMessageNotReadableException ex) {
+
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("HttpMessageNotReadableException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
 

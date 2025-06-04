@@ -9,6 +9,7 @@ import com.back2basics.domain.company.controller.code.CompanyResponseCode;
 import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
 import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
+import com.back2basics.domain.company.swagger.CompanyApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/companies")
 @RequiredArgsConstructor
-public class CompanyController {
+public class CompanyController implements CompanyApiDocs {
 
     private final CreateCompanyUseCase createCompanyUseCase;
     private final DeleteCompanyUseCase deleteCompanyUseCase;

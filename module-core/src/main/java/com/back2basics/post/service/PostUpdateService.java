@@ -16,9 +16,9 @@ public class PostUpdateService implements PostUpdateUseCase {
     private final PostValidator postValidator;
 
     @Override
-    public void updatePost(Long id, PostUpdateCommand command) {
-        Post post = postValidator.findPost(id);
-        postValidator.isAuthor(post, command.getRequesterId());
+    public void updatePost(Long userId, Long postId, PostUpdateCommand command) {
+        Post post = postValidator.findPost(postId);
+        postValidator.isAuthor(post, userId);
 
         post.update(command);
 

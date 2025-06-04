@@ -80,7 +80,6 @@ public class CommentDocsResult {
 
     public static final String COMMENT_UPDATE_REQUEST = """
         {
-          "requesterId": 1,
           "content": "수정된 댓글 내용입니다."
         }
         """;
@@ -109,12 +108,6 @@ public class CommentDocsResult {
           "code": "C003",
           "message": "댓글 작성자가 아닙니다",
           "data": null
-        }
-        """;
-
-    public static final String COMMENT_DELETE_REQUEST = """
-        {
-          "requesterId": 1
         }
         """;
 

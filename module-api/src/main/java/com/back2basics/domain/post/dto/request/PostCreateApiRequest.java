@@ -11,11 +11,11 @@ import lombok.Getter;
 @Getter
 public class PostCreateApiRequest {
 
-    @NotNull(message = "작성자는 필수입니다.")
-    private Long authorId;
-
     @NotBlank(message = "제목은 필수입니다.")
     private String title;
+
+    @NotNull(message = "프로젝트 id는 필수입니다.")
+    private Long projectId;
 
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
@@ -31,8 +31,8 @@ public class PostCreateApiRequest {
 
     public PostCreateCommand toCommand() {
         return PostCreateCommand.builder()
-            .authorId(authorId)
             .title(title)
+            .projectId(projectId)
             .content(content)
             .status(status)
             .type(type).priority(priority).build();

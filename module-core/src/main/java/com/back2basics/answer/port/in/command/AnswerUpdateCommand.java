@@ -6,8 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class AnswerUpdateCommand {
-
-    private Long requesterId;
+    
     private String content;
 
 }

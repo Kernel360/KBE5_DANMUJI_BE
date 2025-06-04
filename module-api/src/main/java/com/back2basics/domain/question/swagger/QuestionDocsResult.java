@@ -149,13 +149,7 @@ public class QuestionDocsResult {
           "data": null
         }
         """;
-
-    public static final String QUESTION_DELETE_REQUEST = """
-        {
-          "requesterId": 2
-        }
-        """;
-
+    
     public static final String QUESTION_DELETE_SUCCESS = """
         {
           "success": true,

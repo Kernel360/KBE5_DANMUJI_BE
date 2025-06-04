@@ -5,13 +5,14 @@ import com.back2basics.answer.port.in.AnswerDeleteUseCase;
 import com.back2basics.answer.port.in.AnswerUpdateUseCase;
 import com.back2basics.domain.answer.controller.code.AnswerResponseCode;
 import com.back2basics.domain.answer.dto.request.AnswerCreateRequest;
-import com.back2basics.domain.answer.dto.request.AnswerDeleteRequest;
 import com.back2basics.domain.answer.dto.request.AnswerUpdateRequest;
 import com.back2basics.domain.answer.swagger.AnswerApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,27 +32,29 @@ public class AnswerController implements AnswerApiDocs {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createAnswer(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid AnswerCreateRequest request) {
-        Long createdId = createAnswerUseCase.createAnswer(request.toCommand());
+        Long createdId = createAnswerUseCase.createAnswer(customUserDetails.getId(),
+            request.toCommand());
         return ApiResponse.success(AnswerResponseCode.ANSWER_CREATE_SUCCESS, createdId);
     }
 
     @PutMapping("/{answerId}")
     public ResponseEntity<ApiResponse<Void>> updateAnswer(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long answerId,
         @Valid @RequestBody AnswerUpdateRequest request
     ) {
-        updateAnswerUseCase.updateAnswer(answerId, request.toCommand());
+        updateAnswerUseCase.updateAnswer(customUserDetails.getId(), answerId, request.toCommand());
         return ApiResponse.success(AnswerResponseCode.ANSWER_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/delete/{answerId}")
     public ResponseEntity<ApiResponse<Void>> deleteAnswer(
-        @PathVariable Long answerId,
-        @Valid @RequestBody AnswerDeleteRequest request
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long answerId
     ) {
-        Long requesterId = request.getRequesterId();
-        deleteAnswerUseCase.deleteAnswer(answerId, requesterId);
+        deleteAnswerUseCase.deleteAnswer(customUserDetails.getId(), answerId);
         return ApiResponse.success(AnswerResponseCode.ANSWER_DELETE_SUCCESS);
     }
 
