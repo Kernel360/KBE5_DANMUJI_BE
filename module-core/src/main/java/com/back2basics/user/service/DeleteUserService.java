@@ -1,7 +1,7 @@
 package com.back2basics.user.service;
 
 import com.back2basics.user.port.in.DeleteUserUseCase;
-import com.back2basics.user.port.out.UserRepositoryPort;
+import com.back2basics.user.port.out.UserCommandPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeleteUserService implements DeleteUserUseCase {
 
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserCommandPort userCommandPort;
 
     @Override
     public void delete(Long userId) {
-        userRepositoryPort.deleteById(userId);
+        userCommandPort.deleteById(userId);
     }
 }
