@@ -20,8 +20,8 @@ public class ChangePasswordService implements ChangePasswordUseCase {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void change(String username, ChangePasswordCommand command) {
-        User user = userQueryPort.findByUsername(username);
+    public void change(Long userId, ChangePasswordCommand command) {
+        User user = userQueryPort.findById(userId);
 
         if (!user.validateCurrentPassword(command.getCurrentPassword())) {
             throw new UserException(UserErrorCode.PASSWORD_MISMATCH);

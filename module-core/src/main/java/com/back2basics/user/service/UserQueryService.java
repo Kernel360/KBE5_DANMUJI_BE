@@ -21,8 +21,4 @@ public class UserQueryService implements UserQueryUseCase {
             user.getCreatedAt(), user.getCreatedAt());
     }
 
-    @Override
-    public User findByUsername(String username) {
-        return userQueryPort.findByUsername(username);
-    }
 }
