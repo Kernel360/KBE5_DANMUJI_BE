@@ -1,6 +1,5 @@
 package com.back2basics.domain.company.dto.response;
 
-import com.back2basics.company.model.CompanyType;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +14,6 @@ public class ReadCompanyResponse {
     private String name;
     private String ceoName;
     private String bio;
-    private CompanyType companyType;
     private Integer bizNo;
     private String address;
     private String email;
@@ -27,7 +25,6 @@ public class ReadCompanyResponse {
             .name(result.getName())
             .ceoName(result.getCeoName())
             .bio(result.getBio())
-            .companyType(result.getCompanyType())
             .bizNo(result.getBizNo())
             .address(result.getAddress())
             .email(result.getEmail())
