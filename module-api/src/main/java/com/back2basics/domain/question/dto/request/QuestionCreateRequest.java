@@ -11,16 +11,12 @@ public class QuestionCreateRequest {
     @NotNull
     private Long postId;
 
-    @NotNull
-    private Long authorId;
-
     @NotBlank
     private String content;
 
     public QuestionCreateCommand toCommand() {
         return QuestionCreateCommand.builder()
             .postId(postId)
-            .authorId(authorId)
             .content(content)
             .build();
     }

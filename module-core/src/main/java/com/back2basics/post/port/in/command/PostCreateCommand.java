@@ -8,8 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PostCreateCommand {
-
-    private Long authorId;
+    
     private String title;
     private String content;
     private PostType type;

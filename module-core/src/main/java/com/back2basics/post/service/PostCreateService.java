@@ -19,8 +19,8 @@ public class PostCreateService implements PostCreateUseCase {
     private final UserQueryPort userQueryPort;
 
     @Override
-    public PostCreateResult createPost(PostCreateCommand command) {
-        User user = userQueryPort.findById(command.getAuthorId());
+    public PostCreateResult createPost(Long userId, PostCreateCommand command) {
+        User user = userQueryPort.findById(userId);
         Post post = Post.builder()
             .author(user)
             .title(command.getTitle())

@@ -7,13 +7,11 @@ import lombok.Getter;
 public class QuestionCreateCommand {
 
     private final Long postId;
-    private final Long authorId;
     private final String content;
 
     @Builder
-    public QuestionCreateCommand(Long postId, Long authorId, String content) {
+    public QuestionCreateCommand(Long postId, String content) {
         this.postId = postId;
-        this.authorId = authorId;
         this.content = content;
     }
 }

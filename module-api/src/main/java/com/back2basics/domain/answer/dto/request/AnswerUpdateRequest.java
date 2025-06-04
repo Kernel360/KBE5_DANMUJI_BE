@@ -7,14 +7,11 @@ import lombok.Getter;
 @Getter
 public class AnswerUpdateRequest {
 
-    private Long requesterId;
-
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 
     public AnswerUpdateCommand toCommand() {
         return AnswerUpdateCommand.builder()
-            .requesterId(requesterId)
             .content(content)
             .build();
     }

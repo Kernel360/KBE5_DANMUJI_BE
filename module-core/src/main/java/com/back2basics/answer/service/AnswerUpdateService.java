@@ -17,9 +17,9 @@ public class AnswerUpdateService implements AnswerUpdateUseCase {
 
 
     @Override
-    public void updateAnswer(Long id, AnswerUpdateCommand command) {
-        Answer answer = answerValidator.findAnswerById(id);
-        answerValidator.isAuthor(answer, command.getRequesterId());
+    public void updateAnswer(Long userId, Long answerId, AnswerUpdateCommand command) {
+        Answer answer = answerValidator.findAnswerById(answerId);
+        answerValidator.isAuthor(answer, userId);
 
         answer.update(command);
         answerUpdatePort.update(answer);

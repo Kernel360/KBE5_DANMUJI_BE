@@ -20,13 +20,14 @@ public class PostReadService implements PostReadUseCase {
     private final ProjectValidator projectValidator;
 
     @Override
-    public PostReadResult getPost(Long id) {
-        Post post = postValidator.findPost(id);
+    public PostReadResult getPost(Long userId, Long postId) {
+        Post post = postValidator.findPost(postId);
         return PostReadResult.toResult(post);
     }
 
     @Override
-    public Page<PostReadResult> getPostListByProjectId(Long projectId, Pageable pageable) {
+    public Page<PostReadResult> getPostListByProjectId(Long userId, Long projectId,
+        Pageable pageable) {
         projectValidator.findProjectById(projectId);
         return postReadPort.findAllWithPaging(projectId, pageable)
             .map(PostReadResult::toResult);

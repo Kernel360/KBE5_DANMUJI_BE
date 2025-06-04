@@ -22,8 +22,8 @@ public class CommentCreateService implements CommentCreateUseCase {
     private final UserQueryPort userQueryPort;
 
     @Override
-    public Long createComment(CommentCreateCommand command) {
-        User user = userQueryPort.findById(command.getAuthorId());
+    public Long createComment(Long userId, CommentCreateCommand command) {
+        User user = userQueryPort.findById(userId);
         Comment comment = Comment.builder()
             .postId(command.getPostId())
             .author(user)
