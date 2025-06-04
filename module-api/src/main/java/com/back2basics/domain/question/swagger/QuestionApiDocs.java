@@ -4,6 +4,7 @@ import com.back2basics.domain.question.dto.request.QuestionCreateRequest;
 import com.back2basics.domain.question.dto.request.QuestionUpdateRequest;
 import com.back2basics.domain.question.dto.response.QuestionResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.security.model.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,7 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<QuestionResponse>> getQuestionById(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId
     );
 
@@ -47,6 +50,7 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Page<QuestionResponse>>> getAllQuestions(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     );
@@ -60,6 +64,7 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Page<QuestionResponse>>> getQuestionsByPostId(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "게시글 ID", example = "1") @PathVariable Long postId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size);
@@ -85,6 +90,7 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Long>> createQuestion(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid QuestionCreateRequest request);
 
     @Operation(summary = "질문 수정", description = "질문 내용을 수정합니다.",
@@ -112,16 +118,11 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> updateQuestion(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId,
         @RequestBody @Valid QuestionUpdateRequest request);
 
-    @Operation(summary = "질문 삭제", description = "질문을 삭제합니다.",
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            required = true,
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = QuestionDeleteRequest.class),
-                examples = @ExampleObject(value = QuestionDocsResult.QUESTION_DELETE_REQUEST))
-        ))
+    @Operation(summary = "질문 삭제", description = "질문을 삭제합니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200", description = "질문 삭제 성공 (Q004)",
@@ -140,8 +141,8 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> deleteQuestion(
-        @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId,
-        @RequestBody @Valid QuestionDeleteRequest request);
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId);
 
     @Operation(summary = "답변 완료 상태 표시", description = "질문 상태를 답변 완료로 변경합니다.")
     @ApiResponses(value = {
@@ -152,6 +153,7 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> markAsAnswered(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId);
 
     @Operation(summary = "해결됨 상태 표시", description = "질문 상태를 해결됨으로 변경합니다.")
@@ -168,6 +170,6 @@ public interface QuestionApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> markAsResolved(
-        @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId,
-        @Parameter(description = "요청자 ID", example = "1") @RequestParam Long requesterId);
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId);
 }
