@@ -2,6 +2,7 @@ package com.back2basics.comment.model;
 
 import com.back2basics.comment.port.in.command.CommentUpdateCommand;
 import com.back2basics.post.model.Post;
+import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +15,20 @@ public class Comment {
     private Long id;
     private Long postId;
     private Long parentCommentId; // 대댓글의 경우 부모 댓글 ID
-    private final Long authorId;
+    private User author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<Comment> children;
 
     @Builder
-    public Comment(Long id, Long postId, Long parentCommentId, Long authorId,
+    public Comment(Long id, Long postId, Long parentCommentId, User author,
         String content,
         LocalDateTime createdAt, LocalDateTime updatedAt, List<Comment> children) {
         this.id = id;
         this.postId = postId;
         this.parentCommentId = parentCommentId;
-        this.authorId = authorId;
+        this.author = author;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

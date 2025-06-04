@@ -1,6 +1,7 @@
 package com.back2basics.question.model;
 
 import com.back2basics.answer.model.Answer;
+import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Question {
 
     private Long id;
     private Long postId;
-    private Long authorId;
+    private User author;
     private String content;
     private QuestionStatus status;
     private LocalDateTime createdAt;
@@ -20,12 +21,12 @@ public class Question {
     private boolean isDeleted;
 
     @Builder
-    public Question(Long id, Long postId, Long authorId, String content, LocalDateTime createdAt,
+    public Question(Long id, Long postId, User author, String content, LocalDateTime createdAt,
         List<Answer> answers,
         boolean isDeleted) {
         this.id = id;
         this.postId = postId;
-        this.authorId = authorId;
+        this.author = author;
         this.content = content;
         this.createdAt = createdAt;
         this.status = status != null ? status : QuestionStatus.WAITING;
