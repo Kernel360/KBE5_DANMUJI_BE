@@ -57,7 +57,7 @@ public class ReissueSuccessTest {
             "reissueSuccessTest", "testname", "test@email.com",
             "01012345678", "PM"
         );
-        password = createUserUseCase.create(request.toCommand()).getPassword();
+        password = createUserUseCase.create(request.toCommand()).password();
 
         LoginRequest loginRequest = new LoginRequest("reissueSuccessTest", password);
         String requestData = objectMapper.writeValueAsString(loginRequest);
