@@ -4,7 +4,6 @@ public class PostDocsResult {
 
     public static final String POST_CREATE_REQUEST = """
         {
-          "authorId": 1,
           "title": "새로운 게시글 제목",
           "content": "게시글 내용입니다.",
           "type": "GENERAL",
@@ -148,7 +147,6 @@ public class PostDocsResult {
 
     public static final String POST_UPDATE_REQUEST = """
         {
-          "requesterId": 1,
           "title": "수정된 게시글 제목",
           "content": "수정된 게시글 내용입니다.",
           "type": "NOTICE",
@@ -174,13 +172,7 @@ public class PostDocsResult {
           "data": null
         }
         """;
-
-    public static final String POST_DELETE_REQUEST = """
-        {
-          "requesterId": 1
-        }
-        """;
-
+    
     public static final String POST_DELETE_SUCCESS = """
         {
           "success": true,
