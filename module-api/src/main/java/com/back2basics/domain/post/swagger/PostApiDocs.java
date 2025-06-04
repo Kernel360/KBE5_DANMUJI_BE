@@ -81,7 +81,8 @@ public interface PostApiDocs {
                 examples = @ExampleObject(value = PostDocsResult.POST_READ_ALL_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
+    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPagingByProjectId(
+        @Parameter(description = "연관된 프로젝트 ID", required = true, example = "1") @PathVariable Long projectId,
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);
 

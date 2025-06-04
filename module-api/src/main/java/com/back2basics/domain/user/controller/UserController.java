@@ -1,9 +1,12 @@
 package com.back2basics.domain.user.controller;
 
-import com.back2basics.domain.user.controller.code.UserResponseCode;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CHANGE_PASSWORD_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_RESET_PASSWORD_SUCCESS;
+
 import com.back2basics.domain.user.dto.request.ChangePasswordRequest;
 import com.back2basics.domain.user.dto.request.ResetPasswordRequest;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.port.in.ChangePasswordUseCase;
 import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.command.ChangePasswordCommand;
@@ -11,7 +14,7 @@ import com.back2basics.user.port.in.command.ResetPasswordCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,27 +28,28 @@ public class UserController {
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
 
-    // todo: user 인증 객체 사용
-    @PutMapping("/change-password/{userId}")
-    public ResponseEntity<ApiResponse<Void>> changePassword(@PathVariable Long userId,
-        @Valid @RequestBody ChangePasswordRequest request) {
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse<Void>> changePassword(
+        @Valid @RequestBody ChangePasswordRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
         ChangePasswordCommand command = new ChangePasswordCommand(
             request.currentPassword(), request.newPassword());
 
-        changePasswordUseCase.change(userId, command);
-        return ApiResponse.success(UserResponseCode.USER_CHANGE_PASSWORD_SUCCESS);
+        changePasswordUseCase.change(userDetails.getId(), command);
+        return ApiResponse.success(USER_CHANGE_PASSWORD_SUCCESS);
     }
 
     // todo: 메일 전송
 
     // 비밀번호 재설정
-    @PutMapping("/reset-password/{userId}")
-    public ResponseEntity<ApiResponse<Void>> resetPassword(@PathVariable Long userId,
-        @Valid @RequestBody ResetPasswordRequest request) {
+    @PutMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(
+        @Valid @RequestBody ResetPasswordRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
         ResetPasswordCommand command = new ResetPasswordCommand(request.newPassword());
 
-        resetPasswordUseCase.reset(userId, command);
-        return ApiResponse.success(UserResponseCode.USER_RESET_PASSWORD_SUCCESS);
+        resetPasswordUseCase.reset(userDetails.getId(), command);
+        return ApiResponse.success(USER_RESET_PASSWORD_SUCCESS);
     }
 
 }

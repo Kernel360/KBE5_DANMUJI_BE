@@ -59,14 +59,16 @@ public class PostController implements PostApiDocs {
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
+    @GetMapping("/projects/{projectId}")
+    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPagingByProjectId(
+        @PathVariable Long projectId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<PostReadResult> resultPage = postReadUseCase.getPostList(pageable);
+        Page<PostReadResult> resultPage = postReadUseCase.getPostListByProjectId(projectId,
+            pageable);
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
