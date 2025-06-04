@@ -14,7 +14,7 @@ public class PostCreateApiRequest {
     @NotBlank(message = "제목은 필수입니다.")
     private String title;
 
-    @NotBlank(message = "프로젝트 id는 필수입니다.")
+    @NotNull(message = "프로젝트 id는 필수입니다.")
     private Long projectId;
 
     @NotBlank(message = "내용은 필수입니다.")
