@@ -82,6 +82,7 @@ public interface PostApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
+        @PathVariable Long projectId,
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);
 
