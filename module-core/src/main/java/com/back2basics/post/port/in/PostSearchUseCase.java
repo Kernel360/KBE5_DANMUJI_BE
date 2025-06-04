@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostSearchUseCase {
 
-    Page<PostReadResult> searchPost(String keyword, Pageable pageable);
+    Page<PostReadResult> searchPost(Long userId, String keyword, Pageable pageable);
 }

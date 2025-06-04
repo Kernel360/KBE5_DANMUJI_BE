@@ -16,9 +16,9 @@ public class QuestionUpdateService implements QuestionUpdateUseCase {
     private final QuestionUpdatePort questionUpdatePort;
 
     @Override
-    public void update(Long questionId, QuestionUpdateCommand command) {
+    public void update(Long userId, Long questionId, QuestionUpdateCommand command) {
         Question question = questionValidator.findById(questionId);
-        questionValidator.validateAuthor(question, command.getRequesterId());
+        questionValidator.validateAuthor(question, userId);
 
         question.updateContent(command.getContent());
         questionUpdatePort.update(question);

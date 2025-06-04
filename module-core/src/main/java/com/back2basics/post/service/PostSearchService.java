@@ -15,7 +15,7 @@ public class PostSearchService implements PostSearchUseCase {
     private final PostSearchPort postSearchPort;
 
     @Override
-    public Page<PostReadResult> searchPost(String keyword, Pageable pageable) {
+    public Page<PostReadResult> searchPost(Long userId, String keyword, Pageable pageable) {
         return postSearchPort.searchByKeyword(keyword, pageable)
             .map(PostReadResult::toResult);
     }

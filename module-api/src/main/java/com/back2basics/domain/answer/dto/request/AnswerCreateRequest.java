@@ -15,9 +15,6 @@ public class AnswerCreateRequest {
     @Nullable
     private Long parentId;
 
-    @NotNull(message = "작성자 id를 입력해주세요.")
-    private Long authorId;
-
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 
@@ -25,7 +22,6 @@ public class AnswerCreateRequest {
         return AnswerCreateCommand.builder()
             .questionId(questionId)
             .parentId(parentId)
-            .authorId(authorId)
             .content(content)
             .build();
     }

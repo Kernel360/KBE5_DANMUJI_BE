@@ -1,9 +1,9 @@
 package com.back2basics.domain.comment.swagger;
 
 import com.back2basics.domain.comment.dto.request.CommentCreateRequest;
-import com.back2basics.domain.comment.dto.request.CommentDeleteRequest;
 import com.back2basics.domain.comment.dto.request.CommentUpdateRequest;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.security.model.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -52,6 +53,7 @@ public interface CommentApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Long>> createComment(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid CommentCreateRequest request);
 
     @Operation(summary = "댓글 수정", description = "기존 댓글을 수정합니다.",
@@ -84,18 +86,11 @@ public interface CommentApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> updateComment(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "수정할 댓글 ID", required = true, example = "1") @PathVariable Long commentId,
         @Valid @RequestBody CommentUpdateRequest request);
 
-    @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.",
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "댓글 삭제 요청",
-            required = true,
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = CommentDeleteRequest.class),
-                examples = @ExampleObject(name = "댓글 삭제 예시", value = CommentDocsResult.COMMENT_DELETE_REQUEST))
-        )
-    )
+    @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
@@ -117,6 +112,7 @@ public interface CommentApiDocs {
         )
     })
     ResponseEntity<ApiResponse<Void>> deleteComment(
-        @Parameter(description = "삭제할 댓글 ID", required = true, example = "1") @PathVariable Long commentId,
-        @RequestBody CommentDeleteRequest request);
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Parameter(description = "삭제할 댓글 ID", required = true, example = "1") @PathVariable Long commentId);
+
 }

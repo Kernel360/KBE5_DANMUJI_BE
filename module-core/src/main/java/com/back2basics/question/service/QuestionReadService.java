@@ -18,19 +18,19 @@ public class QuestionReadService implements QuestionReadUseCase {
     private final QuestionValidator questionValidator;
 
     @Override
-    public Page<QuestionResult> getQuestionsByPostId(Long postId, Pageable pageable) {
+    public Page<QuestionResult> getQuestionsByPostId(Long userId, Long postId, Pageable pageable) {
         return questionReadPort.findAllByPostId(postId, pageable)
             .map(QuestionResult::toResult);
     }
 
     @Override
-    public QuestionResult getQuestionById(Long questionId) {
+    public QuestionResult getQuestionById(Long userId, Long questionId) {
         Question question = questionValidator.findById(questionId);
         return QuestionResult.toResult(question);
     }
 
     @Override
-    public Page<QuestionResult> getAllQuestions(Pageable pageable) {
+    public Page<QuestionResult> getAllQuestions(Long userId, Pageable pageable) {
         return questionReadPort.findAll(pageable)
             .map(QuestionResult::toResult);
     }
