@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,13 +76,13 @@ public class ProjectController {
         return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS);
     }
 
-    @PatchMapping("/{projectId}/delete")
+    @DeleteMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
         deleteProjectUseCase.deleteProject(projectId);
         return ApiResponse.success(ProjectResponseCode.PROJECT_DELETE_SUCCESS);
     }
 
-    @PatchMapping("/{projectId}/status")
+    @PutMapping("/{projectId}/status")
     public ResponseEntity<ApiResponse<Void>> changedStatus(
         @PathVariable Long projectId) {
         updateProjectUseCase.changedStatus(projectId);

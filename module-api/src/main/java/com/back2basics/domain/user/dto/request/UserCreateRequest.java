@@ -1,12 +1,14 @@
 package com.back2basics.domain.user.dto.request;
 
+import com.back2basics.user.model.UserType;
 import com.back2basics.user.port.in.command.UserCreateCommand;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public record UserCreateRequest(@NotEmpty String username, @NotEmpty String name,
                                 @NotEmpty @Email String email, @NotEmpty String phone,
-                                @NotEmpty String position,
+                                @NotEmpty String position, @NotNull UserType userType,
                                 Long companyId) {
 
     public UserCreateCommand toCommand() {
@@ -16,6 +18,7 @@ public record UserCreateRequest(@NotEmpty String username, @NotEmpty String name
             .email(email)
             .phone(phone)
             .position(position)
+            .userType(userType)
             .companyId(companyId)
             .build();
     }

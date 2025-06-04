@@ -4,5 +4,5 @@ import com.back2basics.project.model.Project;
 
 public interface SaveProjectPort {
 
-    void save(Project project);
+    Project save(Project project);
 }

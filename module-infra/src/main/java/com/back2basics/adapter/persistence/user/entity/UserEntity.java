@@ -3,6 +3,7 @@ package com.back2basics.adapter.persistence.user.entity;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.user.model.Role;
+import com.back2basics.user.model.UserType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,13 +19,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SoftDelete;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
-@SoftDelete
 public class UserEntity extends BaseTimeEntity {
 
     @Id
@@ -53,13 +52,17 @@ public class UserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserType userType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private CompanyEntity companyEntity;
 
     @Builder
     public UserEntity(Long id, String username, String password, String name, String email,
-        String phone, String position, Role role, CompanyEntity companyEntity) {
+        String phone, String position, Role role, UserType userType, CompanyEntity companyEntity) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -68,6 +71,7 @@ public class UserEntity extends BaseTimeEntity {
         this.phone = phone;
         this.position = position;
         this.role = role;
+        this.userType = userType;
         this.companyEntity = companyEntity;
     }
 }
