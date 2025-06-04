@@ -24,8 +24,8 @@ public class PostReadService implements PostReadUseCase {
     }
 
     @Override
-    public Page<PostReadResult> getPostList(Pageable pageable) {
-        return postReadPort.findAllWithPaging(pageable)
+    public Page<PostReadResult> getPostListByProjectId(Long projectId, Pageable pageable) {
+        return postReadPort.findAllWithPaging(projectId, pageable)
             .map(PostReadResult::toResult);
     }
 }

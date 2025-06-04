@@ -51,11 +51,11 @@ public class PostReadJpaAdapter implements PostReadPort {
     }
 
     @Override
-    public Page<Post> findAllWithPaging(Pageable pageable) {
+    public Page<Post> findAllWithPaging(Long projectId, Pageable pageable) {
         // 페이징 조회
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
-            .where(postEntity.deletedAt.isNull())
+            .where(postEntity.deletedAt.isNull(), postEntity.projectId.eq(projectId))
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
