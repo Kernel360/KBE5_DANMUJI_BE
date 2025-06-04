@@ -8,7 +8,8 @@ public class PostDocsResult {
           "content": "게시글 내용입니다.",
           "type": "GENERAL",
           "status": "PENDING",
-          "priority": 1
+          "priority": 1,
+          "projectId":1
         }
         """;
 
@@ -172,7 +173,7 @@ public class PostDocsResult {
           "data": null
         }
         """;
-    
+
     public static final String POST_DELETE_SUCCESS = """
         {
           "success": true,
