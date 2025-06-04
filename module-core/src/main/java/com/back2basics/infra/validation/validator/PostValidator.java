@@ -21,8 +21,7 @@ public class PostValidator {
     }
 
     public void isAuthor(Post post, Long requesterId) {
-        if (!post.getAuthorId().equals(requesterId)) {
-            log.info("Invalid post author: {}. Expected: {}", post.getAuthorId(), requesterId);
+        if (!post.getAuthor().getId().equals(requesterId)) {
             throw new PostException(PostErrorCode.INVALID_POST_AUTHOR);
         }
     }

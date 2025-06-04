@@ -1,16 +1,21 @@
 package com.back2basics.adapter.persistence.answer;
 
 import com.back2basics.adapter.persistence.question.QuestionEntity;
+import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.answer.model.Answer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class AnswerMapper {
+
+    private final UserMapper userMapper;
 
     public Answer toDomain(AnswerEntity entity) {
         return Answer.builder()
@@ -18,7 +23,7 @@ public class AnswerMapper {
             .questionId(entity.getQuestion().getId())
             .parentAnswerId(
                 entity.getParentAnswerId() != null ? entity.getParentAnswerId().getId() : null)
-            .authorId(entity.getAuthorId())
+            .author(userMapper.toDomain(entity.getAuthor()))
             .content(entity.getContent())
             .createdAt(entity.getCreatedAt())
             .updatedAt(entity.getUpdatedAt())
@@ -58,7 +63,7 @@ public class AnswerMapper {
 
         AnswerEntity entity = AnswerEntity.builder()
             .id(domain.getId())
-            .authorId(domain.getAuthorId())
+            .author(userMapper.toEntity(domain.getAuthor()))
             .content(domain.getContent())
             .build();
 

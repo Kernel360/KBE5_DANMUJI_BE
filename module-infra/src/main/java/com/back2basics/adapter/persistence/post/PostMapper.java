@@ -1,8 +1,9 @@
 package com.back2basics.adapter.persistence.post;
 
-import com.back2basics.adapter.persistence.comment.CommentMapper;
+import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.post.model.Post;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,12 +12,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PostMapper {
 
-    private final CommentMapper commentMapper;
+    private final UserMapper userMapper;
 
     public Post toDomain(PostEntity entity, List<Comment> comments) {
         return Post.builder()
             .id(entity.getId())
-            .authorId(entity.getAuthorId())
+            .author(userMapper.toDomain(entity.getAuthor()))
             .title(entity.getTitle())
             .content(entity.getContent())
             .type(entity.getType())
@@ -30,16 +31,21 @@ public class PostMapper {
             .build();
     }
 
-    public Post toDomainList(PostEntity entity) {
+    // 오버로딩용 메소드 (뭔가 더 좋은 방법이 있을거같음)
+    public Post toDomain(PostEntity entity) {
         return Post.builder()
             .id(entity.getId())
-            .authorId(entity.getAuthorId())
+            .author(userMapper.toDomain(entity.getAuthor()))
             .title(entity.getTitle())
+            .content(entity.getContent())
             .type(entity.getType())
             .status(entity.getStatus())
             .priority(entity.getPriority())
             .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
+            .deletedAt(entity.getDeletedAt())
             .completedAt(entity.getCompletedAt())
+            .comments(new ArrayList<>())
             .build();
     }
 
@@ -47,7 +53,7 @@ public class PostMapper {
 
         PostEntity entity = PostEntity.builder()
             .id(domain.getId())
-            .authorId(domain.getAuthorId())
+            .author(userMapper.toEntity(domain.getAuthor()))
             .title(domain.getTitle())
             .content(domain.getContent())
             .type(domain.getType())
