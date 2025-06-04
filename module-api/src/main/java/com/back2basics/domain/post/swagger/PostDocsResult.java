@@ -43,8 +43,28 @@ public class PostDocsResult {
             "postId": 1,
             "author": {
               "id": 1,
-              "nickname": "홍길동",
-              "email": "hong@test.com"
+              "username": "hongildong",
+              "name": "홍길동",
+              "email": "hong@test.com",
+              "phone": "010-1234-5678",
+              "position": "백엔드 개발자",
+              "userType": "MEMBER",
+              "companyId": 1001,
+              "createdAt": "2024-01-01T09:00:00",
+              "updatedAt": "2024-01-01T10:00:00"
+            },
+            "project": {
+              "id": 1,
+              "name": "백엔드 개선 프로젝트",
+              "description": "프로젝트 설명입니다",
+              "startDate": "2024-01-01",
+              "endDate": "2024-06-01",
+              "createdAt": "2024-01-01T08:00:00",
+              "updatedAt": "2024-01-01T09:00:00",
+              "deletedAt": null,
+              "isDeleted": false,
+              "status": "ACTIVE",
+              "steps": []
             },
             "title": "게시글 제목",
             "content": "게시글 내용",
@@ -55,50 +75,11 @@ public class PostDocsResult {
             "updatedAt": "2024-01-01T10:00:00",
             "deletedAt": null,
             "completedAt": null,
-            "comments": [
-              {
-                "id": 1,
-                "postId": 1,
-                "parentCommentId": null,
-                "author": {
-                  "id": 1,
-                  "username": "seungwoo",
-                  "name": "이승우",
-                  "email": "seungwoo@example.com",
-                  "phone": "010-1234-5678",
-                  "position": "백엔드 개발자",
-                  "companyId": 1001
-                },
-                "content": "그거 버그 아니고 기능인데요.",
-                "createdAt": "2024-01-01T10:05:00",
-                "updatedAt": "2024-01-01T10:05:00",
-                "children": [
-                  {
-                    "id": 2,
-                    "postId": 1,
-                    "parentCommentId": 1,
-                    "author": {
-                      "id": 2,
-                      "username": "hongildong",
-                      "name": "홍길동",
-                      "email": "hong@example.com",
-                      "phone": "010-5678-1234",
-                      "position": "프론트엔드 개발자",
-                      "companyId": 1001
-                    },
-                    "content": "@홍길동 확인했습니다!",
-                    "createdAt": "2024-01-01T10:10:00",
-                    "updatedAt": "2024-01-01T10:10:00",
-                    "children": []
-                  }
-                ]
-              }
-            ],
+            "comments": [],
             "isDelete": false
           }
         }
         """;
-
     public static final String POST_NOT_FOUND = """
         {
           "success": false,
@@ -119,16 +100,40 @@ public class PostDocsResult {
                 "postId": 1,
                 "author": {
                   "id": 1,
-                  "nickname": "홍길동",
-                  "email": "hong@test.com"
+                  "username": "hongildong",
+                  "name": "홍길동",
+                  "email": "hong@test.com",
+                  "phone": "010-1234-5678",
+                  "position": "백엔드 개발자",
+                  "userType": "MEMBER",
+                  "companyId": 1001,
+                  "createdAt": "2024-01-01T09:00:00",
+                  "updatedAt": "2024-01-01T10:00:00"
+                },
+                "project": {
+                  "id": 1,
+                  "name": "백엔드 개선 프로젝트",
+                  "description": "프로젝트 설명입니다",
+                  "startDate": "2024-01-01",
+                  "endDate": "2024-06-01",
+                  "createdAt": "2024-01-01T08:00:00",
+                  "updatedAt": "2024-01-01T09:00:00",
+                  "deletedAt": null,
+                  "isDeleted": false,
+                  "status": "ACTIVE",
+                  "steps": []
                 },
                 "title": "첫 번째 게시글",
+                "content": "게시글 내용입니다",
                 "type": "GENERAL",
                 "status": "PENDING",
                 "priority": 1,
                 "createdAt": "2024-01-01T10:00:00",
+                "updatedAt": "2024-01-01T10:00:00",
                 "deletedAt": null,
-                "completedAt": null
+                "completedAt": null,
+                "comments": [],
+                "isDelete": false
               }
             ],
             "pageable": {

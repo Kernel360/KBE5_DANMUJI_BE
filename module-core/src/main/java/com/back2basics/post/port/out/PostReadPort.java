@@ -9,5 +9,5 @@ public interface PostReadPort {
 
     Optional<Post> findById(Long id);
 
-    Page<Post> findAllWithPaging(Pageable pageable);
+    Page<Post> findAllWithPaging(Long projectId, Pageable pageable);
 }

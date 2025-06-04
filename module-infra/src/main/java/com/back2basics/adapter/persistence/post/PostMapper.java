@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.post;
 
+import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.post.model.Post;
@@ -13,11 +14,13 @@ import org.springframework.stereotype.Component;
 public class PostMapper {
 
     private final UserMapper userMapper;
+    private final ProjectMapper projectMapper;
 
     public Post toDomain(PostEntity entity, List<Comment> comments) {
         return Post.builder()
             .id(entity.getId())
             .author(userMapper.toDomain(entity.getAuthor()))
+            .project(projectMapper.toDomain(entity.getProject()))
             .title(entity.getTitle())
             .content(entity.getContent())
             .type(entity.getType())
@@ -36,6 +39,7 @@ public class PostMapper {
         return Post.builder()
             .id(entity.getId())
             .author(userMapper.toDomain(entity.getAuthor()))
+            .project(projectMapper.toDomain(entity.getProject()))
             .title(entity.getTitle())
             .content(entity.getContent())
             .type(entity.getType())
@@ -54,6 +58,8 @@ public class PostMapper {
         PostEntity entity = PostEntity.builder()
             .id(domain.getId())
             .author(userMapper.toEntity(domain.getAuthor()))
+            .project(projectMapper.fromDomain(
+                domain.getProject())) // todo : toEntity, fromDomain 같은 기능인데 메소드 이름 다름. 통일 필요
             .title(domain.getTitle())
             .content(domain.getContent())
             .type(domain.getType())
