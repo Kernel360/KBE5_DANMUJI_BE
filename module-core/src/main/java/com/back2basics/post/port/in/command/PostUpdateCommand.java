@@ -8,8 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PostUpdateCommand {
-
-    private Long requesterId;
+    
     private String title;
     private String content;
     private PostType type;

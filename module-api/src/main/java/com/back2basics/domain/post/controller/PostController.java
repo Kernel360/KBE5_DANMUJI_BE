@@ -93,9 +93,8 @@ public class PostController implements PostApiDocs {
     @PutMapping("/delete/{postId}")
     public ResponseEntity<ApiResponse<Void>> deletePost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long postId,
-        @RequestBody PostDeleteApiRequest request) {
-        postDeleteUseCase.softDeletePost(postId, customUserDetails.getId());
+        @PathVariable Long postId) {
+        postDeleteUseCase.softDeletePost(customUserDetails.getId(), postId);
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }
 
