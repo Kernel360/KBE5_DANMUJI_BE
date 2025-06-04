@@ -7,14 +7,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 // todo: default 단계 , 추가생성은 또 따로
-public record CreateProjectStepRequest(@NotBlank String name, @NotNull StepStatus stepStatus,
-                                       ApprovalStatus approvalStatus) {
+public record CreateProjectStepRequest(@NotBlank String name, Long userId) {
 
     public CreateProjectStepCommand toCommand() {
         return CreateProjectStepCommand.builder()
             .name(name)
-            .stepStatus(stepStatus)
-            .approvalStatus(approvalStatus)
+            .userId(userId)
             .build();
     }
 }

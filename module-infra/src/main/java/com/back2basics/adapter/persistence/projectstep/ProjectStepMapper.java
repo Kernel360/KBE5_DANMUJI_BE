@@ -10,7 +10,7 @@ public class ProjectStepMapper {
         return ProjectStep.builder()
             .stepId(entity.getStepId())
             .projectId(entity.getProject().getId())
-            .userId(1L) // todo: 나중에 수정할 예정 entity.getUser.getId로
+            .userId(entity.getUser() != null ? entity.getUser().getId() : null)
             .name(entity.getName())
             .stepStatus(entity.getStepStatus())
             .approvalStatus(entity.getApprovalStatus())
@@ -21,6 +21,7 @@ public class ProjectStepMapper {
 
     public ProjectStepEntity toEntity(ProjectStep projectStep) {
         return ProjectStepEntity.builder()
+            .stepId(projectStep.getStepId())
             .name(projectStep.getName())
             .stepStatus(projectStep.getStepStatus())
             .approvalStatus(projectStep.getApprovalStatus())
