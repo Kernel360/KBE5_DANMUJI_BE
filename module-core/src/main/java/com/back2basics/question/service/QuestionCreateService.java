@@ -5,7 +5,7 @@ import com.back2basics.question.port.in.QuestionCreateUseCase;
 import com.back2basics.question.port.in.command.QuestionCreateCommand;
 import com.back2basics.question.port.out.QuestionCreatePort;
 import com.back2basics.user.model.User;
-import com.back2basics.user.port.out.UserRepositoryPort;
+import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 public class QuestionCreateService implements QuestionCreateUseCase {
 
     private final QuestionCreatePort questionCreatePort;
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserQueryPort userQueryPort;
 
     @Override
     public Long create(QuestionCreateCommand command) {
-        User user = userRepositoryPort.findById(command.getAuthorId());
+        User user = userQueryPort.findById(command.getAuthorId());
         Question question = Question.builder()
             .postId(command.getPostId())
             .author(user)
