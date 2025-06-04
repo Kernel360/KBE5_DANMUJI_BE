@@ -1,18 +1,10 @@
 package com.back2basics.user.service.result;
 
-import lombok.Builder;
-import lombok.Getter;
+import com.back2basics.user.model.UserType;
+import java.time.LocalDateTime;
 
-@Getter
-@Builder
-public class UserInfoResult {
-
-    private final Long id;
-    private final String username;
-    private final String name;
-    private final String email;
-    private final String phone;
-    private final String position;
-    private final Long companyId;
+public record UserInfoResult(Long id, String username, String name, String email, String phone,
+                             String position, UserType userType, Long companyId,
+                             LocalDateTime CreatedAt, LocalDateTime updatedAt) {
 
 }

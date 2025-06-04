@@ -11,7 +11,6 @@ import com.back2basics.user.port.in.DeleteUserUseCase;
 import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.user.port.in.UserQueryUseCase;
-import com.back2basics.user.port.in.command.UserUpdateCommand;
 import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
 import jakarta.validation.Valid;
@@ -48,10 +47,7 @@ public class AdminController {
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> updateUser(
         @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
-        UserUpdateCommand command = new UserUpdateCommand(request.username(),
-            request.name(), request.email(), request.phone(), request.position(),
-            request.companyId());
-        updateUserUseCase.update(userId, command);
+        updateUserUseCase.update(userId, request.toCommand());
         return ApiResponse.success(UserResponseCode.USER_UPDATE_SUCCESS);
     }
 
