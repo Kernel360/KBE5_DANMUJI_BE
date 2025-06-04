@@ -4,7 +4,6 @@ import com.back2basics.adapter.persistence.company.CompanyEntityRepository;
 import com.back2basics.adapter.persistence.company.CompanyMapper;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.out.ReadCompanyPort;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,9 +23,9 @@ public class ReadCompanyJpaAdapter implements ReadCompanyPort {
     }
 
     @Override
-    public List<Company> findByNameContaining(String keyword) {
-        return companyEntityRepository.findByNameContainingAndDeletedAtIsNull(keyword).stream()
-            .map(companyMapper::toDomain).toList();
+    public Page<Company> findByNameContaining(Pageable pageable, String keyword) {
+        return companyEntityRepository.findByNameContainingAndDeletedAtIsNull(pageable, keyword)
+            .map(companyMapper::toDomain);
     }
 
     @Override

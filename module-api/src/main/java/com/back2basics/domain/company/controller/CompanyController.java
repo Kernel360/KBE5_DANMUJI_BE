@@ -11,7 +11,6 @@ import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,11 +53,20 @@ public class CompanyController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<ReadCompanyResponse>>> getCompanyByName(
+    public ResponseEntity<ApiResponse<Page<ReadCompanyResponse>>> getCompanyByName(
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "name",
+            direction = Sort.Direction.ASC
+        )
+        Pageable pageable,
         @RequestParam String name) {
-        List<ReadCompanyResult> result = readCompanyUseCase.getCompaniesByNameContaining(name);
+        Page<ReadCompanyResult> companies = readCompanyUseCase.getCompaniesByNameContaining(
+            pageable,
+            name);
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS,
-            ReadCompanyResponse.toResponse(result));
+            companies.map(ReadCompanyResponse::toResponse));
     }
 
 

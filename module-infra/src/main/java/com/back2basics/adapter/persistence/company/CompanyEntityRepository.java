@@ -1,6 +1,5 @@
 package com.back2basics.adapter.persistence.company;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,5 +14,5 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
     // 삭제 안 된 데이터만 페이징 조회
     Page<CompanyEntity> findByDeletedAtIsNull(Pageable pageable);
 
-    List<CompanyEntity> findByNameContainingAndDeletedAtIsNull(String keyword);
+    Page<CompanyEntity> findByNameContainingAndDeletedAtIsNull(Pageable pageable, String keyword);
 }
