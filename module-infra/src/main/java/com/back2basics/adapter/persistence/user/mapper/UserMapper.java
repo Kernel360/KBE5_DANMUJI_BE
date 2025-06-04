@@ -42,6 +42,8 @@ public class UserMapper {
             .build();
     }
 
+    // todo : adapter에서는 자기자신의 도메인 객체만 mpper로 전달해주고 mapper에서 연관 넣어줄지
+    // todo : adapter에서 연관 객체 찾아서 mapper로는 자기자신의 도메인 객체를 그냥 전달만할지
     public UserEntity toEntity(User user) {
         CompanyEntity companyEntity = user.getCompanyId() != null
             ? CompanyEntity.builder().id(user.getCompanyId()).build()
