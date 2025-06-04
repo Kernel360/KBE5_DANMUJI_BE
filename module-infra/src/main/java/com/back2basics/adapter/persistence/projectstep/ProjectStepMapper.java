@@ -21,7 +21,6 @@ public class ProjectStepMapper {
 
     public ProjectStepEntity toEntity(ProjectStep projectStep) {
         return ProjectStepEntity.builder()
-            .stepId(projectStep.getStepId())
             .name(projectStep.getName())
             .stepStatus(projectStep.getStepStatus())
             .approvalStatus(projectStep.getApprovalStatus())
