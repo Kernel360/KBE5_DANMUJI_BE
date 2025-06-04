@@ -2,6 +2,7 @@ package com.back2basics.answer.model;
 
 import com.back2basics.answer.port.in.command.AnswerUpdateCommand;
 import com.back2basics.question.model.Question;
+import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +15,20 @@ public class Answer {
     private Long id;
     private Long questionId;
     private Long parentAnswerId;
-    private final Long authorId;
+    private User author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<Answer> children;
 
     @Builder
-    public Answer(Long id, Long questionId, Long parentAnswerId, Long authorId,
+    public Answer(Long id, Long questionId, Long parentAnswerId, User author,
         String content,
         LocalDateTime createdAt, LocalDateTime updatedAt, List<Answer> children) {
         this.id = id;
         this.questionId = questionId;
         this.parentAnswerId = parentAnswerId;
-        this.authorId = authorId;
+        this.author = author;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

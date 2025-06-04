@@ -1,6 +1,7 @@
 package com.back2basics.domain.answer.dto.response;
 
 import com.back2basics.answer.service.result.AnswerReadResult;
+import com.back2basics.user.service.result.UserInfoResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -13,7 +14,7 @@ public class AnswerResponse {
     private Long id;
     private Long questionId;
     private Long parentAnswerId;
-    private final Long authorId;
+    private UserInfoResult author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -24,7 +25,7 @@ public class AnswerResponse {
             .id(result.getId())
             .questionId(result.getQuestionId())
             .parentAnswerId(result.getParentAnswerId())
-            .authorId(result.getAuthorId())
+            .author(result.getAuthor())
             .content(result.getContent())
             .createdAt(result.getCreatedAt())
             .updatedAt(result.getUpdatedAt())

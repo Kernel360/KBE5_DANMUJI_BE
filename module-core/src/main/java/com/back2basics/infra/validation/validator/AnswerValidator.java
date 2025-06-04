@@ -19,7 +19,7 @@ public class AnswerValidator {
     }
 
     public void isAuthor(Answer answer, Long requesterId) {
-        if (!answer.getAuthorId().equals(requesterId)) {
+        if (!answer.getAuthor().getId().equals(requesterId)) {
             throw new AnswerException(AnswerErrorCode.INVALID_ANSWER_AUTHOR);
         }
     }

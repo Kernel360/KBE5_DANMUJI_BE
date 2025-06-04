@@ -1,15 +1,19 @@
 package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -28,8 +32,9 @@ public class PostEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "author_id", nullable = false)
-    private Long authorId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private UserEntity author;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -52,10 +57,10 @@ public class PostEntity extends BaseTimeEntity {
     private LocalDateTime completedAt = null;
 
     @Builder
-    public PostEntity(Long id, Long authorId, String title, String content, PostType type,
+    public PostEntity(Long id, UserEntity author, String title, String content, PostType type,
         Integer priority, PostStatus status, LocalDateTime completedAt) {
         this.id = id;
-        this.authorId = authorId;
+        this.author = author;
         this.title = title;
         this.content = content;
         this.type = type;

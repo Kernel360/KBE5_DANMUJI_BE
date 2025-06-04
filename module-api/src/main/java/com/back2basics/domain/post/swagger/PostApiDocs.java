@@ -4,7 +4,6 @@ import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
 import com.back2basics.domain.post.dto.request.PostDeleteApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
-import com.back2basics.domain.post.dto.response.PostListReadResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,7 +81,7 @@ public interface PostApiDocs {
                 examples = @ExampleObject(value = PostDocsResult.POST_READ_ALL_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<Page<PostListReadResponse>>> getPostsByPaging(
+    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsByPaging(
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);
 
@@ -162,7 +161,7 @@ public interface PostApiDocs {
                 examples = @ExampleObject(value = PostDocsResult.POST_SEARCH_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<Page<PostListReadResponse>>> searchPosts(
+    ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @Parameter(description = "검색 키워드", example = "Spring") @RequestParam(required = false) String keyword,
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);
