@@ -1,7 +1,6 @@
 package com.back2basics.domain.comment.swagger;
 
 import com.back2basics.domain.comment.dto.request.CommentCreateRequest;
-import com.back2basics.domain.comment.dto.request.CommentDeleteRequest;
 import com.back2basics.domain.comment.dto.request.CommentUpdateRequest;
 import com.back2basics.global.response.result.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
