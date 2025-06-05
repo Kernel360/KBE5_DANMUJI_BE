@@ -20,10 +20,6 @@ public class CommentDeleteJpaAdapter implements CommentDeletePort {
         CommentEntity entity = commentRepository.findById(comment.getId())
             .orElseThrow(() -> new CommentException(CommentErrorCode.COMMENT_NOT_FOUND));
 
-        // 자식 댓글들의 부모 참조 제거
-        entity.getChildrenComments().forEach(child ->
-            child.assignParentComment(null));
-
         commentRepository.delete(entity);
     }
 }

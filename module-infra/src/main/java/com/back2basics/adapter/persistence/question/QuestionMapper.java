@@ -1,9 +1,7 @@
 package com.back2basics.adapter.persistence.question;
 
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
-import com.back2basics.answer.model.Answer;
 import com.back2basics.question.model.Question;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,17 +42,4 @@ public class QuestionMapper {
             .build();
     }
 
-    public Question toDomain(QuestionEntity entity, List<Answer> answers) {
-        return Question.builder()
-            .id(entity.getId())
-            .postId(entity.getPostId())
-            .author(userMapper.toDomain(entity.getAuthor()))
-            .createdAt(entity.getCreatedAt())
-            .updatedAt(entity.getUpdatedAt())
-            .deletedAt(entity.getDeletedAt())
-            .status(entity.getStatus())
-            .content(entity.getContent())
-            .answers(answers)
-            .build();
-    }
 }

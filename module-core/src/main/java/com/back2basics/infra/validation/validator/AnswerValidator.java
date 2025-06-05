@@ -23,4 +23,12 @@ public class AnswerValidator {
             throw new AnswerException(AnswerErrorCode.INVALID_ANSWER_AUTHOR);
         }
     }
+
+    // 부모 댓글이 존재할 경우, 그 부모 답변의 questionId가 현재 답변이 달릴 answerId와 일치하는지 검증하는 메소드 이름 추천받습니다.
+    public void validateParentPost(Long parentAnswerId, Long targetQuestionId) {
+        Answer parentAnswer = findAnswerById(parentAnswerId);
+        if (!parentAnswer.getQuestionId().equals(targetQuestionId)) {
+            throw new AnswerException(AnswerErrorCode.INVALID_ANSWER_PARENT_QUESTION_ID);
+        }
+    }
 }

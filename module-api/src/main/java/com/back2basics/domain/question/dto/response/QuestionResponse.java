@@ -1,12 +1,9 @@
 package com.back2basics.domain.question.dto.response;
 
-import com.back2basics.domain.answer.dto.response.AnswerResponse;
 import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.question.model.QuestionStatus;
 import com.back2basics.question.service.result.QuestionResult;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,13 +19,8 @@ public class QuestionResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    private List<AnswerResponse> answers;
 
     public static QuestionResponse toResponse(QuestionResult result) {
-        List<AnswerResponse> answerResponses = result.getAnswers().stream()
-            .map(AnswerResponse::toResponse)
-            .collect(Collectors.toList());
-
         return QuestionResponse.builder()
             .id(result.getId())
             .postId(result.getPostId())
@@ -38,7 +30,6 @@ public class QuestionResponse {
             .createdAt(result.getCreatedAt())
             .updatedAt(result.getUpdatedAt())
             .deletedAt(result.getDeletedAt())
-            .answers(answerResponses)
             .build();
     }
 }

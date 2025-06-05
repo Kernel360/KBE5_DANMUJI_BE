@@ -4,12 +4,16 @@ import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostCreateCommand;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class PostCreateApiRequest {
+
+    @Nullable
+    private Long parentId;
 
     @NotBlank(message = "제목은 필수입니다.")
     private String title;
@@ -31,6 +35,7 @@ public class PostCreateApiRequest {
 
     public PostCreateCommand toCommand() {
         return PostCreateCommand.builder()
+            .parentId(parentId)
             .title(title)
             .projectId(projectId)
             .content(content)

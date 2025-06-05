@@ -33,6 +33,9 @@ public class PostEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "parent_post_id")
+    private Long parentId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private UserEntity author;
@@ -62,18 +65,20 @@ public class PostEntity extends BaseTimeEntity {
     private LocalDateTime completedAt = null;
 
     @Builder
-    public PostEntity(Long id, UserEntity author, ProjectEntity project, String title,
+    public PostEntity(Long id, Long parentId, UserEntity author,
+        String title,
         String content, PostType type,
-        Integer priority, PostStatus status, LocalDateTime completedAt) {
+        Integer priority, PostStatus status, ProjectEntity project, LocalDateTime completedAt) {
         this.id = id;
+        this.parentId = parentId;
         this.author = author;
         this.title = title;
         this.content = content;
         this.type = type;
         this.priority = priority;
         this.status = status;
-        this.completedAt = completedAt;
         this.project = project;
+        this.completedAt = completedAt;
     }
 
     public void update(String title, String content, PostType type, PostStatus status,

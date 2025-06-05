@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class CommentCreateRequest {
-
+    
     @NotNull(message = "게시글 id를 입력해주세요.")
     private Long postId;
 
@@ -21,6 +21,7 @@ public class CommentCreateRequest {
     public CommentCreateCommand toCommand() {
         return CommentCreateCommand.builder()
             .postId(postId)
+            .parentId(parentId)
             .parentId(parentId)
             .content(content)
             .build();

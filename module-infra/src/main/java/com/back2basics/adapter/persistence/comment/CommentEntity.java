@@ -3,7 +3,6 @@ package com.back2basics.adapter.persistence.comment;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,10 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,34 +38,21 @@ public class CommentEntity extends BaseTimeEntity {
     @JoinColumn(name = "post_id")
     private PostEntity post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
-    private CommentEntity parentCommentId;
-
-    @OneToMany(mappedBy = "parentCommentId", cascade = CascadeType.ALL)
-    private List<CommentEntity> childrenComments = new ArrayList<>();
+    @Column(name = "parent_comment_id")
+    private Long parentId;
 
     @Builder
     public CommentEntity(Long id, UserEntity author, String content, PostEntity post,
-        CommentEntity parentComment) {
+        Long parentId) {
         this.id = id;
         this.author = author;
         this.content = content;
         this.post = post;
-        this.parentCommentId = parentComment;
+        this.parentId = parentId;
     }
 
     public void assignPost(PostEntity post) {
         this.post = post;
-    }
-
-    public void assignParentComment(CommentEntity parent) {
-        this.parentCommentId = parent;
-    }
-
-    public void addChildComment(CommentEntity child) {
-        childrenComments.add(child);
-        child.assignParentComment(this);
     }
 
     public void updateContent(String content) {

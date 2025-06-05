@@ -23,4 +23,12 @@ public class CommentValidator {
             throw new CommentException(CommentErrorCode.INVALID_COMMENT_AUTHOR);
         }
     }
+
+    // 부모 댓글이 존재할 경우, 그 부모 댓글의 postId가 현재 댓글이 달릴 postId와 일치하는지 검증하는 메소드 이름 추천받습니다.
+    public void validateParentPost(Long parentCommentId, Long targetPostId) {
+        Comment parentComment = findComment(parentCommentId);
+        if (!parentComment.getPostId().equals(targetPostId)) {
+            throw new CommentException(CommentErrorCode.INVALID_COMMENT_PARENT_POST_ID);
+        }
+    }
 }

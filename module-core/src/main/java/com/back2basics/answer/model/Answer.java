@@ -4,8 +4,6 @@ import com.back2basics.answer.port.in.command.AnswerUpdateCommand;
 import com.back2basics.question.model.Question;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,25 +12,23 @@ public class Answer {
 
     private Long id;
     private Long questionId;
-    private Long parentAnswerId;
+    private Long parentId;
     private User author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Answer> children;
 
     @Builder
-    public Answer(Long id, Long questionId, Long parentAnswerId, User author,
+    public Answer(Long id, Long questionId, Long parentId, User author,
         String content,
-        LocalDateTime createdAt, LocalDateTime updatedAt, List<Answer> children) {
+        LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.questionId = questionId;
-        this.parentAnswerId = parentAnswerId;
+        this.parentId = parentId;
         this.author = author;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.children = children != null ? children : new ArrayList<>();
     }
 
     public void update(AnswerUpdateCommand command) {
@@ -43,13 +39,5 @@ public class Answer {
         this.questionId = question.getId();
     }
 
-    public void assignParent(Answer parent) {
-        this.parentAnswerId = parent.getId();
-    }
-
-    public void addChild(Answer child) {
-        children.add(child);
-        child.assignParent(this);
-    }
 
 }
