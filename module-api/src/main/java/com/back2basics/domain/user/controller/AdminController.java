@@ -71,7 +71,7 @@ public class AdminController {
         return ApiResponse.success(USER_READ_SUCCESS, UserInfoResponse.from(result));
     }
 
-    @PutMapping("/reset-password/{userId}")
+    @PutMapping("/password/reset/{userId}")
     public ResponseEntity<ApiResponse<String>> resetPassword(@PathVariable Long userId) {
         String generatedPassword = resetPasswordUseCase.resetByAdmin(userId);
         return ApiResponse.success(USER_CREATE_SUCCESS, generatedPassword);
