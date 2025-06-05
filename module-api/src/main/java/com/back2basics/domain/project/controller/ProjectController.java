@@ -1,8 +1,14 @@
 package com.back2basics.domain.project.controller;
 
-import com.back2basics.domain.project.controller.code.ProjectResponseCode;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_CREATE_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_DELETE_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_ALL_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_UPDATE_SUCCESS;
+
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
+import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
@@ -10,6 +16,7 @@ import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
+import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +48,7 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateRequest request) {
         createProjectUseCase.createProject(request.toCommand());
-        return ApiResponse.success(ProjectResponseCode.PROJECT_CREATE_SUCCESS);
+        return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
 
     @GetMapping("/{projectId}")
@@ -49,7 +56,7 @@ public class ProjectController {
         @PathVariable Long projectId) {
         ProjectGetResult result = readProjectUseCase.getProjectById(projectId);
         ProjectGetResponse response = ProjectGetResponse.toResponse(result);
-        return ApiResponse.success(ProjectResponseCode.PROJECT_READ_SUCCESS, response);
+        return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 
     // todo: paging 적용
@@ -60,7 +67,7 @@ public class ProjectController {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProjectGetResult> result = readProjectUseCase.getAllProjects(pageable);
         Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
-        return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, list);
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
     }
 
     // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민..
@@ -76,9 +83,8 @@ public class ProjectController {
         Page<ProjectGetResult> resultPage = readProjectUseCase.searchProjects(keyword, pageable);
         Page<ProjectGetResponse> responsePage = resultPage.map(ProjectGetResponse::toResponse);
 
-        return ApiResponse.success(ProjectResponseCode.PROJECT_READ_ALL_SUCCESS, responsePage);
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, responsePage);
     }
-
 
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
@@ -86,19 +92,27 @@ public class ProjectController {
         @RequestBody @Valid ProjectUpdateRequest request) {
         ProjectUpdateCommand command = request.toCommand();
         updateProjectUseCase.updateProject(projectId, command);
-        return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS);
+        return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
         deleteProjectUseCase.deleteProject(projectId);
-        return ApiResponse.success(ProjectResponseCode.PROJECT_DELETE_SUCCESS);
+        return ApiResponse.success(PROJECT_DELETE_SUCCESS);
     }
 
     @PutMapping("/{projectId}/status")
     public ResponseEntity<ApiResponse<Void>> changedStatus(
         @PathVariable Long projectId) {
         updateProjectUseCase.changedStatus(projectId);
-        return ApiResponse.success(ProjectResponseCode.PROJECT_UPDATE_SUCCESS);
+        return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
+    }
+
+    @GetMapping("/{projectId}/details")
+    public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
+        @PathVariable Long projectId) {
+        ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId);
+        ProjectDetailResponse response = ProjectDetailResponse.from(result);
+        return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 }
