@@ -59,7 +59,7 @@ public class User {
             .phone(command.getPhone())
             .position(command.getPosition())
             .role(Role.USER)
-            .userType(command.getUserType())
+            .userType(UserType.MEMBER)
             .companyId(command.getCompanyId())
             .build();
     }
