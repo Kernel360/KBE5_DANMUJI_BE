@@ -41,12 +41,10 @@ public class Question {
 
     public void updateContent(String newContent) {
         this.content = newContent;
-        this.updatedAt = LocalDateTime.now();
     }
 
     public void markAsDeleted() {
         this.isDeleted = true;
-        this.deletedAt = LocalDateTime.now();
     }
 
     public void markAsAnswered() {
