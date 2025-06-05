@@ -23,14 +23,18 @@ public class CommentCreateService implements CommentCreateUseCase {
     @Override
     public Long createComment(Long userId, CommentCreateCommand command) {
         postValidator.findPost(command.getPostId());
-        Long parentCommentId = commentValidator.findComment(command.getParentId()).getId();
+
+        if (command.getParentId() != null) {
+            commentValidator.findComment(command.getParentId()).getId();
+        }
+
         User user = userQueryPort.findById(userId);
 
         Comment comment = Comment.builder()
             .postId(command.getPostId())
             .author(user)
             .content(command.getContent())
-            .parentCommentId(parentCommentId)
+            .parentCommentId(command.getParentId())
             .build();
 
         return commentCreatePort.save(comment);
