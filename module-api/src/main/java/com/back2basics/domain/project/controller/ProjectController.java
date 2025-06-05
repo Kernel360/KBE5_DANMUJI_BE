@@ -1,20 +1,18 @@
 package com.back2basics.domain.project.controller;
 
+import com.back2basics.domain.project.controller.code.ProjectResponseCode;
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
+import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
-import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
-import com.back2basics.domain.project.controller.code.ProjectResponseCode;
 import com.back2basics.project.service.result.ProjectGetResult;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,9 +38,7 @@ public class ProjectController {
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
 
-    // todo: transactional을 여기 붙이는게 아닌가. 아까 했을 때 안통하던데.....
     @PostMapping
-    @Transactional
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateRequest request) {
         ProjectCreateCommand command = request.toCommand();
