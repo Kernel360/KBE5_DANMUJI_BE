@@ -10,8 +10,10 @@ import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
 import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
 import com.back2basics.domain.company.swagger.CompanyApiDocs;
+import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -83,6 +85,16 @@ public class CompanyController implements CompanyApiDocs {
         Page<ReadCompanyResult> companies = readCompanyUseCase.getAllCompanies(pageable);
         return ApiResponse.success(CompanyResponseCode.COMPANY_READ_ALL_SUCCESS,
             companies.map(ReadCompanyResponse::toResponse));
+    }
+
+    @GetMapping("/users/{companyId}")
+    public ResponseEntity<ApiResponse<List<UserSummaryResponse>>> getUsersByCompanyId(
+        @PathVariable Long companyId) {
+        List<UserSummaryResponse> responseList = readCompanyUseCase.getUsersByCompanyId(companyId)
+            .stream()
+            .map(UserSummaryResponse::from)
+            .toList();
+        return ApiResponse.success(CompanyResponseCode.COMPANY_READ_SUCCESS, responseList);
     }
 
     @PutMapping("/{companyId}")
