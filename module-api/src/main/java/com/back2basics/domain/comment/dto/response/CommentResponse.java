@@ -3,7 +3,6 @@ package com.back2basics.domain.comment.dto.response;
 import com.back2basics.comment.service.result.CommentReadResult;
 import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,7 +17,6 @@ public class CommentResponse {
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<CommentReadResult> children;
 
     public static CommentResponse toResponse(CommentReadResult result) {
         return CommentResponse.builder()
@@ -29,7 +27,6 @@ public class CommentResponse {
             .content(result.getContent())
             .createdAt(result.getCreatedAt())
             .updatedAt(result.getUpdatedAt())
-            .children(result.getChildren())
             .build();
     }
 }

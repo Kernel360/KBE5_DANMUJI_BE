@@ -6,7 +6,6 @@ import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.comment.port.out.CommentCreatePort;
 import com.back2basics.infra.validation.validator.CommentValidator;
 import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.post.model.Post;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
@@ -23,28 +22,17 @@ public class CommentCreateService implements CommentCreateUseCase {
 
     @Override
     public Long createComment(Long userId, CommentCreateCommand command) {
+        postValidator.findPost(command.getPostId());
+        Long parentCommentId = commentValidator.findComment(command.getParentId()).getId();
         User user = userQueryPort.findById(userId);
+
         Comment comment = Comment.builder()
             .postId(command.getPostId())
             .author(user)
             .content(command.getContent())
-            .parentCommentId(command.getParentId())
+            .parentCommentId(parentCommentId)
             .build();
 
-        assignRelations(command, comment);
-
         return commentCreatePort.save(comment);
-    }
-
-    private void assignRelations(CommentCreateCommand command, Comment comment) {
-        Post post = postValidator.findPost(command.getPostId());
-        comment.assignPostId(post);
-
-        if (command.getParentId() != null) {
-            Comment parentComment = commentValidator.findComment(command.getParentId());
-            parentComment.addChild(comment);
-        } else {
-            post.addComment(comment);
-        }
     }
 }
