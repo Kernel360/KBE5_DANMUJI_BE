@@ -1,5 +1,7 @@
 package com.back2basics.global.handler;
 
+import static com.back2basics.infra.exception.user.UserErrorCode.MAIL_SEND_FAILED;
+
 import com.back2basics.global.response.code.CommonErrorCode;
 import com.back2basics.global.response.code.ErrorCode;
 import com.back2basics.global.response.error.CustomException;
@@ -10,6 +12,7 @@ import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -126,6 +129,15 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
         log.error("MethodArgumentNotValidException 발생: {}", errorCode.getMessage(), ex);
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getBindingResult());
+        return ApiResponse.error(errorCode, errorResponse);
+    }
+
+    // 메일 전송 실패 시
+    @ExceptionHandler(MailException.class)
+    public ResponseEntity<ApiResponse<ErrorResponse>> handleMailException(MailException ex) {
+        ErrorCode errorCode = MAIL_SEND_FAILED;
+        log.error("MailException 발생: {}", errorCode.getMessage());
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode, ex.getMessage());
         return ApiResponse.error(errorCode, errorResponse);
     }
 
