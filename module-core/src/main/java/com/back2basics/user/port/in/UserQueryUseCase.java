@@ -9,4 +9,6 @@ public interface UserQueryUseCase {
     UserInfoResult getUserInfo(Long userId);
 
     List<UserSimpleResult> getAllUsers();
+
+    boolean existsByUsername(String username);
 }

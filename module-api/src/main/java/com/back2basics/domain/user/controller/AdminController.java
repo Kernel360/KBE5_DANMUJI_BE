@@ -2,6 +2,7 @@ package com.back2basics.domain.user.controller;
 
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CREATE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_DELETE_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_EXISTS_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_SUCCESS;
 
@@ -52,6 +53,12 @@ public class AdminController {
             UserCreateResponse.from(result));
     }
 
+    @GetMapping("/exists/{username}")
+    public ResponseEntity<ApiResponse<Boolean>> checkUsernameExists(@PathVariable String username) {
+        boolean exists = userQueryUseCase.existsByUsername(username);
+        return ApiResponse.success(USER_EXISTS_SUCCESS, exists);
+    }
+
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> updateUser(
         @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
@@ -71,7 +78,7 @@ public class AdminController {
         return ApiResponse.success(USER_READ_SUCCESS, UserInfoResponse.from(result));
     }
 
-    @PutMapping("/reset-password/{userId}")
+    @PutMapping("/password/reset/{userId}")
     public ResponseEntity<ApiResponse<String>> resetPassword(@PathVariable Long userId) {
         String generatedPassword = resetPasswordUseCase.resetByAdmin(userId);
         return ApiResponse.success(USER_CREATE_SUCCESS, generatedPassword);

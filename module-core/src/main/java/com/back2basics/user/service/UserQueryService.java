@@ -24,12 +24,12 @@ public class UserQueryService implements UserQueryUseCase {
         User user = userQueryPort.findById(userId);
         if (user.getCompanyId() == null) {
             return new UserInfoResult(userId, user.getUsername(), user.getName(), user.getEmail(),
-                user.getPhone(), user.getPosition(), user.getUserType(), null, null,
+                user.getPhone(), user.getPosition(), null, null,
                 user.getCreatedAt(), user.getUpdatedAt());
         }
         Company company = companyValidator.findCompany(user.getCompanyId());
         return new UserInfoResult(userId, user.getUsername(), user.getName(), user.getEmail(),
-            user.getPhone(), user.getPosition(), user.getUserType(), user.getCompanyId(),
+            user.getPhone(), user.getPosition(), user.getCompanyId(),
             company.getName(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
@@ -61,6 +61,11 @@ public class UserQueryService implements UserQueryUseCase {
                 );
             })
             .toList();
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userQueryPort.existsByUsername(username);
     }
 
 }

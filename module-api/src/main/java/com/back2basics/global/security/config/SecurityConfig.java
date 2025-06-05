@@ -23,8 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final String[] allowedUrls = {"/", "/api/auth/**", "/error", "/api/users/send-mail",
-        "/api/users/reset-password"};
+    private final String[] allowedUrls = {"/", "/api/auth/**", "/error",
+        "/api/users/password/reset-mail/request", "/api/users/password/reset-mail/confirm"};
     private final String[] swaggerUrls = {"/danmuji-ui.html", "/v3/api-docs/**", "/swagger-ui/**",
         "/swagger-ui.html", "/webjars/**", "/favicon.ico"};
 
