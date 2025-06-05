@@ -9,5 +9,4 @@ import java.util.List;
 public interface ProjectStepEntityRepository extends JpaRepository<ProjectStepEntity, Long> {
 
     List<ProjectStepEntity> findAllByProjectIdAndIsDeletedFalse(Long projectId);
-
 }

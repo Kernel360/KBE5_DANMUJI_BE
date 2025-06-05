@@ -14,8 +14,5 @@ public class CreateProjectStepCommand {
     @NotBlank(message = "단계명은 필수입니다.")
     private String name;
 
-    @NotNull
-    private StepStatus stepStatus;
-
-    private ApprovalStatus approvalStatus;
+    private Long userId;
 }

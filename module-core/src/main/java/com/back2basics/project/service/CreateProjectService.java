@@ -40,8 +40,8 @@ public class CreateProjectService implements CreateProjectUseCase {
         ProjectStep projectStep = ProjectStep.builder()
             .name("요구사항정의")
             .projectId(saved.getId())
-            .userId(1L)
-            .stepStatus(StepStatus.PENDING)
+            .userId(null)
+            .stepStatus(StepStatus.IN_PROGRESS)
             .approvalStatus(null)
             .build();
         saveProjectStepPort.defaultSave(projectStep);
