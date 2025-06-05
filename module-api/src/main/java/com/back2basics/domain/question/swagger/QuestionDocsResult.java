@@ -48,7 +48,6 @@ public class QuestionDocsResult {
     public static final String QUESTION_CREATE_REQUEST = """
         {
           "postId": 1,
-          "authorId": 2,
           "content": "이 게시글에 대해 질문이 있습니다."
         }
         """;
@@ -136,7 +135,6 @@ public class QuestionDocsResult {
 
     public static final String QUESTION_UPDATE_REQUEST = """
         {
-          "requesterId": 2,
           "content": "수정된 질문 내용입니다."
         }
         """;
@@ -149,7 +147,7 @@ public class QuestionDocsResult {
           "data": null
         }
         """;
-    
+
     public static final String QUESTION_DELETE_SUCCESS = """
         {
           "success": true,

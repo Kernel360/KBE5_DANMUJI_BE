@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,10 +26,14 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
-    public List<Project> findAll() {
-        return projectEntityRepository.findAllByIsDeletedFalse()
-            .stream()
-            .map(projectMapper::toDomain)
-            .collect(Collectors.toList());
+    public Page<Project> findAll(Pageable pageable) {
+        return projectEntityRepository.findAllByIsDeletedFalse(pageable)
+            .map(projectMapper::toDomain);
+    }
+
+    @Override
+    public Page<Project> searchByKeyword(String keyword, Pageable pageable) {
+        return projectEntityRepository.findAllByNameContainingAndIsDeletedFalse(pageable, keyword)
+            .map(projectMapper::toDomain);
     }
 }

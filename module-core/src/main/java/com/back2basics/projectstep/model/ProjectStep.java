@@ -49,4 +49,15 @@ public class ProjectStep {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
     }
+
+    /* todo: 승인자랑 일치하는 지는 프론트에서 하시고 userid랑 로그인 id랑 같을때만 승인 버튼 보이게
+        switch문으로 해도 괜찮을 듯 (리팩토링) */
+    public void approvalStatus(ApprovalStatus approvalStatus) {
+        this.approvalStatus = approvalStatus;
+        if (approvalStatus == ApprovalStatus.APPROVED) {
+            this.stepStatus = StepStatus.IN_PROGRESS;
+        } else if (approvalStatus == ApprovalStatus.REJECTED) {
+            this.stepStatus = StepStatus.PENDING;
+        }
+    }
 }

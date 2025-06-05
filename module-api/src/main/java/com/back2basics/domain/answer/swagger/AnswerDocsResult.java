@@ -33,21 +33,14 @@ public class AnswerDocsResult {
         {
           "questionId": 1,
           "parentId": null,
-          "authorId": 2,
           "content": "이것은 새로운 답변입니다."
         }
         """;
 
     public static final String ANSWER_UPDATE_REQUEST = """
         {
-          "requesterId": 2,
           "content": "수정된 답변 내용입니다."
         }
         """;
 
-    public static final String ANSWER_DELETE_REQUEST = """
-        {
-          "requesterId": 2
-        }
-        """;
 }

@@ -37,7 +37,6 @@ public class Answer {
 
     public void update(AnswerUpdateCommand command) {
         this.content = command.getContent();
-
     }
 
     public void assignQuestionId(Question question) {

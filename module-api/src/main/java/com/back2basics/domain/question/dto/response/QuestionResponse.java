@@ -20,6 +20,8 @@ public class QuestionResponse {
     private String content;
     private QuestionStatus status;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
     private List<AnswerResponse> answers;
 
     public static QuestionResponse toResponse(QuestionResult result) {
@@ -34,6 +36,8 @@ public class QuestionResponse {
             .content(result.getContent())
             .status(result.getStatus())
             .createdAt(result.getCreatedAt())
+            .updatedAt(result.getUpdatedAt())
+            .deletedAt(result.getDeletedAt())
             .answers(answerResponses)
             .build();
     }

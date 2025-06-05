@@ -1,5 +1,6 @@
 package com.back2basics.projectstep.service;
 
+import com.back2basics.projectstep.model.ApprovalStatus;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepUseCase;
@@ -19,6 +20,13 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
     public void updateStep(UpdateProjectStepCommand command, Long stepId) {
         ProjectStep step = readPort.findById(stepId);
         step.update(command);
+        savePort.save(step);
+    }
+
+    @Override
+    public void updateApprovalStatus(ApprovalStatus approvalStatus, Long stepId) {
+        ProjectStep step = readPort.findById(stepId);
+        step.approvalStatus(approvalStatus);
         savePort.save(step);
     }
 }
