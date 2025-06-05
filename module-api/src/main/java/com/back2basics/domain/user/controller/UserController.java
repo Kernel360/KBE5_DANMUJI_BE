@@ -36,10 +36,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserQueryUseCase userQueryUseCase;
-    private final ChangePasswordUseCase changePasswordUseCase;
-    private final ResetPasswordUseCase resetPasswordUseCase;
     private final SendMailUseCase sendMailUseCase;
+    private final UserQueryUseCase userQueryUseCase;
+    private final ResetPasswordUseCase resetPasswordUseCase;
+    private final ChangePasswordUseCase changePasswordUseCase;
     private final ResetPasswordByTokenUseCase resetPasswordByTokenUseCase;
 
     @GetMapping("/me")
@@ -48,7 +48,7 @@ public class UserController {
         UserInfoResult result = userQueryUseCase.getUserInfo(userDetails.getId());
         return ApiResponse.success(USER_READ_SUCCESS, UserInfoResponse.from(result));
     }
-    
+
     @PutMapping("/password/change")
     public ResponseEntity<ApiResponse<Void>> changePassword(
         @Valid @RequestBody ChangePasswordRequest request,
