@@ -31,6 +31,7 @@ public class PostCreateService implements PostCreateUseCase {
         User user = userQueryPort.findById(userId);
         Project project = projectValidator.findProjectById(command.getProjectId());
         Post post = Post.builder()
+            .parentId(command.getParentId())
             .author(user)
             .project(project)
             .title(command.getTitle())

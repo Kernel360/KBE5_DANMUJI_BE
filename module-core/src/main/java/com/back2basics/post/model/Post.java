@@ -14,6 +14,7 @@ import lombok.Getter;
 public class Post {
 
     private final Long id;
+    private final Long parentId;
     private User author;
     private String title;
     private String content;
@@ -29,11 +30,14 @@ public class Post {
     private Project project;
 
     @Builder
-    public Post(Long id, User author, Project project, String title, String content, PostType type,
+    public Post(Long id, Long parentId, User author, String title, String content,
+        PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments) {
+        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments,
+        Project project) {
         this.id = id;
+        this.parentId = parentId;
         this.author = author;
         this.title = title;
         this.content = content;

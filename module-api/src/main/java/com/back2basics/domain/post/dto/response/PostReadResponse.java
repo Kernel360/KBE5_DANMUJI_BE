@@ -16,6 +16,7 @@ import lombok.Getter;
 public class PostReadResponse {
 
     private final Long postId;
+    private final Long parentId;
     private final UserSummaryResponse author;
     private final String title;
     private final String content;
@@ -32,6 +33,7 @@ public class PostReadResponse {
 
     public static PostReadResponse toResponse(PostReadResult postDetails) {
         return PostReadResponse.builder()
+            .parentId(postDetails.getParentId())
             .postId(postDetails.getId())
             .author(UserSummaryResponse.from(postDetails.getAuthor()))
             .project(postDetails.getProject())

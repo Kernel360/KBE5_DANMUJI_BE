@@ -19,6 +19,7 @@ public class PostMapper {
     public Post toDomain(PostEntity entity, List<Comment> comments) {
         return Post.builder()
             .id(entity.getId())
+            .parentId(entity.getParentId())
             .author(userMapper.toDomain(entity.getAuthor()))
             .project(projectMapper.toDomain(entity.getProject()))
             .title(entity.getTitle())
@@ -38,6 +39,7 @@ public class PostMapper {
     public Post toDomain(PostEntity entity) {
         return Post.builder()
             .id(entity.getId())
+            .parentId(entity.getParentId())
             .author(userMapper.toDomain(entity.getAuthor()))
             .project(projectMapper.toDomain(entity.getProject()))
             .title(entity.getTitle())
@@ -57,6 +59,7 @@ public class PostMapper {
 
         PostEntity entity = PostEntity.builder()
             .id(domain.getId())
+            .parentId(domain.getParentId())
             .author(userMapper.toEntity(domain.getAuthor()))
             .project(projectMapper.fromDomain(
                 domain.getProject())) // todo : toEntity, fromDomain 같은 기능인데 메소드 이름 다름. 통일 필요
