@@ -1,5 +1,10 @@
 package com.back2basics.domain.user.controller;
 
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CREATE_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_DELETE_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_SUCCESS;
+
 import com.back2basics.domain.user.controller.code.UserResponseCode;
 import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.domain.user.dto.request.UserUpdateRequest;
@@ -43,7 +48,7 @@ public class AdminController {
     public ResponseEntity<ApiResponse<UserCreateResponse>> createUser(
         @RequestBody @Valid UserCreateRequest request) {
         UserCreateResult result = createUserUseCase.create(request.toCommand());
-        return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS,
+        return ApiResponse.success(USER_CREATE_SUCCESS,
             UserCreateResponse.from(result));
     }
 
@@ -51,26 +56,25 @@ public class AdminController {
     public ResponseEntity<ApiResponse<Void>> updateUser(
         @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
         updateUserUseCase.update(userId, request.toCommand());
-        return ApiResponse.success(UserResponseCode.USER_UPDATE_SUCCESS);
+        return ApiResponse.success(USER_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
         deleteUserUseCase.delete(userId);
-        return ApiResponse.success(UserResponseCode.USER_DELETE_SUCCESS);
+        return ApiResponse.success(USER_DELETE_SUCCESS);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserInfoResponse>> getUser(@PathVariable Long userId) {
         UserInfoResult result = userQueryUseCase.getUserInfo(userId);
-        return ApiResponse.success(UserResponseCode.USER_READ_SUCCESS,
-            UserInfoResponse.from(result));
+        return ApiResponse.success(USER_READ_SUCCESS, UserInfoResponse.from(result));
     }
 
     @PutMapping("/reset-password/{userId}")
     public ResponseEntity<ApiResponse<String>> resetPassword(@PathVariable Long userId) {
         String generatedPassword = resetPasswordUseCase.resetByAdmin(userId);
-        return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS, generatedPassword);
+        return ApiResponse.success(USER_CREATE_SUCCESS, generatedPassword);
     }
 
     @GetMapping("/allUsers")
