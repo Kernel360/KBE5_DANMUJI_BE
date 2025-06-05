@@ -1,18 +1,19 @@
 package com.back2basics.domain.projectstep.dto.request;
 
-import com.back2basics.projectstep.model.ApprovalStatus;
-import com.back2basics.projectstep.model.StepStatus;
+import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
+import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
 
 
-public record UpdateProjectStepRequest(@NotBlank String name, StepStatus stepStatus, ApprovalStatus approvalStatus) {
+public record UpdateProjectStepRequest(@NotBlank String name, ProjectStepStatus projectStepStatus,
+                                       ProjectFeedbackStepStatus projectFeedbackStepStatus) {
+
     public UpdateProjectStepCommand toCommand() {
         return UpdateProjectStepCommand.builder()
             .name(name)
-            .stepStatus(stepStatus)
-            .approvalStatus(approvalStatus)
+            .projectStepStatus(projectStepStatus)
+            .projectFeedbackStepStatus(projectFeedbackStepStatus)
             .build();
     }
 }

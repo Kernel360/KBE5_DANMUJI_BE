@@ -1,18 +1,15 @@
 package com.back2basics.adapter.persistence.projectuser;
 
-import com.back2basics.adapter.persistence.project.ProjectMapper;
-import com.back2basics.adapter.persistence.user.mapper.UserMapper;
+import com.back2basics.adapter.persistence.company.CompanyEntity;
+import com.back2basics.adapter.persistence.project.ProjectEntity;
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.projectuser.model.ProjectUser;
-import com.back2basics.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class ProjectUserMapper {
-
-    private final ProjectMapper projectMapper;
-    private final UserMapper userMapper;
 
     public ProjectUser toDomain(ProjectUserEntity entity) {
         return ProjectUser.builder().id(entity.getId())
@@ -22,8 +19,13 @@ public class ProjectUserMapper {
             .userType(entity.getUserType()).build();
     }
 
-    public ProjectUserEntity toEntity(ProjectUser projectUser) {
+    public ProjectUserEntity toEntity(ProjectUser projectUser, ProjectEntity project,
+        UserEntity user, CompanyEntity company) {
         return ProjectUserEntity.builder()
+            .id(projectUser.getId())
+            .project(project)
+            .user(user)
+            .company(company)
             .companyType(projectUser.getCompanyType())
             .userType(projectUser.getUserType())
             .build();

@@ -4,7 +4,7 @@ import com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCod
 import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.projectstep.model.ApprovalStatus;
+import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.DeleteProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
@@ -13,7 +13,6 @@ import com.back2basics.projectstep.port.in.command.UpdateProjectStepUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,9 +49,10 @@ public class ProjectStepController {
 
     // todo: RequestParam 으로 받았는데 RequestBody 도 가능
     @PutMapping("/{stepId}/approval")
-    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId, @RequestParam
-        ApprovalStatus approvalStatus) {
-        updateProjectStepUseCase.updateApprovalStatus(approvalStatus, stepId);
+    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId,
+        @RequestParam
+        ProjectFeedbackStepStatus projectFeedbackStepStatus) {
+        updateProjectStepUseCase.updateApprovalStatus(projectFeedbackStepStatus, stepId);
         return ApiResponse.success(ProjectStepResponseCode.STEP_UPDATE_SUCCESS);
     }
 

@@ -1,5 +1,11 @@
 package com.back2basics.adapter.persistence.projectuser.adapter;
 
+import static com.back2basics.infra.exception.company.CompanyErrorCode.COMPANY_NOT_FOUND;
+import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_NOT_FOUND;
+import static com.back2basics.infra.exception.user.UserErrorCode.USER_NOT_FOUND;
+
+import com.back2basics.adapter.persistence.company.CompanyEntity;
+import com.back2basics.adapter.persistence.company.CompanyEntityRepository;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.adapter.persistence.projectuser.ProjectUserEntity;
@@ -7,9 +13,8 @@ import com.back2basics.adapter.persistence.projectuser.ProjectUserEntityReposito
 import com.back2basics.adapter.persistence.projectuser.ProjectUserMapper;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
-import com.back2basics.infra.exception.project.ProjectErrorCode;
+import com.back2basics.infra.exception.company.CompanyException;
 import com.back2basics.infra.exception.project.ProjectException;
-import com.back2basics.infra.exception.user.UserErrorCode;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.projectuser.model.ProjectUser;
@@ -23,18 +28,21 @@ public class SaveProjectUserAdapter implements SaveProjectUserPort {
     private final ProjectUserEntityRepository projectUserEntityRepository;
     private final ProjectEntityRepository projectEntityRepository;
     private final UserEntityRepository userEntityRepository;
+    private final CompanyEntityRepository companyEntityRepository;
     private final ProjectUserMapper mapper;
 
     @Override
     public void save(ProjectUser projectUser) {
-        // todo: 할당을 여기서 하고 있는데 이게 맞을까 ....................
-        ProjectUserEntity entity = mapper.toEntity(projectUser);
-        ProjectEntity projectEntity = projectEntityRepository.findById(projectUser.getProjectId())
-            .orElseThrow(() -> new ProjectException(ProjectErrorCode.PROJECT_NOT_FOUND));
-        entity.assignProjectEntity(projectEntity);
-        UserEntity userEntity = userEntityRepository.findById(projectUser.getUserId())
-            .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
-        entity.assignUserEntity(userEntity);
+        ProjectEntity project = projectEntityRepository.findById(projectUser.getProjectId())
+            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+
+        UserEntity user = userEntityRepository.findById(projectUser.getUserId())
+            .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+
+        CompanyEntity company = companyEntityRepository.findById(projectUser.getCompanyId())
+            .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
+
+        ProjectUserEntity entity = mapper.toEntity(projectUser, project, user, company);
         projectUserEntityRepository.save(entity);
     }
 }

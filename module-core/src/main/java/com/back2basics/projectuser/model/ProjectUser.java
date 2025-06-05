@@ -3,7 +3,6 @@ package com.back2basics.projectuser.model;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
-import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +16,31 @@ public class ProjectUser {
     private final Long id;
     private final Long projectId;
     private final Long userId;
+    private Long companyId;
     private CompanyType companyType;
     private UserType userType;
 
     @Builder
     public ProjectUser(Long id, CompanyType companyType, Long projectId, Long userId,
+        Long companyId,
         UserType userType) {
         this.id = id;
         this.projectId = projectId;
         this.userId = userId;
+        this.companyId = companyId;
         this.companyType = companyType;
         this.userType = userType;
+    }
+
+    public static ProjectUser create(Long projectId, Long userId, Long companyId,
+        CompanyType companyType, UserType userType) {
+        return ProjectUser.builder()
+            .projectId(projectId)
+            .userId(userId)
+            .companyId(companyId)
+            .companyType(companyType)
+            .userType(userType)
+            .build();
     }
 
     // todo: 생성 -> 이게 왜 스태틱인지ㅣ 모르겠음 . 스태틱 그냥 모르곘음 , projectUser1 변수명 변경
@@ -46,8 +59,6 @@ public class ProjectUser {
         }
         return projectUsers;
     }
-
-
 
     // todo: 담당자 변경 (userType 변경)
 

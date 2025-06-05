@@ -9,7 +9,6 @@ import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
-import com.back2basics.project.port.in.command.ProjectCreateCommand;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.service.result.ProjectGetResult;
 import jakarta.validation.Valid;
@@ -41,8 +40,7 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateRequest request) {
-        ProjectCreateCommand command = request.toCommand();
-        createProjectUseCase.createProject(command);
+        createProjectUseCase.createProject(request.toCommand());
         return ApiResponse.success(ProjectResponseCode.PROJECT_CREATE_SUCCESS);
     }
 

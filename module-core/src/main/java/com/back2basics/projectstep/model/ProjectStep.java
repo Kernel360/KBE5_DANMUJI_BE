@@ -4,7 +4,6 @@ import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.cglib.core.Local;
 
 @Getter
 public class ProjectStep {
@@ -17,31 +16,45 @@ public class ProjectStep {
 
     private final Long userId;
 
-    private StepStatus stepStatus;
+    private Integer stepOrder;
 
-    private ApprovalStatus approvalStatus;
+    private ProjectStepStatus projectStepStatus;
 
     private boolean isDeleted;
 
     private LocalDateTime deletedAt;
 
     @Builder
-    public ProjectStep(Long stepId, String name, Long projectId, Long userId, StepStatus stepStatus,
-        ApprovalStatus approvalStatus, boolean isDeleted, LocalDateTime deletedAt) {
+    public ProjectStep(Long stepId, String name, Long projectId, Long userId,
+        Integer stepOrder, ProjectStepStatus projectStepStatus, boolean isDeleted,
+        LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.name = name;
         this.projectId = projectId;
         this.userId = userId;
-        this.stepStatus = stepStatus;
-        this.approvalStatus = approvalStatus;
+        this.stepOrder = stepOrder;
+        this.projectStepStatus = projectStepStatus;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }
 
+    public static ProjectStep create(String name, Long projectId, Long userId,
+        Integer stepOrder, ProjectStepStatus projectStepStatus) {
+        return ProjectStep.builder()
+            .name(name)
+            .projectId(projectId)
+            .userId(userId)
+            .stepOrder(stepOrder)
+            .projectStepStatus(projectStepStatus)
+            .isDeleted(false)
+            .deletedAt(null)
+            .build();
+    }
+
     public void update(UpdateProjectStepCommand command) {
         this.name = command.getName();
-        this.stepStatus = command.getStepStatus();
-        this.approvalStatus = command.getApprovalStatus();
+//        this.stepOrder = command.getStepOrder();
+        this.projectStepStatus = command.getProjectStepStatus();
     }
 
     // todo: 멘토링 때 동사 현재형으로 쓰라고 헀었나 .. 기억 안남 .. 다시 물어보기
@@ -52,12 +65,12 @@ public class ProjectStep {
 
     /* todo: 승인자랑 일치하는 지는 프론트에서 하시고 userid랑 로그인 id랑 같을때만 승인 버튼 보이게
         switch문으로 해도 괜찮을 듯 (리팩토링) */
-    public void approvalStatus(ApprovalStatus approvalStatus) {
-        this.approvalStatus = approvalStatus;
-        if (approvalStatus == ApprovalStatus.APPROVED) {
-            this.stepStatus = StepStatus.IN_PROGRESS;
-        } else if (approvalStatus == ApprovalStatus.REJECTED) {
-            this.stepStatus = StepStatus.PENDING;
-        }
-    }
+//    public void approvalStatus(ProjectFeedbackStepStatus projectFeedbackStepStatus) {
+//        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
+//        if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.APPROVED) {
+//            this.projectStepStatus = ProjectStepStatus.IN_PROGRESS;
+//        } else if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.REJECTED) {
+//            this.projectStepStatus = ProjectStepStatus.PENDING;
+//        }
+//    }
 }

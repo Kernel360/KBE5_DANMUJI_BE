@@ -1,11 +1,8 @@
 package com.back2basics.adapter.persistence.projectstep;
 
-import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
-import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
-import com.back2basics.projectstep.model.ApprovalStatus;
-import com.back2basics.projectstep.model.StepStatus;
+import com.back2basics.projectstep.model.ProjectStepStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,11 +17,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 @Entity
 @Getter
@@ -50,13 +45,12 @@ public class ProjectStepEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "step_status", nullable = false)
-    private StepStatus stepStatus;
+    @Column(name = "step_order", nullable = false)
+    private Integer stepOrder;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "approval_status")
-    private ApprovalStatus approvalStatus;
+    @Column(name = "project_step_status", nullable = false)
+    private ProjectStepStatus projectStepStatus;
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
@@ -66,13 +60,14 @@ public class ProjectStepEntity {
 
     @Builder
     public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
-        StepStatus stepStatus, ApprovalStatus approvalStatus, boolean isDeleted, LocalDateTime deletedAt) {
+        Integer stepOrder, ProjectStepStatus projectStepStatus, boolean isDeleted,
+        LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.project = project;
         this.user = user;
         this.name = name;
-        this.stepStatus = stepStatus;
-        this.approvalStatus = approvalStatus;
+        this.stepOrder = stepOrder;
+        this.projectStepStatus = projectStepStatus;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }
