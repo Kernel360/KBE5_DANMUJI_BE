@@ -1,6 +1,7 @@
 package com.back2basics.user.port.out;
 
 import com.back2basics.user.model.User;
+import java.util.List;
 
 public interface UserQueryPort {
 
@@ -10,4 +11,5 @@ public interface UserQueryPort {
 
     boolean existsByUsername(String username);
 
+    List<User> findAll();
 }
