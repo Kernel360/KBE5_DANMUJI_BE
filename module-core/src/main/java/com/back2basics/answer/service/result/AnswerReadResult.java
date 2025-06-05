@@ -1,7 +1,7 @@
 package com.back2basics.answer.service.result;
 
 import com.back2basics.answer.model.Answer;
-import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserSummaryResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class AnswerReadResult {
     private Long id;
     private Long questionId;
     private Long parentAnswerId;
-    private UserInfoResult author;
+    private UserSummaryResult author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -28,7 +28,7 @@ public class AnswerReadResult {
             .id(answer.getId())
             .questionId(answer.getQuestionId())
             .parentAnswerId(answer.getParentAnswerId())
-            .author(UserInfoResult.toResult(answer.getAuthor()))
+            .author(UserSummaryResult.from(answer.getAuthor()))
             .content(answer.getContent())
             .createdAt(answer.getCreatedAt())
             .updatedAt(answer.getUpdatedAt())

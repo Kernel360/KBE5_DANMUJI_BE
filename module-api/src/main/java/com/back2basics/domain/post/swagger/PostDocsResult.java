@@ -45,13 +45,6 @@ public class PostDocsResult {
               "id": 1,
               "username": "hongildong",
               "name": "홍길동",
-              "email": "hong@test.com",
-              "phone": "010-1234-5678",
-              "position": "백엔드 개발자",
-              "userType": "MEMBER",
-              "companyId": 1001,
-              "createdAt": "2024-01-01T09:00:00",
-              "updatedAt": "2024-01-01T10:00:00"
             },
             "project": {
               "id": 1,
@@ -102,13 +95,6 @@ public class PostDocsResult {
                   "id": 1,
                   "username": "hongildong",
                   "name": "홍길동",
-                  "email": "hong@test.com",
-                  "phone": "010-1234-5678",
-                  "position": "백엔드 개발자",
-                  "userType": "MEMBER",
-                  "companyId": 1001,
-                  "createdAt": "2024-01-01T09:00:00",
-                  "updatedAt": "2024-01-01T10:00:00"
                 },
                 "project": {
                   "id": 1,
