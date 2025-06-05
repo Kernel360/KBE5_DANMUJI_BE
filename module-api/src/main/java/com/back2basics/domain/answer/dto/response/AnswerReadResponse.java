@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class AnswerResponse {
+public class AnswerReadResponse {
 
     private Long id;
     private Long questionId;
@@ -18,9 +18,9 @@ public class AnswerResponse {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static AnswerResponse toResponse(AnswerReadResult result) {
+    public static AnswerReadResponse toResponse(AnswerReadResult result) {
 
-        return AnswerResponse.builder()
+        return AnswerReadResponse.builder()
             .id(result.getId())
             .questionId(result.getQuestionId())
             .parentId(result.getParentId())

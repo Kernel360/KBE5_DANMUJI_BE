@@ -25,7 +25,7 @@ public class CommentCreateService implements CommentCreateUseCase {
         postValidator.findPost(command.getPostId());
 
         if (command.getParentId() != null) {
-            commentValidator.findComment(command.getParentId()).getId();
+            commentValidator.findComment(command.getParentId());
             commentValidator.validateParentPost(command.getParentId(),
                 command.getPostId());
         }
