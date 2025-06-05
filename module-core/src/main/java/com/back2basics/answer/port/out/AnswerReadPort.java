@@ -8,5 +8,5 @@ public interface AnswerReadPort {
 
     Optional<Answer> findById(Long id);
 
-    List<Answer> findAll();
+    List<Answer> findAllAnswersByQuestionId(Long questionId);
 }

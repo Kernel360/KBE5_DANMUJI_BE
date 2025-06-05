@@ -11,6 +11,12 @@ public interface AnswerEntityRepository extends JpaRepository<AnswerEntity, Long
     @Query("SELECT a FROM AnswerEntity a WHERE a.deletedAt IS NULL")
     List<AnswerEntity> findAllAnswersNotDeleted();
 
-    List<AnswerEntity> findByQuestionId(Long questionId);
+    /*
+        select *
+        from answer a
+        where a.question_id = :questionId
+    */
+    @Query("SELECT a FROM AnswerEntity a WHERE a.question.id = :questionId")
+    List<AnswerEntity> findAllAnswersByQuestionId(Long questionId);
 
 }
