@@ -11,11 +11,8 @@ import lombok.Getter;
 @Getter
 public class ProjectUser {
 
-    // todo: id 말고 domain 으로 해보겠음. mapper 에서 변환시켜주려고.. 아마..
     private final Long id;
     private final Project project;
-    //    private final Long userId;
-    //    private Long companyId;
     private User user;
     private Company company;
     private UserType userType;
@@ -42,23 +39,6 @@ public class ProjectUser {
             .companyType(companyType)
             .build();
     }
-
-    // todo: 생성 -> 이게 왜 스태틱인지ㅣ 모르겠음 . 스태틱 그냥 모르곘음 , projectUser1 변수명 변경
-    // 커멘트에는 List<ProjectUser> 가 있음 .
-//    public static List<ProjectUser> createProjectUser(ProjectCreateCommand command,
-//        Project project) {
-//        List<ProjectUser> projectUsers = new ArrayList<>();
-//        for (ProjectUser projectUser : command.getProjectUsers()) {
-//            ProjectUser projectUser1 = ProjectUser.builder()
-//                .projectId(project.getId())
-//                .userId(projectUser.userId)
-//                .companyType(projectUser.companyType)
-//                .userType(projectUser.userType)
-//                .build();
-//            projectUsers.add(projectUser1);
-//        }
-//        return projectUsers;
-//    }
 
     // todo: 담당자 변경 (userType 변경)
 

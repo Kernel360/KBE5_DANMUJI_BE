@@ -1,6 +1,8 @@
 package com.back2basics.project.service;
 
+import com.back2basics.company.model.Company;
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.infra.validation.validator.CompanyValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
@@ -10,7 +12,9 @@ import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
 import com.back2basics.projectuser.model.ProjectUser;
+import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
+import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final SaveProjectPort saveProjectPort;
     private final SaveProjectStepPort saveProjectStepPort;
     private final SaveProjectUserPort saveProjectUserPort;
+    private final UserQueryPort userQueryPort;
+    private final CompanyValidator companyValidator;
     private static final List<String> DEFAULT_STEPS =
         List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
 
@@ -38,7 +44,7 @@ public class CreateProjectService implements CreateProjectUseCase {
             .build();
         Project savedProject = saveProjectPort.save(project);
         createDefaultSteps(savedProject.getId());
-        createProjectUsers(savedProject.getId(), command);
+        createProjectUsers(project, command);
     }
 
     private void createDefaultSteps(Long projectId) {
@@ -55,12 +61,17 @@ public class CreateProjectService implements CreateProjectUseCase {
         }
     }
 
-    private void createProjectUsers(Long projectId, ProjectCreateCommand command) {
+    private void createProjectUsers(Project project, ProjectCreateCommand command) {
+        User developer = userQueryPort.findById(command.getDeveloperId());
+        User client = userQueryPort.findById(command.getClientId());
+        Company developerCompany = companyValidator.findCompany(command.getDevelopCompanyId());
+        Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
+
         saveProjectUserPort.save(
-            ProjectUser.create(projectId, command.getDeveloperId(), command.getDevelopCompanyId(),
-                CompanyType.DEVELOPER, UserType.MANAGER));
+            ProjectUser.create(project, developer, developerCompany, UserType.MANAGER,
+                CompanyType.DEVELOPER));
         saveProjectUserPort.save(
-            ProjectUser.create(projectId, command.getClientId(), command.getClientCompanyId(),
-                CompanyType.CLIENT, UserType.MANAGER));
+            ProjectUser.create(project, client, clientCompany, UserType.MANAGER,
+                CompanyType.CLIENT));
     }
 }

@@ -33,13 +33,13 @@ public class SaveProjectUserAdapter implements SaveProjectUserPort {
 
     @Override
     public void save(ProjectUser projectUser) {
-        ProjectEntity project = projectEntityRepository.findById(projectUser.getProjectId())
+        ProjectEntity project = projectEntityRepository.findById(projectUser.getProject().getId())
             .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
 
-        UserEntity user = userEntityRepository.findById(projectUser.getUserId())
+        UserEntity user = userEntityRepository.findById(projectUser.getUser().getId())
             .orElseThrow(() -> new UserException(USER_NOT_FOUND));
 
-        CompanyEntity company = companyEntityRepository.findById(projectUser.getCompanyId())
+        CompanyEntity company = companyEntityRepository.findById(projectUser.getCompany().getId())
             .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
 
         ProjectUserEntity entity = mapper.toEntity(projectUser, project, user, company);
