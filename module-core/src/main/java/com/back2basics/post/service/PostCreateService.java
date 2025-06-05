@@ -1,5 +1,6 @@
 package com.back2basics.post.service;
 
+import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
@@ -20,6 +21,7 @@ public class PostCreateService implements PostCreateUseCase {
     private final PostCreatePort postCreatePort;
     private final UserQueryPort userQueryPort;
     private final ProjectValidator projectValidator;
+    private final PostValidator postValidator;
 
     @Override
     public PostCreateResult createPost(Long userId, PostCreateCommand command) {
@@ -30,7 +32,10 @@ public class PostCreateService implements PostCreateUseCase {
         // todo : 이것도 통일해야할 것 같습니다.
         User user = userQueryPort.findById(userId);
         Project project = projectValidator.findProjectById(command.getProjectId());
+        Long parentPostId = postValidator.findPost(command.getParentId()).getId();
+
         Post post = Post.builder()
+            .parentId(parentPostId)
             .author(user)
             .project(project)
             .title(command.getTitle())

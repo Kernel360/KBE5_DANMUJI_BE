@@ -3,11 +3,6 @@ package com.back2basics.adapter.persistence.comment;
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.comment.model.Comment;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,55 +16,23 @@ public class CommentMapper {
         return Comment.builder()
             .id(entity.getId())
             .postId(entity.getPost().getId())
-            .parentCommentId(
-                entity.getParentCommentId() != null ? entity.getParentCommentId().getId() : null)
+            .parentCommentId(entity.getParentId())
             .author(userMapper.toDomain(entity.getAuthor()))
             .content(entity.getContent())
             .createdAt(entity.getCreatedAt())
             .updatedAt(entity.getUpdatedAt())
-            .children(new ArrayList<>())
             .build();
     }
 
-    public List<Comment> toDomainHierarchy(List<CommentEntity> entities) {
-        Map<Long, Comment> commentMap = new HashMap<>();
-        for (CommentEntity entity : entities) {
-            Comment comment = toDomain(entity);
-            commentMap.put(comment.getId(), comment); // put:덮어쓰기
-        }
-
-        List<Comment> roots = new ArrayList<>();
-        for (Comment comment : commentMap.values()) {
-            Long parentId = comment.getParentCommentId();
-            if (parentId == null) {
-                roots.add(comment);
-            } else {
-                Comment parent = commentMap.get(parentId);
-                if (parent != null) {
-                    parent.getChildren().add(comment);
-                }
-            }
-        }
-
-        return roots;
-    }
-
-
     public CommentEntity toEntity(Comment domain) {
-
-        List<CommentEntity> children = domain.getChildren().stream()
-            .map(this::toEntity)
-            .collect(Collectors.toCollection(ArrayList::new));
-
         CommentEntity entity = CommentEntity.builder()
             .id(domain.getId())
+            .parentId(domain.getParentCommentId())
             .author(userMapper.toEntity(domain.getAuthor()))
             .content(domain.getContent())
             .build();
 
         entity.assignPost(PostEntity.builder().id(domain.getPostId()).build());
-
-        children.forEach(child -> entity.addChildComment(child));
         return entity;
     }
 

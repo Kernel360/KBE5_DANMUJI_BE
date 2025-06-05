@@ -1,13 +1,11 @@
 package com.back2basics.domain.post.dto.response;
 
-import com.back2basics.comment.service.result.CommentReadResult;
 import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostReadResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +14,7 @@ import lombok.Getter;
 public class PostReadResponse {
 
     private final Long postId;
+    private final Long parentId;
     private final UserSummaryResponse author;
     private final String title;
     private final String content;
@@ -26,12 +25,12 @@ public class PostReadResponse {
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
     private final LocalDateTime completedAt;
-    private final List<CommentReadResult> comments;
     private final boolean isDelete;
     private final ProjectGetResult project;
 
     public static PostReadResponse toResponse(PostReadResult postDetails) {
         return PostReadResponse.builder()
+            .parentId(postDetails.getParentId())
             .postId(postDetails.getId())
             .author(UserSummaryResponse.from(postDetails.getAuthor()))
             .project(postDetails.getProject())
@@ -44,7 +43,6 @@ public class PostReadResponse {
             .updatedAt(postDetails.getUpdatedAt())
             .deletedAt(postDetails.getDeletedAt())
             .completedAt(postDetails.getCompletedAt())
-            .comments(postDetails.getComments())
             .isDelete(postDetails.isDeleted())
             .build();
     }

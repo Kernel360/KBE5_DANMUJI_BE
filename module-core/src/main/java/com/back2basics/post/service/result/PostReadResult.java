@@ -1,14 +1,11 @@
 package com.back2basics.post.service.result;
 
-import com.back2basics.comment.service.result.CommentReadResult;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.user.service.result.UserSummaryResult;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,6 +14,7 @@ import lombok.Getter;
 public class PostReadResult {
 
     private final Long id;
+    private final Long parentId;
     private final UserSummaryResult author;
     private final String title;
     private final String content;
@@ -30,11 +28,10 @@ public class PostReadResult {
     private final boolean isDeleted;
     private final ProjectGetResult project;
 
-    private final List<CommentReadResult> comments;
-
     public static PostReadResult toResult(Post post) {
         return PostReadResult.builder()
             .id(post.getId())
+            .parentId(post.getParentId())
             .author(UserSummaryResult.from(post.getAuthor()))
             .project(ProjectGetResult.toResult(post.getProject()))
             .title(post.getTitle())
@@ -46,9 +43,6 @@ public class PostReadResult {
             .completedAt(post.getCompletedAt())
             .createdAt(post.getCreatedAt())
             .updatedAt(post.getUpdatedAt())
-            .comments(post.getComments().stream()
-                .map(CommentReadResult::toResult)
-                .collect(Collectors.toList()))
             .isDeleted(post.getDeletedAt() != null)
             .build();
     }

@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 public class PostCreateCommand {
 
+    private Long parentId;
     private String title;
     private Long projectId;
     private String content;
