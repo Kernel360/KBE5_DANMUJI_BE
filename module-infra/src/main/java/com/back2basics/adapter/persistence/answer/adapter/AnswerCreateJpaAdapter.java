@@ -21,10 +21,9 @@ public class AnswerCreateJpaAdapter implements AnswerCreatePort {
     public Long save(Answer answer) {
         AnswerEntity entity = mapper.toEntity(answer);
 
-        if (answer.getParentAnswerId() != null) {
-            AnswerEntity parent = answerRepository.findById(answer.getParentAnswerId())
+        if (answer.getParentId() != null) {
+            AnswerEntity parent = answerRepository.findById(answer.getParentId())
                 .orElseThrow(() -> new AnswerException(AnswerErrorCode.ANSWER_NOT_FOUND));
-            entity.assignParentAnswer(parent);
         }
 
         return answerRepository.save(entity).getId();

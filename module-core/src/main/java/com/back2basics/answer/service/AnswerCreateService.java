@@ -6,7 +6,6 @@ import com.back2basics.answer.port.in.command.AnswerCreateCommand;
 import com.back2basics.answer.port.out.AnswerCreatePort;
 import com.back2basics.infra.validation.validator.AnswerValidator;
 import com.back2basics.infra.validation.validator.QuestionValidator;
-import com.back2basics.question.model.Question;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
@@ -28,23 +27,10 @@ public class AnswerCreateService implements AnswerCreateUseCase {
             .questionId(command.getQuestionId())
             .author(user)
             .content(command.getContent())
-            .parentAnswerId(command.getParentId())
+            .parentId(command.getParentId())
             .build();
-
-        assignRelations(command, answer);
 
         return answerCreatePort.save(answer);
     }
 
-    private void assignRelations(AnswerCreateCommand command, Answer answer) {
-        Question question = questionValidator.findById(command.getQuestionId());
-        answer.assignQuestionId(question);
-
-        if (command.getParentId() != null) {
-            Answer parentAnswer = answerValidator.findAnswerById(command.getParentId());
-            parentAnswer.addChild(answer);
-        } else {
-            question.addAnswer(answer);
-        }
-    }
 }
