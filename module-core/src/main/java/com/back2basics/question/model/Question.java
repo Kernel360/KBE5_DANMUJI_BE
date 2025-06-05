@@ -17,12 +17,15 @@ public class Question {
     private String content;
     private QuestionStatus status;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
     private List<Answer> answers;
     private boolean isDeleted;
 
     @Builder
     public Question(Long id, Long postId, User author, String content, LocalDateTime createdAt,
-        List<Answer> answers,
+        List<Answer> answers, LocalDateTime updatedAt, LocalDateTime deletedAt,
+        QuestionStatus status,
         boolean isDeleted) {
         this.id = id;
         this.postId = postId;
@@ -30,16 +33,20 @@ public class Question {
         this.content = content;
         this.createdAt = createdAt;
         this.status = status != null ? status : QuestionStatus.WAITING;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
         this.answers = answers != null ? new ArrayList<>(answers) : new ArrayList<>();
         this.isDeleted = false;
     }
 
     public void updateContent(String newContent) {
         this.content = newContent;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void markAsDeleted() {
         this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
     public void markAsAnswered() {

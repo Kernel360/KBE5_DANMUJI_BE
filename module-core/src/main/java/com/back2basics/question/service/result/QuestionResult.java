@@ -20,17 +20,22 @@ public class QuestionResult {
     private final String content;
     private final QuestionStatus status;
     private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+    private final LocalDateTime deletedAt;
     private final List<AnswerReadResult> answers;
 
     @Builder
     public QuestionResult(Long id, Long postId, UserInfoResult author, String content,
-        QuestionStatus status, LocalDateTime createdAt, List<AnswerReadResult> answers) {
+        QuestionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt,
+        LocalDateTime deletedAt, List<AnswerReadResult> answers) {
         this.id = id;
         this.postId = postId;
         this.author = author;
         this.content = content;
         this.status = status;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
         this.answers = answers;
     }
 
@@ -46,6 +51,8 @@ public class QuestionResult {
             .content(question.getContent())
             .status(question.getStatus())
             .createdAt(question.getCreatedAt())
+            .updatedAt(question.getUpdatedAt())
+            .deletedAt(question.getDeletedAt())
             .answers(answerResults)
             .build();
     }

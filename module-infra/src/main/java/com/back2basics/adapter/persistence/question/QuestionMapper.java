@@ -37,6 +37,9 @@ public class QuestionMapper {
             .postId(entity.getPostId())
             .author(userMapper.toDomain(entity.getAuthor()))
             .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
+            .deletedAt(entity.getDeletedAt())
+            .status(entity.getStatus())
             .content(entity.getContent())
             .build();
     }
@@ -47,6 +50,9 @@ public class QuestionMapper {
             .postId(entity.getPostId())
             .author(userMapper.toDomain(entity.getAuthor()))
             .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
+            .deletedAt(entity.getDeletedAt())
+            .status(entity.getStatus())
             .content(entity.getContent())
             .answers(answers)
             .build();
