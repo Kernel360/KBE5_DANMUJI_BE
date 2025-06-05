@@ -2,6 +2,7 @@ package com.back2basics.domain.user.controller;
 
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CREATE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_DELETE_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_EXISTS_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_SUCCESS;
 
@@ -50,6 +51,12 @@ public class AdminController {
         UserCreateResult result = createUserUseCase.create(request.toCommand());
         return ApiResponse.success(USER_CREATE_SUCCESS,
             UserCreateResponse.from(result));
+    }
+
+    @GetMapping("/exists/{username}")
+    public ResponseEntity<ApiResponse<Boolean>> checkUsernameExists(@PathVariable String username) {
+        boolean exists = userQueryUseCase.existsByUsername(username);
+        return ApiResponse.success(USER_EXISTS_SUCCESS, exists);
     }
 
     @PutMapping("/{userId}")

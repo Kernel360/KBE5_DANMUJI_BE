@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 public record UserCreateRequest(@NotEmpty String username, @NotEmpty String name,
                                 @NotEmpty @Email String email, @NotEmpty String phone,
-                                @NotEmpty String position, Long companyId) {
+                                String position, Long companyId) {
 
     public UserCreateCommand toCommand() {
         return UserCreateCommand.builder()
