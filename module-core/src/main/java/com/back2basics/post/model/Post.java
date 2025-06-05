@@ -60,6 +60,7 @@ public class Post {
 
     public void markDeleted() {
         this.isDelete = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
 

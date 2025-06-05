@@ -50,7 +50,7 @@ public class CommentController implements CommentApiDocs {
         return ApiResponse.success(CommentResponseCode.COMMENT_UPDATE_SUCCESS);
     }
 
-    @DeleteMapping("/delete/{commentId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<ApiResponse<Void>> deleteComment(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long commentId
