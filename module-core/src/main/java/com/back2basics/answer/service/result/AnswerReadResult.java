@@ -3,8 +3,6 @@ package com.back2basics.answer.service.result;
 import com.back2basics.answer.model.Answer;
 import com.back2basics.user.service.result.UserSummaryResult;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,25 +14,21 @@ public class AnswerReadResult {
 
     private Long id;
     private Long questionId;
-    private Long parentAnswerId;
+    private Long parentId;
     private UserSummaryResult author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<AnswerReadResult> children;
 
     public static AnswerReadResult toResult(Answer answer) {
         return AnswerReadResult.builder()
             .id(answer.getId())
             .questionId(answer.getQuestionId())
-            .parentAnswerId(answer.getParentAnswerId())
+            .parentId(answer.getParentId())
             .author(UserSummaryResult.from(answer.getAuthor()))
             .content(answer.getContent())
             .createdAt(answer.getCreatedAt())
             .updatedAt(answer.getUpdatedAt())
-            .children(answer.getChildren().stream()
-                .map(AnswerReadResult::toResult)
-                .collect(Collectors.toList()))
             .build();
     }
 }

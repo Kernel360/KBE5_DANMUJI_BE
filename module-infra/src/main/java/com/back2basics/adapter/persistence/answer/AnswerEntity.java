@@ -4,7 +4,6 @@ import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.question.QuestionEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.answer.model.Answer;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,10 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,36 +39,23 @@ public class AnswerEntity extends BaseTimeEntity {
     @JoinColumn(name = "question_id", nullable = false)
     private QuestionEntity question;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_answer_id")
-    private AnswerEntity parentAnswerId;
-
-    @OneToMany(mappedBy = "parentAnswerId", cascade = CascadeType.ALL)
-    private List<AnswerEntity> childrenAnswers = new ArrayList<>();
+    @Column(name = "parent_answer_id")
+    private Long parentId;
 
     @Builder
     public AnswerEntity(Long id, UserEntity author, String content, QuestionEntity question,
-        AnswerEntity parentAnswer) {
+        Long parentId) {
         this.id = id;
         this.author = author;
         this.content = content;
         this.question = question;
-        this.parentAnswerId = parentAnswer;
+        this.parentId = parentId;
     }
 
     public void assignQuestion(QuestionEntity question) {
         this.question = question;
     }
-
-    public void assignParentAnswer(AnswerEntity parent) {
-        this.parentAnswerId = parent;
-    }
-
-    public void addChildAnswer(AnswerEntity child) {
-        childrenAnswers.add(child);
-        child.assignParentAnswer(this);
-    }
-
+    
     public void update(Answer answer) {
 
         this.content = answer.getContent();
