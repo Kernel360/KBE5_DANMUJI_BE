@@ -4,6 +4,7 @@ import com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCod
 import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.projectstep.model.ApprovalStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.DeleteProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
@@ -44,6 +45,14 @@ public class ProjectStepController {
     UpdateProjectStepRequest request) {
         UpdateProjectStepCommand command = request.toCommand();
         updateProjectStepUseCase.updateStep(command, stepId);
+        return ApiResponse.success(ProjectStepResponseCode.STEP_UPDATE_SUCCESS);
+    }
+
+    // todo: RequestParam 으로 받았는데 RequestBody 도 가능
+    @PutMapping("/{stepId}/approval")
+    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId, @RequestParam
+        ApprovalStatus approvalStatus) {
+        updateProjectStepUseCase.updateApprovalStatus(approvalStatus, stepId);
         return ApiResponse.success(ProjectStepResponseCode.STEP_UPDATE_SUCCESS);
     }
 

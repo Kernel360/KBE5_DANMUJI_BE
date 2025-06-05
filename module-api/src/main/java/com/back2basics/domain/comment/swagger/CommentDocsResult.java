@@ -6,7 +6,6 @@ public class CommentDocsResult {
         {
           "postId": 1,
           "parentId": null,
-          "authorId": 1,
           "content": "그거 버그 아니고 기능인데요."
         }
         """;

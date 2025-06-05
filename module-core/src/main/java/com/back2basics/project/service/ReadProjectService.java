@@ -10,6 +10,8 @@ import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,15 +32,20 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
-    public List<ProjectGetResult> getAllProjects() {
-        List<Project> projects = port.findAll();
+    public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
+        Page<Project> projects = port.findAll(pageable);
         for (Project project : projects) {
             List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
             project.setSteps(steps);
         }
-        return projects.stream()
-            .map(ProjectGetResult::toResult)
-            .collect(Collectors.toList());
+        return projects
+            .map(ProjectGetResult::toResult);
+    }
+
+    @Override
+    public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
+        return port.searchByKeyword(keyword, pageable)
+            .map(ProjectGetResult::toResult);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class AnswerController implements AnswerApiDocs {
         return ApiResponse.success(AnswerResponseCode.ANSWER_UPDATE_SUCCESS);
     }
 
-    @DeleteMapping("/delete/{answerId}")
+    @DeleteMapping("/{answerId}")
     public ResponseEntity<ApiResponse<Void>> deleteAnswer(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long answerId

@@ -10,6 +10,8 @@ import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
 import com.back2basics.infra.exception.project.ProjectErrorCode;
 import com.back2basics.infra.exception.project.ProjectException;
+import com.back2basics.infra.exception.user.UserErrorCode;
+import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
@@ -41,7 +43,7 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
         stepRepository.save(projectStepEntity);
     }
 
-    //todo: 단계 추가 시 save - user not null
+    //todo: 단계 추가 시 save - user not null -> 근데 update할 때도 이 save 사용하는데 이미 할당되어있는 project, user를 계속 찾아서 할당시키는 게 맞는지 .. 다른 save 만들어야 하나
     @Override
     public void save(ProjectStep projectStep) {
         // 1. project 연관 안들어간 step entity
@@ -52,6 +54,11 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
         // 3. project 연관
         projectStepEntity.assignProjectEntity(projectEntity);
         // todo: 4. user Entity 찾기 5. user 연관
+        if (projectStep.getUserId() != null) {
+            UserEntity userEntity = userRepository.findById(projectStep.getUserId())
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+            projectStepEntity.assignUserEntity(userEntity);
+        }
         stepRepository.save(projectStepEntity);
     }
 }
