@@ -1,5 +1,6 @@
 package com.back2basics.project.port.in;
 
+import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -19,4 +20,6 @@ public interface ReadProjectUseCase {
     /* 회원용 전체 리스트 (나중에 검색 -> 카테고리 : 프로젝트명)
         프로젝트 상태 -> 전체, 진행중, 완료 */
     List<ProjectGetResult> getAllProjectsByUserId(Long userId);
+
+    ProjectDetailResult getProjectDetails(Long projectId);
 }
