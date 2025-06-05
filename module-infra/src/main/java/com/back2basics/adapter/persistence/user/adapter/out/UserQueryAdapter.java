@@ -37,9 +37,13 @@ public class UserQueryAdapter implements UserQueryPort {
 
     @Override
     public List<User> findAll() {
-        return userEntityRepository.findAll().stream()
-            .map(userMapper::toDomain)
-            .toList();
+        return userEntityRepository.findAll().stream().map(userMapper::toDomain).toList();
     }
-    
+
+    @Override
+    public List<User> findAllByCompanyId(Long companyId) {
+        return userEntityRepository.findAllByCompany_IdAndDeletedAtIsNull(companyId)
+            .stream().map(userMapper::toDomain).toList();
+    }
+
 }
