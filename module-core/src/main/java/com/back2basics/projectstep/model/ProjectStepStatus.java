@@ -1,6 +1,6 @@
 package com.back2basics.projectstep.model;
 
-public enum StepStatus {
+public enum ProjectStepStatus {
     PENDING,
     IN_PROGRESS,
     COMPLETED
