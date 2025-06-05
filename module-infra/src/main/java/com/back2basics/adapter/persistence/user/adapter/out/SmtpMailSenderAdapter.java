@@ -16,7 +16,7 @@ public class SmtpMailSenderAdapter implements MailSenderPort {
     public void sendMail(String to, String username, String link) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
-        message.setSubject("[Back2Basics] 비밀번호 재설정 링크");
+        message.setSubject("[Danmuji] 비밀번호 재설정 링크");
         message.setText(String.format("""
             안녕하세요 %s님,
             
