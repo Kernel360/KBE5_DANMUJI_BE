@@ -5,6 +5,7 @@ import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.domain.user.dto.request.UserUpdateRequest;
 import com.back2basics.domain.user.dto.response.UserCreateResponse;
 import com.back2basics.domain.user.dto.response.UserInfoResponse;
+import com.back2basics.domain.user.dto.response.UserSimpleResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.DeleteUserUseCase;
@@ -13,7 +14,9 @@ import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserSimpleResult;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,5 +71,14 @@ public class AdminController {
     public ResponseEntity<ApiResponse<String>> resetPassword(@PathVariable Long userId) {
         String generatedPassword = resetPasswordUseCase.resetByAdmin(userId);
         return ApiResponse.success(UserResponseCode.USER_CREATE_SUCCESS, generatedPassword);
+    }
+
+    @GetMapping("/allUsers")
+    public ResponseEntity<ApiResponse<List<UserSimpleResponse>>> getAllUsers() {
+        List<UserSimpleResult> resultList = userQueryUseCase.getAllUsers();
+        List<UserSimpleResponse> responseList = resultList.stream()
+            .map(UserSimpleResponse::from)
+            .toList();
+        return ApiResponse.success(UserResponseCode.USER_READ_ALL_SUCCESS, responseList);
     }
 }
