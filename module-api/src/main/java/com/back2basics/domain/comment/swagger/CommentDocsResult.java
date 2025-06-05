@@ -55,7 +55,10 @@ public class CommentDocsResult {
             {
               "id": 1,
               "postId": 1,
-              "authorId": 1,
+               "author": {
+                 "id": 2,
+                 "username": "johndoe",
+                },
               "content": "그거 버그 아니고 기능인데요.",
               "parentCommentId": null,
               "createdAt": "2024-01-01T10:00:00",
