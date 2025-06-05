@@ -17,7 +17,6 @@ public class User {
     private String phone;
     private String position;
     private final Role role;
-    private final UserType userType;
     private Long companyId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -34,7 +33,7 @@ public class User {
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
-        String position, Role role, UserType userType, Long companyId, LocalDateTime createdAt,
+        String position, Role role, Long companyId, LocalDateTime createdAt,
         LocalDateTime updatedAt) {
         this.id = id;
         this.username = username;
@@ -44,7 +43,6 @@ public class User {
         this.phone = phone;
         this.position = position;
         this.role = role;
-        this.userType = userType;
         this.companyId = companyId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -59,7 +57,6 @@ public class User {
             .phone(command.getPhone())
             .position(command.getPosition())
             .role(Role.USER)
-            .userType(UserType.MEMBER)
             .companyId(command.getCompanyId())
             .build();
     }

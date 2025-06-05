@@ -3,7 +3,6 @@ package com.back2basics.adapter.persistence.user.entity;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.user.model.Role;
-import com.back2basics.user.model.UserType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,16 +44,12 @@ public class UserEntity extends BaseTimeEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "position", nullable = false)
+    @Column(name = "position")
     private String position;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserType userType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
@@ -62,7 +57,7 @@ public class UserEntity extends BaseTimeEntity {
 
     @Builder
     public UserEntity(Long id, String username, String password, String name, String email,
-        String phone, String position, Role role, UserType userType, CompanyEntity companyEntity) {
+        String phone, String position, Role role, CompanyEntity companyEntity) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -71,7 +66,6 @@ public class UserEntity extends BaseTimeEntity {
         this.phone = phone;
         this.position = position;
         this.role = role;
-        this.userType = userType;
         this.companyEntity = companyEntity;
     }
 }
