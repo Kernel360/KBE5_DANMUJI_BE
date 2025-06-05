@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,7 +37,7 @@ public class UserController {
     private final SendMailUseCase sendMailUseCase;
     private final ConfirmMailUseCase confirmMailUseCase;
 
-    @PutMapping("/change-password")
+    @PutMapping("/password/change")
     public ResponseEntity<ApiResponse<Void>> changePassword(
         @Valid @RequestBody ChangePasswordRequest request,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -47,21 +48,21 @@ public class UserController {
         return ApiResponse.success(USER_CHANGE_PASSWORD_SUCCESS);
     }
 
-    @PostMapping("/send-mail")
+    @PostMapping("/mail/send")
     public ResponseEntity<ApiResponse<Void>> sendMail(
         @Valid @RequestBody ResetPasswordMailRequest request) {
         sendMailUseCase.sendResetLink(request.toCommand());
         return ApiResponse.success(USER_SEND_MAIL_SUCCESS);
     }
 
-    @PostMapping("/reset-password-email")
-    public ResponseEntity<ApiResponse<Void>> resetPasswordEmail(
+    @PostMapping("/password/change")
+    public ResponseEntity<ApiResponse<Void>> resetPasswordMail(@RequestParam String token,
         @Valid @RequestBody ConfirmMailRequest request) {
-        confirmMailUseCase.resetPassword(request.toCommand());
+        confirmMailUseCase.change(request.toCommand());
         return ApiResponse.success(USER_CHANGE_PASSWORD_SUCCESS);
     }
 
-    @PutMapping("/reset-password")
+    @PutMapping("/password/reset")
     public ResponseEntity<ApiResponse<Void>> resetPassword(
         @Valid @RequestBody ResetPasswordRequest request,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
