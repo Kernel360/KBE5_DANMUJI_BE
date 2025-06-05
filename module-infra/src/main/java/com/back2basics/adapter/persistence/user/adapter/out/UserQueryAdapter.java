@@ -7,6 +7,7 @@ import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -33,4 +34,12 @@ public class UserQueryAdapter implements UserQueryPort {
     public boolean existsByUsername(String username) {
         return userEntityRepository.existsByUsername(username);
     }
+
+    @Override
+    public List<User> findAll() {
+        return userEntityRepository.findAll().stream()
+            .map(userMapper::toDomain)
+            .toList();
+    }
+    
 }

@@ -4,6 +4,8 @@ import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserSimpleResult;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,17 @@ public class UserQueryService implements UserQueryUseCase {
         return new UserInfoResult(userId, user.getUsername(), user.getName(), user.getEmail(),
             user.getPhone(), user.getPosition(), user.getUserType(), user.getCompanyId(),
             user.getCreatedAt(), user.getCreatedAt());
+    }
+
+    @Override
+    public List<UserSimpleResult> getAllUsers() {
+        return userQueryPort.findAll().stream()
+            .map(user -> new UserSimpleResult(
+                user.getId(),
+                user.getUsername(),
+                user.getName()
+            ))
+            .toList();
     }
 
 }
