@@ -22,43 +22,22 @@ public class UserQueryService implements UserQueryUseCase {
     @Override
     public UserInfoResult getUserInfo(Long userId) {
         User user = userQueryPort.findById(userId);
-        if (user.getCompanyId() == null) {
-            return new UserInfoResult(userId, user.getUsername(), user.getName(), user.getEmail(),
-                user.getPhone(), user.getPosition(), null, null,
-                user.getCreatedAt(), user.getUpdatedAt());
-        }
-        Company company = companyValidator.findCompany(user.getCompanyId());
-        return new UserInfoResult(userId, user.getUsername(), user.getName(), user.getEmail(),
-            user.getPhone(), user.getPosition(), user.getCompanyId(),
-            company.getName(), user.getCreatedAt(), user.getUpdatedAt());
+        Company company = user.getCompanyId() != null
+            ? companyValidator.findCompany(user.getCompanyId())
+            : null;
+
+        return UserInfoResult.of(user, company);
     }
 
     @Override
     public List<UserSimpleResult> getAllUsers() {
         return userQueryPort.findAll().stream()
-            .filter(user -> !user.getRole().equals(Role.ADMIN))
+            .filter(user -> user.getRole() != Role.ADMIN)
             .map(user -> {
-                if (user.getCompanyId() == null) {
-                    return new UserSimpleResult(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getName(),
-                        user.getPhone(),
-                        user.getPosition(),
-                        null,
-                        null
-                    );
-                }
-                Company company = companyValidator.findCompany(user.getCompanyId());
-                return new UserSimpleResult(
-                    user.getId(),
-                    user.getUsername(),
-                    user.getName(),
-                    user.getPhone(),
-                    user.getPosition(),
-                    user.getCompanyId(),
-                    company.getName()
-                );
+                Company company = user.getCompanyId() != null
+                    ? companyValidator.findCompany(user.getCompanyId())
+                    : null;
+                return UserSimpleResult.of(user, company);
             })
             .toList();
     }

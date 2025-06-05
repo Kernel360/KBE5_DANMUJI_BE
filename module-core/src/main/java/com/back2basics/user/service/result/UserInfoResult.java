@@ -1,5 +1,6 @@
 package com.back2basics.user.service.result;
 
+import com.back2basics.company.model.Company;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 
@@ -7,7 +8,7 @@ public record UserInfoResult(Long id, String username, String name, String email
                              String position, Long companyId, String companyName,
                              LocalDateTime CreatedAt, LocalDateTime updatedAt) {
 
-    public static UserInfoResult toResult(User user) {
+    public static UserInfoResult of(User user, Company company) {
         return new UserInfoResult(
             user.getId(),
             user.getUsername(),
@@ -15,11 +16,10 @@ public record UserInfoResult(Long id, String username, String name, String email
             user.getEmail(),
             user.getPhone(),
             user.getPosition(),
-            user.getCompanyId(),
-            null,
+            company != null ? company.getId() : null,
+            company != null ? company.getName() : null,
             user.getCreatedAt(),
             user.getUpdatedAt()
         );
     }
-
 }
