@@ -20,13 +20,13 @@ public class UserMapper {
             .phone(entity.getPhone())
             .position(entity.getPosition())
             .role(entity.getRole())
-            .companyId(entity.getCompanyEntity() != null ? entity.getCompanyEntity().getId() : null)
+            .companyId(entity.getCompany() != null ? entity.getCompany().getId() : null)
             .createdAt(entity.getCreatedAt())
             .updatedAt(entity.getUpdatedAt())
             .build();
     }
 
-    public UserEntity toEntity(User user, CompanyEntity companyEntity) {
+    public UserEntity toEntity(User user, CompanyEntity company) {
         return UserEntity.builder()
             .id(user.getId())
             .username(user.getUsername())
@@ -36,7 +36,7 @@ public class UserMapper {
             .phone(user.getPhone())
             .position(user.getPosition())
             .role(user.getRole())
-            .companyEntity(companyEntity)
+            .company(company)
             .build();
     }
 

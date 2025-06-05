@@ -5,6 +5,9 @@ import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.out.ReadCompanyPort;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.infra.validation.validator.CompanyValidator;
+import com.back2basics.user.port.out.UserQueryPort;
+import com.back2basics.user.service.result.UserSummaryResult;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +18,8 @@ import org.springframework.stereotype.Service;
 public class ReadCompanyService implements ReadCompanyUseCase {
 
     private final ReadCompanyPort readCompanyPort;
+    private final UserQueryPort userQueryPort;
     private final CompanyValidator companyValidator;
-
 
     @Override
     public ReadCompanyResult getCompany(Long id) {
@@ -35,6 +38,13 @@ public class ReadCompanyService implements ReadCompanyUseCase {
     public Page<ReadCompanyResult> getAllCompanies(Pageable pageable) {
         return readCompanyPort.findAll(pageable)
             .map(ReadCompanyResult::toResult);
+    }
+
+    @Override
+    public List<UserSummaryResult> getUsersByCompanyId(Long companyId) {
+        companyValidator.validateCompanyExists(companyId);
+        return userQueryPort.findAllByCompanyId(companyId).stream()
+            .map(UserSummaryResult::from).toList();
     }
 
 }
