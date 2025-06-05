@@ -12,23 +12,24 @@ import org.springframework.stereotype.Component;
 public class PasswordResetTokenAdapter implements PasswordResetTokenPort {
 
     private final RedisUtil redisUtil;
+    private static final String RESET_KEY_PREFIX = "pw-reset:";
     private static final long TTL = 30L;
 
     @Override
     public String createToken(String username) {
         String token = UUID.randomUUID().toString();
-        redisUtil.save("pw-reset:" + token, username, TTL, TimeUnit.MINUTES);
+        redisUtil.save(RESET_KEY_PREFIX + token, username, TTL, TimeUnit.MINUTES);
         return token;
     }
 
     @Override
     public String getUsernameByToken(String token) {
-        return redisUtil.getData("pw-reset:" + token);
+        return redisUtil.getData(RESET_KEY_PREFIX + token);
     }
 
     @Override
     public void deleteToken(String token) {
-        redisUtil.delete("pw-reset:" + token);
+        redisUtil.delete(RESET_KEY_PREFIX + token);
     }
 }
 

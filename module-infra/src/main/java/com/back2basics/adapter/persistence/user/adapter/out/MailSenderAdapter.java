@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SmtpMailSenderAdapter implements MailSenderPort {
+public class MailSenderAdapter implements MailSenderPort {
 
     private final JavaMailSender javaMailSender;
 

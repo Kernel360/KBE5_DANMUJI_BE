@@ -5,7 +5,7 @@ import com.back2basics.user.port.in.command.SendMailCommand;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-public record ResetPasswordMailRequest(
+public record SendMailRequest(
     @NotEmpty String username, @Email @NotEmpty String email
 ) {
 

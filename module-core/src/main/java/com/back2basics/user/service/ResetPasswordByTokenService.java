@@ -4,8 +4,8 @@ import static com.back2basics.infra.exception.user.UserErrorCode.VERIFICATION_FA
 
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
-import com.back2basics.user.port.in.ConfirmMailUseCase;
-import com.back2basics.user.port.in.command.ConfirmMailCommand;
+import com.back2basics.user.port.in.ResetPasswordByTokenUseCase;
+import com.back2basics.user.port.in.command.ResetPasswordByTokenCommand;
 import com.back2basics.user.port.out.PasswordResetTokenPort;
 import com.back2basics.user.port.out.UserCommandPort;
 import com.back2basics.user.port.out.UserQueryPort;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ConfirmMailService implements ConfirmMailUseCase {
+public class ResetPasswordByTokenService implements ResetPasswordByTokenUseCase {
 
     private final UserQueryPort userQueryPort;
     private final UserCommandPort userCommandPort;
@@ -23,7 +23,7 @@ public class ConfirmMailService implements ConfirmMailUseCase {
     private final PasswordResetTokenPort passwordResetTokenPort;
 
     @Override
-    public void resetPassword(ConfirmMailCommand command) {
+    public void change(ResetPasswordByTokenCommand command) {
         String username = passwordResetTokenPort.getUsernameByToken(command.getToken());
         if (username == null) {
             throw new UserException(VERIFICATION_FAILED);

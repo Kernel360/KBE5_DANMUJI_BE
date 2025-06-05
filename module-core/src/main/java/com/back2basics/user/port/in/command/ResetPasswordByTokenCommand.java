@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ConfirmMailCommand {
+public class ResetPasswordByTokenCommand {
 
     String token;
     String newPassword;
 
     @Builder
-    public ConfirmMailCommand(String token, String newPassword) {
+    public ResetPasswordByTokenCommand(String token, String newPassword) {
         this.token = token;
         this.newPassword = newPassword;
     }

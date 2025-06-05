@@ -17,7 +17,7 @@ public class SendMailService implements SendMailUseCase {
     private final PasswordResetTokenPort passwordResetTokenPort;
 
     @Override
-    public void sendResetLink(SendMailCommand command) {
+    public void send(SendMailCommand command) {
         userValidator.validateNotFoundUsername(command.getUsername());
         String token = passwordResetTokenPort.createToken(command.getUsername());
 //        String link = "https://danmuji.com/reset-password?token=" + token; // todo: 실제 도메인으로 변경

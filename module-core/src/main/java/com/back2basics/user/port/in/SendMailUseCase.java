@@ -4,5 +4,5 @@ import com.back2basics.user.port.in.command.SendMailCommand;
 
 public interface SendMailUseCase {
 
-    void sendResetLink(SendMailCommand command);
+    void send(SendMailCommand command);
 }

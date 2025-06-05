@@ -5,13 +5,13 @@ import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_SEND_MAIL_SUCCESS;
 
 import com.back2basics.domain.user.dto.request.ChangePasswordRequest;
-import com.back2basics.domain.user.dto.request.ConfirmMailRequest;
-import com.back2basics.domain.user.dto.request.ResetPasswordMailRequest;
+import com.back2basics.domain.user.dto.request.ResetPasswordByTokenRequest;
 import com.back2basics.domain.user.dto.request.ResetPasswordRequest;
+import com.back2basics.domain.user.dto.request.SendMailRequest;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.port.in.ChangePasswordUseCase;
-import com.back2basics.user.port.in.ConfirmMailUseCase;
+import com.back2basics.user.port.in.ResetPasswordByTokenUseCase;
 import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.SendMailUseCase;
 import com.back2basics.user.port.in.command.ChangePasswordCommand;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,7 +34,7 @@ public class UserController {
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
     private final SendMailUseCase sendMailUseCase;
-    private final ConfirmMailUseCase confirmMailUseCase;
+    private final ResetPasswordByTokenUseCase resetPasswordByTokenUseCase;
 
     @PutMapping("/password/change")
     public ResponseEntity<ApiResponse<Void>> changePassword(
@@ -48,17 +47,17 @@ public class UserController {
         return ApiResponse.success(USER_CHANGE_PASSWORD_SUCCESS);
     }
 
-    @PostMapping("/mail/send")
+    @PostMapping("/password/reset-mail/request")
     public ResponseEntity<ApiResponse<Void>> sendMail(
-        @Valid @RequestBody ResetPasswordMailRequest request) {
-        sendMailUseCase.sendResetLink(request.toCommand());
+        @Valid @RequestBody SendMailRequest request) {
+        sendMailUseCase.send(request.toCommand());
         return ApiResponse.success(USER_SEND_MAIL_SUCCESS);
     }
 
-    @PostMapping("/password/change")
-    public ResponseEntity<ApiResponse<Void>> resetPasswordMail(@RequestParam String token,
-        @Valid @RequestBody ConfirmMailRequest request) {
-        confirmMailUseCase.change(request.toCommand());
+    @PostMapping("/password/reset-mail/confirm")
+    public ResponseEntity<ApiResponse<Void>> resetPasswordMail(
+        @Valid @RequestBody ResetPasswordByTokenRequest request) {
+        resetPasswordByTokenUseCase.change(request.toCommand());
         return ApiResponse.success(USER_CHANGE_PASSWORD_SUCCESS);
     }
 
