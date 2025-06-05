@@ -1,7 +1,7 @@
 package com.back2basics.comment.service.result;
 
 import com.back2basics.comment.model.Comment;
-import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserSummaryResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class CommentReadResult {
     private Long id;
     private Long postId;
     private Long parentCommentId; // 대댓글의 경우 부모 댓글 ID
-    private UserInfoResult author;
+    private UserSummaryResult author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -28,7 +28,7 @@ public class CommentReadResult {
             .id(comment.getId())
             .postId(comment.getPostId())
             .parentCommentId(comment.getParentCommentId())
-            .author(UserInfoResult.toResult(comment.getAuthor()))
+            .author(UserSummaryResult.from(comment.getAuthor()))
             .content(comment.getContent())
             .createdAt(comment.getCreatedAt())
             .updatedAt(comment.getUpdatedAt())

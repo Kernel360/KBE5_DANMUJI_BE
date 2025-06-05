@@ -1,7 +1,7 @@
 package com.back2basics.domain.question.dto.response;
 
 import com.back2basics.domain.answer.dto.response.AnswerResponse;
-import com.back2basics.domain.user.dto.response.UserInfoResponse;
+import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.question.model.QuestionStatus;
 import com.back2basics.question.service.result.QuestionResult;
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ public class QuestionResponse {
 
     private Long id;
     private Long postId;
-    private UserInfoResponse author;
+    private UserSummaryResponse author;
     private String content;
     private QuestionStatus status;
     private LocalDateTime createdAt;
@@ -32,7 +32,7 @@ public class QuestionResponse {
         return QuestionResponse.builder()
             .id(result.getId())
             .postId(result.getPostId())
-            .author(UserInfoResponse.from(result.getAuthor()))
+            .author(UserSummaryResponse.from(result.getAuthor()))
             .content(result.getContent())
             .status(result.getStatus())
             .createdAt(result.getCreatedAt())

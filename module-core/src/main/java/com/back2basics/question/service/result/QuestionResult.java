@@ -4,7 +4,7 @@ package com.back2basics.question.service.result;
 import com.back2basics.answer.service.result.AnswerReadResult;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.model.QuestionStatus;
-import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserSummaryResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ public class QuestionResult {
 
     private final Long id;
     private final Long postId;
-    private final UserInfoResult author;
+    private final UserSummaryResult author;
     private final String content;
     private final QuestionStatus status;
     private final LocalDateTime createdAt;
@@ -25,7 +25,7 @@ public class QuestionResult {
     private final List<AnswerReadResult> answers;
 
     @Builder
-    public QuestionResult(Long id, Long postId, UserInfoResult author, String content,
+    public QuestionResult(Long id, Long postId, UserSummaryResult author, String content,
         QuestionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, List<AnswerReadResult> answers) {
         this.id = id;
@@ -47,7 +47,7 @@ public class QuestionResult {
         return QuestionResult.builder()
             .id(question.getId())
             .postId(question.getPostId())
-            .author(UserInfoResult.toResult(question.getAuthor()))
+            .author(UserSummaryResult.from(question.getAuthor()))
             .content(question.getContent())
             .status(question.getStatus())
             .createdAt(question.getCreatedAt())

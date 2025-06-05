@@ -1,11 +1,11 @@
 package com.back2basics.domain.post.dto.response;
 
 import com.back2basics.comment.service.result.CommentReadResult;
+import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostReadResult;
 import com.back2basics.project.service.result.ProjectGetResult;
-import com.back2basics.user.service.result.UserInfoResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import lombok.Getter;
 public class PostReadResponse {
 
     private final Long postId;
-    private final UserInfoResult author;
+    private final UserSummaryResponse author;
     private final String title;
     private final String content;
     private final PostType type;
@@ -33,7 +33,7 @@ public class PostReadResponse {
     public static PostReadResponse toResponse(PostReadResult postDetails) {
         return PostReadResponse.builder()
             .postId(postDetails.getId())
-            .author(postDetails.getAuthor())
+            .author(UserSummaryResponse.from(postDetails.getAuthor()))
             .project(postDetails.getProject())
             .title(postDetails.getTitle())
             .content(postDetails.getContent())
