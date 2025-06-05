@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CommentResponse {
+public class CommentReadResponse {
 
     private Long id;
     private Long postId;
@@ -18,8 +18,8 @@ public class CommentResponse {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static CommentResponse toResponse(CommentReadResult result) {
-        return CommentResponse.builder()
+    public static CommentReadResponse toResponse(CommentReadResult result) {
+        return CommentReadResponse.builder()
             .id(result.getId())
             .postId(result.getPostId())
             .parentCommentId(result.getParentCommentId())
