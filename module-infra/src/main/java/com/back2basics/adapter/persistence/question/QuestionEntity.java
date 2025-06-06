@@ -36,7 +36,7 @@ public class QuestionEntity extends BaseTimeEntity {
     @Column(name = "author_ip")
     private String authorIp;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
