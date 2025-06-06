@@ -21,7 +21,7 @@ public class AnswerCreateService implements AnswerCreateUseCase {
     private final UserQueryPort userQueryPort;
 
     @Override
-    public Long createAnswer(Long userId, AnswerCreateCommand command) {
+    public Long createAnswer(Long userId, String userIp, AnswerCreateCommand command) {
         User user = userQueryPort.findById(userId);
         questionValidator.findById(command.getQuestionId());
 
@@ -33,6 +33,7 @@ public class AnswerCreateService implements AnswerCreateUseCase {
 
         Answer answer = Answer.builder()
             .questionId(command.getQuestionId())
+            .authorIp(userIp)
             .author(user)
             .content(command.getContent())
             .parentId(command.getParentId())

@@ -28,6 +28,9 @@ public class AnswerEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "author_ip")
+    private String authorIp;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private UserEntity author;
@@ -43,9 +46,11 @@ public class AnswerEntity extends BaseTimeEntity {
     private Long parentId;
 
     @Builder
-    public AnswerEntity(Long id, UserEntity author, String content, QuestionEntity question,
+    public AnswerEntity(Long id, String authorIp, UserEntity author, String content,
+        QuestionEntity question,
         Long parentId) {
         this.id = id;
+        this.authorIp = authorIp;
         this.author = author;
         this.content = content;
         this.question = question;
@@ -55,9 +60,9 @@ public class AnswerEntity extends BaseTimeEntity {
     public void assignQuestion(QuestionEntity question) {
         this.question = question;
     }
-    
-    public void update(Answer answer) {
 
+    public void update(Answer answer) {
+        this.authorIp = answer.getAuthorIp();
         this.content = answer.getContent();
     }
 }
