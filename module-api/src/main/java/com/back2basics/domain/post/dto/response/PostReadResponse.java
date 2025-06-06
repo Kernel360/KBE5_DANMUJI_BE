@@ -15,6 +15,7 @@ public class PostReadResponse {
 
     private final Long postId;
     private final Long parentId;
+    private final String authorIp;
     private final UserSummaryResponse author;
     private final String title;
     private final String content;
@@ -32,6 +33,26 @@ public class PostReadResponse {
         return PostReadResponse.builder()
             .parentId(postDetails.getParentId())
             .postId(postDetails.getId())
+            .author(UserSummaryResponse.from(postDetails.getAuthor()))
+            .project(postDetails.getProject())
+            .title(postDetails.getTitle())
+            .content(postDetails.getContent())
+            .type(postDetails.getType())
+            .status(postDetails.getStatus())
+            .priority(postDetails.getPriority())
+            .createdAt(postDetails.getCreatedAt())
+            .updatedAt(postDetails.getUpdatedAt())
+            .deletedAt(postDetails.getDeletedAt())
+            .completedAt(postDetails.getCompletedAt())
+            .isDelete(postDetails.isDeleted())
+            .build();
+    }
+
+    public static PostReadResponse toResponse(PostReadResult postDetails, String ip) {
+        return PostReadResponse.builder()
+            .parentId(postDetails.getParentId())
+            .postId(postDetails.getId())
+            .authorIp(ip)
             .author(UserSummaryResponse.from(postDetails.getAuthor()))
             .project(postDetails.getProject())
             .title(postDetails.getTitle())

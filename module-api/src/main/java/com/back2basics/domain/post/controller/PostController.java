@@ -61,7 +61,7 @@ public class PostController implements PostApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId) {
         PostReadResult result = postReadUseCase.getPost(customUserDetails.getId(), postId);
-        PostReadResponse response = PostReadResponse.toResponse(result);
+        PostReadResponse response = PostReadResponse.toResponse(result, customUserDetails.getIp());
 
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
