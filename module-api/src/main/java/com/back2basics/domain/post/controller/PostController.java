@@ -48,10 +48,11 @@ public class PostController implements PostApiDocs {
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid PostCreateApiRequest request) {
-        PostCreateResult result = createPostUseCase.createPost(customUserDetails.getId(),
-            request.toCommand());
-        PostCreateResponse response = PostCreateResponse.toResponse(result,
-            customUserDetails.getIp());
+
+        Long userId = customUserDetails.getId();
+        String userIp = customUserDetails.getIp();
+        PostCreateResult result = createPostUseCase.createPost(userId, userIp, request.toCommand());
+        PostCreateResponse response = PostCreateResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, response);
     }
@@ -61,7 +62,7 @@ public class PostController implements PostApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId) {
         PostReadResult result = postReadUseCase.getPost(customUserDetails.getId(), postId);
-        PostReadResponse response = PostReadResponse.toResponse(result, customUserDetails.getIp());
+        PostReadResponse response = PostReadResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
@@ -87,7 +88,10 @@ public class PostController implements PostApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
         @Valid @RequestBody PostUpdateApiRequest request) {
-        postUpdateUseCase.updatePost(customUserDetails.getId(), postId, request.toCommand());
+
+        Long userId = customUserDetails.getId();
+        String userIp = customUserDetails.getIp();
+        postUpdateUseCase.updatePost(userId, userIp, postId, request.toCommand());
 
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS);
     }

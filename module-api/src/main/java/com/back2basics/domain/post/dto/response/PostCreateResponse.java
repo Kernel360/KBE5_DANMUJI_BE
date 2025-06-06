@@ -10,23 +10,23 @@ import lombok.Getter;
 @Builder
 public class PostCreateResponse {
 
+    private final String authorIp;
     private final Long authorId;
     private final String title;
     private final String content;
     private final PostType type;
     private final PostStatus status;
     private final Integer priority;
-    private final String authorIp;
 
-    public static PostCreateResponse toResponse(PostCreateResult result, String ip) {
+    public static PostCreateResponse toResponse(PostCreateResult result) {
         return PostCreateResponse.builder()
+            .authorIp(result.getAuthorIp())
             .authorId(result.getAuthorId())
             .title(result.getTitle())
             .content(result.getContent())
             .type(result.getType())
             .status(result.getStatus())
             .priority(result.getPriority())
-            .authorIp(ip)
             .build();
     }
 

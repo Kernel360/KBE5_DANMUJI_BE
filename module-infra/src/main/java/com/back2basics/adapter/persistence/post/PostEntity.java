@@ -36,6 +36,9 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "parent_post_id")
     private Long parentId;
 
+    @Column(name = "author_ip")
+    private String authorIp;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private UserEntity author;
@@ -65,12 +68,13 @@ public class PostEntity extends BaseTimeEntity {
     private LocalDateTime completedAt = null;
 
     @Builder
-    public PostEntity(Long id, Long parentId, UserEntity author,
+    public PostEntity(Long id, Long parentId, String authorIp, UserEntity author,
         String title,
         String content, PostType type,
         Integer priority, PostStatus status, ProjectEntity project, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
+        this.authorIp = authorIp;
         this.author = author;
         this.title = title;
         this.content = content;
@@ -81,8 +85,10 @@ public class PostEntity extends BaseTimeEntity {
         this.completedAt = completedAt;
     }
 
-    public void update(String title, String content, PostType type, PostStatus status,
+    public void update(String title, String authorIp, String content, PostType type,
+        PostStatus status,
         int priority, LocalDateTime completedAt, boolean isDelete) {
+        this.authorIp = authorIp;
         this.title = title;
         this.content = content;
         this.type = type;
