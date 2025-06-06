@@ -27,6 +27,9 @@ public class CommentEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "author_ip")
+    private String authorIp;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private UserEntity author;
@@ -42,9 +45,11 @@ public class CommentEntity extends BaseTimeEntity {
     private Long parentId;
 
     @Builder
-    public CommentEntity(Long id, UserEntity author, String content, PostEntity post,
+    public CommentEntity(Long id, String authorIp, UserEntity author, String content,
+        PostEntity post,
         Long parentId) {
         this.id = id;
+        this.authorIp = authorIp;
         this.author = author;
         this.content = content;
         this.post = post;
@@ -55,7 +60,8 @@ public class CommentEntity extends BaseTimeEntity {
         this.post = post;
     }
 
-    public void updateContent(String content) {
+    public void updateContent(String content, String userIp) {
+        this.authorIp = userIp;
         this.content = content;
     }
 }
