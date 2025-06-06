@@ -10,6 +10,7 @@ import lombok.Getter;
 @Builder
 public class PostCreateResponse {
 
+    private final String authorIp;
     private final Long authorId;
     private final String title;
     private final String content;
@@ -19,6 +20,7 @@ public class PostCreateResponse {
 
     public static PostCreateResponse toResponse(PostCreateResult result) {
         return PostCreateResponse.builder()
+            .authorIp(result.getAuthorIp())
             .authorId(result.getAuthorId())
             .title(result.getTitle())
             .content(result.getContent())

@@ -17,11 +17,12 @@ public class AnswerUpdateService implements AnswerUpdateUseCase {
 
 
     @Override
-    public void updateAnswer(Long userId, Long answerId, AnswerUpdateCommand command) {
+    public void updateAnswer(Long userId, String userIp, Long answerId,
+        AnswerUpdateCommand command) {
         Answer answer = answerValidator.findAnswerById(answerId);
         answerValidator.isAuthor(answer, userId);
 
-        answer.update(command);
+        answer.update(command, userIp);
         answerUpdatePort.update(answer);
     }
 }

@@ -7,16 +7,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AnswerEntityRepository extends JpaRepository<AnswerEntity, Long> {
-
-    @Query("SELECT a FROM AnswerEntity a WHERE a.deletedAt IS NULL")
-    List<AnswerEntity> findAllAnswersNotDeleted();
-
+    
     /*
         select *
         from answer a
         where a.question_id = :questionId
+              and a.deleteAt is null
     */
-    @Query("SELECT a FROM AnswerEntity a WHERE a.question.id = :questionId")
+    @Query("SELECT a FROM AnswerEntity a WHERE a.question.id = :questionId AND a.deletedAt IS NULL")
     List<AnswerEntity> findAllAnswersByQuestionId(Long questionId);
 
 }

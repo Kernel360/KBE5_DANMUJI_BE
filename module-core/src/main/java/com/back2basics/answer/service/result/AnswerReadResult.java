@@ -15,6 +15,7 @@ public class AnswerReadResult {
     private Long id;
     private Long questionId;
     private Long parentId;
+    private String authorIp;
     private UserSummaryResult author;
     private String content;
     private final LocalDateTime createdAt;
@@ -25,6 +26,7 @@ public class AnswerReadResult {
             .id(answer.getId())
             .questionId(answer.getQuestionId())
             .parentId(answer.getParentId())
+            .authorIp(answer.getAuthorIp())
             .author(UserSummaryResult.from(answer.getAuthor()))
             .content(answer.getContent())
             .createdAt(answer.getCreatedAt())

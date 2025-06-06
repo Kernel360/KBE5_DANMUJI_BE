@@ -15,6 +15,7 @@ public class PostReadResponse {
 
     private final Long postId;
     private final Long parentId;
+    private final String authorIp;
     private final UserSummaryResponse author;
     private final String title;
     private final String content;
@@ -32,6 +33,7 @@ public class PostReadResponse {
         return PostReadResponse.builder()
             .parentId(postDetails.getParentId())
             .postId(postDetails.getId())
+            .authorIp(postDetails.getAuthorIp())
             .author(UserSummaryResponse.from(postDetails.getAuthor()))
             .project(postDetails.getProject())
             .title(postDetails.getTitle())

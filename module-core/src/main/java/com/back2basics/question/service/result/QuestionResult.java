@@ -13,6 +13,7 @@ public class QuestionResult {
 
     private final Long id;
     private final Long postId;
+    private final String authorIp;
     private final UserSummaryResult author;
     private final String content;
     private final QuestionStatus status;
@@ -21,11 +22,13 @@ public class QuestionResult {
     private final LocalDateTime deletedAt;
 
     @Builder
-    public QuestionResult(Long id, Long postId, UserSummaryResult author, String content,
+    public QuestionResult(Long id, Long postId, String authorIp, UserSummaryResult author,
+        String content,
         QuestionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt) {
         this.id = id;
         this.postId = postId;
+        this.authorIp = authorIp;
         this.author = author;
         this.content = content;
         this.status = status;
@@ -38,6 +41,7 @@ public class QuestionResult {
         return QuestionResult.builder()
             .id(question.getId())
             .postId(question.getPostId())
+            .authorIp(question.getAuthorIp())
             .author(UserSummaryResult.from(question.getAuthor()))
             .content(question.getContent())
             .status(question.getStatus())

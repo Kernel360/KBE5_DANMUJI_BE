@@ -85,6 +85,7 @@ public class QuestionController implements QuestionApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid QuestionCreateRequest request) {
         Long questionId = questionCreateUseCase.create(customUserDetails.getId(),
+            customUserDetails.getIp(),
             request.toCommand());
         return ApiResponse.success(QuestionResponseCode.QUESTION_CREATE_SUCCESS, questionId);
     }
@@ -94,7 +95,8 @@ public class QuestionController implements QuestionApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long questionId,
         @RequestBody @Valid QuestionUpdateRequest request) {
-        questionUpdateUseCase.update(customUserDetails.getId(), questionId, request.toCommand());
+        questionUpdateUseCase.update(customUserDetails.getId(), customUserDetails.getIp(),
+            questionId, request.toCommand());
         return ApiResponse.success(QuestionResponseCode.QUESTION_UPDATE_SUCCESS);
     }
 
@@ -110,7 +112,8 @@ public class QuestionController implements QuestionApiDocs {
     public ResponseEntity<ApiResponse<Void>> markAsAnswered(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long questionId) {
-        statusUpdateUseCase.markAsAnswered(customUserDetails.getId(), questionId);
+        statusUpdateUseCase.markAsAnswered(customUserDetails.getId(), customUserDetails.getIp(),
+            questionId);
         return ApiResponse.success(QuestionResponseCode.QUESTION_MARK_AS_ANSWERED);
     }
 
@@ -119,7 +122,8 @@ public class QuestionController implements QuestionApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long questionId
     ) {
-        statusUpdateUseCase.markAsResolved(customUserDetails.getId(), questionId);
+        statusUpdateUseCase.markAsResolved(customUserDetails.getId(), customUserDetails.getIp(),
+            questionId);
         return ApiResponse.success(QuestionResponseCode.QUESTION_MARK_AS_RESOLVED);
     }
 }

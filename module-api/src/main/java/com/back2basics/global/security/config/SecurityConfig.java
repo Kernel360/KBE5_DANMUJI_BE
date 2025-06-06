@@ -1,5 +1,6 @@
 package com.back2basics.global.security.config;
 
+import com.back2basics.global.security.filter.IpInjectionFilter;
 import com.back2basics.global.security.filter.JwtAuthorizationFilter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class SecurityConfig {
         "/swagger-ui.html", "/webjars/**", "/favicon.ico"};
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final IpInjectionFilter ipInjectionFilter;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
@@ -60,6 +62,7 @@ public class SecurityConfig {
                     .anyRequest().permitAll() // todo
             )
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(ipInjectionFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 

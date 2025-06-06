@@ -17,6 +17,7 @@ public class AnswerMapper {
             .id(entity.getId())
             .questionId(entity.getQuestion().getId())
             .parentId(entity.getParentId())
+            .authorIp(entity.getAuthorIp())
             .author(userMapper.toDomain(entity.getAuthor()))
             .content(entity.getContent())
             .createdAt(entity.getCreatedAt())
@@ -28,6 +29,7 @@ public class AnswerMapper {
     public AnswerEntity toEntity(Answer domain) {
         AnswerEntity entity = AnswerEntity.builder()
             .id(domain.getId())
+            .authorIp(domain.getAuthorIp())
             .author(userMapper.toEntity(domain.getAuthor()))
             .parentId(domain.getParentId())
             .content(domain.getContent())

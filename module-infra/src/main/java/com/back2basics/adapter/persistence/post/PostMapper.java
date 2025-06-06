@@ -17,6 +17,7 @@ public class PostMapper {
         return Post.builder()
             .id(entity.getId())
             .parentId(entity.getParentId())
+            .authorIp(entity.getAuthorIp())
             .author(userMapper.toDomain(entity.getAuthor()))
             .project(projectMapper.toDomain(entity.getProject()))
             .title(entity.getTitle())
@@ -37,6 +38,7 @@ public class PostMapper {
         PostEntity entity = PostEntity.builder()
             .id(domain.getId())
             .parentId(domain.getParentId())
+            .authorIp(domain.getAuthorIp())
             .author(userMapper.toEntity(domain.getAuthor()))
             .project(projectMapper.fromDomain(
                 domain.getProject())) // todo : toEntity, fromDomain 같은 기능인데 메소드 이름 다름. 통일 필요
@@ -57,6 +59,7 @@ public class PostMapper {
 
     public void updateEntityFields(PostEntity entity, Post domain) {
         entity.update(
+            domain.getAuthorIp(),
             domain.getTitle(),
             domain.getContent(),
             domain.getType(),

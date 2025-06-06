@@ -10,19 +10,21 @@ import lombok.Getter;
 @Builder
 public class CommentReadResponse {
 
-    private Long id;
-    private Long postId;
-    private Long parentCommentId; // 대댓글의 경우 부모 댓글 ID
-    private UserSummaryResponse author;
-    private String content;
+    private final Long id;
+    private final Long postId;
+    private final Long parentCommentId;
+    private final String authorIp;
+    private final UserSummaryResponse author;
+    private final String content;
     private final LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
     public static CommentReadResponse toResponse(CommentReadResult result) {
         return CommentReadResponse.builder()
             .id(result.getId())
             .postId(result.getPostId())
             .parentCommentId(result.getParentCommentId())
+            .authorIp(result.getAuthorIp())
             .author(UserSummaryResponse.from(result.getAuthor()))
             .content(result.getContent())
             .createdAt(result.getCreatedAt())

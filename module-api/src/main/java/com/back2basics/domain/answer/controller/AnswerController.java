@@ -57,6 +57,7 @@ public class AnswerController implements AnswerApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid AnswerCreateRequest request) {
         Long createdId = createAnswerUseCase.createAnswer(customUserDetails.getId(),
+            customUserDetails.getIp(),
             request.toCommand());
         return ApiResponse.success(AnswerResponseCode.ANSWER_CREATE_SUCCESS, createdId);
     }
@@ -67,7 +68,8 @@ public class AnswerController implements AnswerApiDocs {
         @PathVariable Long answerId,
         @Valid @RequestBody AnswerUpdateRequest request
     ) {
-        updateAnswerUseCase.updateAnswer(customUserDetails.getId(), answerId, request.toCommand());
+        updateAnswerUseCase.updateAnswer(customUserDetails.getId(), customUserDetails.getIp(),
+            answerId, request.toCommand());
         return ApiResponse.success(AnswerResponseCode.ANSWER_UPDATE_SUCCESS);
     }
 

@@ -11,19 +11,21 @@ import lombok.Getter;
 @Builder
 public class QuestionResponse {
 
-    private Long id;
-    private Long postId;
-    private UserSummaryResponse author;
-    private String content;
-    private QuestionStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+    private final Long id;
+    private final Long postId;
+    private final String authorIp;
+    private final UserSummaryResponse author;
+    private final String content;
+    private final QuestionStatus status;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+    private final LocalDateTime deletedAt;
 
     public static QuestionResponse toResponse(QuestionResult result) {
         return QuestionResponse.builder()
             .id(result.getId())
             .postId(result.getPostId())
+            .authorIp(result.getAuthorIp())
             .author(UserSummaryResponse.from(result.getAuthor()))
             .content(result.getContent())
             .status(result.getStatus())

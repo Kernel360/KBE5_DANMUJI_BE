@@ -15,6 +15,7 @@ public class CustomUserDetails implements UserDetails {
     private final String username;
     private final String password;
     private final String role;
+    private String ip;
 
     public CustomUserDetails(User user) {
         this.id = user.getId();
@@ -57,4 +58,13 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
 }

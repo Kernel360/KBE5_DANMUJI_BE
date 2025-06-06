@@ -15,6 +15,7 @@ public class Post {
 
     private final Long id;
     private final Long parentId;
+    private String authorIp;
     private User author;
     private String title;
     private String content;
@@ -30,7 +31,7 @@ public class Post {
     private Project project;
 
     @Builder
-    public Post(Long id, Long parentId, User author, String title, String content,
+    public Post(Long id, Long parentId, String authorIp, User author, String title, String content,
         PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
@@ -38,6 +39,7 @@ public class Post {
         Project project) {
         this.id = id;
         this.parentId = parentId;
+        this.authorIp = authorIp;
         this.author = author;
         this.title = title;
         this.content = content;
@@ -53,13 +55,13 @@ public class Post {
         this.project = project;
     }
 
-    public void update(PostUpdateCommand command) {
+    public void update(PostUpdateCommand command, String userIp) {
         this.title = command.getTitle();
         this.content = command.getContent();
         this.type = command.getType();
         this.status = command.getStatus();
         this.priority = command.getPriority();
-
+        this.authorIp = userIp;
     }
 
     public void markDeleted() {

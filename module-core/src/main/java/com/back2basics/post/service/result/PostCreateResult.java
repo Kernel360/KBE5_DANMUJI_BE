@@ -13,6 +13,7 @@ import lombok.Getter;
 public class PostCreateResult {
 
     private final Long id;
+    private final String authorIp;
     private final Long authorId;
     private final String title;
     private final String content;
@@ -25,6 +26,7 @@ public class PostCreateResult {
     public static PostCreateResult toResult(Post post) {
         return PostCreateResult.builder()
             .id(post.getId())
+            .authorIp(post.getAuthorIp())
             .authorId(post.getAuthor().getId())
             .title(post.getTitle())
             .content(post.getContent())
