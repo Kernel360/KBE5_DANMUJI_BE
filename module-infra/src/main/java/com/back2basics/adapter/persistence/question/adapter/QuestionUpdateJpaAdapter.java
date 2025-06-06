@@ -16,11 +16,11 @@ public class QuestionUpdateJpaAdapter implements QuestionUpdatePort {
     private final QuestionEntityRepository questionRepository;
 
     @Override
-    public void update(Question question) {
+    public void update(Question question, String userIp) {
         QuestionEntity entity = questionRepository.findById(question.getId())
             .orElseThrow(() -> new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND));
 
-        entity.update(question);
+        entity.update(question, userIp);
         questionRepository.save(entity);
     }
 }

@@ -5,5 +5,5 @@ import com.back2basics.post.service.result.PostCreateResult;
 
 public interface PostCreateUseCase {
 
-    PostCreateResult createPost(Long userId, PostCreateCommand command);
+    PostCreateResult createPost(Long userId, String userIp, PostCreateCommand command);
 }

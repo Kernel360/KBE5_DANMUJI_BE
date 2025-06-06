@@ -16,11 +16,11 @@ public class PostUpdateService implements PostUpdateUseCase {
     private final PostValidator postValidator;
 
     @Override
-    public void updatePost(Long userId, Long postId, PostUpdateCommand command) {
+    public void updatePost(Long userId, String userIp, Long postId, PostUpdateCommand command) {
         Post post = postValidator.findPost(postId);
         postValidator.isAuthor(post, userId);
 
-        post.update(command);
+        post.update(command, userIp);
 
         postUpdatePort.update(post);
     }

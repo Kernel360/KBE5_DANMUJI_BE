@@ -4,5 +4,5 @@ import com.back2basics.comment.port.in.command.CommentCreateCommand;
 
 public interface CommentCreateUseCase {
 
-    Long createComment(Long userId, CommentCreateCommand command);
+    Long createComment(Long userId, String userIp, CommentCreateCommand command);
 }

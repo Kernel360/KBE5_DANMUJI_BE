@@ -17,11 +17,12 @@ public class CommentUpdateService implements CommentUpdateUseCase {
 
 
     @Override
-    public void updateComment(Long userId, Long commentId, CommentUpdateCommand command) {
+    public void updateComment(Long userId, String userIp, Long commentId,
+        CommentUpdateCommand command) {
         Comment comment = commentValidator.findComment(commentId);
         commentValidator.isAuthor(comment, userId);
 
-        comment.update(command);
-        commentUpdatePort.update(comment);
+        comment.update(command, userIp);
+        commentUpdatePort.update(comment, userIp);
     }
 }

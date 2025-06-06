@@ -57,6 +57,7 @@ public class CommentController implements CommentApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid CommentCreateRequest request) {
         Long createdId = createCommentUseCase.createComment(customUserDetails.getId(),
+            customUserDetails.getIp(),
             request.toCommand());
         return ApiResponse.success(CommentResponseCode.COMMENT_CREATE_SUCCESS, createdId);
     }
@@ -67,7 +68,8 @@ public class CommentController implements CommentApiDocs {
         @PathVariable Long commentId,
         @Valid @RequestBody CommentUpdateRequest request
     ) {
-        updateCommentUseCase.updateComment(customUserDetails.getId(), commentId,
+        updateCommentUseCase.updateComment(customUserDetails.getId(), customUserDetails.getIp(),
+            commentId,
             request.toCommand());
         return ApiResponse.success(CommentResponseCode.COMMENT_UPDATE_SUCCESS);
     }

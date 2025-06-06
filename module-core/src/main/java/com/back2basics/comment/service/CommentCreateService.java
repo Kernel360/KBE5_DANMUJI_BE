@@ -21,7 +21,7 @@ public class CommentCreateService implements CommentCreateUseCase {
     private final UserQueryPort userQueryPort;
 
     @Override
-    public Long createComment(Long userId, CommentCreateCommand command) {
+    public Long createComment(Long userId, String userIp, CommentCreateCommand command) {
         postValidator.findPost(command.getPostId());
 
         if (command.getParentId() != null) {
@@ -34,6 +34,7 @@ public class CommentCreateService implements CommentCreateUseCase {
 
         Comment comment = Comment.builder()
             .postId(command.getPostId())
+            .authorIp(userIp)
             .author(user)
             .content(command.getContent())
             .parentCommentId(command.getParentId())

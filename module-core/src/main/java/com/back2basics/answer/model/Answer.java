@@ -13,25 +13,28 @@ public class Answer {
     private Long id;
     private Long questionId;
     private Long parentId;
+    private String authorIp;
     private User author;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @Builder
-    public Answer(Long id, Long questionId, Long parentId, User author,
+    public Answer(Long id, Long questionId, Long parentId, String authorIp, User author,
         String content,
         LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.questionId = questionId;
         this.parentId = parentId;
+        this.authorIp = authorIp;
         this.author = author;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public void update(AnswerUpdateCommand command) {
+    public void update(AnswerUpdateCommand command, String userIp) {
+        this.authorIp = userIp;
         this.content = command.getContent();
     }
 

@@ -13,6 +13,7 @@ public class AnswerReadResponse {
     private Long id;
     private Long questionId;
     private Long parentId;
+    private String authorIp;
     private UserSummaryResponse author;
     private String content;
     private final LocalDateTime createdAt;
@@ -24,6 +25,7 @@ public class AnswerReadResponse {
             .id(result.getId())
             .questionId(result.getQuestionId())
             .parentId(result.getParentId())
+            .authorIp(result.getAuthorIp())
             .author(UserSummaryResponse.from(result.getAuthor()))
             .content(result.getContent())
             .createdAt(result.getCreatedAt())
