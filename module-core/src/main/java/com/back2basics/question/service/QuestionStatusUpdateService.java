@@ -17,7 +17,6 @@ public class QuestionStatusUpdateService implements QuestionStatusUpdateUseCase 
     @Override
     public void markAsAnswered(Long userId, String userIp, Long questionId) {
         Question question = questionValidator.findById(questionId);
-        // todo : 답변자가 mark 하므로 답변자 검증 필요
         question.markAsAnswered();
         questionUpdatePort.update(question, userIp);
     }
