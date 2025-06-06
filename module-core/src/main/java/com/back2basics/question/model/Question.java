@@ -10,6 +10,7 @@ public class Question {
 
     private Long id;
     private Long postId;
+    private String authorIp;
     private User author;
     private String content;
     private QuestionStatus status;
@@ -20,11 +21,13 @@ public class Question {
     private Long answerId;
 
     @Builder
-    public Question(Long id, Long postId, User author, String content, LocalDateTime createdAt,
+    public Question(Long id, Long postId, String authorIp, User author, String content,
+        LocalDateTime createdAt,
         LocalDateTime updatedAt, LocalDateTime deletedAt,
         QuestionStatus status, Long answerId, boolean isDeleted) {
         this.id = id;
         this.postId = postId;
+        this.authorIp = authorIp;
         this.author = author;
         this.content = content;
         this.createdAt = createdAt;
@@ -35,7 +38,8 @@ public class Question {
         this.answerId = answerId;
     }
 
-    public void updateContent(String newContent) {
+    public void updateContent(String newContent, String userIp) {
+        this.authorIp = userIp;
         this.content = newContent;
     }
 

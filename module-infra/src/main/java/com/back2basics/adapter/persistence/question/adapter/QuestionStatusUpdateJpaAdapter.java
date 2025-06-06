@@ -17,20 +17,20 @@ public class QuestionStatusUpdateJpaAdapter implements QuestionStatusUpdatePort 
     private final QuestionEntityRepository questionRepository;
 
     @Override
-    public void markAsAnswered(Long questionId) {
+    public void markAsAnswered(Long questionId, String userIp) {
         QuestionEntity entity = questionRepository.findById(questionId)
             .orElseThrow(() -> new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND));
 
-        entity.updateStatus(QuestionStatus.ANSWERED);
+        entity.updateStatus(QuestionStatus.ANSWERED, userIp);
         questionRepository.save(entity);
     }
 
     @Override
-    public void markAsResolved(Long questionId) {
+    public void markAsResolved(Long questionId, String userIp) {
         QuestionEntity entity = questionRepository.findById(questionId)
             .orElseThrow(() -> new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND));
 
-        entity.updateStatus(QuestionStatus.RESOLVED);
+        entity.updateStatus(QuestionStatus.RESOLVED, userIp);
         questionRepository.save(entity);
     }
 }

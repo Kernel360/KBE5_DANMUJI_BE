@@ -33,6 +33,9 @@ public class QuestionEntity extends BaseTimeEntity {
     @Column(name = "post_id", nullable = false)
     private Long postId;
 
+    @Column(name = "author_ip")
+    private String authorIp;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private UserEntity author;
@@ -44,22 +47,25 @@ public class QuestionEntity extends BaseTimeEntity {
     private QuestionStatus status;
 
     @Builder
-    public QuestionEntity(Long id, Long postId, UserEntity author, String content,
+    public QuestionEntity(Long id, Long postId, String authorIp, UserEntity author, String content,
         QuestionStatus status, boolean isDeleted) {
         this.id = id;
         this.postId = postId;
+        this.authorIp = authorIp;
         this.author = author;
         this.content = content;
         this.status = status;
     }
 
-    public void update(Question question) {
+    public void update(Question question, String userIp) {
+        this.authorIp = userIp;
         this.content = question.getContent();
         this.status = question.getStatus();
     }
 
-    public void updateStatus(QuestionStatus status) {
+    public void updateStatus(QuestionStatus status, String userIp) {
         this.status = status;
+        this.authorIp = userIp;
     }
 
 }

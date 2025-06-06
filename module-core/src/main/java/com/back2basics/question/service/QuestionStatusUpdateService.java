@@ -15,17 +15,18 @@ public class QuestionStatusUpdateService implements QuestionStatusUpdateUseCase 
     private final QuestionUpdatePort questionUpdatePort;
 
     @Override
-    public void markAsAnswered(Long userId, Long questionId) {
+    public void markAsAnswered(Long userId, String userIp, Long questionId) {
         Question question = questionValidator.findById(questionId);
+        // todo : 답변자가 mark 하므로 답변자 검증 필요
         question.markAsAnswered();
-        questionUpdatePort.update(question);
+        questionUpdatePort.update(question, userIp);
     }
 
     @Override
-    public void markAsResolved(Long userId, Long questionId) {
+    public void markAsResolved(Long userId, String userIp, Long questionId) {
         Question question = questionValidator.findById(questionId);
         questionValidator.validateAuthor(question, userId);
         question.markAsResolved();
-        questionUpdatePort.update(question);
+        questionUpdatePort.update(question, userIp);
     }
 }
