@@ -50,7 +50,8 @@ public class PostController implements PostApiDocs {
         @RequestBody @Valid PostCreateApiRequest request) {
         PostCreateResult result = createPostUseCase.createPost(customUserDetails.getId(),
             request.toCommand());
-        PostCreateResponse response = PostCreateResponse.toResponse(result);
+        PostCreateResponse response = PostCreateResponse.toResponse(result,
+            customUserDetails.getIp());
 
         return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, response);
     }

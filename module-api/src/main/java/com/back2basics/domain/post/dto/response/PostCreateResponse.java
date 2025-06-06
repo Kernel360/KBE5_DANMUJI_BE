@@ -16,8 +16,9 @@ public class PostCreateResponse {
     private final PostType type;
     private final PostStatus status;
     private final Integer priority;
+    private final String authorIp;
 
-    public static PostCreateResponse toResponse(PostCreateResult result) {
+    public static PostCreateResponse toResponse(PostCreateResult result, String ip) {
         return PostCreateResponse.builder()
             .authorId(result.getAuthorId())
             .title(result.getTitle())
@@ -25,6 +26,7 @@ public class PostCreateResponse {
             .type(result.getType())
             .status(result.getStatus())
             .priority(result.getPriority())
+            .authorIp(ip)
             .build();
     }
 
