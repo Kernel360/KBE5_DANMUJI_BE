@@ -18,6 +18,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(ipInterceptor)
-            .addPathPatterns("/api/posts/**");
+            .addPathPatterns(
+                "/api/posts/**",
+                "/api/questions/**",
+                "/api/comments/**",
+                "/api/answers/**"
+            );
+
+
     }
 }
