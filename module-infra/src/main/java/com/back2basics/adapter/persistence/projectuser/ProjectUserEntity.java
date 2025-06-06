@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.projectuser;
 
+import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.company.model.CompanyType;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "project_member")
+@Table(name = "project_users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectUserEntity {
 
@@ -37,21 +38,26 @@ public class ProjectUserEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "company_type")
-    private CompanyType companyType;
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyEntity company;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "user_type")
     private UserType userType;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "company_type")
+    private CompanyType companyType;
+
     @Builder
-    public ProjectUserEntity(Long id, ProjectEntity project, UserEntity user,
+    public ProjectUserEntity(Long id, ProjectEntity project, UserEntity user, CompanyEntity company,
         CompanyType companyType,
         UserType userType) {
         this.id = id;
         this.project = project;
         this.user = user;
+        this.company = company;
         this.companyType = companyType;
         this.userType = userType;
     }

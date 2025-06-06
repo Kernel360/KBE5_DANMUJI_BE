@@ -1,8 +1,7 @@
 package com.back2basics.projectstep.service;
 
-import com.back2basics.projectstep.model.ApprovalStatus;
 import com.back2basics.projectstep.model.ProjectStep;
-import com.back2basics.projectstep.model.StepStatus;
+import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
@@ -22,8 +21,7 @@ public class CreateProjectStepService implements CreateProjectStepUseCase {
             .name(command.getName())
             .projectId(projectId)
             .userId(command.getUserId())
-            .stepStatus(StepStatus.PENDING)
-            .approvalStatus(command.getUserId() != null ? ApprovalStatus.REQUESTED : null)
+            .projectStepStatus(ProjectStepStatus.PENDING)
             .build();
 
         port.save(step);

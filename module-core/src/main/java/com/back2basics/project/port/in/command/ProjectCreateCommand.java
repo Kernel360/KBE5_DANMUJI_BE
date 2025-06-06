@@ -1,14 +1,11 @@
 package com.back2basics.project.port.in.command;
 
 import com.back2basics.projectuser.model.ProjectUser;
-import com.back2basics.user.model.User;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -22,6 +19,11 @@ public class ProjectCreateCommand {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private Long developerId; // 개발사 담당자
+    private Long clientId; // 클라이언트 담당자
+    private Long developCompanyId; // 개발사
+    private Long clientCompanyId; // 클라이언트사
 
     private List<ProjectUser> projectUsers; // user, companyType, userType 들어감
 }

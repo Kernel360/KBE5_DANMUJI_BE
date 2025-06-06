@@ -4,11 +4,13 @@ import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.out.ReadProjectPort;
+import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
+import com.back2basics.projectuser.model.ProjectUser;
+import com.back2basics.projectuser.port.out.ProjectUserQueryPort;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ public class ReadProjectService implements ReadProjectUseCase {
     private final ReadProjectPort port;
     private final ReadProjectStepPort stepPort;
     private final ProjectValidator projectValidator;
+    private final ProjectUserQueryPort projectUserQueryPort;
+    private final ReadProjectStepPort readProjectStepPort;
 
     // todo : filtering - status IN_PROGRESS / COMPLETED
     @Override
@@ -51,5 +55,14 @@ public class ReadProjectService implements ReadProjectUseCase {
     @Override
     public List<ProjectGetResult> getAllProjectsByUserId(Long userId) {
         return List.of();
+    }
+
+    @Override
+    public ProjectDetailResult getProjectDetails(Long projectId) {
+        Project project = projectValidator.findProjectById(projectId);
+        List<ProjectStep> steps = readProjectStepPort.findByProjectId(projectId);
+        List<ProjectUser> users = projectUserQueryPort.findUsersByProjectId(projectId);
+
+        return ProjectDetailResult.of(project, steps, users);
     }
 }

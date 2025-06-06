@@ -12,8 +12,8 @@ public class ProjectStepMapper {
             .projectId(entity.getProject().getId())
             .userId(entity.getUser() != null ? entity.getUser().getId() : null)
             .name(entity.getName())
-            .stepStatus(entity.getStepStatus())
-            .approvalStatus(entity.getApprovalStatus())
+            .stepOrder(entity.getStepOrder())
+            .projectStepStatus(entity.getProjectStepStatus())
             .isDeleted(entity.isDeleted())
             .deletedAt(entity.getDeletedAt())
             .build();
@@ -23,8 +23,8 @@ public class ProjectStepMapper {
         return ProjectStepEntity.builder()
             .stepId(projectStep.getStepId())
             .name(projectStep.getName())
-            .stepStatus(projectStep.getStepStatus())
-            .approvalStatus(projectStep.getApprovalStatus())
+            .stepOrder(projectStep.getStepOrder())
+            .projectStepStatus(projectStep.getProjectStepStatus())
             .isDeleted(projectStep.isDeleted())
             .deletedAt(projectStep.getDeletedAt())
             .build();
