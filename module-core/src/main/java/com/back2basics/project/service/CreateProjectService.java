@@ -44,7 +44,7 @@ public class CreateProjectService implements CreateProjectUseCase {
             .build();
         Project savedProject = saveProjectPort.save(project);
         createDefaultSteps(savedProject.getId());
-        createProjectUsers(project, command);
+        createProjectUsers(savedProject, command);
     }
 
     private void createDefaultSteps(Long projectId) {
