@@ -1,5 +1,6 @@
 package com.back2basics.global.handler;
 
+import static com.back2basics.global.response.code.CommonErrorCode.BAD_CREDENTIALS;
 import static com.back2basics.infra.exception.user.UserErrorCode.MAIL_SEND_FAILED;
 
 import com.back2basics.global.response.code.CommonErrorCode;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mail.MailException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,6 +26,14 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<ErrorResponse>> handleBadCredentials(
+        BadCredentialsException ex) {
+        ErrorCode errorCode = BAD_CREDENTIALS;
+        log.error("BadCredentialsException 발생: {}", ex.getMessage());
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
 
     // 잘못된 json 구조를 body로 전달할 경우
     @ExceptionHandler(com.fasterxml.jackson.databind.JsonMappingException.class)
