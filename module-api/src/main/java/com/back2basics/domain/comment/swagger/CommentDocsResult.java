@@ -49,29 +49,34 @@ public class CommentDocsResult {
     public static final String COMMENT_READ_LIST_SUCCESS = """
         {
           "success": true,
-          "code": "C202",
+          "code": "C204",
           "message": "댓글 목록 조회 완료",
           "data": [
             {
               "id": 1,
               "postId": 1,
-               "author": {
-                 "id": 2,
-                 "username": "johndoe",
-                },
-              "content": "그거 버그 아니고 기능인데요.",
               "parentCommentId": null,
+              "authorIp": "192.168.0.1",
+              "author": {
+                "id": 2,
+                "name": "홍길동"
+              },
+              "content": "그거 버그 아니고 기능인데요.",
               "createdAt": "2024-01-01T10:00:00",
               "updatedAt": "2024-01-01T10:00:00",
               "childComments": [
                 {
                   "id": 2,
                   "postId": 1,
-                  "authorId": 2,
-                  "content": "@홍길동 확인했습니다!",
                   "parentCommentId": 1,
+                  "authorIp": "192.168.0.2",
+                  "author": {
+                    "id": 3,
+                    "name": "홍길동"
+                  },
+                  "content": "@홍길동 확인했습니다!",
                   "createdAt": "2024-01-01T10:05:00",
-                  "updatedAt": "2024-01-01T10:05:00",
+                  "uwpdatedAt": "2024-01-01T10:05:00",
                   "childComments": []
                 }
               ]

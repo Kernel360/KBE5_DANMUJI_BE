@@ -2,6 +2,7 @@ package com.back2basics.domain.question.swagger;
 
 public class QuestionDocsResult {
 
+
     public static final String QUESTION_READ_ONE_SUCCESS = """ 
         {
           "success": true,
@@ -10,13 +11,16 @@ public class QuestionDocsResult {
           "data": {
             "id": 1,
             "postId": 1,
+            "authorIp": "192.168.0.1",               
             "author": {
               "id": 2,
-              "username": "johndoe",
+              "name": "홍길동"
             },
             "content": "질문 내용입니다.",
             "status": "WAITING",
             "createdAt": "2024-01-01T10:00:00",
+            "updatedAt": "2024-01-01T10:30:00",        
+            "deletedAt": null,                         
             "answers": [
               {
                 "id": 100,
@@ -24,7 +28,7 @@ public class QuestionDocsResult {
                 "parentAnswerId": null,
                 "author": {
                   "id": 3,
-                  "username": "janedoe",
+                  "name": "홍길동"
                 },
                 "content": "답변입니다.",
                 "createdAt": "2024-01-01T11:00:00",
@@ -35,6 +39,7 @@ public class QuestionDocsResult {
           }
         }
         """;
+
     public static final String QUESTION_CREATE_REQUEST = """
         {
           "postId": 1,
@@ -51,6 +56,7 @@ public class QuestionDocsResult {
         }
         """;
 
+
     public static final String QUESTION_READ_SUCCESS = """
         {
           "success": true,
@@ -61,13 +67,16 @@ public class QuestionDocsResult {
               {
                 "id": 1,
                 "postId": 1,
+                "authorIp": "192.168.0.1",                
                 "author": {
                   "id": 2,
-                  "username": "johndoe",
-                 },
+                  "name": "홍길동"
+                },
                 "content": "전체 질문 리스트입니다.",
                 "status": "ANSWERED",
-                "createdAt": "2024-01-01T12:00:00"
+                "createdAt": "2024-01-01T12:00:00",
+                "updatedAt": "2024-01-01T12:10:00",         
+                "deletedAt": null                           
               }
             ],
             "pageable": {
@@ -92,7 +101,7 @@ public class QuestionDocsResult {
                 "postId": 1,
                 "author": {
                   "id": 2,
-                  "username": "johndoe",
+                  "name": "홍길동"
                  },
                 "content": "전체 질문 리스트입니다.",
                 "status": "ANSWERED",
