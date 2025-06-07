@@ -2,6 +2,7 @@ package com.back2basics.domain.answer.swagger;
 
 import com.back2basics.domain.answer.dto.request.AnswerCreateRequest;
 import com.back2basics.domain.answer.dto.request.AnswerUpdateRequest;
+import com.back2basics.domain.answer.dto.response.AnswerReadResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,5 +71,17 @@ public interface AnswerApiDocs {
     ResponseEntity<ApiResponse<Void>> deleteAnswer(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "답변 ID", example = "1") @PathVariable Long answerId);
+
+    @Operation(summary = "질문에 대한 답변 조회", description = "질문 ID에 해당하는 모든 답변을 조회합니다.")
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", description = "답변 조회 완료 (AN204)",
+            content = @Content(mediaType = "application/json",
+                examples = @ExampleObject(value = AnswerDocsResult.ANSWER_READ_SUCCESS))
+        )
+    })
+    ResponseEntity<ApiResponse<List<AnswerReadResponse>>> getAnswersByQuestionId(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Parameter(description = "질문 ID", example = "1") @PathVariable Long questionId);
 
 }
