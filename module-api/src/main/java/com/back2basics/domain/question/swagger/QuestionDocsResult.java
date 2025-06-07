@@ -101,7 +101,7 @@ public class QuestionDocsResult {
                 "postId": 1,
                 "author": {
                   "id": 2,
-                  "name": "홍길동",
+                  "name": "홍길동"
                  },
                 "content": "전체 질문 리스트입니다.",
                 "status": "ANSWERED",
