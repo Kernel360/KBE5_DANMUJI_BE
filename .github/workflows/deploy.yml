@@ -23,7 +23,7 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env
 
       - name: 🛠 Build with Gradle
-        run: ./gradlew clean build --exclude-task test
+        run: ./gradlew clean :module-api:buildNeeded --refresh-dependencies -x test
 
       - name: 📤 Upload jar to EC2
         uses: appleboy/scp-action@v0.1.4
