@@ -23,7 +23,8 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env
 
       - name: 🛠 Build with Gradle
-        run: ./gradlew :module-api:buildNeeded --refresh-dependencies -x test
+        # run: ./gradlew :module-api:buildNeeded --refresh-dependencies -x test
+        run: ./gradlew build -x test
 
       - name: 📤 Upload jar to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -33,8 +34,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           # source: build/libs/*.jar
           # target: /home/deploy/app.jar
-          source: module-api/build/libs/*.jar
-          target: /home/deploy/
+          source: module-api/build/libs/module-api-*.jar
+          target: /home/deploy/module-api/build/libs/
 
 
       - name: 🚀 Run deploy.sh on EC2
