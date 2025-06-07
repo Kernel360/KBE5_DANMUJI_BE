@@ -31,8 +31,11 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: build/libs/*.jar
-          target: /home/deploy/app.jar
+          # source: build/libs/*.jar
+          # target: /home/deploy/app.jar
+          source: module-api/build/libs/*.jar
+          target: /home/deploy/
+
 
       - name: 🚀 Run deploy.sh on EC2
         uses: appleboy/ssh-action@v1.0.3
