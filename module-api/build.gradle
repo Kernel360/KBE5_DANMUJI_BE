@@ -42,11 +42,6 @@ dependencies {
 
 bootJar {
     archiveFileName = "${rootProject.name}.jar"
-    manifest {
-        attributes(
-                'Main-Class': 'com.back2basics.DanmujiApplication'
-        )
-    }
 }
 
 tasks.named('test') {
