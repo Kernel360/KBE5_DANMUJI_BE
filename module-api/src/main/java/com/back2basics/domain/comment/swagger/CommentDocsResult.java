@@ -59,7 +59,7 @@ public class CommentDocsResult {
               "authorIp": "192.168.0.1",
               "author": {
                 "id": 2,
-                "username": "johndoe"
+                "name": "홍길동"
               },
               "content": "그거 버그 아니고 기능인데요.",
               "createdAt": "2024-01-01T10:00:00",
@@ -72,11 +72,11 @@ public class CommentDocsResult {
                   "authorIp": "192.168.0.2",
                   "author": {
                     "id": 3,
-                    "username": "janedoe"
+                    "name": "홍길동"
                   },
                   "content": "@홍길동 확인했습니다!",
                   "createdAt": "2024-01-01T10:05:00",
-                  "updatedAt": "2024-01-01T10:05:00",
+                  "uwpdatedAt": "2024-01-01T10:05:00",
                   "childComments": []
                 }
               ]
