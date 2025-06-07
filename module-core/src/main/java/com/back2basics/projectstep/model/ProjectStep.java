@@ -1,0 +1,76 @@
+package com.back2basics.projectstep.model;
+
+import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
+import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+public class ProjectStep {
+
+    private final Long stepId;
+
+    private String name;
+
+    private final Long projectId;
+
+    private final Long userId;
+
+    private Integer stepOrder;
+
+    private ProjectStepStatus projectStepStatus;
+
+    private boolean isDeleted;
+
+    private LocalDateTime deletedAt;
+
+    @Builder
+    public ProjectStep(Long stepId, String name, Long projectId, Long userId,
+        Integer stepOrder, ProjectStepStatus projectStepStatus, boolean isDeleted,
+        LocalDateTime deletedAt) {
+        this.stepId = stepId;
+        this.name = name;
+        this.projectId = projectId;
+        this.userId = userId;
+        this.stepOrder = stepOrder;
+        this.projectStepStatus = projectStepStatus;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+    }
+
+    public static ProjectStep create(String name, Long projectId, Long userId,
+        Integer stepOrder, ProjectStepStatus projectStepStatus) {
+        return ProjectStep.builder()
+            .name(name)
+            .projectId(projectId)
+            .userId(userId)
+            .stepOrder(stepOrder)
+            .projectStepStatus(projectStepStatus)
+            .isDeleted(false)
+            .deletedAt(null)
+            .build();
+    }
+
+    public void update(UpdateProjectStepCommand command) {
+        this.name = command.getName();
+//        this.stepOrder = command.getStepOrder();
+        this.projectStepStatus = command.getProjectStepStatus();
+    }
+
+    // todo: 멘토링 때 동사 현재형으로 쓰라고 헀었나 .. 기억 안남 .. 다시 물어보기
+    public void softDelete() {
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    /* todo: 승인자랑 일치하는 지는 프론트에서 하시고 userid랑 로그인 id랑 같을때만 승인 버튼 보이게
+        switch문으로 해도 괜찮을 듯 (리팩토링) */
+//    public void approvalStatus(ProjectFeedbackStepStatus projectFeedbackStepStatus) {
+//        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
+//        if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.APPROVED) {
+//            this.projectStepStatus = ProjectStepStatus.IN_PROGRESS;
+//        } else if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.REJECTED) {
+//            this.projectStepStatus = ProjectStepStatus.PENDING;
+//        }
+//    }
+}

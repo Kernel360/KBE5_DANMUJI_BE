@@ -5,6 +5,12 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### .env ###
+.env
+
+### query dsl Q class ###
+**/generated/
+
 ### STS ###
 .apt_generated
 .classpath

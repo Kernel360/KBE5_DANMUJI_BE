@@ -1,5 +1,14 @@
+plugins {
+    id 'org.springframework.boot' version '3.3.0'
+}
+
 dependencies {
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+bootJar {
+    enabled = false
 }
 
 jar {

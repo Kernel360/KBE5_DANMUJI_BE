@@ -1,0 +1,68 @@
+package com.back2basics.project.service;
+
+import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.project.model.Project;
+import com.back2basics.project.port.in.ReadProjectUseCase;
+import com.back2basics.project.port.out.ReadProjectPort;
+import com.back2basics.project.service.result.ProjectDetailResult;
+import com.back2basics.project.service.result.ProjectGetResult;
+import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.projectstep.port.out.ReadProjectStepPort;
+import com.back2basics.projectuser.model.ProjectUser;
+import com.back2basics.projectuser.port.out.ProjectUserQueryPort;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class ReadProjectService implements ReadProjectUseCase {
+
+    private final ReadProjectPort port;
+    private final ReadProjectStepPort stepPort;
+    private final ProjectValidator projectValidator;
+    private final ProjectUserQueryPort projectUserQueryPort;
+    private final ReadProjectStepPort readProjectStepPort;
+
+    // todo : filtering - status IN_PROGRESS / COMPLETED
+    @Override
+    public ProjectGetResult getProjectById(Long id) {
+        Project project = projectValidator.findProjectById(id);
+        List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
+        project.setSteps(steps);
+        return ProjectGetResult.toResult(project);
+    }
+
+    @Override
+    public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
+        Page<Project> projects = port.findAll(pageable);
+        for (Project project : projects) {
+            List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
+            project.setSteps(steps);
+        }
+        return projects
+            .map(ProjectGetResult::toResult);
+    }
+
+    @Override
+    public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
+        return port.searchByKeyword(keyword, pageable)
+            .map(ProjectGetResult::toResult);
+    }
+
+    @Override
+    public List<ProjectGetResult> getAllProjectsByUserId(Long userId) {
+        return List.of();
+    }
+
+    @Override
+    public ProjectDetailResult getProjectDetails(Long projectId) {
+        Project project = projectValidator.findProjectById(projectId);
+        List<ProjectStep> steps = readProjectStepPort.findByProjectId(projectId);
+        List<ProjectUser> users = projectUserQueryPort.findUsersByProjectId(projectId);
+
+        return ProjectDetailResult.of(project, steps, users);
+    }
+}

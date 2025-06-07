@@ -1,8 +1,7 @@
 rootProject.name = 'danmuji'
 include 'module-core'
-include 'module-adapter-web'
-include 'module-adapter-jpa'
-include 'module-adapter-batch'
-include 'module-application'
+include 'module-batch'
+include 'module-api'
 include 'module-common'
+include 'module-infra'
 

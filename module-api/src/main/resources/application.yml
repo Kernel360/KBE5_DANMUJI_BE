@@ -1,0 +1,111 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: ${ACTIVE_PROFILES}
+  application:
+    name: module-api
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+  # SMTP
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_EMAIL}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+# Swagger 설정
+# http://localhost:8080/danmuji-ui.html
+springdoc:
+  swagger-ui:
+    path: /danmuji-ui.html
+    operations-sorter: alpha                    # api 알바펫 순 정렬
+    tags-sorter: alpha                          # 태그 알파벳 순 정렬
+    disable-swagger-default-url: true           # Swagger UI 첫 로딩 시 default URL 사용 안함
+    display-query-params-without-oauth2: true   # OAuth2 미사용 시에도 query 파라미터 표시
+    doc-expansion: none                         # api 목록들 상태 -> 접힘으로 설정
+
+    api-docs:
+      path: /api-docs
+
+  # 기본 요청/응답 - application/json
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+  jackson:
+    date-format: yyyy-MM-dd
+    serialization:
+      write-dates-as-timestamps: false
+jwt:
+  secret: ${JWT_SECRET}
+  access: ${JWT_ACCESS_EXPIRATION}
+  refresh: ${JWT_REFRESH_EXPIRATION}
+
+
+#properties
+#props:
+#  reset-password-url: {프론트 배포 서버 url}
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: release
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        highlight_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+
+logging:
+  level:
+    org.hibernate.SQL: info
