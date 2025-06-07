@@ -17,7 +17,11 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-
+        
+    - name: 📝 Create .env file
+      run: |
+        echo "${{ secrets.ENV_FILE }}" > .env
+        
     - name: 🛠 Build with Gradle
       run: ./gradlew clean build --exclude-task test
 
