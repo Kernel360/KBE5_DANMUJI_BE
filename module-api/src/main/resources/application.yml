@@ -42,7 +42,7 @@ jwt:
   secret: ${JWT_SECRET}
   access: ${JWT_ACCESS_EXPIRATION}
   refresh: ${JWT_REFRESH_EXPIRATION}
-  
+
 ---
 
 spring:
