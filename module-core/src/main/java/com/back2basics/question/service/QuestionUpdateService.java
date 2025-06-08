@@ -21,6 +21,6 @@ public class QuestionUpdateService implements QuestionUpdateUseCase {
         questionValidator.validateAuthor(question, userId);
 
         question.updateContent(command.getContent(), userIp);
-        questionUpdatePort.update(question, userIp);
+        questionUpdatePort.update(question);
     }
 }

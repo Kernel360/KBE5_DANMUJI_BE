@@ -18,7 +18,7 @@ public class QuestionStatusUpdateService implements QuestionStatusUpdateUseCase 
     public void markAsAnswered(Long userId, String userIp, Long questionId) {
         Question question = questionValidator.findById(questionId);
         question.markAsAnswered();
-        questionUpdatePort.update(question, userIp);
+        questionUpdatePort.update(question);
     }
 
     @Override
@@ -26,6 +26,6 @@ public class QuestionStatusUpdateService implements QuestionStatusUpdateUseCase 
         Question question = questionValidator.findById(questionId);
         questionValidator.validateAuthor(question, userId);
         question.markAsResolved();
-        questionUpdatePort.update(question, userIp);
+        questionUpdatePort.update(question);
     }
 }
