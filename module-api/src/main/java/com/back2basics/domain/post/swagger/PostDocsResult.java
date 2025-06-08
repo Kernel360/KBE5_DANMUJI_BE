@@ -34,6 +34,7 @@ public class PostDocsResult {
         }
         """;
 
+
     public static final String POST_READ_SUCCESS = """
         {
           "success": true,
@@ -43,8 +44,7 @@ public class PostDocsResult {
             "postId": 1,
             "author": {
               "id": 1,
-              "username": "hongildong",
-              "name": "홍길동",
+              "name": "홍길동"
             },
             "project": {
               "id": 1,
@@ -73,6 +73,7 @@ public class PostDocsResult {
           }
         }
         """;
+
     public static final String POST_NOT_FOUND = """
         {
           "success": false,
@@ -81,6 +82,7 @@ public class PostDocsResult {
           "data": null
         }
         """;
+
 
     public static final String POST_READ_ALL_SUCCESS = """
         {
@@ -93,8 +95,7 @@ public class PostDocsResult {
                 "postId": 1,
                 "author": {
                   "id": 1,
-                  "username": "hongildong",
-                  "name": "홍길동",
+                  "name": "홍길동"
                 },
                 "project": {
                   "id": 1,

@@ -23,6 +23,6 @@ public class CommentUpdateService implements CommentUpdateUseCase {
         commentValidator.isAuthor(comment, userId);
 
         comment.update(command, userIp);
-        commentUpdatePort.update(comment, userIp);
+        commentUpdatePort.update(comment);
     }
 }

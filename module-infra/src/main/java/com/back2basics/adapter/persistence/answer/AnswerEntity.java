@@ -3,7 +3,6 @@ package com.back2basics.adapter.persistence.answer;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.question.QuestionEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
-import com.back2basics.answer.model.Answer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -59,10 +58,5 @@ public class AnswerEntity extends BaseTimeEntity {
 
     public void assignQuestion(QuestionEntity question) {
         this.question = question;
-    }
-
-    public void update(Answer answer) {
-        this.authorIp = answer.getAuthorIp();
-        this.content = answer.getContent();
     }
 }

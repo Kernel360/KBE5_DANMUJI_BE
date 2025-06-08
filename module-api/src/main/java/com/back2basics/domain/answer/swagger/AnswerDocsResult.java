@@ -43,4 +43,28 @@ public class AnswerDocsResult {
         }
         """;
 
+    public static final String ANSWER_READ_SUCCESS = """
+        {
+          "success": true,
+          "code": "AN204",
+          "message": "답변 조회 완료",
+          "data": [
+            {
+              "id": 100,
+              "questionId": 1,
+              "parentId": null,
+              "authorIp": "192.168.0.1",
+              "author": {
+                "id": 3,
+                "name": "홍길동"
+              },
+              "content": "답변입니다.",
+              "createdAt": "2024-01-01T11:00:00",
+              "updatedAt": null,
+              "children": []
+            }
+          ]
+        }
+        """;
+
 }

@@ -44,7 +44,7 @@ public class AnswerCreateService implements AnswerCreateUseCase {
 
         Question question = questionValidator.findById(command.getQuestionId());
         question.markAsAnswered();
-        questionUpdatePort.update(question, userIp);
+        questionUpdatePort.update(question);
 
         return answerCreatePort.save(answer);
     }

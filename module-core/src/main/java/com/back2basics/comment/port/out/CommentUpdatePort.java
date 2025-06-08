@@ -4,5 +4,5 @@ import com.back2basics.comment.model.Comment;
 
 public interface CommentUpdatePort {
 
-    void update(Comment comment, String userIp);
+    void update(Comment comment);
 }

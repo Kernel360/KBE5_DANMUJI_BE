@@ -2,7 +2,6 @@ package com.back2basics.adapter.persistence.question;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
-import com.back2basics.question.model.Question;
 import com.back2basics.question.model.QuestionStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,16 +55,4 @@ public class QuestionEntity extends BaseTimeEntity {
         this.content = content;
         this.status = status;
     }
-
-    public void update(Question question, String userIp) {
-        this.authorIp = userIp;
-        this.content = question.getContent();
-        this.status = question.getStatus();
-    }
-
-    public void updateStatus(QuestionStatus status, String userIp) {
-        this.status = status;
-        this.authorIp = userIp;
-    }
-
 }
