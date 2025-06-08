@@ -46,7 +46,6 @@ jwt:
 server:
   forward-headers-strategy: native
 ---
-
 spring:
   config:
     activate:
@@ -73,8 +72,6 @@ spring:
     date-format: yyyy-MM-dd
     serialization:
       write-dates-as-timestamps: false
-
-
 
 #properties
 #props:
