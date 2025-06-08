@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public class ProjectUser {
 
-    // todo: 이게 안됨. 근데 일단 도메인이 이 port를 알면 안되나 ?
+    // todo: 어노테이션 사용해도 이게 안됨 -> NPE. 근데 일단 도메인이 이 port를 알면 안되나 ?
 //    private static UserQueryPort userQueryPort;
 //    private static CompanyValidator companyValidator;
     private final Long id;
@@ -45,18 +45,12 @@ public class ProjectUser {
             .build();
     }
 
-    //todo: 테스트 해보고 되면 개발사, 고객사 create로 분리
-    public static List<ProjectUser> createProjectUser(Project project, User developer, User client, Company developerCompany, Company clientCompany, List<User> developers, List<User> clients) {
+    //todo: 개발사, 고객사 create로 분리하는게 좋을 지
+    public static List<ProjectUser> createProjectUser(Project project, User developer, User client,
+        Company developerCompany, Company clientCompany, List<User> developers,
+        List<User> clients) {
 
-//        User developer = userQueryPort.findById(command.getDeveloperId());
-//        User client = userQueryPort.findById(command.getClientId());
-//        Company developerCompany = companyValidator.findCompany(command.getDevelopCompanyId());
-//        Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
-//
-//        List<User> developers = userQueryPort.findAllByCompanyId(command.getDevelopCompanyId());
-//        List<User> clients = userQueryPort.findAllByCompanyId(command.getClientCompanyId());
-
-        // todo: bulider 두번하는거 리팩토링하기 , it 대신 다른 변수명
+        // todo: bulider 두번하는거 리팩토링하기 , it 대신 다른 변수명 사용
         List<ProjectUser> developerUsers = developers.stream()
             .map(it -> ProjectUser.builder()
                 .project(project)

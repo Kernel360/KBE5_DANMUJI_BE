@@ -32,7 +32,6 @@ public class CreateProjectService implements CreateProjectUseCase {
         List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
 
     // todo: service 에서 build() 하는 것은 객체지향적이지 못함 -> 나중에 도메인에 메서드 추가
-    // todo: save project  -> create step, userByProject(자동생성인데 manager, member 구분 enum 추가하려면 entity 생성 해주는게 맞는듯. 나중에 고민)
     @Override
     @Transactional
     public void createProject(ProjectCreateCommand command) {
@@ -45,17 +44,17 @@ public class CreateProjectService implements CreateProjectUseCase {
             .build();
         Project savedProject = saveProjectPort.save(project);
         createDefaultSteps(savedProject.getId());
-//        createProjectUsers(savedProject, command);
 
+        // todo: 이걸 유진님 코드 처럼 메서드를 만들어서 해야할 지. 너무 지저분
         User developer = userQueryPort.findById(command.getDeveloperId());
         User client = userQueryPort.findById(command.getClientId());
         Company developerCompany = companyValidator.findCompany(command.getDevelopCompanyId());
         Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
-
         List<User> developers = userQueryPort.findAllByCompanyId(command.getDevelopCompanyId());
         List<User> clients = userQueryPort.findAllByCompanyId(command.getClientCompanyId());
 
-        List<ProjectUser> projectUsers = ProjectUser.createProjectUser(savedProject, developer, client, developerCompany, clientCompany, developers, clients);
+        List<ProjectUser> projectUsers = ProjectUser.createProjectUser(savedProject, developer,
+            client, developerCompany, clientCompany, developers, clients);
         saveProjectUserPort.saveAll(projectUsers);
     }
 
@@ -73,21 +72,4 @@ public class CreateProjectService implements CreateProjectUseCase {
             saveProjectStepPort.save(step);
         }
     }
-
-//    private void createProjectUsers(Project project, ProjectCreateCommand command) {
-//        User developer = userQueryPort.findById(command.getDeveloperId());
-//        User client = userQueryPort.findById(command.getClientId());
-//        Company developerCompany = companyValidator.findCompany(command.getDevelopCompanyId());
-//        Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
-//
-//        List<User> developers = userQueryPort.findAllByCompanyId(command.getDevelopCompanyId());
-//        List<User> clients = userQueryPort.findAllByCompanyId(command.getClientCompanyId());
-//
-//        saveProjectUserPort.save(
-//            ProjectUser.create(project, developer, developerCompany, UserType.MANAGER,
-//                CompanyType.DEVELOPER));
-//        saveProjectUserPort.save(
-//            ProjectUser.create(project, client, clientCompany, UserType.MANAGER,
-//                CompanyType.CLIENT));
-//    }
 }
