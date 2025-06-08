@@ -3,6 +3,7 @@ package com.back2basics.projectuser.model;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.project.model.Project;
+import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
 import java.util.ArrayList;
@@ -80,6 +81,13 @@ public class ProjectUser {
     }
 
     // todo: 담당자 변경 (userType 변경)
+    public void toManager() {
+        this.userType = UserType.MANAGER;
+    }
+
+    public void toMember() {
+        this.userType = UserType.MEMBER;
+    }
 
     // todo: 회사 변경 (등록된 회사 삭제, 새로운 회사로 등록 또는 변경)
 }
