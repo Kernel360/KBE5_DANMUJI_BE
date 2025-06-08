@@ -32,10 +32,13 @@ public class PostCreateService implements PostCreateUseCase {
         // todo : 이것도 통일해야할 것 같습니다.
         User user = userQueryPort.findById(userId);
         Project project = projectValidator.findProjectById(command.getProjectId());
-        Long parentPostId = postValidator.findPost(command.getParentId()).getId();
+
+        if (command.getParentId() != null) {
+            postValidator.findPost(command.getParentId()).getId();
+        }
 
         Post post = Post.builder()
-            .parentId(parentPostId)
+            .parentId(command.getParentId())
             .authorIp(userIp)
             .author(user)
             .project(project)
