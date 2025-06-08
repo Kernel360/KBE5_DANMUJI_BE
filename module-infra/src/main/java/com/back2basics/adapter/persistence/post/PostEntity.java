@@ -84,19 +84,5 @@ public class PostEntity extends BaseTimeEntity {
         this.project = project;
         this.completedAt = completedAt;
     }
-
-    public void update(String title, String authorIp, String content, PostType type,
-        PostStatus status,
-        int priority, LocalDateTime completedAt, boolean isDelete) {
-        this.authorIp = authorIp;
-        this.title = title;
-        this.content = content;
-        this.type = type;
-        this.status = status;
-        this.priority = priority;
-        this.completedAt = completedAt;
-        if (isDelete) {
-            this.markDeleted();
-        }
-    }
+    
 }

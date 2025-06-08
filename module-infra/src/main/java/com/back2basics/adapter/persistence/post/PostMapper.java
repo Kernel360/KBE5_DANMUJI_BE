@@ -56,17 +56,5 @@ public class PostMapper {
 
         return entity;
     }
-
-    public void updateEntityFields(PostEntity entity, Post domain) {
-        entity.update(
-            domain.getAuthorIp(),
-            domain.getTitle(),
-            domain.getContent(),
-            domain.getType(),
-            domain.getStatus(),
-            domain.getPriority(),
-            domain.getCompletedAt(),
-            domain.isDelete()
-        );
-    }
+    
 }
