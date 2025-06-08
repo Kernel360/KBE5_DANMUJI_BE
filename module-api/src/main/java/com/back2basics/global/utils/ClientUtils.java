@@ -27,6 +27,11 @@ public class ClientUtils {
             ip = ip.split(",")[0].trim();
         }
 
+        // IPv6 형식 중 IPv4-mapped address (::ffff:192.0.2.128) 제거
+        if (ip != null && ip.startsWith("::ffff:")) {
+            ip = ip.substring(7);
+        }
+
         return ip;
     }
 }
