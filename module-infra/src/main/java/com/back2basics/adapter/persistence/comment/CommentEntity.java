@@ -59,9 +59,4 @@ public class CommentEntity extends BaseTimeEntity {
     public void assignPost(PostEntity post) {
         this.post = post;
     }
-
-    public void updateContent(String content, String userIp) {
-        this.authorIp = userIp;
-        this.content = content;
-    }
 }
