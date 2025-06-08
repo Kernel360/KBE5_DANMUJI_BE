@@ -43,6 +43,8 @@ jwt:
   access: ${JWT_ACCESS_EXPIRATION}
   refresh: ${JWT_REFRESH_EXPIRATION}
 
+server:
+  forward-headers-strategy: native
 ---
 
 spring:
