@@ -1,8 +1,10 @@
 package com.back2basics.question.port.out;
 
+import com.back2basics.question.model.Question;
+
 public interface QuestionStatusUpdatePort {
 
-    void markAsAnswered(Long questionId, String userIp);
+    void markAsAnswered(Question question);
 
-    void markAsResolved(Long questionId, String userIp);
+    void markAsResolved(Question question);
 }

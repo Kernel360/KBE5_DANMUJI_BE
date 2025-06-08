@@ -20,11 +20,11 @@ jobs:
 
       - name: 📝 Create .env file
         run: |
-          mkdir -p module-api/build/libs                           
-          echo "${{ secrets.ENV_FILE }}" > module-api/build/libs/.env 
+          echo "${{ secrets.ENV_FILE }}" > .env
 
       - name: 🛠 Build with Gradle
         run: ./gradlew :module-api:buildNeeded --refresh-dependencies -x test
+        # run: ./gradlew build -x test
 
       - name: 📤 Upload jar to EC2
         uses: appleboy/scp-action@v0.1.4
