@@ -66,15 +66,16 @@ public class SecurityConfig {
             .build();
     }
 
-    // TODO: Frontend CORS 설정에 맞게 수정 필요
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-            List.of("https://danmuji.site", "https://www.danmuji.site",
-                "https://api.danmuji.site", "https://danmuji-peach.vercel.app"));
-        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedOrigins(List.of(
+            "https://danmuji.site",
+            "https://www.danmuji.site",
+            "http://localhost:5173"
+        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
