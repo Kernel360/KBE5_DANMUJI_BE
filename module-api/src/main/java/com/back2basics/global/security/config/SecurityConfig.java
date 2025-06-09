@@ -97,7 +97,7 @@ public class SecurityConfig {
             "Access-Control-Allow-Origin",
             "Access-Control-Allow-Credentials"
         ));
-        
+
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
