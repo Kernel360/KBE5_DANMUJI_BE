@@ -66,15 +66,38 @@ public class SecurityConfig {
             .build();
     }
 
-    // TODO: Frontend CORS 설정에 맞게 수정 필요
+    // todo : Id, Password 인증 관련 필터 설정
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true); // 인증 정보 포함 허용 (Cookies 등)
+        configuration.setAllowedOrigins(List.of(
+            "https://danmuji.site",
+            "https://www.danmuji.site",
+            "http://localhost:5173"
+        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        configuration.setAllowedHeaders(List.of(
+            "Authorization",
+            "Content-Type",
+            "X-Requested-With",
+            "Accept",
+            "Origin",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
+        ));
+
+        configuration.setAllowCredentials(true);
+
+        configuration.setExposedHeaders(List.of(
+            "Authorization",
+            "authorization",
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Credentials"
+        ));
+
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
