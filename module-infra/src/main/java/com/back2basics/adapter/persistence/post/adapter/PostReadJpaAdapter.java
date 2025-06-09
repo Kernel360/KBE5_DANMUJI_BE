@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
+import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.adapter.persistence.comment.CommentMapper;
@@ -41,9 +42,10 @@ public class PostReadJpaAdapter implements PostReadPort {
 
     @Override
     public Page<Post> findAllWithPaging(Long projectId, Pageable pageable) {
-        // 페이징 조회
-        List<Post> posts = queryFactory
-            .selectFrom(postEntity)
+        // id 페이징
+        List<Long> ids = queryFactory
+            .select(postEntity.id)
+            .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
                 postEntity.project.id.eq(projectId)
@@ -51,6 +53,14 @@ public class PostReadJpaAdapter implements PostReadPort {
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
+            .fetch();
+
+        // id로 fetch join
+        List<Post> posts = queryFactory
+            .selectFrom(postEntity)
+            .join(postEntity.author, userEntity).fetchJoin()
+            .where(postEntity.id.in(ids))
+            .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
             .map(mapper::toDomain)
@@ -60,10 +70,14 @@ public class PostReadJpaAdapter implements PostReadPort {
         Long total = queryFactory
             .select(postEntity.count())
             .from(postEntity)
-            .where(postEntity.deletedAt.isNull())
+            .where(
+                postEntity.deletedAt.isNull(),
+                postEntity.project.id.eq(projectId)
+            )
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
     }
+
 
 }
