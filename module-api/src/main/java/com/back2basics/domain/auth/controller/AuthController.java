@@ -31,7 +31,7 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<Void>> login(@RequestBody LoginRequest request,
+    public ResponseEntity<?> login(@RequestBody LoginRequest request,
         HttpServletResponse response) {
         TokenPair tokenPair = authService.login(request);
 
@@ -42,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout(
+    public ResponseEntity<?> logout(
         @CookieValue(value = "refreshToken", required = false) String refreshToken,
         HttpServletRequest request, HttpServletResponse response) {
 
@@ -56,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResponse<String>> reissue(
+    public ResponseEntity<?> reissue(
         HttpServletRequest request, HttpServletResponse response,
         @CookieValue(name = "refreshToken") String refreshToken) throws IOException {
         String accessToken = jwtTokenProvider.resolveAccessToken(request);
