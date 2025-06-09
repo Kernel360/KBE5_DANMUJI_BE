@@ -1,10 +1,10 @@
 package com.back2basics.adapter.persistence.comment.adapter;
 
 import static com.back2basics.adapter.persistence.comment.QCommentEntity.commentEntity;
+import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.comment.CommentEntity;
-import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
 import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentReadPort;
@@ -18,13 +18,19 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CommentReadJpaAdapter implements CommentReadPort {
 
-    private final CommentEntityRepository commentEntityRepository;
     private final CommentMapper mapper;
     private final JPAQueryFactory queryFactory;
 
     @Override
     public Optional<Comment> findById(Long id) {
-        return commentEntityRepository.findById(id).map(mapper::toDomain);
+        CommentEntity entity = queryFactory
+            .selectFrom(commentEntity)
+            .join(commentEntity.author, userEntity).fetchJoin()
+            .join(commentEntity.post, postEntity).fetchJoin()
+            .where(commentEntity.id.eq(id))
+            .fetchOne();
+
+        return Optional.ofNullable(entity).map(mapper::toDomain);
     }
 
     @Override
@@ -32,6 +38,7 @@ public class CommentReadJpaAdapter implements CommentReadPort {
         List<CommentEntity> commentEntities = queryFactory
             .selectFrom(commentEntity)
             .join(commentEntity.author, userEntity).fetchJoin()
+            .join(commentEntity.post, postEntity).fetchJoin()
             .where(commentEntity.post.id.eq(postId))
             .fetch();
 
