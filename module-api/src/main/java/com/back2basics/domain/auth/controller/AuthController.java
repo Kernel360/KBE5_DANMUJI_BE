@@ -35,6 +35,7 @@ public class AuthController {
         HttpServletResponse response) {
         TokenPair tokenPair = authService.login(request);
 
+        response.addHeader("Access-Control-Expose-Headers", "Authorization");
         response.setHeader("Authorization", "Bearer " + tokenPair.accessToken());
         response.addCookie(cookieUtil.create(tokenPair.refreshToken()));
 
