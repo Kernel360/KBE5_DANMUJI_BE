@@ -1,5 +1,8 @@
 package com.back2basics.adapter.persistence.question.adapter;
 
+import static com.back2basics.adapter.persistence.question.QQuestionEntity.questionEntity;
+import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
+
 import com.back2basics.adapter.persistence.question.QuestionEntity;
 import com.back2basics.adapter.persistence.question.QuestionEntityRepository;
 import com.back2basics.adapter.persistence.question.QuestionMapper;
@@ -7,9 +10,13 @@ import com.back2basics.infra.exception.question.QuestionErrorCode;
 import com.back2basics.infra.exception.question.QuestionException;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.out.QuestionReadPort;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -17,27 +24,95 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class QuestionReadJpaAdapter implements QuestionReadPort {
 
+    private final JPAQueryFactory queryFactory;
     private final QuestionEntityRepository questionRepository;
     private final QuestionMapper mapper;
 
     @Override
     public Optional<Question> findById(Long id) {
-        QuestionEntity entity = questionRepository.findById(id)
-            .orElseThrow(() -> new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND));
+        QuestionEntity entity = queryFactory
+            .selectFrom(questionEntity)
+            .join(questionEntity.author, userEntity).fetchJoin()
+            .where(questionEntity.id.eq(id))
+            .fetchOne();
+
+        if (entity == null) {
+            throw new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND);
+        }
 
         return Optional.of(mapper.toDomain(entity));
     }
 
     @Override
     public Page<Question> findAllByPostId(Long postId, Pageable pageable) {
-        return questionRepository.findAllQuestionsByPostId(postId, pageable)
-            .map(mapper::toDomain);
+        // id로 페이징
+        List<Long> ids = queryFactory
+            .select(questionEntity.id)
+            .from(questionEntity)
+            .where(questionEntity.postId.eq(postId))
+            .orderBy(questionEntity.createdAt.desc())
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        if (ids.isEmpty()) { // 하나도 없을 경우
+            return Page.empty(pageable);
+        }
+
+        // id로 fetch join
+        List<Question> questions = queryFactory
+            .selectFrom(questionEntity)
+            .join(questionEntity.author, userEntity).fetchJoin()
+            .where(questionEntity.id.in(ids))
+            .orderBy(questionEntity.createdAt.desc())
+            .fetch()
+            .stream()
+            .map(mapper::toDomain)
+            .collect(Collectors.toList());
+
+        // 카운트 쿼리
+        long total = queryFactory
+            .select(questionEntity.count())
+            .from(questionEntity)
+            .where(questionEntity.postId.eq(postId))
+            .fetchOne();
+
+        return new PageImpl<>(questions, pageable, total);
     }
 
     @Override
     public Page<Question> findAll(Pageable pageable) {
-        return questionRepository.findAllNotDeleted(pageable)
-            .map(mapper::toDomain);
+        // id로 페이징
+        List<Long> ids = queryFactory
+            .select(questionEntity.id)
+            .from(questionEntity)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .orderBy(questionEntity.createdAt.desc())
+            .fetch();
+
+        if (ids.isEmpty()) {
+            return new PageImpl<>(List.of(), pageable, 0);
+        }
+
+        // id로 fetch join
+        List<Question> questions = queryFactory
+            .selectFrom(questionEntity)
+            .join(questionEntity.author, userEntity).fetchJoin()
+            .where(questionEntity.id.in(ids))
+            .orderBy(questionEntity.createdAt.desc())
+            .fetch()
+            .stream()
+            .map(mapper::toDomain)
+            .collect(Collectors.toList());
+
+        // 카운트 쿼리
+        long total = queryFactory
+            .select(questionEntity.count())
+            .from(questionEntity)
+            .fetchOne();
+
+        return new PageImpl<>(questions, pageable, total);
     }
 }
 
