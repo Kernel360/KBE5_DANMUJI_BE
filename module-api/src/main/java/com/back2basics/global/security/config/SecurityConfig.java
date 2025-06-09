@@ -66,6 +66,8 @@ public class SecurityConfig {
             .build();
     }
 
+    // todo : Id, Password 인증 관련 필터 설정
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
