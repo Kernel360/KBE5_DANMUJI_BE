@@ -3,10 +3,7 @@ package com.back2basics.adapter.persistence.post.adapter;
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
-import com.back2basics.adapter.persistence.comment.CommentEntityRepository;
-import com.back2basics.adapter.persistence.comment.CommentMapper;
 import com.back2basics.adapter.persistence.post.PostEntity;
-import com.back2basics.adapter.persistence.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.infra.exception.post.PostErrorCode;
 import com.back2basics.infra.exception.post.PostException;
@@ -26,16 +23,20 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class PostReadJpaAdapter implements PostReadPort {
 
-    private final PostEntityRepository postRepository;
-    private final CommentEntityRepository commentRepository;
     private final JPAQueryFactory queryFactory;
     private final PostMapper mapper;
-    private final CommentMapper commentMapper;
 
     @Override
     public Optional<Post> findById(Long id) {
-        PostEntity entity = postRepository.findById(id)
-            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
+        PostEntity entity = queryFactory
+            .selectFrom(postEntity)
+            .join(postEntity.author, userEntity).fetchJoin()
+            .where(postEntity.id.eq(id))
+            .fetchOne();
+
+        if (entity == null) {
+            throw new PostException(PostErrorCode.POST_NOT_FOUND);
+        }
 
         return Optional.of(mapper.toDomain(entity));
     }
@@ -75,6 +76,13 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.project.id.eq(projectId)
             )
             .fetchOne();
+
+        // Unboxing of 'total' may produce 'NullPointerException'
+        // total이 null일 수 있으며 그럴 경우 카운트쿼리가 결과를 반환하지 못해서
+        // NPE 날 수 있다는 경고에 의한 조건 추가
+        if (total == null) {
+            total = 0L;
+        }
 
         return new PageImpl<>(posts, pageable, total);
     }

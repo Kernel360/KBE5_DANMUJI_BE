@@ -71,11 +71,18 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
             .collect(Collectors.toList());
 
         // 카운트 쿼리
-        long total = queryFactory
+        Long total = queryFactory
             .select(questionEntity.count())
             .from(questionEntity)
             .where(questionEntity.postId.eq(postId))
             .fetchOne();
+
+        // Unboxing of 'total' may produce 'NullPointerException'
+        // total이 null일 수 있으며 그럴 경우 카운트쿼리가 결과를 반환하지 못해서
+        // NPE 날 수 있다는 경고에 의한 조건 추가
+        if (total == null) {
+            total = 0L;
+        }
 
         return new PageImpl<>(questions, pageable, total);
     }
@@ -107,10 +114,14 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
             .collect(Collectors.toList());
 
         // 카운트 쿼리
-        long total = queryFactory
+        Long total = queryFactory
             .select(questionEntity.count())
             .from(questionEntity)
             .fetchOne();
+        
+        if (total == null) {
+            total = 0L;
+        }
 
         return new PageImpl<>(questions, pageable, total);
     }
