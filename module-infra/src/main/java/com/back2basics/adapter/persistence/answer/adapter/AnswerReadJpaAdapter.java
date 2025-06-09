@@ -5,7 +5,6 @@ import static com.back2basics.adapter.persistence.question.QQuestionEntity.quest
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.answer.AnswerEntity;
-import com.back2basics.adapter.persistence.answer.AnswerEntityRepository;
 import com.back2basics.adapter.persistence.answer.AnswerMapper;
 import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.out.AnswerReadPort;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class AnswerReadJpaAdapter implements AnswerReadPort {
 
     private final JPAQueryFactory queryFactory;
-    private final AnswerEntityRepository answerRepository;
     private final AnswerMapper mapper;
 
     @Override
@@ -29,7 +27,10 @@ public class AnswerReadJpaAdapter implements AnswerReadPort {
             .selectFrom(answerEntity)
             .join(answerEntity.author, userEntity).fetchJoin()
             .join(answerEntity.question, questionEntity).fetchJoin()
-            .where(answerEntity.id.eq(id))
+            .where(
+                answerEntity.id.eq(id),
+                answerEntity.deletedAt.isNull()
+            )
             .fetchOne();
 
         return Optional.ofNullable(entity).map(mapper::toDomain);
@@ -41,7 +42,10 @@ public class AnswerReadJpaAdapter implements AnswerReadPort {
             .selectFrom(answerEntity)
             .join(answerEntity.author, userEntity).fetchJoin()
             .join(answerEntity.question, questionEntity).fetchJoin()
-            .where(answerEntity.question.id.eq(questionId))
+            .where(
+                answerEntity.question.id.eq(questionId),
+                answerEntity.deletedAt.isNull()
+            )
             .fetch();
 
         return entities.stream()

@@ -4,7 +4,6 @@ import static com.back2basics.adapter.persistence.question.QQuestionEntity.quest
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.question.QuestionEntity;
-import com.back2basics.adapter.persistence.question.QuestionEntityRepository;
 import com.back2basics.adapter.persistence.question.QuestionMapper;
 import com.back2basics.infra.exception.question.QuestionErrorCode;
 import com.back2basics.infra.exception.question.QuestionException;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Component;
 public class QuestionReadJpaAdapter implements QuestionReadPort {
 
     private final JPAQueryFactory queryFactory;
-    private final QuestionEntityRepository questionRepository;
     private final QuestionMapper mapper;
 
     @Override
@@ -33,7 +31,10 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
         QuestionEntity entity = queryFactory
             .selectFrom(questionEntity)
             .join(questionEntity.author, userEntity).fetchJoin()
-            .where(questionEntity.id.eq(id))
+            .where(
+                questionEntity.id.eq(id),
+                questionEntity.deletedAt.isNull()
+            )
             .fetchOne();
 
         if (entity == null) {
@@ -49,7 +50,10 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
         List<Long> ids = queryFactory
             .select(questionEntity.id)
             .from(questionEntity)
-            .where(questionEntity.postId.eq(postId))
+            .where(
+                questionEntity.postId.eq(postId),
+                questionEntity.deletedAt.isNull()
+            )
             .orderBy(questionEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -63,7 +67,10 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
         List<Question> questions = queryFactory
             .selectFrom(questionEntity)
             .join(questionEntity.author, userEntity).fetchJoin()
-            .where(questionEntity.id.in(ids))
+            .where(
+                questionEntity.id.in(ids),
+                questionEntity.deletedAt.isNull()
+            )
             .orderBy(questionEntity.createdAt.desc())
             .fetch()
             .stream()
@@ -74,7 +81,10 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
         Long total = queryFactory
             .select(questionEntity.count())
             .from(questionEntity)
-            .where(questionEntity.postId.eq(postId))
+            .where(
+                questionEntity.postId.eq(postId),
+                questionEntity.deletedAt.isNull()
+            )
             .fetchOne();
 
         // Unboxing of 'total' may produce 'NullPointerException'
@@ -93,6 +103,7 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
         List<Long> ids = queryFactory
             .select(questionEntity.id)
             .from(questionEntity)
+            .where(questionEntity.deletedAt.isNull())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .orderBy(questionEntity.createdAt.desc())
@@ -106,7 +117,10 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
         List<Question> questions = queryFactory
             .selectFrom(questionEntity)
             .join(questionEntity.author, userEntity).fetchJoin()
-            .where(questionEntity.id.in(ids))
+            .where(
+                questionEntity.id.in(ids),
+                questionEntity.deletedAt.isNull()
+            )
             .orderBy(questionEntity.createdAt.desc())
             .fetch()
             .stream()
@@ -117,8 +131,9 @@ public class QuestionReadJpaAdapter implements QuestionReadPort {
         Long total = queryFactory
             .select(questionEntity.count())
             .from(questionEntity)
+            .where(questionEntity.deletedAt.isNull())
             .fetchOne();
-        
+
         if (total == null) {
             total = 0L;
         }

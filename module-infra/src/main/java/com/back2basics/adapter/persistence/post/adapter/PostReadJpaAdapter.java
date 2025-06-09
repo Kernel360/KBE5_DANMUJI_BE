@@ -31,7 +31,11 @@ public class PostReadJpaAdapter implements PostReadPort {
         PostEntity entity = queryFactory
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
-            .where(postEntity.id.eq(id))
+            .where(
+                postEntity.id.eq(id),
+                postEntity.deletedAt.isNull()
+            )
+
             .fetchOne();
 
         if (entity == null) {
@@ -60,7 +64,10 @@ public class PostReadJpaAdapter implements PostReadPort {
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
-            .where(postEntity.id.in(ids))
+            .where(
+                postEntity.id.in(ids),
+                postEntity.deletedAt.isNull()
+            )
             .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()

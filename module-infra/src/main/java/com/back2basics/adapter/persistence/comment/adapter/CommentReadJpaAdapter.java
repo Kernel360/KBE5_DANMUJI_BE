@@ -27,7 +27,10 @@ public class CommentReadJpaAdapter implements CommentReadPort {
             .selectFrom(commentEntity)
             .join(commentEntity.author, userEntity).fetchJoin()
             .join(commentEntity.post, postEntity).fetchJoin()
-            .where(commentEntity.id.eq(id))
+            .where(
+                commentEntity.id.eq(id),
+                commentEntity.deletedAt.isNull()
+            )
             .fetchOne();
 
         return Optional.ofNullable(entity).map(mapper::toDomain);
@@ -39,7 +42,10 @@ public class CommentReadJpaAdapter implements CommentReadPort {
             .selectFrom(commentEntity)
             .join(commentEntity.author, userEntity).fetchJoin()
             .join(commentEntity.post, postEntity).fetchJoin()
-            .where(commentEntity.post.id.eq(postId))
+            .where(
+                commentEntity.post.id.eq(postId),
+                commentEntity.deletedAt.isNull()
+            )
             .fetch();
 
         return commentEntities.stream()
