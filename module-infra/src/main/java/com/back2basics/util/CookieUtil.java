@@ -10,8 +10,7 @@ public class CookieUtil {
     public Cookie create(String value) {
         Cookie cookie = new Cookie("refreshToken", value);
         cookie.setMaxAge(24 * 60 * 60);
-        // https 설정 시
-//        cookie.setSecure(true);
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
 
