@@ -16,7 +16,7 @@ public class User {
     private String email;
     private String phone;
     private String position;
-    private final Role role;
+    private Role role;
     private Long companyId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -77,5 +77,9 @@ public class User {
 
     public void changePassword(String newPassword) {
         this.password = newPassword;
+    }
+
+    public void updateRole(Role role) {
+        this.role = role;
     }
 }
