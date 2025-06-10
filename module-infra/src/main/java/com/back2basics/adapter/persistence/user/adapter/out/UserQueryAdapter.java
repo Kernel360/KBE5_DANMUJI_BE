@@ -60,5 +60,9 @@ public class UserQueryAdapter implements UserQueryPort {
             .stream().map(userMapper::toDomain).toList();
     }
 
+    @Override
+    public boolean existsById(Long userId) {
+        return userEntityRepository.existsById(userId);
+    }
 
 }

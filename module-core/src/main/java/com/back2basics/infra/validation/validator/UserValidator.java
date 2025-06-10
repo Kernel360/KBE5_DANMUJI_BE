@@ -27,4 +27,11 @@ public class UserValidator {
             throw new UserException(USER_NOT_FOUND);
         }
     }
+
+    public void validateNotFoundUserId(Long userId) {
+        boolean exists = userQueryPort.existsById(userId);
+        if (!exists) {
+            throw new UserException(USER_NOT_FOUND);
+        }
+    }
 }
