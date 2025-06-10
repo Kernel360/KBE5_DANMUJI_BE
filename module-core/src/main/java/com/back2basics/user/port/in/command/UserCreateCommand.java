@@ -19,13 +19,13 @@ public class UserCreateCommand {
 
     @Builder
     public UserCreateCommand(String username, String name,
-        String email, String phone, String position, Role role, Long companyId) {
+        String email, String phone, String position, Long companyId) {
         this.username = username;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.position = position;
-        this.role = role;
+        this.role = Role.USER; // Default role is USER
         this.companyId = companyId;
     }
 }
