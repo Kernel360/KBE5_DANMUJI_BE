@@ -12,7 +12,7 @@ public class Company {
     private String name;
     private String ceoName;
     private String bio;
-    private Integer bizNo;
+    private Long bizNo;
     private String address;
     private String email;
     private String tel;
@@ -23,7 +23,7 @@ public class Company {
 
     @Builder
     public Company(Long id, String name, String ceoName, String bio,
-        Integer bizNo, String address, String email, String tel,
+        Long bizNo, String address, String email, String tel,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.name = name;
