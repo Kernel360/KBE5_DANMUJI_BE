@@ -2,14 +2,14 @@ package com.back2basics.user.service;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.infra.validation.validator.CompanyValidator;
-import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserSimpleResult;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,16 +30,14 @@ public class UserQueryService implements UserQueryUseCase {
     }
 
     @Override
-    public List<UserSimpleResult> getAllUsers() {
-        return userQueryPort.findAll().stream()
-            .filter(user -> user.getRole() != Role.ADMIN)
+    public Page<UserSimpleResult> getAllUsers(Pageable pageable) {
+        return userQueryPort.findAllByDeletedAtIsNull(pageable)
             .map(user -> {
                 Company company = user.getCompanyId() != null
                     ? companyValidator.findCompany(user.getCompanyId())
                     : null;
                 return UserSimpleResult.of(user, company);
-            })
-            .toList();
+            });
     }
 
     @Override

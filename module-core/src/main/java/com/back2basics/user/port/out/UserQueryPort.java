@@ -2,6 +2,8 @@ package com.back2basics.user.port.out;
 
 import com.back2basics.user.model.User;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserQueryPort {
 
@@ -12,6 +14,8 @@ public interface UserQueryPort {
     boolean existsByUsername(String username);
 
     List<User> findAll();
+
+    Page<User> findAllByDeletedAtIsNull(Pageable pageable);
 
     List<User> findAllByCompanyId(Long companyId);
 }
