@@ -13,6 +13,7 @@ public enum NotificationResponseCode implements ResponseCode {
     NOTIFICATION_READ_SUCCESS(HttpStatus.OK, "N202", "알림 조회 완료"),
     NOTIFICATION_READ_ALL_SUCCESS(HttpStatus.OK, "N203", "알림 목록 조회 완료"),
     NOTIFICATION_UPDATE_READ_SUCCESS(HttpStatus.OK, "N204", "알림 읽음 처리 완료"),
+    NOTIFICATION_UPDATE_READ_ALL_SUCCESS(HttpStatus.OK, "N204", "알림 전체 읽음 처리 완료"),
     NOTIFICATION_DELETE_SUCCESS(HttpStatus.OK, "N205", "알림 삭제 완료");
 
     private final HttpStatus status;

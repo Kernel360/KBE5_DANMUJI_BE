@@ -5,6 +5,7 @@ import com.back2basics.adapter.persistence.notification.NotificationEntityReposi
 import com.back2basics.adapter.persistence.notification.NotificationMapper;
 import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.port.out.NotificationCommandPort;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,14 @@ public class NotificationCommandAdapter implements NotificationCommandPort {
     public Notification save(Notification notification) {
         NotificationEntity entity = notificationMapper.toEntity(notification);
         return notificationMapper.toDomain(notificationEntityRepository.save(entity));
+    }
+
+    @Override
+    public void saveAll(List<Notification> notifications) {
+        List<NotificationEntity> entities = notifications.stream()
+            .map(notificationMapper::toEntity)
+            .toList();
+        notificationEntityRepository.saveAll(entities);
     }
 
 }

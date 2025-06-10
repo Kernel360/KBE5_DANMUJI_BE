@@ -4,6 +4,7 @@ import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.port.in.UpdateNotificationUseCase;
 import com.back2basics.notify.port.out.NotificationCommandPort;
 import com.back2basics.notify.port.out.NotificationQueryPort;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,13 @@ public class UpdateNotificationService implements UpdateNotificationUseCase {
         Notification notification = notificationQueryPort.findById(notificationId);
         notification.markAsRead();
         notificationCommandPort.save(notification);
+    }
+
+    @Override
+    public void markAllAsRead(Long clientId) {
+        List<Notification> notifications = notificationQueryPort.findByClientIdAndIsReadFalse(
+            clientId);
+        notifications.forEach(Notification::markAsRead);
+        notificationCommandPort.saveAll(notifications);
     }
 }

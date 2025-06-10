@@ -2,6 +2,7 @@ package com.back2basics.domain.notify.controller;
 
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_CREATE_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_READ_ALL_SUCCESS;
+import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_UPDATE_READ_ALL_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_UPDATE_READ_SUCCESS;
 
 import com.back2basics.domain.notify.dto.request.NotificationCreateRequest;
@@ -12,6 +13,7 @@ import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.SubscribeNotificationUseCase;
 import com.back2basics.notify.port.in.UpdateNotificationUseCase;
 import com.back2basics.notify.service.result.NotificationResult;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,7 @@ public class NotifyController {
 
     // SSE 연결 및 읽지 않은 알림 전송
     @GetMapping("/subscribe/{clientId}")
-    public SseEmitter subscribe(@PathVariable Long clientId) {
+    public SseEmitter subscribe(@PathVariable Long clientId) throws IOException {
         return subscribeNotificationUseCase.subscribe(clientId);
     }
 
@@ -53,6 +55,13 @@ public class NotifyController {
     public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
         updateNotificationUseCase.markAsRead(notificationId);
         return ApiResponse.success(NOTIFICATION_UPDATE_READ_SUCCESS);
+    }
+
+    // 알림 전체 읽음 처리
+    @PostMapping("/read/all/{clientId}")
+    public ResponseEntity<?> markAllAsRead(@PathVariable Long clientId) {
+        updateNotificationUseCase.markAllAsRead(clientId);
+        return ApiResponse.success(NOTIFICATION_UPDATE_READ_ALL_SUCCESS);
     }
 
     // 전체 알림 조회
