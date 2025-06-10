@@ -19,6 +19,7 @@ public class User {
     private String position;
     private Role role;
     private Long companyId;
+    private LocalDateTime lastLoginAt;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
@@ -35,8 +36,8 @@ public class User {
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
-        String position, Role role, Long companyId, LocalDateTime createdAt,
-        LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        String position, Role role, Long companyId, LocalDateTime lastLoginAt,
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -46,6 +47,7 @@ public class User {
         this.position = position;
         this.role = role;
         this.companyId = companyId;
+        this.lastLoginAt = lastLoginAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -85,5 +87,9 @@ public class User {
 
     public void updateRole(Role role) {
         this.role = role;
+    }
+
+    public void updateLastLoginAt() {
+        this.lastLoginAt = LocalDateTime.now();
     }
 }

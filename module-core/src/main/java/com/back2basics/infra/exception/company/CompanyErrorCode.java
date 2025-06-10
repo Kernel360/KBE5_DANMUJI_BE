@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum CompanyErrorCode implements ErrorCode {
 
-    COMPANY_NOT_FOUND(HttpStatus.NOT_FOUND, "COMP001", "회사를 찾을 수 없습니다");
+    COMPANY_NOT_FOUND(HttpStatus.NOT_FOUND, "COMP001", "회사를 찾을 수 없습니다"),
+    DUPLICATE_COMPANY_NAME(HttpStatus.CONFLICT, "COMP002", "이미 존재하는 회사명입니다");
 
     private final HttpStatus status;
     private final String code;

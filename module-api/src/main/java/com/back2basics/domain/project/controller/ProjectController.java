@@ -51,15 +51,6 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
 
-    @GetMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<ProjectGetResponse>> getProjectById(
-        @PathVariable Long projectId) {
-        ProjectGetResult result = readProjectUseCase.getProjectById(projectId);
-        ProjectGetResponse response = ProjectGetResponse.toResponse(result);
-        return ApiResponse.success(PROJECT_READ_SUCCESS, response);
-    }
-
-    // todo: paging 적용
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getAllProjects(
         @RequestParam(defaultValue = "0") int page,
@@ -70,9 +61,15 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
     }
 
-    // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민..
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
+        @PathVariable Long projectId) {
+        ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId);
+        ProjectDetailResponse response = ProjectDetailResponse.from(result);
+        return ApiResponse.success(PROJECT_READ_SUCCESS, response);
+    }
 
-    // todo: search + paging list
+    // todo: 만약 카테고리 필터링 별로 안할거면 그냥 get 이랑 합쳐버리기
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
         @RequestParam(required = false) String keyword,
@@ -108,11 +105,6 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
-    @GetMapping("/{projectId}/details")
-    public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
-        @PathVariable Long projectId) {
-        ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId);
-        ProjectDetailResponse response = ProjectDetailResponse.from(result);
-        return ApiResponse.success(PROJECT_READ_SUCCESS, response);
-    }
+    // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민.. -> 5순위
+
 }

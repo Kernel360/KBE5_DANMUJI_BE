@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public record ProjectUpdateRequest(@NotBlank(message = "프로젝트명은 필수입니다.") String name,
                                    String description, @NotNull LocalDate startDate,
-                                   LocalDate endDate) {
+                                   LocalDate endDate, Long developerId, Long clientId) {
 
     public ProjectUpdateCommand toCommand() {
         return ProjectUpdateCommand.builder()
@@ -15,6 +15,8 @@ public record ProjectUpdateRequest(@NotBlank(message = "프로젝트명은 필�
             .description(description)
             .startDate(startDate)
             .endDate(endDate)
+            .developerId(developerId)
+            .clientId(clientId)
             .build();
     }
 }

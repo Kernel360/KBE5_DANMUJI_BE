@@ -38,6 +38,7 @@ public class ProjectStep {
         this.deletedAt = deletedAt;
     }
 
+    // todo: user 도메인으로 변경
     public static ProjectStep create(String name, Long projectId, Long userId,
         Integer stepOrder, ProjectStepStatus projectStepStatus) {
         return ProjectStep.builder()
@@ -57,7 +58,6 @@ public class ProjectStep {
         this.projectStepStatus = command.getProjectStepStatus();
     }
 
-    // todo: 멘토링 때 동사 현재형으로 쓰라고 헀었나 .. 기억 안남 .. 다시 물어보기
     public void softDelete() {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();

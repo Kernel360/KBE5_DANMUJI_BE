@@ -26,21 +26,15 @@ public class ReadProjectService implements ReadProjectUseCase {
     private final ProjectUserQueryPort projectUserQueryPort;
     private final ReadProjectStepPort readProjectStepPort;
 
-    // todo : filtering - status IN_PROGRESS / COMPLETED
-    @Override
-    public ProjectGetResult getProjectById(Long id) {
-        Project project = projectValidator.findProjectById(id);
-        List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
-        project.setSteps(steps);
-        return ProjectGetResult.toResult(project);
-    }
-
+    // todo: 프로젝트 유저도 같이
     @Override
     public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
         Page<Project> projects = port.findAll(pageable);
         for (Project project : projects) {
             List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
             project.setSteps(steps);
+            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(project.getId());
+            project.setUsers(projectUsers);
         }
         return projects
             .map(ProjectGetResult::toResult);

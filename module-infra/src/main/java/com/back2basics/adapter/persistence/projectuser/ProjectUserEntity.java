@@ -61,12 +61,4 @@ public class ProjectUserEntity {
         this.companyType = companyType;
         this.userType = userType;
     }
-
-    public void assignProjectEntity(ProjectEntity project) {
-        this.project = project;
-    }
-
-    public void assignUserEntity(UserEntity user) {
-        this.user = user;
-    }
 }

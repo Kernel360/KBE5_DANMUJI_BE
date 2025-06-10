@@ -20,4 +20,9 @@ public class CreateCompanyJpaAdapter implements CreateCompanyPort {
         CompanyEntity entity = mapper.toEntity(company);
         return companyEntityRepository.save(entity).getId();
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return companyEntityRepository.existsByName(name);
+    }
 }

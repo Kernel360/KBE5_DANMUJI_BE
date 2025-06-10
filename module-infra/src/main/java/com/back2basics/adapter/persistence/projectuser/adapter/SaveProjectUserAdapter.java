@@ -18,6 +18,7 @@ import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.projectuser.model.ProjectUser;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,5 +45,25 @@ public class SaveProjectUserAdapter implements SaveProjectUserPort {
 
         ProjectUserEntity entity = mapper.toEntity(projectUser, project, user, company);
         projectUserEntityRepository.save(entity);
+    }
+
+    @Override
+    public void saveAll(List<ProjectUser> projectUsers) {
+        List<ProjectUserEntity> entities = projectUsers.stream()
+            .map(projectUser -> {
+                ProjectEntity project = projectEntityRepository.findById(projectUser.getProject().getId())
+                    .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+
+                UserEntity user = userEntityRepository.findById(projectUser.getUser().getId())
+                    .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+
+                CompanyEntity company = companyEntityRepository.findById(projectUser.getCompany().getId())
+                    .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
+
+                return mapper.toEntity(projectUser, project, user, company);
+            })
+            .toList();
+
+        projectUserEntityRepository.saveAll(entities);
     }
 }
