@@ -23,8 +23,10 @@ import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,12 +87,20 @@ public class AdminController {
         return ApiResponse.success(USER_CREATE_SUCCESS, generatedPassword);
     }
 
+//    @GetMapping("/allUsers")
+//    public ResponseEntity<ApiResponse<List<UserSimpleResponse>>> getAllUsers() {
+//        List<UserSimpleResult> resultList = userQueryUseCase.getAllUsers();
+//        List<UserSimpleResponse> responseList = resultList.stream()
+//            .map(UserSimpleResponse::from)
+//            .toList();
+//        return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
+//    }
+
     @GetMapping("/allUsers")
-    public ResponseEntity<ApiResponse<List<UserSimpleResponse>>> getAllUsers() {
-        List<UserSimpleResult> resultList = userQueryUseCase.getAllUsers();
-        List<UserSimpleResponse> responseList = resultList.stream()
-            .map(UserSimpleResponse::from)
-            .toList();
+    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<UserSimpleResponse>>> getAllUsers(
+        @PageableDefault Pageable pageable) {
+        Page<UserSimpleResult> resultList = userQueryUseCase.getAllUsers(pageable);
+        Page<UserSimpleResponse> responseList = resultList.map(UserSimpleResponse::from);
         return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
     }
 
