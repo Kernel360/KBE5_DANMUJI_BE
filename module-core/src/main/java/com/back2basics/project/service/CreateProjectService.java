@@ -78,7 +78,6 @@ public class CreateProjectService implements CreateProjectUseCase {
         }
     }
 
-
     private void createProjectUsers(Project project, ProjectCreateCommand command) {
         User developer = userQueryPort.findById(command.getDeveloperId());
         User client = userQueryPort.findById(command.getClientId());
