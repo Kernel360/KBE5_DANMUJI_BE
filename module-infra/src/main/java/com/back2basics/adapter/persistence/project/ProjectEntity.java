@@ -61,7 +61,7 @@ public class ProjectEntity extends BaseTimeEntity {
     private List<ProjectStepEntity> steps = new ArrayList<>();
 
     // todo: projectUser와 양방향으로 단방향으로 고민쓰
-//    @OneToMany(mappedBy = "project_users", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "project_users", fetch = FetchType.EAGER)
 //    private List<ProjectUserEntity> projectUsers = new ArrayList<>();
 
     @Builder

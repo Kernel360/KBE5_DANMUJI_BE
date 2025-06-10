@@ -28,7 +28,6 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
 
     // todo : 사용자 인증 로직 추가
-    // todo: 코드 너무 복잡함 진짜
     @Override
     @Transactional
     public void updateProject(Long id,
