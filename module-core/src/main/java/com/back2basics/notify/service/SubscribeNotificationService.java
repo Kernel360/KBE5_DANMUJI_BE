@@ -18,25 +18,36 @@ public class SubscribeNotificationService implements SubscribeNotificationUseCas
     private final SseEmitterRepository sseEmitterRepository;
 
     @Override
-    public SseEmitter subscribe(Long clientId) {
+    public SseEmitter subscribe(Long clientId) throws IOException {
         SseEmitter emitter = new SseEmitter(30 * 60 * 1000L); // 30분 유지
+
         sseEmitterRepository.add(clientId, emitter);
 
         emitter.onCompletion(() -> sseEmitterRepository.remove(clientId));
         emitter.onTimeout(() -> sseEmitterRepository.remove(clientId));
         emitter.onError(e -> sseEmitterRepository.remove(clientId));
 
+        emitter.send(SseEmitter.event()
+            .name("CONNECTED")
+            .data("SSE stream connected"));
+
         // 읽지 않은 알림 전송
         List<Notification> unread = notificationQueryPort.findByClientIdAndIsReadFalse(clientId);
-        unread.forEach(notification -> {
+        if (unread.isEmpty()) {
+            return emitter;
+        }
+
+        for (Notification notification : unread) {
             try {
                 emitter.send(SseEmitter.event()
                     .name("ALERT")
                     .data(notification));
             } catch (IOException e) {
                 emitter.completeWithError(e);
+                sseEmitterRepository.remove(clientId);
+                break;
             }
-        });
+        }
 
         return emitter;
     }
