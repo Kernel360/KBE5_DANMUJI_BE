@@ -39,7 +39,7 @@ public class AuthController {
         response.setHeader("Authorization", "Bearer " + tokenPair.accessToken());
         response.addCookie(cookieUtil.create(tokenPair.refreshToken()));
 
-        return ApiResponse.success(SUCCESS_LOGIN);
+        return ApiResponse.success(SUCCESS_LOGIN, tokenPair.accessToken());
     }
 
     @PostMapping("/logout")

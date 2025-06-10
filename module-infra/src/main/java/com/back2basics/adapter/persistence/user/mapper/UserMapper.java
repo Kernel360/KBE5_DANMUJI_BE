@@ -23,6 +23,7 @@ public class UserMapper {
             .companyId(entity.getCompany() != null ? entity.getCompany().getId() : null)
             .createdAt(entity.getCreatedAt())
             .updatedAt(entity.getUpdatedAt())
+            .deletedAt(entity.getDeletedAt())
             .build();
     }
 
@@ -48,6 +49,5 @@ public class UserMapper {
             : null;
         return toEntity(user, companyEntity);
     }
-
 
 }

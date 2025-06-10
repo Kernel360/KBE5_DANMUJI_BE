@@ -1,5 +1,6 @@
 package com.back2basics.user.port.in.command;
 
+import com.back2basics.user.model.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ public class UserCreateCommand {
     private String email;
     private String phone;
     private String position;
+    private Role role;
     private Long companyId;
 
     @Builder
@@ -23,6 +25,7 @@ public class UserCreateCommand {
         this.email = email;
         this.phone = phone;
         this.position = position;
+        this.role = Role.USER; // Default role is USER
         this.companyId = companyId;
     }
 }

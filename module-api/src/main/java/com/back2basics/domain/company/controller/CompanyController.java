@@ -94,6 +94,17 @@ public class CompanyController implements CompanyApiDocs {
             companies.map(ReadCompanyResponse::toResponse));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<ReadCompanyResponse>>> getAllCompaniesWithoutPagination() {
+        List<ReadCompanyResult> companies = readCompanyUseCase.getAllCompanies();
+
+        List<ReadCompanyResponse> responseList = companies.stream()
+            .map(ReadCompanyResponse::toResponse)
+            .toList();
+
+        return ApiResponse.success(COMPANY_READ_ALL_SUCCESS, responseList);
+    }
+
     @GetMapping("/{companyId}/users")
     public ResponseEntity<ApiResponse<List<UserSummaryResponse>>> getUsersByCompanyId(
         @PathVariable Long companyId) {

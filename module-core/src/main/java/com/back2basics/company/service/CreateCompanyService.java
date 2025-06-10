@@ -4,6 +4,7 @@ import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.command.CreateCompanyCommand;
 import com.back2basics.company.port.out.CreateCompanyPort;
+import com.back2basics.infra.exception.company.DuplicateCompanyNameException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,11 @@ public class CreateCompanyService implements CreateCompanyUseCase {
 
     @Override
     public Long createCompany(CreateCompanyCommand createCompanyCommand) {
+
+        if (createCompanyPort.existsByName(createCompanyCommand.getName())) {
+            throw new DuplicateCompanyNameException(createCompanyCommand.getName());
+        }
+
         Company company = Company.builder()
             .name(createCompanyCommand.getName())
             .ceoName(createCompanyCommand.getCeoName())

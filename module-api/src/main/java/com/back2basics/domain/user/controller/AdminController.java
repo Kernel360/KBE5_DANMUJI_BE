@@ -3,10 +3,11 @@ package com.back2basics.domain.user.controller;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CREATE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_DELETE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_EXISTS_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_ALL_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_ROLE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_SUCCESS;
 
-import com.back2basics.domain.user.controller.code.UserResponseCode;
 import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.domain.user.dto.request.UserUpdateRequest;
 import com.back2basics.domain.user.dto.response.UserCreateResponse;
@@ -22,8 +23,10 @@ import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,12 +87,26 @@ public class AdminController {
         return ApiResponse.success(USER_CREATE_SUCCESS, generatedPassword);
     }
 
+    @GetMapping("/deletedUsers")
+    public ResponseEntity<ApiResponse<Page<UserSimpleResponse>>> getDeletedUsers(
+        @PageableDefault Pageable pageable) {
+        Page<UserSimpleResult> resultList = userQueryUseCase.getDeletedUsers(pageable);
+        Page<UserSimpleResponse> responseList = resultList.map(UserSimpleResponse::from);
+        return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
+    }
+
     @GetMapping("/allUsers")
-    public ResponseEntity<ApiResponse<List<UserSimpleResponse>>> getAllUsers() {
-        List<UserSimpleResult> resultList = userQueryUseCase.getAllUsers();
-        List<UserSimpleResponse> responseList = resultList.stream()
-            .map(UserSimpleResponse::from)
-            .toList();
-        return ApiResponse.success(UserResponseCode.USER_READ_ALL_SUCCESS, responseList);
+    public ResponseEntity<ApiResponse<Page<UserSimpleResponse>>> getAllUsers(
+        @PageableDefault Pageable pageable) {
+        Page<UserSimpleResult> resultList = userQueryUseCase.getAllUsers(pageable);
+        Page<UserSimpleResponse> responseList = resultList.map(UserSimpleResponse::from);
+        return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
+    }
+
+    @PutMapping("/{userId}/role/{role}")
+    public ResponseEntity<ApiResponse<Void>> updateUserRole(
+        @PathVariable Long userId, @PathVariable String role) {
+        updateUserUseCase.updateUserRole(userId, role);
+        return ApiResponse.success(USER_UPDATE_ROLE_SUCCESS);
     }
 }
