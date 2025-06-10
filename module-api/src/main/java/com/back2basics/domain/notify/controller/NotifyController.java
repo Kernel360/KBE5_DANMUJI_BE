@@ -2,7 +2,7 @@ package com.back2basics.domain.notify.controller;
 
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_CREATE_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_READ_ALL_SUCCESS;
-import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_READ_SUCCESS;
+import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_UPDATE_READ_SUCCESS;
 
 import com.back2basics.domain.notify.dto.request.NotificationCreateRequest;
 import com.back2basics.domain.notify.dto.response.NotificationResponse;
@@ -52,7 +52,7 @@ public class NotifyController {
     @PostMapping("/read/{notificationId}")
     public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
         updateNotificationUseCase.markAsRead(notificationId);
-        return ApiResponse.success(NOTIFICATION_READ_SUCCESS);
+        return ApiResponse.success(NOTIFICATION_UPDATE_READ_SUCCESS);
     }
 
     // 전체 알림 조회
