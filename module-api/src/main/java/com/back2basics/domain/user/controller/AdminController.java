@@ -3,10 +3,11 @@ package com.back2basics.domain.user.controller;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CREATE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_DELETE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_EXISTS_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_ALL_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_ROLE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_SUCCESS;
 
-import com.back2basics.domain.user.controller.code.UserResponseCode;
 import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.domain.user.dto.request.UserUpdateRequest;
 import com.back2basics.domain.user.dto.response.UserCreateResponse;
@@ -90,6 +91,13 @@ public class AdminController {
         List<UserSimpleResponse> responseList = resultList.stream()
             .map(UserSimpleResponse::from)
             .toList();
-        return ApiResponse.success(UserResponseCode.USER_READ_ALL_SUCCESS, responseList);
+        return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
+    }
+
+    @PutMapping("/{userId}/role/{role}")
+    public ResponseEntity<ApiResponse<Void>> updateUserRole(
+        @PathVariable Long userId, @PathVariable String role) {
+        updateUserUseCase.updateUserRole(userId, role);
+        return ApiResponse.success(USER_UPDATE_ROLE_SUCCESS);
     }
 }
