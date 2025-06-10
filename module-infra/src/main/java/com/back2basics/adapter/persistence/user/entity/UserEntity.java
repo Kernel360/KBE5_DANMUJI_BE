@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,9 +56,13 @@ public class UserEntity extends BaseTimeEntity {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
+    @Column(name = "last_login_at")
+    private LocalDateTime lastLoginAt;
+
     @Builder
     public UserEntity(Long id, String username, String password, String name, String email,
-        String phone, String position, Role role, CompanyEntity company) {
+        String phone, String position, Role role, CompanyEntity company,
+        LocalDateTime lastLoginAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -67,5 +72,6 @@ public class UserEntity extends BaseTimeEntity {
         this.position = position;
         this.role = role;
         this.company = company;
+        this.lastLoginAt = lastLoginAt;
     }
 }
