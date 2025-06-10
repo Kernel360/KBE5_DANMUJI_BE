@@ -2,7 +2,7 @@ name: Auto Deploy to EC2
 
 on:
   push:
-    branches: [ main ]  # main 브랜치에 push될 때마다 배포
+    branches: [ main, develop ]  # main 브랜치에 push될 때마다 배포, 개발 환경 추가
 
 jobs:
   build-and-deploy:
