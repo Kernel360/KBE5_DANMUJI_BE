@@ -12,8 +12,10 @@ import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
 import com.back2basics.projectuser.model.ProjectUser;
+import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
+import com.back2basics.user.port.out.UserCommandPort;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final SaveProjectStepPort saveProjectStepPort;
     private final SaveProjectUserPort saveProjectUserPort;
     private final UserQueryPort userQueryPort;
+    private final UserCommandPort userCommandPort;
     private final CompanyValidator companyValidator;
     private static final List<String> DEFAULT_STEPS =
         List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
@@ -70,8 +73,12 @@ public class CreateProjectService implements CreateProjectUseCase {
         saveProjectUserPort.save(
             ProjectUser.create(project, developer, developerCompany, UserType.MANAGER,
                 CompanyType.DEVELOPER));
+        developer.updateRole(Role.DEV);
+        userCommandPort.save(developer);
         saveProjectUserPort.save(
             ProjectUser.create(project, client, clientCompany, UserType.MANAGER,
                 CompanyType.CLIENT));
+        client.updateRole(Role.CLIENT);
+        userCommandPort.save(client);
     }
 }
