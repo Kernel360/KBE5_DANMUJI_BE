@@ -26,7 +26,5 @@ public class ProjectCreateCommand {
     @NotNull(message = "클라이언트사 아이디는 필수입니다.")
     Long clientCompanyId;
     LocalDate endDate;
-    private List<ProjectUser> projectUsers; // user, companyType, userType 들어감
 }
 
-// todo: 임시용. CreateProjectUserCommand를 따로 할 지 고민. ProjectUser가 아니라

@@ -2,7 +2,9 @@ package com.back2basics.adapter.persistence.project;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
+import com.back2basics.adapter.persistence.projectuser.ProjectUserEntity;
 import com.back2basics.project.model.ProjectStatus;
+import com.back2basics.projectuser.model.ProjectUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +25,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// todo: 프로젝트 - 회원 엔티티 추가
 @Getter
 @Entity
 @Table(name = "projects")
@@ -58,6 +59,10 @@ public class ProjectEntity extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<ProjectStepEntity> steps = new ArrayList<>();
+
+    // todo: projectUser와 양방향으로 단방향으로 고민쓰
+//    @OneToMany(mappedBy = "project_users", fetch = FetchType.EAGER)
+//    private List<ProjectUserEntity> projectUsers = new ArrayList<>();
 
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,

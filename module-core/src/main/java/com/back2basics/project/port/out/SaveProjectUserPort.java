@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface SaveProjectUserPort {
     void save(ProjectUser projectUser);
+
+    void saveAll(List<ProjectUser> projectUsers);
 }

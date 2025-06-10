@@ -3,6 +3,7 @@ package com.back2basics.project.model;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.projectuser.model.ProjectUser;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
