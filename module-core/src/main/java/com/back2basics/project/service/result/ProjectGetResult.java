@@ -1,9 +1,10 @@
 package com.back2basics.project.service.result;
 
+import com.back2basics.company.model.CompanyType;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
-import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.service.result.ReadProjectStepResult;
+import com.back2basics.projectuser.service.result.ReadProjectUserResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,28 +17,31 @@ import lombok.Getter;
 public class ProjectGetResult {
 
     private final Long id;
-
     private final String name;
-
     private final String description;
-
     private final LocalDate startDate;
-
     private final LocalDate endDate;
-
     private final LocalDateTime createdAt;
-
     private final LocalDateTime updatedAt;
-
     private final LocalDateTime deletedAt;
-
     private final boolean isDeleted;
-
     private final ProjectStatus status;
-
+    private final String clientCompany;
+    private final String developerCompany;
     private final List<ReadProjectStepResult> steps;
+    private final List<ReadProjectUserResult> projectUsers;
 
-    public  static ProjectGetResult toResult(Project project) {
+    public static ProjectGetResult toResult(Project project) {
+        String clientCompany = project.getProjectUsers().stream()
+            .filter(u -> u.getCompanyType() == CompanyType.CLIENT)
+            .map(u -> u.getCompany().getName())
+            .findFirst().orElse(null);
+
+        String developerCompany = project.getProjectUsers().stream()
+            .filter(u -> u.getCompanyType() == CompanyType.DEVELOPER)
+            .map(u -> u.getCompany().getName())
+            .findFirst().orElse(null);
+
         return ProjectGetResult.builder()
             .id(project.getId())
             .name(project.getName())
@@ -49,9 +53,17 @@ public class ProjectGetResult {
             .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
             .status(project.getStatus())
+            .clientCompany(clientCompany)
+            .developerCompany(developerCompany)
             .steps(project.getSteps().stream()
                 .map(ReadProjectStepResult::toResult)
-                .collect(Collectors.toList()))
+                .collect(Collectors.toList())
+            )
+            .projectUsers(project.getProjectUsers().stream()
+                .map(ReadProjectUserResult::toResult)
+                .collect(Collectors.toList())
+            )
             .build();
     }
 }
+
