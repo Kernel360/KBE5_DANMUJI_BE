@@ -21,6 +21,7 @@ public class UserMapper {
             .position(entity.getPosition())
             .role(entity.getRole())
             .companyId(entity.getCompany() != null ? entity.getCompany().getId() : null)
+            .lastLoginAt(entity.getLastLoginAt())
             .createdAt(entity.getCreatedAt())
             .updatedAt(entity.getUpdatedAt())
             .deletedAt(entity.getDeletedAt())
@@ -38,6 +39,7 @@ public class UserMapper {
             .position(user.getPosition())
             .role(user.getRole())
             .company(company)
+            .lastLoginAt(user.getLastLoginAt())
             .build();
     }
 
