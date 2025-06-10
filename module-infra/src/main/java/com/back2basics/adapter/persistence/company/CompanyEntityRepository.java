@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.company;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Long> {
+
+    List<CompanyEntity> findByDeletedAtIsNull();
 
     Optional<CompanyEntity> findByIdAndDeletedAtIsNull(Long id);
 
