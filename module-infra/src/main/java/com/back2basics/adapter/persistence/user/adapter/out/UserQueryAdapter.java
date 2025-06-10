@@ -9,6 +9,8 @@ import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,6 +40,12 @@ public class UserQueryAdapter implements UserQueryPort {
     @Override
     public List<User> findAll() {
         return userEntityRepository.findAll().stream().map(userMapper::toDomain).toList();
+    }
+
+    @Override
+    public Page<User> findAllByDeletedAtIsNull(Pageable pageable) {
+        return userEntityRepository.findAllByDeletedAtIsNull(pageable)
+            .map(userMapper::toDomain);
     }
 
     @Override
