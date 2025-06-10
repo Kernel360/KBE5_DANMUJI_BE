@@ -56,7 +56,7 @@ public class User {
             .email(command.getEmail())
             .phone(command.getPhone())
             .position(command.getPosition())
-            .role(Role.USER)
+            .role(command.getRole())
             .companyId(command.getCompanyId())
             .build();
     }
