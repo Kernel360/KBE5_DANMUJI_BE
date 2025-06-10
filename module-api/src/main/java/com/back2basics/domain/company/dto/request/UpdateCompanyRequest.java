@@ -13,7 +13,7 @@ public class UpdateCompanyRequest {
     private String ceoName;
     @CustomNotBlank(message = "회사 소개는 공백일 수 없습니다.")
     private String bio;
-    private Integer bizNo;
+    private Long bizNo;
     @CustomNotBlank(message = "회사 주소는 공백일 수 없습니다.")
     private String address;
     @CustomNotBlank(message = "회사 이메일 주소는 공백일 수 없습니다.")

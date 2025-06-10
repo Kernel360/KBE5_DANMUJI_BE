@@ -1,5 +1,6 @@
 package com.back2basics.user.service;
 
+import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.user.port.in.command.UserUpdateCommand;
@@ -21,6 +22,13 @@ public class UpdateUserService implements UpdateUserUseCase {
         user.updateUser(command.getUsername(), command.getName(), command.getEmail(),
             command.getPhone(), command.getPosition(), command.getCompanyId());
 
+        userCommandPort.save(user);
+    }
+
+    @Override
+    public void updateUserRole(Long userId, String role) {
+        User user = userQueryPort.findById(userId);
+        user.updateRole(Role.valueOf(role));
         userCommandPort.save(user);
     }
 

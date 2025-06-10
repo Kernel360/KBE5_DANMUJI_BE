@@ -16,10 +16,11 @@ public class User {
     private String email;
     private String phone;
     private String position;
-    private final Role role;
+    private Role role;
     private Long companyId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
+    private final LocalDateTime deletedAt;
 
 //    private boolean isDeleted;
 //
@@ -34,7 +35,7 @@ public class User {
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
         String position, Role role, Long companyId, LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
+        LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -46,6 +47,7 @@ public class User {
         this.companyId = companyId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public static User create(UserCreateCommand command, String encodedPassword) {
@@ -56,7 +58,7 @@ public class User {
             .email(command.getEmail())
             .phone(command.getPhone())
             .position(command.getPosition())
-            .role(Role.USER)
+            .role(command.getRole())
             .companyId(command.getCompanyId())
             .build();
     }
@@ -77,5 +79,9 @@ public class User {
 
     public void changePassword(String newPassword) {
         this.password = newPassword;
+    }
+
+    public void updateRole(Role role) {
+        this.role = role;
     }
 }

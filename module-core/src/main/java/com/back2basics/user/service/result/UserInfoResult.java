@@ -5,8 +5,8 @@ import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 
 public record UserInfoResult(Long id, String username, String name, String email, String phone,
-                             String position, Long companyId, String companyName,
-                             LocalDateTime CreatedAt, LocalDateTime updatedAt) {
+                             String position, LocalDateTime CreatedAt, LocalDateTime updatedAt,
+                             LocalDateTime deletedAt, Long companyId, String companyName) {
 
     public static UserInfoResult of(User user, Company company) {
         return new UserInfoResult(
@@ -16,10 +16,11 @@ public record UserInfoResult(Long id, String username, String name, String email
             user.getEmail(),
             user.getPhone(),
             user.getPosition(),
-            company != null ? company.getId() : null,
-            company != null ? company.getName() : null,
             user.getCreatedAt(),
-            user.getUpdatedAt()
+            user.getUpdatedAt(),
+            user.getDeletedAt(),
+            company != null ? company.getId() : null,
+            company != null ? company.getName() : null
         );
     }
 }
