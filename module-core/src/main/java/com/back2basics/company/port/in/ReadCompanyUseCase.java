@@ -12,6 +12,8 @@ public interface ReadCompanyUseCase {
 
     Page<ReadCompanyResult> getCompaniesByNameContaining(Pageable pageable, String keyword);
 
+    List<ReadCompanyResult> getAllCompanies();
+
     Page<ReadCompanyResult> getAllCompanies(Pageable pageable);
 
     List<UserSummaryResult> getUsersByCompanyId(Long companyId);

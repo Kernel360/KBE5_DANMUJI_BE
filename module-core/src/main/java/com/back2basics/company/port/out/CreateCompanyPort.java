@@ -6,4 +6,6 @@ public interface CreateCompanyPort {
 
     Long save(Company company);
 
+    boolean existsByName(String name);
+
 }

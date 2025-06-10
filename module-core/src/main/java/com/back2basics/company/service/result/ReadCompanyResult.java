@@ -11,14 +11,14 @@ public class ReadCompanyResult {
     private final String name;
     private final String ceoName;
     private final String bio;
-    private final Integer bizNo;
+    private final Long bizNo;
     private final String address;
     private final String email;
     private final String tel;
 
     @Builder
     public ReadCompanyResult(Long id, String name, String ceoName, String bio,
-        Integer bizNo, String address, String email, String tel) {
+        Long bizNo, String address, String email, String tel) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
