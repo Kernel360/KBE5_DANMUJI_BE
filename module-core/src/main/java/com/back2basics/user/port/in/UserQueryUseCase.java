@@ -12,4 +12,6 @@ public interface UserQueryUseCase {
     Page<UserSimpleResult> getAllUsers(Pageable pageable);
 
     boolean existsByUsername(String username);
+
+    Page<UserSimpleResult> getDeletedUsers(Pageable pageable);
 }

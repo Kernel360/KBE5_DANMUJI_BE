@@ -20,6 +20,7 @@ public class User {
     private Long companyId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
+    private final LocalDateTime deletedAt;
 
 //    private boolean isDeleted;
 //
@@ -34,7 +35,7 @@ public class User {
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
         String position, Role role, Long companyId, LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
+        LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -46,6 +47,7 @@ public class User {
         this.companyId = companyId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public static User create(UserCreateCommand command, String encodedPassword) {

@@ -49,9 +49,16 @@ public class UserQueryAdapter implements UserQueryPort {
     }
 
     @Override
+    public Page<User> findAllByDeletedAtIsNotNull(Pageable pageable) {
+        return userEntityRepository.findAllByDeletedAtIsNotNull(pageable)
+            .map(userMapper::toDomain);
+    }
+
+    @Override
     public List<User> findAllByCompanyId(Long companyId) {
         return userEntityRepository.findAllByCompany_IdAndDeletedAtIsNull(companyId)
             .stream().map(userMapper::toDomain).toList();
     }
+
 
 }

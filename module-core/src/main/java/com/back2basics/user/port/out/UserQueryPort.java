@@ -17,5 +17,7 @@ public interface UserQueryPort {
 
     Page<User> findAllByDeletedAtIsNull(Pageable pageable);
 
+    Page<User> findAllByDeletedAtIsNotNull(Pageable pageable);
+
     List<User> findAllByCompanyId(Long companyId);
 }
