@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -108,7 +107,7 @@ public class QuestionController implements QuestionApiDocs {
         return ApiResponse.success(QuestionResponseCode.QUESTION_DELETE_SUCCESS);
     }
 
-    @PatchMapping("/{questionId}/answered")
+    @PutMapping("/{questionId}/answered")
     public ResponseEntity<ApiResponse<Void>> markAsAnswered(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long questionId) {
@@ -117,7 +116,7 @@ public class QuestionController implements QuestionApiDocs {
         return ApiResponse.success(QuestionResponseCode.QUESTION_MARK_AS_ANSWERED);
     }
 
-    @PatchMapping("/{questionId}/resolved")
+    @PutMapping("/{questionId}/resolved")
     public ResponseEntity<ApiResponse<Void>> markAsResolved(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long questionId
