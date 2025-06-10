@@ -47,7 +47,7 @@ public class User {
         this.position = position;
         this.role = role;
         this.companyId = companyId;
-        this.lastLoginAt = null;
+        this.lastLoginAt = lastLoginAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
