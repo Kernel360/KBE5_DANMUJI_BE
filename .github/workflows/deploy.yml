@@ -32,8 +32,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: module-api/build/libs/module-api-*.jar # todo : 이거 왜 되는지 모르겠음 ../libs/danmuji.jar 이걸로 해야되는데
-          target: /home/deploy/module-api/build/libs/
+          source: module-api/build/libs/*.jar # 수정
+          target: /home/deploy # 수정
 
       - name: 🚀 Run deploy.sh on EC2
         uses: appleboy/ssh-action@v1.0.3
