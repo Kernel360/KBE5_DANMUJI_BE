@@ -23,7 +23,7 @@ public class ChangePasswordService implements ChangePasswordUseCase {
     public void change(Long userId, ChangePasswordCommand command) {
         User user = userQueryPort.findById(userId);
 
-        if (!user.validateCurrentPassword(command.getCurrentPassword())) {
+        if (!user.validateCurrentPassword(command.getCurrentPassword(), bCryptPasswordEncoder)) {
             throw new UserException(UserErrorCode.PASSWORD_MISMATCH);
         }
 

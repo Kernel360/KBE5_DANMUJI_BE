@@ -4,6 +4,7 @@ import com.back2basics.user.port.in.command.UserCreateCommand;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 public class User {
@@ -73,8 +74,9 @@ public class User {
         this.companyId = companyId;
     }
 
-    public boolean validateCurrentPassword(String currentPassword) {
-        return this.password.matches(currentPassword);
+    public boolean validateCurrentPassword(String currentPassword,
+        BCryptPasswordEncoder bCryptPasswordEncoder) {
+        return bCryptPasswordEncoder.matches(currentPassword, this.password);
     }
 
     public void changePassword(String newPassword) {
