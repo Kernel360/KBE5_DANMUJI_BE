@@ -87,17 +87,16 @@ public class AdminController {
         return ApiResponse.success(USER_CREATE_SUCCESS, generatedPassword);
     }
 
-//    @GetMapping("/allUsers")
-//    public ResponseEntity<ApiResponse<List<UserSimpleResponse>>> getAllUsers() {
-//        List<UserSimpleResult> resultList = userQueryUseCase.getAllUsers();
-//        List<UserSimpleResponse> responseList = resultList.stream()
-//            .map(UserSimpleResponse::from)
-//            .toList();
-//        return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
-//    }
+    @GetMapping("/deletedUsers")
+    public ResponseEntity<ApiResponse<Page<UserSimpleResponse>>> getDeletedUsers(
+        @PageableDefault Pageable pageable) {
+        Page<UserSimpleResult> resultList = userQueryUseCase.getDeletedUsers(pageable);
+        Page<UserSimpleResponse> responseList = resultList.map(UserSimpleResponse::from);
+        return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
+    }
 
     @GetMapping("/allUsers")
-    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<UserSimpleResponse>>> getAllUsers(
+    public ResponseEntity<ApiResponse<Page<UserSimpleResponse>>> getAllUsers(
         @PageableDefault Pageable pageable) {
         Page<UserSimpleResult> resultList = userQueryUseCase.getAllUsers(pageable);
         Page<UserSimpleResponse> responseList = resultList.map(UserSimpleResponse::from);
