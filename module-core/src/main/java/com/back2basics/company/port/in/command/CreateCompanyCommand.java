@@ -10,7 +10,7 @@ public class CreateCompanyCommand {
     private String name;
     private String ceoName;
     private String bio;
-    private Integer bizNo;
+    private Long bizNo;
     private String address;
     private String email;
     private String tel;
