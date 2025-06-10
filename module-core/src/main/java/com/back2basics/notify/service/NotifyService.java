@@ -5,9 +5,8 @@ import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.out.NotificationCommandPort;
+import com.back2basics.notify.port.out.SseEmitterRepository;
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -16,19 +15,18 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequiredArgsConstructor
 public class NotifyService implements NotifyUseCase {
 
-    private final Map<Long, SseEmitter> clients = new ConcurrentHashMap<>();
     private final UserValidator userValidator;
     private final NotificationCommandPort notificationCommandPort;
+    private final SseEmitterRepository sseEmitterRepository;
 
     @Override
     public void notify(Long clientId, String message, NotificationType type) {
         userValidator.validateNotFoundUserId(clientId);
 
         Notification notification = Notification.create(clientId, message, type);
-
         notificationCommandPort.save(notification);
 
-        SseEmitter emitter = clients.get(clientId);
+        SseEmitter emitter = sseEmitterRepository.get(clientId);
         if (emitter != null) {
             try {
                 emitter.send(SseEmitter.event()
@@ -36,7 +34,7 @@ public class NotifyService implements NotifyUseCase {
                     .data(notification));
             } catch (IOException e) {
                 emitter.completeWithError(e);
-                clients.remove(clientId);
+                sseEmitterRepository.remove(clientId);
             }
         }
     }
