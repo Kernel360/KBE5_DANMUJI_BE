@@ -8,6 +8,7 @@ import com.back2basics.global.response.code.ErrorCode;
 import com.back2basics.global.response.error.CustomException;
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.infra.exception.user.UserErrorCode;
 import jakarta.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,22 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // NullPointerException 대응 추가 (customUserDetails == null 일 떄)
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiResponse<ErrorResponse>> handleNullPointerException(
+        NullPointerException ex) {
+        String msg = ex.getMessage();
+        if (msg != null && msg.contains("CustomUserDetails")) {
+            ErrorCode errorCode = UserErrorCode.USER_NOT_FOUND; // todo : 적절한 에러코드 만들어도 될듯
+            log.warn("인증되지 않은 사용자 요청 (CustomUserDetails is null): {}", msg);
+            return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+        }
+        // todo : 일단 customUserDetails가 null일때만 잡고 나머지는 그냥 500으로 줌 임시방편
+        ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+        log.error("NullPointerException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleBadCredentials(
