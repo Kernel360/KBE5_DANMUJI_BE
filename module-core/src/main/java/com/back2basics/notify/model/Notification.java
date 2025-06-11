@@ -13,16 +13,21 @@ public class Notification {
     private Boolean isRead;
     private final NotificationType type;
     private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+    private final LocalDateTime deletedAt;
 
     @Builder
     public Notification(Long id, Long clientId, String message, Boolean isRead,
-        NotificationType type, LocalDateTime createdAt) {
+        NotificationType type, LocalDateTime createdAt, LocalDateTime updatedAt,
+        LocalDateTime deletedAt) {
         this.id = id;
         this.clientId = clientId;
         this.message = message;
         this.isRead = isRead;
         this.type = type;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public static Notification create(Long clientId, String message, NotificationType type) {
@@ -31,7 +36,6 @@ public class Notification {
             .message(message)
             .isRead(false)
             .type(type)
-            .createdAt(LocalDateTime.now())
             .build();
     }
 

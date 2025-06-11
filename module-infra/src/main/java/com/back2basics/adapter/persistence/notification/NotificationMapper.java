@@ -16,6 +16,8 @@ public class NotificationMapper {
             .isRead(entity.getIsRead())
             .type(entity.getType())
             .createdAt(entity.getCreatedAt())
+            .deletedAt(entity.getUpdatedAt())
+            .deletedAt(entity.getDeletedAt())
             .build();
     }
 
@@ -26,7 +28,6 @@ public class NotificationMapper {
             .message(notification.getMessage())
             .type(notification.getType())
             .isRead(notification.getIsRead() != null ? notification.getIsRead() : false)
-            .createdAt(notification.getCreatedAt())
             .build();
     }
 }

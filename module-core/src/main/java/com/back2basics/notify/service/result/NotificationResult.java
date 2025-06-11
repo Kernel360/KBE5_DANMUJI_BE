@@ -5,7 +5,8 @@ import com.back2basics.notify.model.NotificationType;
 import java.time.LocalDateTime;
 
 public record NotificationResult(Long id, Long clientId, String message, NotificationType type,
-                                 Boolean isRead, LocalDateTime createdAt) {
+                                 Boolean isRead, LocalDateTime createdAt, LocalDateTime updatedAt,
+                                 LocalDateTime deletedAt) {
 
     public static NotificationResult from(Notification notification) {
         return new NotificationResult(
@@ -14,7 +15,9 @@ public record NotificationResult(Long id, Long clientId, String message, Notific
             notification.getMessage(),
             notification.getType(),
             notification.getIsRead() != null ? notification.getIsRead() : false,
-            notification.getCreatedAt()
+            notification.getCreatedAt(),
+            notification.getUpdatedAt(),
+            notification.getDeletedAt()
         );
     }
 }

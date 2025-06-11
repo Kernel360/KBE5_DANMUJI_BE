@@ -1,6 +1,7 @@
 package com.back2basics.domain.notify.controller;
 
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_CREATE_SUCCESS;
+import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_DELETE_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_READ_ALL_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_READ_UNREAD_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_UPDATE_READ_ALL_SUCCESS;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,5 +83,12 @@ public class NotifyController {
     public ResponseEntity<?> countUnread(@PathVariable Long clientId) {
         long count = notificationQueryUseCase.countUnreadByClientId(clientId);
         return ApiResponse.success(NOTIFICATION_READ_UNREAD_SUCCESS, count);
+    }
+
+    // 알림 삭제
+    @DeleteMapping("/{notificationId}")
+    public ResponseEntity<?> deleteById(@PathVariable Long notificationId) {
+        updateNotificationUseCase.deleteById(notificationId);
+        return ApiResponse.success(NOTIFICATION_DELETE_SUCCESS);
     }
 }

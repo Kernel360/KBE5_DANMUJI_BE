@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum NotificationType {
-    COMMENT("댓글"),
-    POST("게시글"),
-    QUESTION("질문"),
-    ANSWER("답변");
+    COMMENT("COMMENT"),
+    POST("POST"),
+    QUESTION("QUESTION"),
+    ANSWER("ANSWER"),
+    APPROVAL("APPROVAL"),
+    STEP_CHANGE("STEP_CHANGE");
 
     private final String description;
 

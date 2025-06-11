@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NotificationEntityRepository extends JpaRepository<NotificationEntity, Long> {
 
-    List<NotificationEntity> findByClientId(Long clientId);
+    List<NotificationEntity> findByClientIdAndDeletedAtIsNull(Long clientId);
 
-    List<NotificationEntity> findByClientIdAndIsReadFalse(Long clientId);
+    List<NotificationEntity> findByClientIdAndIsReadFalseAndDeletedAtIsNull(Long clientId);
 
-    long countByClientIdAndIsReadFalse(Long clientId);
+    long countByClientIdAndIsReadFalseAndDeletedAtIsNull(Long clientId);
 }

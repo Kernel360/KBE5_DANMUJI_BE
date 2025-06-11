@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.notification;
 
+import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.notify.model.NotificationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "notifications")
-public class NotificationEntity {
+public class NotificationEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,18 +35,14 @@ public class NotificationEntity {
     @Column(name = "type", nullable = false)
     private NotificationType type;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
     @Builder
     public NotificationEntity(Long id, Long clientId, String message, NotificationType type,
-        Boolean isRead, LocalDateTime createdAt) {
+        Boolean isRead) {
         this.id = id;
         this.clientId = clientId;
         this.message = message;
         this.type = type;
         this.isRead = isRead;
-        this.createdAt = LocalDateTime.now();
     }
 
 }

@@ -29,7 +29,7 @@ public class NotificationQueryAdapter implements NotificationQueryPort {
     @Override
     public List<Notification> findByClientId(Long clientId) {
         userValidator.validateNotFoundUserId(clientId);
-        return notificationEntityRepository.findByClientId(clientId).stream()
+        return notificationEntityRepository.findByClientIdAndDeletedAtIsNull(clientId).stream()
             .map(notificationMapper::toDomain)
             .toList();
     }
@@ -37,7 +37,8 @@ public class NotificationQueryAdapter implements NotificationQueryPort {
     @Override
     public List<Notification> findByClientIdAndIsReadFalse(Long clientId) {
         userValidator.validateNotFoundUserId(clientId);
-        return notificationEntityRepository.findByClientIdAndIsReadFalse(clientId).stream()
+        return notificationEntityRepository.findByClientIdAndIsReadFalseAndDeletedAtIsNull(clientId)
+            .stream()
             .map(notificationMapper::toDomain)
             .toList();
     }
@@ -45,7 +46,8 @@ public class NotificationQueryAdapter implements NotificationQueryPort {
     @Override
     public long countUnreadByClientId(Long clientId) {
         userValidator.validateNotFoundUserId(clientId);
-        return notificationEntityRepository.countByClientIdAndIsReadFalse(clientId);
+        return notificationEntityRepository.countByClientIdAndIsReadFalseAndDeletedAtIsNull(
+            clientId);
     }
 
 }

@@ -2,6 +2,7 @@ package com.back2basics.notify.service;
 
 import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.port.in.UpdateNotificationUseCase;
+import com.back2basics.notify.port.out.NotificationDeletePort;
 import com.back2basics.notify.port.out.NotificationQueryPort;
 import com.back2basics.notify.port.out.NotificationSavePort;
 import java.util.List;
@@ -14,6 +15,7 @@ public class UpdateNotificationService implements UpdateNotificationUseCase {
 
     private final NotificationQueryPort notificationQueryPort;
     private final NotificationSavePort notificationSavePort;
+    private final NotificationDeletePort notificationDeletePort;
 
     @Override
     public void markAsRead(Long notificationId) {
@@ -28,5 +30,10 @@ public class UpdateNotificationService implements UpdateNotificationUseCase {
             clientId);
         notifications.forEach(Notification::markAsRead);
         notificationSavePort.saveAll(notifications);
+    }
+
+    @Override
+    public void deleteById(Long notificationId) {
+        notificationDeletePort.softDeleteById(notificationId);
     }
 }
