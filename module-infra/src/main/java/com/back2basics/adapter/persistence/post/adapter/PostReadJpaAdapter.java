@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
+import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostEntity;
@@ -31,6 +32,7 @@ public class PostReadJpaAdapter implements PostReadPort {
         PostEntity entity = queryFactory
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
+            .join(postEntity.project, projectEntity).fetchJoin()
             .where(
                 postEntity.id.eq(id),
                 postEntity.deletedAt.isNull()
@@ -64,6 +66,7 @@ public class PostReadJpaAdapter implements PostReadPort {
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
+            .join(postEntity.project, projectEntity).fetchJoin()
             .where(
                 postEntity.id.in(ids),
                 postEntity.deletedAt.isNull()
