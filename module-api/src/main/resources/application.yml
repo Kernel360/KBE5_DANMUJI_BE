@@ -58,7 +58,7 @@ spring:
     password: ${DB_PASSWORD}
 
   jpa:
-    open-in-view: true
+    open-in-view: false
     hibernate:
       ddl-auto: update
       naming:
@@ -95,7 +95,7 @@ spring:
     password: ${DB_PASSWORD}
 
   jpa:
-    open-in-view: true
+    open-in-view: false
     hibernate:
       ddl-auto: update
       naming:
