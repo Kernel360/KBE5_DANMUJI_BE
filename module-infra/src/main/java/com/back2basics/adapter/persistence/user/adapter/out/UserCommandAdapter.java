@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 @RequiredArgsConstructor
 public class UserCommandAdapter implements UserCommandPort {
 
@@ -36,7 +37,6 @@ public class UserCommandAdapter implements UserCommandPort {
     }
 
     @Override
-    @Transactional
     public void deleteById(Long userId) {
         UserEntity userEntity = userEntityRepository.findById(userId)
             .orElseThrow(() -> new UserException(USER_NOT_FOUND));
