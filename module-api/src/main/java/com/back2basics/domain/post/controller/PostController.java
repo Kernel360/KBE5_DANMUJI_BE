@@ -7,6 +7,8 @@ import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
 import com.back2basics.post.port.in.PostReadUseCase;
@@ -17,6 +19,7 @@ import com.back2basics.post.service.result.PostReadResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
@@ -107,13 +111,21 @@ public class PostController implements PostApiDocs {
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) String author,
+        @RequestParam(required = false) String clientCompany,
+        @RequestParam(required = false) String developerCompany,
+        @RequestParam(required = false) Integer priority,
+        @RequestParam(required = false) PostStatus status,
+        @RequestParam(required = false) PostType type,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PostReadResult> resultPage = postSearchUseCase.searchPost(customUserDetails.getId(),
-            keyword, pageable);
+        Page<PostReadResult> resultPage = postSearchUseCase.searchPost(
+            customUserDetails.getId(), title, clientCompany, developerCompany, author, priority,
+            status, type, pageable
+        );
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);

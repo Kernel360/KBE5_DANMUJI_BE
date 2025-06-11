@@ -6,5 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public enum QuestionStatus {
     WAITING,
     ANSWERED,
-    RESOLVED
+    RESOLVED,
+    UNRESOLVED
 }
