@@ -21,4 +21,9 @@ public class NotificationQueryService implements NotificationQueryUseCase {
             .map(NotificationResult::from)
             .toList();
     }
+
+    @Override
+    public long countUnreadByClientId(Long clientId) {
+        return notificationQueryPort.countUnreadByClientId(clientId);
+    }
 }

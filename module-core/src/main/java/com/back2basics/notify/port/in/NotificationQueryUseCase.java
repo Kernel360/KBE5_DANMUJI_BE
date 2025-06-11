@@ -6,4 +6,6 @@ import java.util.List;
 public interface NotificationQueryUseCase {
 
     List<NotificationResult> findByClientId(Long clientId);
+
+    long countUnreadByClientId(Long clientId);
 }
