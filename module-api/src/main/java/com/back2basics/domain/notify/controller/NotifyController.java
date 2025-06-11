@@ -48,7 +48,7 @@ public class NotifyController {
     @PostMapping("/notify/{clientId}")
     public ResponseEntity<?> notifyClient(@PathVariable Long clientId,
         @RequestBody NotificationCreateRequest request) {
-        notifyUseCase.notify(clientId, request.message(), request.type());
+        notifyUseCase.notify(clientId, request.toCommand(clientId));
 
         return ApiResponse.success(NOTIFICATION_CREATE_SUCCESS);
     }

@@ -7,12 +7,18 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum NotificationType {
-    COMMENT("COMMENT"),
-    POST("POST"),
-    QUESTION("QUESTION"),
-    ANSWER("ANSWER"),
-    APPROVAL("APPROVAL"),
-    STEP_CHANGE("STEP_CHANGE");
+    POST("게시글"),
+    COMMENT("댓글"),
+    QUESTION("질문"),
+    ANSWER("답변"),
+
+    POST_APPROVAL_REQUEST("게시글승인요청"),
+    POST_APPROVAL_ACCEPTED("게시글승인완료"),
+    POST_APPROVAL_REJECTED("게시글승인거절"),
+
+    STEP_APPROVAL_REQUEST("단계승인요청"),
+    STEP_APPROVAL_ACCEPTED("단계승인완료"),
+    STEP_APPROVAL_REJECTED("단계승인거절");
 
     private final String description;
 
