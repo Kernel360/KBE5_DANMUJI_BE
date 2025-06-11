@@ -1,14 +1,12 @@
 package com.back2basics.post.service;
 
 import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.out.PostCreatePort;
 import com.back2basics.post.service.result.PostCreateResult;
-import com.back2basics.project.model.Project;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,6 @@ public class PostCreateService implements PostCreateUseCase {
 
     private final PostCreatePort postCreatePort;
     private final UserQueryPort userQueryPort;
-    private final ProjectValidator projectValidator;
     private final PostValidator postValidator;
 
     @Override
@@ -31,9 +28,8 @@ public class PostCreateService implements PostCreateUseCase {
         // 프로젝트는 포트에서 Optional<Project> 타입 리턴, 어댑터(구현체)에서는 orElseThrow를 하지 않습니다 validator에서 throw중
         // todo : 이것도 통일해야할 것 같습니다.
         User user = userQueryPort.findById(userId);
-        Project project = projectValidator.findProjectById(command.getProjectId());
 
-        if (command.getParentId() != null) {
+        if (command.getParentId() != null) { // todo : validate로 옮기기
             postValidator.findPost(command.getParentId()).getId();
         }
 
@@ -41,7 +37,7 @@ public class PostCreateService implements PostCreateUseCase {
             .parentId(command.getParentId())
             .authorIp(userIp)
             .author(user)
-            .project(project)
+            .projectStepId(command.getProjectStepId())
             .title(command.getTitle())
             .content(command.getContent())
             .type(command.getType())

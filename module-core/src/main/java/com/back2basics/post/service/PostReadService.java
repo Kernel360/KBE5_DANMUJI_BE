@@ -1,7 +1,6 @@
 package com.back2basics.post.service;
 
 import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostReadUseCase;
 import com.back2basics.post.port.out.PostReadPort;
@@ -17,7 +16,6 @@ public class PostReadService implements PostReadUseCase {
 
     private final PostReadPort postReadPort;
     private final PostValidator postValidator;
-    private final ProjectValidator projectValidator;
 
     @Override
     public PostReadResult getPost(Long userId, Long postId) {
