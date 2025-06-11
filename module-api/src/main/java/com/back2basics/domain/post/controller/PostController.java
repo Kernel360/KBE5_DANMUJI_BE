@@ -63,12 +63,13 @@ public class PostController /*implements PostApiDocs*/ {
     }
 
     @GetMapping("/{projectStepId}/posts/{postId}")
-    public ResponseEntity<ApiResponse<PostReadResponse>> getPost(
+    public ResponseEntity<ApiResponse<PostReadResponse>> getPostByProjectStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectStepId,
         @PathVariable Long postId) {
         Long userId = customUserDetails.getId();
-        PostReadResult result = postReadUseCase.getPost(userId, projectStepId, postId);
+        PostReadResult result = postReadUseCase.getPostByProjectStepId(userId, projectStepId,
+            postId);
         PostReadResponse response = PostReadResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);

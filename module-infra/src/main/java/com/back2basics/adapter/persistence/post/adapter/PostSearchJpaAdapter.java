@@ -1,7 +1,6 @@
 package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
-import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
@@ -52,7 +51,6 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
-            .join(postEntity.project, projectEntity).fetchJoin()
             .where(postEntity.id.in(ids)
                 .and(activePosts())
                 .and(matchesTitle(title))

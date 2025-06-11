@@ -20,16 +20,16 @@ public class PostReadService implements PostReadUseCase {
     private final ProjectStepValidator projectStepValidator;
 
     @Override
-    public PostReadResult getPost(Long userId, Long projectStepId, Long postId) {
+    public PostReadResult getPostByProjectStepId(Long userId, Long projectStepId, Long postId) {
         Post post = postValidator.findPost(postId);
         return PostReadResult.toResult(post);
     }
 
     @Override
-    public Page<PostReadResult> getPostListByProjectId(Long userId, Long projectStepId,
+    public Page<PostReadResult> getAllPostsByProjectStepId(Long userId, Long projectStepId,
         Pageable pageable) {
         projectStepValidator.findProjectStep(projectStepId);
-        return postReadPort.findAllPostsWithProjectStepId(projectStepId, pageable)
+        return postReadPort.findAllPostsByProjectStepId(projectStepId, pageable)
             .map(PostReadResult::toResult);
     }
 }
