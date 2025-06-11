@@ -27,7 +27,8 @@ public class PostSearchJpaAdapter implements PostSearchPort {
     private final PostMapper mapper;
 
     @Override
-    public Page<Post> search(String title, String clientCompany, String developerCompany,
+    public Page<Post> search(Long stepId, String title, String clientCompany,
+        String developerCompany,
         String author, Integer priority, PostStatus status, PostType type,
         Pageable pageable) {
 
@@ -36,6 +37,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .select(postEntity.id)
             .from(postEntity)
             .where(activePosts()
+                .and(postEntity.projectStep.stepId.eq(stepId))
                 .and(matchesTitle(title))
                 //.and(matchesClientCompany(searchCommand.getClientCompany()))
                 //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
@@ -54,6 +56,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .join(postEntity.author, userEntity).fetchJoin()
             .join(postEntity.project, projectEntity).fetchJoin()
             .where(postEntity.id.in(ids)
+                .and(postEntity.projectStep.stepId.eq(stepId))
                 .and(activePosts())
                 .and(matchesTitle(title))
                 //.and(matchesClientCompany(searchCommand.getClientCompany()))
@@ -73,6 +76,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .select(postEntity.count())
             .from(postEntity)
             .where(activePosts()
+                .and(postEntity.projectStep.stepId.eq(stepId))
                 .and(matchesTitle(title))
                 //.and(matchesClientCompany(searchCommand.getClientCompany()))
                 //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))

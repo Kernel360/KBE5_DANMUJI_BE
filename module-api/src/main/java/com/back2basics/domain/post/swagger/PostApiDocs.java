@@ -167,6 +167,9 @@ public interface PostApiDocs {
     ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
 
+        @Parameter(description = "프로젝트 단계", example = "1")
+        @RequestParam(required = false) Long stepId,
+
         @Parameter(description = "게시글 제목", example = "게시글 제목입니다.")
         @RequestParam(required = false) String title,
 

@@ -17,10 +17,12 @@ public class PostSearchService implements PostSearchUseCase {
     private final PostSearchPort postSearchPort;
 
     @Override
-    public Page<PostReadResult> searchPost(Long userId, String title, String clientCompany,
+    public Page<PostReadResult> searchPost(Long userId, Long stepId, String title,
+        String clientCompany,
         String developerCompany, String author, Integer priority, PostStatus status,
         PostType type, Pageable pageable) {
-        return postSearchPort.search(title, clientCompany, developerCompany, author, priority,
+        return postSearchPort.search(stepId, title, clientCompany, developerCompany, author,
+                priority,
                 status, type, pageable)
             .map(PostReadResult::toResult);
     }

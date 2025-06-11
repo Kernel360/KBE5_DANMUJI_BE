@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostSearchPort {
 
-    Page<Post> search(String title, String clientCompany, String developerCompany,
+    Page<Post> search(Long stepId, String title, String clientCompany, String developerCompany,
         String author, Integer priority, PostStatus status, PostType type,
         Pageable pageable);
 }
