@@ -4,6 +4,9 @@ import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.post.model.Post;
+import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostType;
+import com.back2basics.post.port.in.command.PostSearchCommand;
 import com.back2basics.post.port.out.PostSearchPort;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,13 +26,20 @@ public class PostSearchJpaAdapter implements PostSearchPort {
     private final PostMapper mapper;
 
     @Override
-    public Page<Post> searchByKeyword(String keyword, Pageable pageable) {
+    public Page<Post> searchByCommand(PostSearchCommand searchCommand, Pageable pageable) {
 
         // id 페이징
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
-            .where(activePosts().and(matchesKeyword(keyword)))
+            .where(activePosts()
+                .and(matchesTitle(searchCommand.getTitle()))
+                //.and(matchesClientCompany(searchCommand.getClientCompany()))
+                //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
+                .and(matchesAuthor(searchCommand.getAuthor()))
+                .and(matchesPriority(searchCommand.getPriority()))
+                .and(matchesStatus(searchCommand.getStatus()))
+                .and(matchesType(searchCommand.getType())))
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -40,7 +50,13 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .selectFrom(postEntity)
             .where(postEntity.id.in(ids)
                 .and(activePosts())
-                .and(matchesKeyword(keyword)))
+                .and(matchesTitle(searchCommand.getTitle()))
+                //.and(matchesClientCompany(searchCommand.getClientCompany()))
+                //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
+                .and(matchesAuthor(searchCommand.getAuthor()))
+                .and(matchesPriority(searchCommand.getPriority()))
+                .and(matchesStatus(searchCommand.getStatus()))
+                .and(matchesType(searchCommand.getType())))
             .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
@@ -51,7 +67,14 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         Long total = queryFactory
             .select(postEntity.count())
             .from(postEntity)
-            .where(activePosts().and(matchesKeyword(keyword)))
+            .where(activePosts()
+                .and(matchesTitle(searchCommand.getTitle()))
+                //.and(matchesClientCompany(searchCommand.getClientCompany()))
+                //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
+                .and(matchesAuthor(searchCommand.getAuthor()))
+                .and(matchesPriority(searchCommand.getPriority()))
+                .and(matchesStatus(searchCommand.getStatus()))
+                .and(matchesType(searchCommand.getType())))
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
@@ -62,11 +85,35 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         return postEntity.deletedAt.isNull();
     }
 
-    private BooleanExpression matchesKeyword(String keyword) {
-        if (keyword == null || keyword.isBlank()) {
-            return null;
-        }
-        return postEntity.title.contains(keyword)
-            .or(postEntity.content.contains(keyword));
+    private BooleanExpression matchesTitle(String title) {
+        return (title == null || title.isBlank()) ? null : postEntity.title.contains(title);
+    }
+
+    private BooleanExpression matchesAuthor(String author) {
+        return (author == null || author.isBlank()) ? null
+            : postEntity.author.name.contains(author);
+    }
+
+    // todo : ProjectEntity에 해당 필드가 추가되면 필터링 옵션에 넣을 예정
+//    private BooleanExpression matchesClientCompany(String clientCompany) {
+//        return (clientCompany == null || clientCompany.isBlank()) ? null
+//            : postEntity.project.clientCompany.contains(clientCompany);
+//    }
+//
+//    private BooleanExpression matchesDeveloperCompany(String developerCompany) {
+//        return (developerCompany == null || developerCompany.isBlank()) ? null
+//            : postEntity.project.developerCompany.contains(developerCompany);
+//    }
+
+    private BooleanExpression matchesPriority(Integer priority) {
+        return (priority == null) ? null : postEntity.priority.eq(priority);
+    }
+
+    private BooleanExpression matchesStatus(PostStatus status) {
+        return (status == null) ? null : postEntity.status.eq(status);
+    }
+
+    private BooleanExpression matchesType(PostType type) {
+        return (type == null) ? null : postEntity.type.eq(type);
     }
 }

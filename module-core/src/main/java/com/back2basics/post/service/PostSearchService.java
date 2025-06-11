@@ -1,6 +1,7 @@
 package com.back2basics.post.service;
 
 import com.back2basics.post.port.in.PostSearchUseCase;
+import com.back2basics.post.port.in.command.PostSearchCommand;
 import com.back2basics.post.port.out.PostSearchPort;
 import com.back2basics.post.service.result.PostReadResult;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,9 @@ public class PostSearchService implements PostSearchUseCase {
     private final PostSearchPort postSearchPort;
 
     @Override
-    public Page<PostReadResult> searchPost(Long userId, String keyword, Pageable pageable) {
-        return postSearchPort.searchByKeyword(keyword, pageable)
+    public Page<PostReadResult> searchPost(Long userId, PostSearchCommand searchCommand,
+        Pageable pageable) {
+        return postSearchPort.searchByCommand(searchCommand, pageable)
             .map(PostReadResult::toResult);
     }
 }
