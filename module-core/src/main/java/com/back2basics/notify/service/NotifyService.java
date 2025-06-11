@@ -5,7 +5,7 @@ import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.out.NotificationCommandPort;
-import com.back2basics.notify.port.out.SseEmitterRepository;
+import com.back2basics.notify.util.SseEmitterUtil;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class NotifyService implements NotifyUseCase {
 
     private final UserValidator userValidator;
     private final NotificationCommandPort notificationCommandPort;
-    private final SseEmitterRepository sseEmitterRepository;
+    private final SseEmitterUtil sseEmitterUtil;
 
     @Override
     public void notify(Long clientId, String message, NotificationType type) {
@@ -26,7 +26,7 @@ public class NotifyService implements NotifyUseCase {
         Notification notification = Notification.create(clientId, message, type);
         notificationCommandPort.save(notification);
 
-        SseEmitter emitter = sseEmitterRepository.get(clientId);
+        SseEmitter emitter = sseEmitterUtil.get(clientId);
         if (emitter != null) {
             try {
                 emitter.send(SseEmitter.event()
@@ -34,7 +34,7 @@ public class NotifyService implements NotifyUseCase {
                     .data(notification));
             } catch (IOException e) {
                 emitter.completeWithError(e);
-                sseEmitterRepository.remove(clientId);
+                sseEmitterUtil.remove(clientId);
             }
         }
     }

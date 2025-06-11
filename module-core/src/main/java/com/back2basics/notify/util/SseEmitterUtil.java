@@ -1,4 +1,4 @@
-package com.back2basics.notify.port.out;
+package com.back2basics.notify.util;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Component
-public class SseEmitterRepository {
+public class SseEmitterUtil {
 
     private final Map<Long, SseEmitter> clients = new ConcurrentHashMap<>();
 

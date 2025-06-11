@@ -3,7 +3,7 @@ package com.back2basics.notify.service;
 import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.port.in.SubscribeNotificationUseCase;
 import com.back2basics.notify.port.out.NotificationQueryPort;
-import com.back2basics.notify.port.out.SseEmitterRepository;
+import com.back2basics.notify.util.SseEmitterUtil;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +15,17 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class SubscribeNotificationService implements SubscribeNotificationUseCase {
 
     private final NotificationQueryPort notificationQueryPort;
-    private final SseEmitterRepository sseEmitterRepository;
+    private final SseEmitterUtil sseEmitterUtil;
 
     @Override
     public SseEmitter subscribe(Long clientId) throws IOException {
         SseEmitter emitter = new SseEmitter(30 * 60 * 1000L); // 30분 유지
 
-        sseEmitterRepository.add(clientId, emitter);
+        sseEmitterUtil.add(clientId, emitter);
 
-        emitter.onCompletion(() -> sseEmitterRepository.remove(clientId));
-        emitter.onTimeout(() -> sseEmitterRepository.remove(clientId));
-        emitter.onError(e -> sseEmitterRepository.remove(clientId));
+        emitter.onCompletion(() -> sseEmitterUtil.remove(clientId));
+        emitter.onTimeout(() -> sseEmitterUtil.remove(clientId));
+        emitter.onError(e -> sseEmitterUtil.remove(clientId));
 
         emitter.send(SseEmitter.event()
             .name("CONNECTED")
@@ -44,7 +44,7 @@ public class SubscribeNotificationService implements SubscribeNotificationUseCas
                     .data(notification));
             } catch (IOException e) {
                 emitter.completeWithError(e);
-                sseEmitterRepository.remove(clientId);
+                sseEmitterUtil.remove(clientId);
                 break;
             }
         }
