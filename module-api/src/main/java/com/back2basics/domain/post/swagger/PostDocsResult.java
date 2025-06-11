@@ -9,7 +9,7 @@ public class PostDocsResult {
           "type": "GENERAL",
           "status": "PENDING",
           "priority": 1,
-          "projectId":1
+          "stepId": 1
         }
         """;
 
@@ -34,7 +34,6 @@ public class PostDocsResult {
         }
         """;
 
-
     public static final String POST_READ_SUCCESS = """
         {
           "success": true,
@@ -46,19 +45,7 @@ public class PostDocsResult {
               "id": 1,
               "name": "홍길동"
             },
-            "project": {
-              "id": 1,
-              "name": "백엔드 개선 프로젝트",
-              "description": "프로젝트 설명입니다",
-              "startDate": "2024-01-01",
-              "endDate": "2024-06-01",
-              "createdAt": "2024-01-01T08:00:00",
-              "updatedAt": "2024-01-01T09:00:00",
-              "deletedAt": null,
-              "isDeleted": false,
-              "status": "ACTIVE",
-              "steps": []
-            },
+            "projectStepId": 1,
             "title": "게시글 제목",
             "content": "게시글 내용",
             "type": "GENERAL",
@@ -68,7 +55,6 @@ public class PostDocsResult {
             "updatedAt": "2024-01-01T10:00:00",
             "deletedAt": null,
             "completedAt": null,
-            "comments": [],
             "isDelete": false
           }
         }
@@ -83,7 +69,6 @@ public class PostDocsResult {
         }
         """;
 
-
     public static final String POST_READ_ALL_SUCCESS = """
         {
           "success": true,
@@ -97,19 +82,7 @@ public class PostDocsResult {
                   "id": 1,
                   "name": "홍길동"
                 },
-                "project": {
-                  "id": 1,
-                  "name": "백엔드 개선 프로젝트",
-                  "description": "프로젝트 설명입니다",
-                  "startDate": "2024-01-01",
-                  "endDate": "2024-06-01",
-                  "createdAt": "2024-01-01T08:00:00",
-                  "updatedAt": "2024-01-01T09:00:00",
-                  "deletedAt": null,
-                  "isDeleted": false,
-                  "status": "ACTIVE",
-                  "steps": []
-                },
+                "projectStepId": 1,
                 "title": "첫 번째 게시글",
                 "content": "게시글 내용입니다",
                 "type": "GENERAL",
@@ -119,7 +92,6 @@ public class PostDocsResult {
                 "updatedAt": "2024-01-01T10:00:00",
                 "deletedAt": null,
                 "completedAt": null,
-                "comments": [],
                 "isDelete": false
               }
             ],
@@ -184,13 +156,15 @@ public class PostDocsResult {
                   "name": "홍길동",
                   "email": "hong@test.com"
                 },
+                "projectStepId": 1,
                 "title": "첫 번째 게시글",
                 "type": "GENERAL",
                 "status": "PENDING",
                 "priority": 1,
                 "createdAt": "2024-01-01T10:00:00",
                 "deletedAt": null,
-                "completedAt": null
+                "completedAt": null,
+                "isDelete": false
               }
             ],
             "pageable": {
