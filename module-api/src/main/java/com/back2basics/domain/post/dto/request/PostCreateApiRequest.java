@@ -18,9 +18,6 @@ public class PostCreateApiRequest {
     @NotBlank(message = "제목은 필수입니다.")
     private String title;
 
-    @NotNull(message = "프로젝트 id는 필수입니다.")
-    private Long projectId;
-
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
@@ -33,13 +30,16 @@ public class PostCreateApiRequest {
     @NotNull(message = "우선순위가 입력되지 않았습니다.")
     private Integer priority;
 
+    @NotNull(message = "프로젝트 단계를 입력하세요.")
+    private Long stepId;
+
     public PostCreateCommand toCommand() {
         return PostCreateCommand.builder()
             .parentId(parentId)
             .title(title)
-            .projectId(projectId)
             .content(content)
             .status(status)
+            .stepId(stepId)
             .type(type).priority(priority).build();
     }
 }

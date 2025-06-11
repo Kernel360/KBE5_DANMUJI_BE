@@ -1,7 +1,6 @@
 package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
-import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostEntity;
@@ -32,7 +31,6 @@ public class PostReadJpaAdapter implements PostReadPort {
         PostEntity entity = queryFactory
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
-            .join(postEntity.project, projectEntity).fetchJoin()
             .where(
                 postEntity.id.eq(id),
                 postEntity.deletedAt.isNull()
@@ -48,14 +46,34 @@ public class PostReadJpaAdapter implements PostReadPort {
     }
 
     @Override
-    public Page<Post> findAllWithPaging(Long projectId, Pageable pageable) {
+    public Optional<Post> findPostByProjectStepId(Long postId, Long projectStepId) {
+        PostEntity entity = queryFactory
+            .selectFrom(postEntity)
+            .join(postEntity.author, userEntity).fetchJoin()
+            .where(
+                postEntity.id.eq(postId),
+                postEntity.deletedAt.isNull(),
+                postEntity.projectStepId.eq(projectStepId)
+            )
+
+            .fetchOne();
+
+        if (entity == null) {
+            throw new PostException(PostErrorCode.POST_NOT_FOUND);
+        }
+
+        return Optional.of(mapper.toDomain(entity));
+    }
+
+    @Override
+    public Page<Post> findAllPostsByProjectStepId(Long projectStepId, Pageable pageable) {
         // id 페이징
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.project.id.eq(projectId)
+                postEntity.projectStepId.eq(projectStepId)
             )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
@@ -66,10 +84,10 @@ public class PostReadJpaAdapter implements PostReadPort {
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
-            .join(postEntity.project, projectEntity).fetchJoin()
             .where(
                 postEntity.id.in(ids),
-                postEntity.deletedAt.isNull()
+                postEntity.deletedAt.isNull(),
+                postEntity.projectStepId.eq(projectStepId)
             )
             .orderBy(postEntity.createdAt.desc())
             .fetch()
@@ -83,7 +101,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.project.id.eq(projectId)
+                postEntity.projectStepId.eq(projectStepId)
             )
             .fetchOne();
 
