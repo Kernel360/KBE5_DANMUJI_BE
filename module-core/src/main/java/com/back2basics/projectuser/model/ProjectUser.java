@@ -14,9 +14,6 @@ import lombok.Getter;
 @Getter
 public class ProjectUser {
 
-    // todo: 어노테이션 사용해도 이게 안됨 -> NPE. 근데 일단 도메인이 이 port를 알면 안되나 ?
-//    private static UserQueryPort userQueryPort;
-//    private static CompanyValidator companyValidator;
     private final Long id;
     private final Project project;
     private User user;

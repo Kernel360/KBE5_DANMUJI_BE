@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "project_users")
+@Table(name = "assignments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectUserEntity {
 
