@@ -2,6 +2,7 @@ package com.back2basics.domain.notify.controller;
 
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_CREATE_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_READ_ALL_SUCCESS;
+import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_READ_UNREAD_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_UPDATE_READ_ALL_SUCCESS;
 import static com.back2basics.domain.notify.controller.code.NotificationResponseCode.NOTIFICATION_UPDATE_READ_SUCCESS;
 
@@ -73,5 +74,12 @@ public class NotifyController {
             .toList();
 
         return ApiResponse.success(NOTIFICATION_READ_ALL_SUCCESS, responses);
+    }
+
+    // 읽지 않은 알림 개수 조회
+    @GetMapping("/count/unread/{clientId}")
+    public ResponseEntity<?> countUnread(@PathVariable Long clientId) {
+        long count = notificationQueryUseCase.countUnreadByClientId(clientId);
+        return ApiResponse.success(NOTIFICATION_READ_UNREAD_SUCCESS, count);
     }
 }
