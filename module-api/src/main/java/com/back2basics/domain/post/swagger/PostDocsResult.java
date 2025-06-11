@@ -181,7 +181,7 @@ public class PostDocsResult {
                 "postId": 1,
                 "author": {
                   "id": 1,
-                  "nickname": "홍길동",
+                  "name": "홍길동",
                   "email": "hong@test.com"
                 },
                 "title": "첫 번째 게시글",
