@@ -52,7 +52,11 @@ public class Question {
     }
 
     public void markAsResolved() {
-        this.status = QuestionStatus.RESOLVED;
+        if (this.status == QuestionStatus.RESOLVED) {
+            this.status = QuestionStatus.UNRESOLVED;
+        } else {
+            this.status = QuestionStatus.RESOLVED;
+        }
     }
 
 }
