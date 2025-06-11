@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/project-steps/")
+@RequestMapping("/api/posts")
 @RequiredArgsConstructor
 public class PostController /*implements PostApiDocs*/ {
 
@@ -47,35 +47,32 @@ public class PostController /*implements PostApiDocs*/ {
     private final PostDeleteUseCase postDeleteUseCase;
     private final PostSearchUseCase postSearchUseCase;
 
-    @PostMapping("/{projectStepId}/posts")
+    @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectStepId,
         @RequestBody @Valid PostCreateApiRequest request) {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
-        PostCreateResult result = createPostUseCase.createPost(userId, projectStepId, userIp,
+        PostCreateResult result = createPostUseCase.createPost(userId, request.getStepId(), userIp,
             request.toCommand());
         PostCreateResponse response = PostCreateResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, response);
     }
 
-    @GetMapping("/{projectStepId}/posts/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity<ApiResponse<PostReadResponse>> getPostByProjectStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectStepId,
         @PathVariable Long postId) {
         Long userId = customUserDetails.getId();
-        PostReadResult result = postReadUseCase.getPostByProjectStepId(userId, projectStepId,
-            postId);
+        PostReadResult result = postReadUseCase.getPostById(userId, postId);
         PostReadResponse response = PostReadResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
-    @GetMapping("/{projectStepId}/posts")
+    @GetMapping("/all/{projectStepId}")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getAllPostsByProjectStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectStepId,
@@ -92,31 +89,29 @@ public class PostController /*implements PostApiDocs*/ {
     }
 
 
-    @PutMapping("/{projectStepId}/posts/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<ApiResponse<Void>> updatePost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectStepId,
         @PathVariable Long postId,
         @Valid @RequestBody PostUpdateApiRequest request) {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
-        postUpdateUseCase.updatePost(userId, projectStepId, userIp, postId, request.toCommand());
+        postUpdateUseCase.updatePost(userId, userIp, postId, request.toCommand());
 
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS);
     }
 
-    @DeleteMapping("/{projectStepId}/posts/{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponse<Void>> deletePost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectStepId,
         @PathVariable Long postId) {
         Long userId = customUserDetails.getId();
-        postDeleteUseCase.softDeletePost(userId, projectStepId, postId);
+        postDeleteUseCase.softDeletePost(userId, postId);
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }
 
-    @GetMapping("/{projectStepId}/posts/search")
+    @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectStepId,

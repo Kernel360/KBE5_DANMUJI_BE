@@ -30,12 +30,16 @@ public class PostCreateApiRequest {
     @NotNull(message = "우선순위가 입력되지 않았습니다.")
     private Integer priority;
 
+    @NotNull(message = "프로젝트 단계를 입력하세요.")
+    private Long stepId;
+
     public PostCreateCommand toCommand() {
         return PostCreateCommand.builder()
             .parentId(parentId)
             .title(title)
             .content(content)
             .status(status)
+            .stepId(stepId)
             .type(type).priority(priority).build();
     }
 }

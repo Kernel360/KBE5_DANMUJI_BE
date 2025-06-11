@@ -1,7 +1,6 @@
 package com.back2basics.post.service;
 
 import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.ProjectStepValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostReadUseCase;
 import com.back2basics.post.port.out.PostReadPort;
@@ -17,18 +16,17 @@ public class PostReadService implements PostReadUseCase {
 
     private final PostReadPort postReadPort;
     private final PostValidator postValidator;
-    private final ProjectStepValidator projectStepValidator;
 
     @Override
-    public PostReadResult getPostByProjectStepId(Long userId, Long projectStepId, Long postId) {
+    public PostReadResult getPostById(Long userId, Long postId) {
         Post post = postValidator.findPost(postId);
         return PostReadResult.toResult(post);
     }
 
+
     @Override
     public Page<PostReadResult> getAllPostsByProjectStepId(Long userId, Long projectStepId,
         Pageable pageable) {
-        projectStepValidator.findProjectStep(projectStepId);
         return postReadPort.findAllPostsByProjectStepId(projectStepId, pageable)
             .map(PostReadResult::toResult);
     }

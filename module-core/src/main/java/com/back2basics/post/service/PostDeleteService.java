@@ -15,7 +15,7 @@ public class PostDeleteService implements PostDeleteUseCase {
     private final PostValidator postValidator;
 
     @Override
-    public void softDeletePost(Long requesterId, Long projectStepId, Long postId) {
+    public void softDeletePost(Long requesterId, Long postId) {
         Post post = postValidator.findPost(postId);
         postValidator.isAuthor(post, requesterId);
 

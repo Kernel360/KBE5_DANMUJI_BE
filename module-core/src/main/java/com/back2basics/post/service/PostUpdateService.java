@@ -1,7 +1,6 @@
 package com.back2basics.post.service;
 
 import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.ProjectStepValidator;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
@@ -15,13 +14,11 @@ public class PostUpdateService implements PostUpdateUseCase {
 
     private final PostUpdatePort postUpdatePort;
     private final PostValidator postValidator;
-    private final ProjectStepValidator projectStepValidator;
 
     @Override
-    public void updatePost(Long userId, Long projectStepId, String userIp, Long postId,
+    public void updatePost(Long userId, String userIp, Long postId,
         PostUpdateCommand command) {
         Post post = postValidator.findPost(postId);
-        projectStepValidator.findProjectStep(projectStepId);
         postValidator.isAuthor(post, userId);
 
         post.update(command, userIp);

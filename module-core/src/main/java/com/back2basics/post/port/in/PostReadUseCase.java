@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostReadUseCase {
 
-    PostReadResult getPostByProjectStepId(Long userId, Long projectStepId, Long postId);
+    PostReadResult getPostById(Long userId, Long postId);
 
     Page<PostReadResult> getAllPostsByProjectStepId(Long userId, Long projectStepId,
         Pageable pageable);
