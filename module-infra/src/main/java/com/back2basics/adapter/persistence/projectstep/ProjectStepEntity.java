@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.projectstep;
 
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,6 +53,10 @@ public class ProjectStepEntity {
     @Column(name = "project_step_status", nullable = false)
     private ProjectStepStatus projectStepStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "project_feedback_step_status")
+    private ProjectFeedbackStepStatus projectFeedbackStepStatus;
+
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
@@ -60,7 +65,8 @@ public class ProjectStepEntity {
 
     @Builder
     public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
-        Integer stepOrder, ProjectStepStatus projectStepStatus, boolean isDeleted,
+        Integer stepOrder, ProjectStepStatus projectStepStatus,
+        ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.project = project;
@@ -68,6 +74,7 @@ public class ProjectStepEntity {
         this.name = name;
         this.stepOrder = stepOrder;
         this.projectStepStatus = projectStepStatus;
+        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }

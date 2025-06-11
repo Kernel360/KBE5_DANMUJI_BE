@@ -33,13 +33,13 @@ public class ProjectGetResult {
 
     public static ProjectGetResult toResult(Project project) {
         String clientCompany = project.getProjectUsers().stream()
-            .filter(u -> u.getCompanyType() == CompanyType.CLIENT)
-            .map(u -> u.getCompany().getName())
+            .filter(user -> user.getCompanyType() == CompanyType.CLIENT)
+            .map(user -> user.getCompany().getName())
             .findFirst().orElse(null);
 
         String developerCompany = project.getProjectUsers().stream()
-            .filter(u -> u.getCompanyType() == CompanyType.DEVELOPER)
-            .map(u -> u.getCompany().getName())
+            .filter(user -> user.getCompanyType() == CompanyType.DEVELOPER)
+            .map(user -> user.getCompany().getName())
             .findFirst().orElse(null);
 
         return ProjectGetResult.builder()

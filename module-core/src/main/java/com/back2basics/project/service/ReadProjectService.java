@@ -26,14 +26,28 @@ public class ReadProjectService implements ReadProjectUseCase {
     private final ProjectUserQueryPort projectUserQueryPort;
     private final ReadProjectStepPort readProjectStepPort;
 
-    // todo: 프로젝트 유저도 같이
     @Override
     public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
         Page<Project> projects = port.findAll(pageable);
         for (Project project : projects) {
             List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
             project.setSteps(steps);
-            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(project.getId());
+            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+                project.getId());
+            project.setUsers(projectUsers);
+        }
+        return projects
+            .map(ProjectGetResult::toResult);
+    }
+
+    @Override
+    public Page<ProjectGetResult> getAllProjectsByUserId(Long userId, Pageable pageable) {
+        Page<Project> projects = port.findAllByUserId(userId, pageable);
+        for (Project project : projects) {
+            List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
+            project.setSteps(steps);
+            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+                project.getId());
             project.setUsers(projectUsers);
         }
         return projects
@@ -44,11 +58,6 @@ public class ReadProjectService implements ReadProjectUseCase {
     public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
         return port.searchByKeyword(keyword, pageable)
             .map(ProjectGetResult::toResult);
-    }
-
-    @Override
-    public List<ProjectGetResult> getAllProjectsByUserId(Long userId) {
-        return List.of();
     }
 
     @Override
