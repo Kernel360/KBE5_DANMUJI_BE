@@ -18,6 +18,7 @@ import com.back2basics.post.service.result.PostReadResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
@@ -109,7 +111,7 @@ public class PostController implements PostApiDocs {
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @ModelAttribute PostSearchRequest request,
+        @Valid @ModelAttribute PostSearchRequest request,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
@@ -117,7 +119,9 @@ public class PostController implements PostApiDocs {
         Page<PostReadResult> resultPage = postSearchUseCase.searchPost(customUserDetails.getId(),
             request.toCommand(), pageable);
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
+        log.info("검색 Command  = {}", request.toCommand());
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
 }
+// todo : 검색어를 dto로 파라미터 넘기지말고 그냥 @RequestParam으로 바꿔보자(다른브랜치파서)

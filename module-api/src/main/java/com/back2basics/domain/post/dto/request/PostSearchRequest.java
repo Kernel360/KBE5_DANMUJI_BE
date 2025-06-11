@@ -5,8 +5,10 @@ import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostSearchCommand;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class PostSearchRequest {
 
     @Nullable
