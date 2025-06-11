@@ -11,4 +11,5 @@ public interface NotificationQueryPort {
 
     List<Notification> findByClientIdAndIsReadFalse(Long clientId);
 
+    long countUnreadByClientId(Long clientId);
 }

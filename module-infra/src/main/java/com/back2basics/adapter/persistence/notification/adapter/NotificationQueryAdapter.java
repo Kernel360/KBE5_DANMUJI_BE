@@ -42,4 +42,10 @@ public class NotificationQueryAdapter implements NotificationQueryPort {
             .toList();
     }
 
+    @Override
+    public long countUnreadByClientId(Long clientId) {
+        userValidator.validateNotFoundUserId(clientId);
+        return notificationEntityRepository.countByClientIdAndIsReadFalse(clientId);
+    }
+
 }
