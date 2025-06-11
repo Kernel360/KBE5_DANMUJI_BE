@@ -1,14 +1,16 @@
 package com.back2basics.global.handler;
 
 import static com.back2basics.global.response.code.CommonErrorCode.BAD_CREDENTIALS;
+import static com.back2basics.global.response.code.CommonErrorCode.INTERNAL_SERVER_ERROR;
 import static com.back2basics.infra.exception.user.UserErrorCode.MAIL_SEND_FAILED;
+import static com.back2basics.security.code.AuthErrorCode.ACCESS_DENIED;
 
 import com.back2basics.global.response.code.CommonErrorCode;
 import com.back2basics.global.response.code.ErrorCode;
 import com.back2basics.global.response.error.CustomException;
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.infra.exception.user.UserErrorCode;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +36,10 @@ public class GlobalExceptionHandler {
         NullPointerException ex) {
         String msg = ex.getMessage();
         if (msg != null && msg.contains("CustomUserDetails")) {
-            ErrorCode errorCode = UserErrorCode.USER_NOT_FOUND; // todo : 적절한 에러코드 만들어도 될듯
+            ErrorCode errorCode = ACCESS_DENIED;
             log.warn("인증되지 않은 사용자 요청 (CustomUserDetails is null): {}", msg);
             return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
         }
-        // todo : 일단 customUserDetails가 null일때만 잡고 나머지는 그냥 500으로 줌 임시방편
         ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
         log.error("NullPointerException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
@@ -179,11 +180,17 @@ public class GlobalExceptionHandler {
     }
 
     // 그 밖에 발생하는 모든 예외처리는 여기서 잡음
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleException(Exception ex) {
-        ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
-        log.error("UnhandledException 발생: {}", ex.getMessage(), ex);
-        ErrorResponse errorResponse = ErrorResponse.of(errorCode);
-        return ApiResponse.error(errorCode, errorResponse);
+    public ResponseEntity<?> handleException(Exception ex,
+        HttpServletRequest request) {
+        // SSE 요청이면 ApiResponse 형식으로 응답하지 않음
+        if ("text/event-stream".equals(request.getHeader("Accept"))) {
+            return ResponseEntity.noContent().build(); // 204 응답으로 무시
+        }
+
+        ErrorCode errorCode = INTERNAL_SERVER_ERROR;
+        log.error("UnhandledException 발생: {}", ex.getMessage());
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
 }
