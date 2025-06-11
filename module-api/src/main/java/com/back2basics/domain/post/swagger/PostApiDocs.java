@@ -1,11 +1,12 @@
 package com.back2basics.domain.post.swagger;
 
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
-import com.back2basics.domain.post.dto.request.PostSearchRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostType;
 import com.back2basics.security.model.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +19,6 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -164,7 +164,32 @@ public interface PostApiDocs {
     })
     ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @Valid @ModelAttribute PostSearchRequest request,
-        @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
-        @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);
+
+        @Parameter(description = "게시글 제목", example = "게시글 제목입니다.")
+        @RequestParam(required = false) String title,
+
+        @Parameter(description = "작성자 이름", example = "홍길동")
+        @RequestParam(required = false) String author,
+
+        @Parameter(description = "고객사 이름", example = "ABC고객사")
+        @RequestParam(required = false) String clientCompany,
+
+        @Parameter(description = "개발사 이름", example = "개발사")
+        @RequestParam(required = false) String developerCompany,
+
+        @Parameter(description = "우선순위", example = "1")
+        @RequestParam(required = false) Integer priority,
+
+        @Parameter(description = "게시글 상태 (예: PENDING, COMPLETED)", example = "PENDING")
+        @RequestParam(required = false) PostStatus status,
+
+        @Parameter(description = "게시글 타입 (예: GENERAL, NOTICE)", example = "GENERAL")
+        @RequestParam(required = false) PostType type,
+
+        @Parameter(description = "페이지 번호 (0부터 시작)", example = "0")
+        @RequestParam(defaultValue = "0") int page,
+
+        @Parameter(description = "페이지 크기", example = "10")
+        @RequestParam(defaultValue = "10") int size
+    );
 }

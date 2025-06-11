@@ -2,12 +2,13 @@ package com.back2basics.domain.post.controller;
 
 import com.back2basics.domain.post.controller.code.PostResponseCode;
 import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
-import com.back2basics.domain.post.dto.request.PostSearchRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
 import com.back2basics.post.port.in.PostReadUseCase;
@@ -26,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -111,17 +111,23 @@ public class PostController implements PostApiDocs {
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @Valid @ModelAttribute PostSearchRequest request,
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) String author,
+        @RequestParam(required = false) String clientCompany,
+        @RequestParam(required = false) String developerCompany,
+        @RequestParam(required = false) Integer priority,
+        @RequestParam(required = false) PostStatus status,
+        @RequestParam(required = false) PostType type,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PostReadResult> resultPage = postSearchUseCase.searchPost(customUserDetails.getId(),
-            request.toCommand(), pageable);
+        Page<PostReadResult> resultPage = postSearchUseCase.searchPost(
+            customUserDetails.getId(), title, clientCompany, developerCompany, author, priority,
+            status, type, pageable
+        );
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
-        log.info("검색 Command  = {}", request.toCommand());
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
 }
-// todo : 검색어를 dto로 파라미터 넘기지말고 그냥 @RequestParam으로 바꿔보자(다른브랜치파서)

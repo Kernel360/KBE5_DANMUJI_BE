@@ -8,7 +8,6 @@ import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import com.back2basics.post.port.in.command.PostSearchCommand;
 import com.back2basics.post.port.out.PostSearchPort;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -28,20 +27,22 @@ public class PostSearchJpaAdapter implements PostSearchPort {
     private final PostMapper mapper;
 
     @Override
-    public Page<Post> searchByCommand(PostSearchCommand searchCommand, Pageable pageable) {
+    public Page<Post> search(String title, String clientCompany, String developerCompany,
+        String author, Integer priority, PostStatus status, PostType type,
+        Pageable pageable) {
 
         // id 페이징
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
             .where(activePosts()
-                .and(matchesTitle(searchCommand.getTitle()))
+                .and(matchesTitle(title))
                 //.and(matchesClientCompany(searchCommand.getClientCompany()))
                 //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
-                .and(matchesAuthor(searchCommand.getAuthor()))
-                .and(matchesPriority(searchCommand.getPriority()))
-                .and(matchesStatus(searchCommand.getStatus()))
-                .and(matchesType(searchCommand.getType())))
+                .and(matchesAuthor(author))
+                .and(matchesPriority(priority))
+                .and(matchesStatus(status))
+                .and(matchesType(type)))
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -54,13 +55,13 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .join(postEntity.project, projectEntity).fetchJoin()
             .where(postEntity.id.in(ids)
                 .and(activePosts())
-                .and(matchesTitle(searchCommand.getTitle()))
+                .and(matchesTitle(title))
                 //.and(matchesClientCompany(searchCommand.getClientCompany()))
                 //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
-                .and(matchesAuthor(searchCommand.getAuthor()))
-                .and(matchesPriority(searchCommand.getPriority()))
-                .and(matchesStatus(searchCommand.getStatus()))
-                .and(matchesType(searchCommand.getType())))
+                .and(matchesAuthor(author))
+                .and(matchesPriority(priority))
+                .and(matchesStatus(status))
+                .and(matchesType(type)))
             .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
@@ -72,13 +73,13 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .select(postEntity.count())
             .from(postEntity)
             .where(activePosts()
-                .and(matchesTitle(searchCommand.getTitle()))
+                .and(matchesTitle(title))
                 //.and(matchesClientCompany(searchCommand.getClientCompany()))
                 //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
-                .and(matchesAuthor(searchCommand.getAuthor()))
-                .and(matchesPriority(searchCommand.getPriority()))
-                .and(matchesStatus(searchCommand.getStatus()))
-                .and(matchesType(searchCommand.getType())))
+                .and(matchesAuthor(author))
+                .and(matchesPriority(priority))
+                .and(matchesStatus(status))
+                .and(matchesType(type)))
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
