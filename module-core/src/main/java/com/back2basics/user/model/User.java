@@ -24,16 +24,6 @@ public class User {
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
 
-//    private boolean isDeleted;
-//
-//    public void markDeleted() {
-//        this.isDeleted = true;
-//    }
-//
-//    public boolean isDeleted() {
-//        return isDeleted;
-//    }
-
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
         String position, Role role, Long companyId, LocalDateTime lastLoginAt,
