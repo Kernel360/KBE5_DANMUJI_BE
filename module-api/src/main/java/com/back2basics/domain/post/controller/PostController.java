@@ -5,7 +5,6 @@ import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
-import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
@@ -40,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/project-steps/")
 @RequiredArgsConstructor
-public class PostController implements PostApiDocs {
+public class PostController /*implements PostApiDocs*/ {
 
     private final PostCreateUseCase createPostUseCase;
     private final PostReadUseCase postReadUseCase;
@@ -101,7 +100,7 @@ public class PostController implements PostApiDocs {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
-        postUpdateUseCase.updatePost(userId, userIp, projectStepId, postId, request.toCommand());
+        postUpdateUseCase.updatePost(userId, projectStepId, userIp, postId, request.toCommand());
 
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS);
     }

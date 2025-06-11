@@ -20,7 +20,7 @@ public class PostReadService implements PostReadUseCase {
     private final ProjectStepValidator projectStepValidator;
 
     @Override
-    public PostReadResult getPost(Long userId, Long postId) {
+    public PostReadResult getPost(Long userId, Long projectStepId, Long postId) {
         Post post = postValidator.findPost(postId);
         return PostReadResult.toResult(post);
     }
