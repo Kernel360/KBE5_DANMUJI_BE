@@ -15,10 +15,12 @@ import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.SubscribeNotificationUseCase;
 import com.back2basics.notify.port.in.UpdateNotificationUseCase;
 import com.back2basics.notify.service.result.NotificationResult;
+import com.back2basics.security.model.CustomUserDetails;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,16 +41,17 @@ public class NotifyController {
     private final SubscribeNotificationUseCase subscribeNotificationUseCase;
 
     // SSE 연결 및 읽지 않은 알림 전송
-    @GetMapping("/subscribe/{clientId}")
-    public SseEmitter subscribe(@PathVariable Long clientId) throws IOException {
-        return subscribeNotificationUseCase.subscribe(clientId);
+    @GetMapping("/subscribe")
+    public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails)
+        throws IOException {
+        return subscribeNotificationUseCase.subscribe(userDetails.getId());
     }
 
     // 알림 생성 및 전송
-    @PostMapping("/notify/{clientId}")
-    public ResponseEntity<?> notifyClient(@PathVariable Long clientId,
+    @PostMapping("/notify")
+    public ResponseEntity<?> notifyClient(@AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody NotificationCreateRequest request) {
-        notifyUseCase.notify(clientId, request.toCommand(clientId));
+        notifyUseCase.notify(userDetails.getId(), request.toCommand(userDetails.getId()));
 
         return ApiResponse.success(NOTIFICATION_CREATE_SUCCESS);
     }
@@ -61,16 +64,17 @@ public class NotifyController {
     }
 
     // 알림 전체 읽음 처리
-    @PostMapping("/read/all/{clientId}")
-    public ResponseEntity<?> markAllAsRead(@PathVariable Long clientId) {
-        updateNotificationUseCase.markAllAsRead(clientId);
+    @PostMapping("/read/all")
+    public ResponseEntity<?> markAllAsRead(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        updateNotificationUseCase.markAllAsRead(userDetails.getId());
         return ApiResponse.success(NOTIFICATION_UPDATE_READ_ALL_SUCCESS);
     }
 
     // 전체 알림 조회
-    @GetMapping("/list/{clientId}")
-    public ResponseEntity<?> listAll(@PathVariable Long clientId) {
-        List<NotificationResult> notifications = notificationQueryUseCase.findByClientId(clientId);
+    @GetMapping("/list")
+    public ResponseEntity<?> listAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<NotificationResult> notifications = notificationQueryUseCase.findByClientId(
+            userDetails.getId());
         List<NotificationResponse> responses = notifications.stream()
             .map(NotificationResponse::from)
             .toList();
@@ -79,9 +83,9 @@ public class NotifyController {
     }
 
     // 읽지 않은 알림 개수 조회
-    @GetMapping("/count/unread/{clientId}")
-    public ResponseEntity<?> countUnread(@PathVariable Long clientId) {
-        long count = notificationQueryUseCase.countUnreadByClientId(clientId);
+    @GetMapping("/count/unread")
+    public ResponseEntity<?> countUnread(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        long count = notificationQueryUseCase.countUnreadByClientId(userDetails.getId());
         return ApiResponse.success(NOTIFICATION_READ_UNREAD_SUCCESS, count);
     }
 
