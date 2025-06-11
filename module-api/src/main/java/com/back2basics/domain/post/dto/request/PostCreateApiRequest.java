@@ -21,6 +21,9 @@ public class PostCreateApiRequest {
     @NotNull(message = "프로젝트 id는 필수입니다.")
     private Long projectId;
 
+    @NotNull(message = "프로젝트 단계 id는 필수입니다.")
+    private Long projectStepId;
+
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
@@ -38,6 +41,7 @@ public class PostCreateApiRequest {
             .parentId(parentId)
             .title(title)
             .projectId(projectId)
+            .projectStepId(projectStepId)
             .content(content)
             .status(status)
             .type(type).priority(priority).build();

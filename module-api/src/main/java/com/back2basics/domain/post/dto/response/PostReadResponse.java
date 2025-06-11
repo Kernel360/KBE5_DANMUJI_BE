@@ -5,6 +5,7 @@ import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostReadResult;
 import com.back2basics.project.service.result.ProjectGetResult;
+import com.back2basics.projectstep.service.result.ProjectStepSimpleResult;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class PostReadResponse {
     private final LocalDateTime completedAt;
     private final boolean isDelete;
     private final ProjectGetResult project;
+    private final ProjectStepSimpleResult projectStep;
 
     public static PostReadResponse toResponse(PostReadResult postDetails) {
         return PostReadResponse.builder()
@@ -36,6 +38,7 @@ public class PostReadResponse {
             .authorIp(postDetails.getAuthorIp())
             .author(UserSummaryResponse.from(postDetails.getAuthor()))
             .project(postDetails.getProject())
+            .projectStep(postDetails.getProjectStep())
             .title(postDetails.getTitle())
             .content(postDetails.getContent())
             .type(postDetails.getType())

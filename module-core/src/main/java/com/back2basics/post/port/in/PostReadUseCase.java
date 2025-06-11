@@ -8,5 +8,6 @@ public interface PostReadUseCase {
 
     PostReadResult getPost(Long userId, Long postId);
 
-    Page<PostReadResult> getPostListByProjectId(Long userId, Long projectId, Pageable pageable);
+    Page<PostReadResult> getPostList(Long userId, Long projectId, Long projectStepId,
+        Pageable pageable);
 }

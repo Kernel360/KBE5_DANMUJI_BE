@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
+import static com.back2basics.adapter.persistence.projectstep.QProjectStepEntity.projectStepEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostEntity;
@@ -33,6 +34,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
             .join(postEntity.project, projectEntity).fetchJoin()
+            .join(postEntity.projectStep, projectStepEntity).fetchJoin()
             .where(
                 postEntity.id.eq(id),
                 postEntity.deletedAt.isNull()
@@ -48,14 +50,16 @@ public class PostReadJpaAdapter implements PostReadPort {
     }
 
     @Override
-    public Page<Post> findAllWithPaging(Long projectId, Pageable pageable) {
+    public Page<Post> findAllWithPaging(Long projectId, Long projectStepId, Pageable pageable) {
         // id 페이징
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.project.id.eq(projectId)
+                postEntity.project.id.eq(projectId),
+                postEntity.projectStep.stepId.eq(projectStepId)
+                // todo : ProjectStepEntity에서 pk가 id가 아니라 stepId 인 것 통일 필요할듯
             )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
@@ -67,6 +71,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
             .join(postEntity.project, projectEntity).fetchJoin()
+            .join(postEntity.projectStep, projectStepEntity).fetchJoin()
             .where(
                 postEntity.id.in(ids),
                 postEntity.deletedAt.isNull()
@@ -83,7 +88,8 @@ public class PostReadJpaAdapter implements PostReadPort {
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.project.id.eq(projectId)
+                postEntity.project.id.eq(projectId),
+                postEntity.projectStep.stepId.eq(projectStepId)
             )
             .fetchOne();
 

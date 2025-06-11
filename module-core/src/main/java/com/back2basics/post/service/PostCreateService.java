@@ -9,6 +9,8 @@ import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.out.PostCreatePort;
 import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.project.model.Project;
+import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class PostCreateService implements PostCreateUseCase {
     private final UserQueryPort userQueryPort;
     private final ProjectValidator projectValidator;
     private final PostValidator postValidator;
+    private final ReadProjectStepPort readProjectStepPort;
 
     @Override
     public PostCreateResult createPost(Long userId, String userIp, PostCreateCommand command) {
@@ -32,6 +35,7 @@ public class PostCreateService implements PostCreateUseCase {
         // todo : 이것도 통일해야할 것 같습니다.
         User user = userQueryPort.findById(userId);
         Project project = projectValidator.findProjectById(command.getProjectId());
+        ProjectStep projectStep = readProjectStepPort.findById(command.getProjectStepId());
 
         if (command.getParentId() != null) {
             postValidator.findPost(command.getParentId()).getId();
@@ -42,6 +46,7 @@ public class PostCreateService implements PostCreateUseCase {
             .authorIp(userIp)
             .author(user)
             .project(project)
+            .projectStep(projectStep)
             .title(command.getTitle())
             .content(command.getContent())
             .type(command.getType())

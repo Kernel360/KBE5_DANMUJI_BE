@@ -5,7 +5,6 @@ import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
-import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
@@ -40,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController implements PostApiDocs {
+public class PostController /*implements PostApiDocs*/ {
 
     private final PostCreateUseCase createPostUseCase;
     private final PostReadUseCase postReadUseCase;
@@ -71,17 +70,19 @@ public class PostController implements PostApiDocs {
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
-    @GetMapping("/projects/{projectId}")
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPagingByProjectId(
+    // 프로젝트 별 전체 조회
+    @GetMapping("/projects/{projectId}/steps/{stepId}")
+    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPaging(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId,
+        @PathVariable Long stepId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<PostReadResult> resultPage = postReadUseCase.getPostListByProjectId(
-            customUserDetails.getId(), projectId, pageable);
+        Page<PostReadResult> resultPage = postReadUseCase.getPostList(
+            customUserDetails.getId(), projectId, stepId, pageable);
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);

@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.project.ProjectMapper;
+import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.post.model.Post;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ public class PostMapper {
 
     private final UserMapper userMapper;
     private final ProjectMapper projectMapper;
+    private final ProjectStepMapper projectStepMapper;
 
     public Post toDomain(PostEntity entity) {
         return Post.builder()
@@ -20,6 +22,7 @@ public class PostMapper {
             .authorIp(entity.getAuthorIp())
             .author(userMapper.toDomain(entity.getAuthor()))
             .project(projectMapper.toDomain(entity.getProject()))
+            .projectStep(projectStepMapper.toDomain(entity.getProjectStep()))
             .title(entity.getTitle())
             .content(entity.getContent())
             .type(entity.getType())
@@ -42,6 +45,8 @@ public class PostMapper {
             .author(userMapper.toEntity(domain.getAuthor()))
             .project(projectMapper.fromDomain(
                 domain.getProject())) // todo : toEntity, fromDomain 같은 기능인데 메소드 이름 다름. 통일 필요
+            .projectStep(projectStepMapper.toEntity(
+                domain.getProjectStep()))
             .title(domain.getTitle())
             .content(domain.getContent())
             .type(domain.getType())
@@ -56,5 +61,5 @@ public class PostMapper {
 
         return entity;
     }
-    
+
 }

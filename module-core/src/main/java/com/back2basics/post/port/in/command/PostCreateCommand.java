@@ -12,6 +12,7 @@ public class PostCreateCommand {
     private Long parentId;
     private String title;
     private Long projectId;
+    private Long projectStepId;
     private String content;
     private PostType type;
     private PostStatus status;
