@@ -10,4 +10,6 @@ public interface NotificationEntityRepository extends JpaRepository<Notification
     List<NotificationEntity> findByClientId(Long clientId);
 
     List<NotificationEntity> findByClientIdAndIsReadFalse(Long clientId);
+
+    long countByClientIdAndIsReadFalse(Long clientId);
 }
