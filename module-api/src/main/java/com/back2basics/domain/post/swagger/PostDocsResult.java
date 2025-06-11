@@ -93,22 +93,11 @@ public class PostDocsResult {
             "content": [
               {
                 "postId": 1,
+                "parentId": null,
+                "authorIp": "192.168.0.1",
                 "author": {
                   "id": 1,
                   "name": "홍길동"
-                },
-                "project": {
-                  "id": 1,
-                  "name": "백엔드 개선 프로젝트",
-                  "description": "프로젝트 설명입니다",
-                  "startDate": "2024-01-01",
-                  "endDate": "2024-06-01",
-                  "createdAt": "2024-01-01T08:00:00",
-                  "updatedAt": "2024-01-01T09:00:00",
-                  "deletedAt": null,
-                  "isDeleted": false,
-                  "status": "ACTIVE",
-                  "steps": []
                 },
                 "title": "첫 번째 게시글",
                 "content": "게시글 내용입니다",
@@ -119,8 +108,24 @@ public class PostDocsResult {
                 "updatedAt": "2024-01-01T10:00:00",
                 "deletedAt": null,
                 "completedAt": null,
-                "comments": [],
-                "isDelete": false
+                "isDelete": false,
+                "project": {
+                  "id": 1,
+                  "name": "백엔드 개선 프로젝트",
+                  "description": "프로젝트 설명입니다",
+                  "startDate": "2024-01-01",
+                  "endDate": "2024-06-01",
+                  "createdAt": "2024-01-01T08:00:00",
+                  "updatedAt": "2024-01-01T09:00:00",
+                  "deletedAt": null,
+                  "isDeleted": false,
+                  "status": "ACTIVE"
+                },
+                "projectStep": {
+                  "stepId": 2,
+                  "name": "1단계 설계",
+                  "status": "IN_PROGRESS"
+                }
               }
             ],
             "pageable": {

@@ -76,7 +76,7 @@ public interface PostApiDocs {
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Parameter(description = "조회할 게시글 ID", required = true, example = "1") @PathVariable Long postId);
 
-    @Operation(summary = "게시글 목록 조회 (페이징)", description = "페이징을 통해 게시글 목록을 조회합니다.")
+    @Operation(summary = "프로젝트 및 단계별 게시글 목록 조회 (페이징)", description = "프로젝트 ID와 단계 ID를 기준으로 페이징된 게시글 목록을 조회합니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
@@ -86,11 +86,13 @@ public interface PostApiDocs {
                 examples = @ExampleObject(value = PostDocsResult.POST_READ_ALL_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPagingByProjectId(
+    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getPostsWithPaging(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @Parameter(description = "연관된 프로젝트 ID", required = true, example = "1") @PathVariable Long projectId,
+        @Parameter(description = "프로젝트 ID", required = true, example = "1") @PathVariable Long projectId,
+        @Parameter(description = "단계 ID", required = true, example = "2") @PathVariable Long stepId,
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(defaultValue = "0") int page,
-        @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size);
+        @Parameter(description = "페이지 크기", example = "10") @RequestParam(defaultValue = "10") int size
+    );
 
     @Operation(summary = "게시글 수정", description = "기존 게시글을 수정합니다.",
         requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
