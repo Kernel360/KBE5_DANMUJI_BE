@@ -59,7 +59,6 @@ public class ProjectController {
             size = 10
         )
         Pageable pageable) {
-//        Pageable pageable = PageRequest.of(page, size);
         Page<ProjectGetResult> result = readProjectUseCase.getAllProjects(pageable);
         Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
@@ -73,7 +72,6 @@ public class ProjectController {
             size = 10
         )
         Pageable pageable, @PathVariable Long userId) {
-//        Pageable pageable = PageRequest.of(page, size);
         Page<ProjectGetResult> result = readProjectUseCase.getAllProjectsByUserId(userId, pageable);
         Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
@@ -98,7 +96,6 @@ public class ProjectController {
             size = 10
         )
         Pageable pageable) {
-//        Pageable pageable = PageRequest.of(page, size);
         Page<ProjectGetResult> resultPage = readProjectUseCase.searchProjects(keyword, pageable);
         Page<ProjectGetResponse> responsePage = resultPage.map(ProjectGetResponse::toResponse);
 
