@@ -32,4 +32,10 @@ public class UpdateUserService implements UpdateUserUseCase {
         userCommandPort.save(user);
     }
 
+    @Override
+    public void updateLastLoginAt(String username) {
+        User user = userQueryPort.findByUsername(username);
+        user.updateLastLoginAt();
+        userCommandPort.save(user);
+    }
 }

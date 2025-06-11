@@ -9,6 +9,7 @@ import com.back2basics.domain.auth.dto.TokenPair;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.code.AuthResponseCode;
 import com.back2basics.security.jwt.JwtTokenProvider;
+import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ public class AuthController {
     private final CookieUtil cookieUtil;
     private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UpdateUserUseCase updateUserUseCase;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request,
@@ -39,6 +41,7 @@ public class AuthController {
         response.setHeader("Authorization", "Bearer " + tokenPair.accessToken());
         response.addCookie(cookieUtil.create(tokenPair.refreshToken()));
 
+        updateUserUseCase.updateLastLoginAt(request.username());
         return ApiResponse.success(SUCCESS_LOGIN, tokenPair.accessToken());
     }
 

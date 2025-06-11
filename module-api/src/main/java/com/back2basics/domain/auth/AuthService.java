@@ -9,7 +9,6 @@ import com.back2basics.security.exception.InvalidTokenException;
 import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.security.service.CustomUserDetailsService;
-import com.back2basics.util.CookieUtil;
 import com.back2basics.util.RedisUtil;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +28,6 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationManager authenticationManager;
-    private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
 
     public TokenPair login(LoginRequest request) {
