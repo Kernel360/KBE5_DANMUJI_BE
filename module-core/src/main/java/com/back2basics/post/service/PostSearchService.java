@@ -21,7 +21,8 @@ public class PostSearchService implements PostSearchUseCase {
         String clientCompany,
         String developerCompany, String author, Integer priority, PostStatus status,
         PostType type, Pageable pageable) {
-        return postSearchPort.search(stepId, title, clientCompany, developerCompany, author,
+        return postSearchPort.search(stepId, title, clientCompany, developerCompany,
+                author,
                 priority,
                 status, type, pageable)
             .map(PostReadResult::toResult);

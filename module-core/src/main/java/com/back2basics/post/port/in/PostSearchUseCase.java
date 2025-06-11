@@ -8,7 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostSearchUseCase {
 
-    Page<PostReadResult> searchPost(Long userId, Long stepId, String title, String clientCompany,
+    Page<PostReadResult> searchPost(Long userId, Long stepId, String title,
+        String clientCompany,
         String developerCompany, String author, Integer priority, PostStatus status,
         PostType type, Pageable pageable);
 }

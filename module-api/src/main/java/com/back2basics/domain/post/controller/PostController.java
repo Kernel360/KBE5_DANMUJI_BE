@@ -110,7 +110,7 @@ public class PostController implements PostApiDocs {
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }
 
-    @GetMapping("/{stepId}/search")
+    @GetMapping("/steps/{stepId}/search")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long stepId,
@@ -126,7 +126,8 @@ public class PostController implements PostApiDocs {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         Page<PostReadResult> resultPage = postSearchUseCase.searchPost(
-            customUserDetails.getId(), stepId, title, clientCompany, developerCompany, author,
+            customUserDetails.getId(), stepId, title, clientCompany, developerCompany,
+            author,
             priority,
             status, type, pageable
         );

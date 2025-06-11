@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
+import static com.back2basics.adapter.persistence.projectstep.QProjectStepEntity.projectStepEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
@@ -32,19 +33,19 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         String author, Integer priority, PostStatus status, PostType type,
         Pageable pageable) {
 
+        BooleanExpression condition = activePosts()
+            .and(matchesStepId(stepId))
+            .and(matchesTitle(title))
+            .and(matchesAuthor(author))
+            .and(matchesPriority(priority))
+            .and(matchesStatus(status))
+            .and(matchesType(type));
+
         // id 페이징
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
-            .where(activePosts()
-                .and(postEntity.projectStep.stepId.eq(stepId))
-                .and(matchesTitle(title))
-                //.and(matchesClientCompany(searchCommand.getClientCompany()))
-                //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
-                .and(matchesAuthor(author))
-                .and(matchesPriority(priority))
-                .and(matchesStatus(status))
-                .and(matchesType(type)))
+            .where(condition)
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -55,16 +56,10 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .selectFrom(postEntity)
             .join(postEntity.author, userEntity).fetchJoin()
             .join(postEntity.project, projectEntity).fetchJoin()
-            .where(postEntity.id.in(ids)
-                .and(postEntity.projectStep.stepId.eq(stepId))
-                .and(activePosts())
-                .and(matchesTitle(title))
-                //.and(matchesClientCompany(searchCommand.getClientCompany()))
-                //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
-                .and(matchesAuthor(author))
-                .and(matchesPriority(priority))
-                .and(matchesStatus(status))
-                .and(matchesType(type)))
+            .join(postEntity.projectStep, projectStepEntity).fetchJoin()
+            .where(
+                postEntity.id.in(ids).and(condition)
+            )
             .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
@@ -75,15 +70,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         Long total = queryFactory
             .select(postEntity.count())
             .from(postEntity)
-            .where(activePosts()
-                .and(postEntity.projectStep.stepId.eq(stepId))
-                .and(matchesTitle(title))
-                //.and(matchesClientCompany(searchCommand.getClientCompany()))
-                //.and(matchesDeveloperCompany(searchCommand.getDeveloperCompany()))
-                .and(matchesAuthor(author))
-                .and(matchesPriority(priority))
-                .and(matchesStatus(status))
-                .and(matchesType(type)))
+            .where(condition)
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
@@ -125,4 +112,10 @@ public class PostSearchJpaAdapter implements PostSearchPort {
     private BooleanExpression matchesType(PostType type) {
         return (type == null) ? null : postEntity.type.eq(type);
     }
+
+
+    private BooleanExpression matchesStepId(Long stepId) {
+        return stepId == null ? null : postEntity.projectStep.stepId.eq(stepId);
+    }
+
 }
