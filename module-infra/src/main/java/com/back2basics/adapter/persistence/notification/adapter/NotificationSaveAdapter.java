@@ -4,14 +4,14 @@ import com.back2basics.adapter.persistence.notification.NotificationEntity;
 import com.back2basics.adapter.persistence.notification.NotificationEntityRepository;
 import com.back2basics.adapter.persistence.notification.NotificationMapper;
 import com.back2basics.notify.model.Notification;
-import com.back2basics.notify.port.out.NotificationCommandPort;
+import com.back2basics.notify.port.out.NotificationSavePort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class NotificationCommandAdapter implements NotificationCommandPort {
+public class NotificationSaveAdapter implements NotificationSavePort {
 
     private final NotificationEntityRepository notificationEntityRepository;
     private final NotificationMapper notificationMapper;

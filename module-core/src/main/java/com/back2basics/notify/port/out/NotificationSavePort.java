@@ -3,7 +3,7 @@ package com.back2basics.notify.port.out;
 import com.back2basics.notify.model.Notification;
 import java.util.List;
 
-public interface NotificationCommandPort {
+public interface NotificationSavePort {
 
     Notification save(Notification notification);
 
