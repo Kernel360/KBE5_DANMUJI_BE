@@ -65,7 +65,7 @@ public class ProjectStep {
         this.name = command.getName();
 //        this.stepOrder = command.getStepOrder();
         this.userId = command.getUserId();
-//        this.projectStepStatus = command.getProjectStepStatus();
+        //this.projectStepStatus = command.;
     }
 
     public void softDelete() {
