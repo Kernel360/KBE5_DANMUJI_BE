@@ -15,11 +15,11 @@ public class ProjectStep {
 
     private final Long projectId;
 
-    private final Long userId;
+    private Long userId;
 
     private User user;
 
-    private Integer stepOrder;
+    private int stepOrder;
 
     private ProjectStepStatus projectStepStatus;
 
@@ -31,7 +31,7 @@ public class ProjectStep {
 
     @Builder
     public ProjectStep(Long stepId, String name, Long projectId, Long userId, User user,
-        Integer stepOrder, ProjectStepStatus projectStepStatus,
+        int stepOrder, ProjectStepStatus projectStepStatus,
         ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
         this.stepId = stepId;
@@ -46,7 +46,7 @@ public class ProjectStep {
         this.deletedAt = deletedAt;
     }
 
-    // todo: user 도메인으로 변경
+    // todo: user 도메인으로 변경, user, userId 둘 다 가지고 있음 나중에 변경
     public static ProjectStep create(String name, Long projectId, Long userId,
         Integer stepOrder, ProjectStepStatus projectStepStatus) {
         return ProjectStep.builder()
@@ -60,10 +60,12 @@ public class ProjectStep {
             .build();
     }
 
+    // todo: 일단 name, userId 만 변경
     public void update(UpdateProjectStepCommand command) {
         this.name = command.getName();
 //        this.stepOrder = command.getStepOrder();
-        this.projectStepStatus = command.getProjectStepStatus();
+        this.userId = command.getUserId();
+//        this.projectStepStatus = command.getProjectStepStatus();
     }
 
     public void softDelete() {
@@ -73,12 +75,13 @@ public class ProjectStep {
 
     /* todo: 승인자랑 일치하는 지는 프론트에서 하시고 userid랑 로그인 id랑 같을때만 승인 버튼 보이게
         switch문으로 해도 괜찮을 듯 (리팩토링) */
-//    public void approvalStatus(ProjectFeedbackStepStatus projectFeedbackStepStatus) {
-//        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
-//        if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.APPROVED) {
-//            this.projectStepStatus = ProjectStepStatus.IN_PROGRESS;
-//        } else if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.REJECTED) {
-//            this.projectStepStatus = ProjectStepStatus.PENDING;
-//        }
-//    }
+    public void approvalProjectFeedbackStepStatus(
+        ProjectFeedbackStepStatus projectFeedbackStepStatus) {
+        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
+        if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.APPROVED) {
+            this.projectStepStatus = ProjectStepStatus.IN_PROGRESS;
+        } else if (projectFeedbackStepStatus == ProjectFeedbackStepStatus.REJECTED) {
+            this.projectStepStatus = ProjectStepStatus.PENDING;
+        }
+    }
 }

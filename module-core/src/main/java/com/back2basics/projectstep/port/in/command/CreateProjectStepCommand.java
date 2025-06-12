@@ -12,4 +12,6 @@ public class CreateProjectStepCommand {
     private String name;
 
     private Long userId;
+
+    private int stepOrder;
 }

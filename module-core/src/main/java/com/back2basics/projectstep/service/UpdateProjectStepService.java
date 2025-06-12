@@ -27,6 +27,7 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
     public void updateApprovalStatus(ProjectFeedbackStepStatus projectFeedbackStepStatus,
         Long stepId) {
         ProjectStep step = readPort.findById(stepId);
+        step.approvalProjectFeedbackStepStatus(projectFeedbackStepStatus);
         savePort.save(step);
     }
 }
