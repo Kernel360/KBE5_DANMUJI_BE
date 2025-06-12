@@ -41,4 +41,9 @@ public class ReadCompanyJpaAdapter implements ReadCompanyPort {
             .stream().map(companyMapper::toDomain).toList();
     }
 
+    @Override
+    public List<Company> getRecentCompanies() {
+        return companyEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
+            .stream().map(companyMapper::toDomain).toList();
+    }
 }
