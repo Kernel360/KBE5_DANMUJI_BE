@@ -21,5 +21,9 @@ public interface UserQueryPort {
 
     List<User> findAllByCompanyId(Long companyId);
 
+    List<User> findAllByCompanyIdAndDeletedAtIsNull(Long companyId);
+
     boolean existsById(Long userId);
+
+    void saveAll(List<User> users);
 }
