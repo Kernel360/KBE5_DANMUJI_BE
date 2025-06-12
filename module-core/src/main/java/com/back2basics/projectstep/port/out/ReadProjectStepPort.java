@@ -1,7 +1,9 @@
 package com.back2basics.projectstep.port.out;
 
 import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.user.model.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface ReadProjectStepPort {
 
@@ -11,4 +13,6 @@ public interface ReadProjectStepPort {
     List<ProjectStep> findAllByProjectId(Long projectId);
 
     List<ProjectStep> findByProjectId(Long projectId);
+
+    Long findUserById(Long stepId);
 }

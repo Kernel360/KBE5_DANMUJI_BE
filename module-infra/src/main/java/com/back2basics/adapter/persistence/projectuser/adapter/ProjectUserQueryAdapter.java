@@ -1,11 +1,8 @@
 package com.back2basics.adapter.persistence.projectuser.adapter;
 
-import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_USER_NOT_FOUND;
-
 import com.back2basics.adapter.persistence.projectuser.ProjectUserEntityRepository;
 import com.back2basics.adapter.persistence.projectuser.ProjectUserMapper;
 import com.back2basics.company.model.CompanyType;
-import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.projectuser.model.ProjectUser;
 import com.back2basics.projectuser.port.out.ProjectUserQueryPort;
 import com.back2basics.user.model.UserType;
