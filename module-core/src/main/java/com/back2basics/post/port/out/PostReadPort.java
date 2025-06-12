@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostReadPort {
 
-    Optional<Post> findById(Long id);
+    Optional<Post> findById(Long postId);
 
-    Page<Post> findAllWithPaging(Long projectId, Pageable pageable);
+    Optional<Post> findPostByProjectStepId(Long postId, Long projectStepId);
+
+    Page<Post> findAllPostsByProjectStepId(Long projectStepId, Pageable pageable);
 }

@@ -1,6 +1,5 @@
 package com.back2basics.adapter.persistence.post;
 
-import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.post.model.Post;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 public class PostMapper {
 
     private final UserMapper userMapper;
-    private final ProjectMapper projectMapper;
 
     public Post toDomain(PostEntity entity) {
         return Post.builder()
@@ -19,7 +17,7 @@ public class PostMapper {
             .parentId(entity.getParentId())
             .authorIp(entity.getAuthorIp())
             .author(userMapper.toDomain(entity.getAuthor()))
-            .project(projectMapper.toDomain(entity.getProject()))
+            .projectStepId(entity.getProjectStepId())
             .title(entity.getTitle())
             .content(entity.getContent())
             .type(entity.getType())
@@ -40,8 +38,7 @@ public class PostMapper {
             .parentId(domain.getParentId())
             .authorIp(domain.getAuthorIp())
             .author(userMapper.toEntity(domain.getAuthor()))
-            .project(projectMapper.fromDomain(
-                domain.getProject())) // todo : toEntity, fromDomain 같은 기능인데 메소드 이름 다름. 통일 필요
+            .projectStepId(domain.getProjectStepId())
             .title(domain.getTitle())
             .content(domain.getContent())
             .type(domain.getType())
@@ -56,5 +53,5 @@ public class PostMapper {
 
         return entity;
     }
-    
+
 }
