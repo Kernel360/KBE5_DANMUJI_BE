@@ -106,6 +106,21 @@ public class JwtTokenProvider {
         }
     }
 
+    public Long getId(String token) {
+        try {
+            return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("id", Long.class);
+        } catch (ExpiredJwtException e) {
+            throw new InvalidTokenException(TOKEN_EXPIRED);
+        } catch (JwtException e) {
+            throw new InvalidTokenException(TOKEN_INVALID);
+        }
+    }
+
     public String getSubjectIgnoringExpiration(String token) {
         try {
             return Jwts.parser()
