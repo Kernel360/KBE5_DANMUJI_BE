@@ -131,7 +131,7 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping("/recent-posts")
-    public ResponseEntity<ApiResponse<List<ReadRecentPostResponse>>> getRecentCompanies(
+    public ResponseEntity<ApiResponse<List<ReadRecentPostResponse>>> getRecentPosts(
     ) {
         List<ReadRecentPostResult> results = postReadUseCase.getRecentPosts();
         List<ReadRecentPostResponse> responseList = ReadRecentPostResponse.toResponse(results);

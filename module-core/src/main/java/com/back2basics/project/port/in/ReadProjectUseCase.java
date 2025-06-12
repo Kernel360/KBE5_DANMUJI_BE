@@ -2,6 +2,8 @@ package com.back2basics.project.port.in;
 
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
+import com.back2basics.project.service.result.ProjectRecentGetResult;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,4 +20,6 @@ public interface ReadProjectUseCase {
 
     // 상세 조회
     ProjectDetailResult getProjectDetails(Long projectId);
+
+    List<ProjectRecentGetResult> getRecentProjects();
 }

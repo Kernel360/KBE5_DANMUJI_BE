@@ -10,6 +10,7 @@ import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
 import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
+import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
@@ -18,7 +19,9 @@ import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
+import com.back2basics.project.service.result.ProjectRecentGetResult;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -121,6 +124,17 @@ public class ProjectController {
         @PathVariable Long projectId) {
         updateProjectUseCase.changedStatus(projectId);
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
+    }
+
+    @GetMapping("/recent-projects")
+    public ResponseEntity<ApiResponse<List<ProjectRecentGetResponse>>> getRecentProjects(
+    ) {
+        List<ProjectRecentGetResult> projects = readProjectUseCase.getRecentProjects();
+
+        List<ProjectRecentGetResponse> responseList = projects.stream()
+            .map(ProjectRecentGetResponse::from).toList();
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS,
+            responseList);
     }
 
     // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민.. -> 5순위

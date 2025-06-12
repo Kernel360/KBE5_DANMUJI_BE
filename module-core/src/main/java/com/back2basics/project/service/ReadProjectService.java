@@ -6,6 +6,7 @@ import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
+import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import com.back2basics.projectuser.model.ProjectUser;
@@ -67,5 +68,10 @@ public class ReadProjectService implements ReadProjectUseCase {
         List<ProjectUser> users = projectUserQueryPort.findUsersByProjectId(projectId);
 
         return ProjectDetailResult.of(project, steps, users);
+    }
+
+    @Override
+    public List<ProjectRecentGetResult> getRecentProjects() {
+        return port.getRecentProjects().stream().map(ProjectRecentGetResult::toResult).toList();
     }
 }
