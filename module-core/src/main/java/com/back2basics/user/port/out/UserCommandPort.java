@@ -8,4 +8,6 @@ public interface UserCommandPort {
 
     void deleteById(Long userId);
 
+    void softDeleteByCompanyId(Long companyId);
+
 }
