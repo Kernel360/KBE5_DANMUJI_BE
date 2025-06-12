@@ -1,6 +1,7 @@
 package com.back2basics.company.port.in;
 
 import com.back2basics.company.service.result.ReadCompanyResult;
+import com.back2basics.company.service.result.ReadRecentCompanyResult;
 import com.back2basics.user.service.result.UserSummaryResult;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,6 @@ public interface ReadCompanyUseCase {
     Page<ReadCompanyResult> getAllCompanies(Pageable pageable);
 
     List<UserSummaryResult> getUsersByCompanyId(Long companyId);
+
+    List<ReadRecentCompanyResult> getRecentCompanies();
 }
