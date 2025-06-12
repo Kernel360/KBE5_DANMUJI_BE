@@ -12,6 +12,7 @@ import com.back2basics.infra.exception.company.CompanyException;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserCommandPort;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,4 +44,12 @@ public class UserCommandAdapter implements UserCommandPort {
         userEntity.markDeleted();
     }
 
+    @Override
+    public void softDeleteByCompanyId(Long companyId) {
+        List<UserEntity> users = userEntityRepository.findAllByCompany_IdAndDeletedAtIsNull(
+            companyId);
+        for (UserEntity userEntity : users) {
+            userEntity.markDeleted();
+        }
+    }
 }
