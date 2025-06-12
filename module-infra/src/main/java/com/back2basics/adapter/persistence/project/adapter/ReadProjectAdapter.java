@@ -1,12 +1,11 @@
 package com.back2basics.adapter.persistence.project.adapter;
 
-import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
+import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.out.ReadProjectPort;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,5 +40,11 @@ public class ReadProjectAdapter implements ReadProjectPort {
     public Page<Project> searchByKeyword(String keyword, Pageable pageable) {
         return projectEntityRepository.findAllByNameContainingAndIsDeletedFalse(pageable, keyword)
             .map(projectMapper::toDomain);
+    }
+
+    @Override
+    public List<Project> getRecentProjects() {
+        return projectEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
+            .stream().map(projectMapper::toDomain).toList();
     }
 }

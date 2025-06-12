@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.project;
 
 import io.lettuce.core.dynamic.annotation.Param;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,6 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
         Pageable pageable);
 
     Page<ProjectEntity> findAllByNameContainingAndIsDeletedFalse(Pageable pageable, String keyword);
+
+    List<ProjectEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 }
