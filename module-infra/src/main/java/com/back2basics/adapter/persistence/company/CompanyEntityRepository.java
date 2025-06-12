@@ -20,4 +20,6 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
     Page<CompanyEntity> findByNameContainingAndDeletedAtIsNull(Pageable pageable, String keyword);
 
     boolean existsByName(String name);
+
+    List<CompanyEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 }
