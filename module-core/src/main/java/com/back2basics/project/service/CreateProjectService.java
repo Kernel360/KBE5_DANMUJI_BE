@@ -50,20 +50,20 @@ public class CreateProjectService implements CreateProjectUseCase {
         Project savedProject = saveProjectPort.save(project);
         createDefaultSteps(savedProject.getId());
 
-        // todo: 이걸 유진님 코드 처럼 메서드를 만들어서 해야할 지. 너무 지저분
         User developer = userQueryPort.findById(command.getDeveloperId());
         User client = userQueryPort.findById(command.getClientId());
         Company developerCompany = companyValidator.findCompany(command.getDevelopCompanyId());
         Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
-        List<User> developers = userQueryPort.findAllByCompanyId(command.getDevelopCompanyId());
-        List<User> clients = userQueryPort.findAllByCompanyId(command.getClientCompanyId());
+//        List<User> developers = userQueryPort.findAllByCompanyId(command.getDevelopCompanyId());
+//        List<User> clients = userQueryPort.findAllByCompanyId(command.getClientCompanyId());
+        List<User> developers = command.getDevelopMemberId().stream().map(userQueryPort::findById).toList();
+        List<User> clients = command.getClientMemberId().stream().map(userQueryPort::findById).toList();
 
         List<ProjectUser> projectUsers = ProjectUser.createProjectUser(savedProject, developer,
             client, developerCompany, clientCompany, developers, clients);
         saveProjectUserPort.saveAll(projectUsers);
     }
 
-    // todo: projectStep 도메인으로 옮기면 좋을 듯!
     private void createDefaultSteps(Long projectId) {
         List<String> defaultSteps = DEFAULT_STEPS;
         for (int i = 0; i < defaultSteps.size(); i++) {

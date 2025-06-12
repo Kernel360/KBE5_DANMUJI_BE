@@ -46,14 +46,34 @@ public class PostReadJpaAdapter implements PostReadPort {
     }
 
     @Override
-    public Page<Post> findAllWithPaging(Long projectId, Pageable pageable) {
+    public Optional<Post> findPostByProjectStepId(Long postId, Long projectStepId) {
+        PostEntity entity = queryFactory
+            .selectFrom(postEntity)
+            .join(postEntity.author, userEntity).fetchJoin()
+            .where(
+                postEntity.id.eq(postId),
+                postEntity.deletedAt.isNull(),
+                postEntity.projectStepId.eq(projectStepId)
+            )
+
+            .fetchOne();
+
+        if (entity == null) {
+            throw new PostException(PostErrorCode.POST_NOT_FOUND);
+        }
+
+        return Optional.of(mapper.toDomain(entity));
+    }
+
+    @Override
+    public Page<Post> findAllPostsByProjectStepId(Long projectStepId, Pageable pageable) {
         // id 페이징
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.project.id.eq(projectId)
+                postEntity.projectStepId.eq(projectStepId)
             )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
@@ -66,7 +86,8 @@ public class PostReadJpaAdapter implements PostReadPort {
             .join(postEntity.author, userEntity).fetchJoin()
             .where(
                 postEntity.id.in(ids),
-                postEntity.deletedAt.isNull()
+                postEntity.deletedAt.isNull(),
+                postEntity.projectStepId.eq(projectStepId)
             )
             .orderBy(postEntity.createdAt.desc())
             .fetch()
@@ -80,7 +101,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.project.id.eq(projectId)
+                postEntity.projectStepId.eq(projectStepId)
             )
             .fetchOne();
 

@@ -2,7 +2,6 @@ package com.back2basics.adapter.persistence.post.adapter;
 
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostEntityRepository;
-import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.infra.exception.post.PostErrorCode;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class PostDeleteJpaAdapter implements PostSoftDeletePort {
 
     private final PostEntityRepository postRepository;
-    private final PostMapper mapper;
 
     @Override
     public void softDelete(Post post) {

@@ -26,5 +26,7 @@ public class ProjectCreateCommand {
     @NotNull(message = "클라이언트사 아이디는 필수입니다.")
     Long clientCompanyId;
     LocalDate endDate;
+    List<Long> developMemberId;
+    List<Long> clientMemberId;
 }
 

@@ -1,7 +1,6 @@
 package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
-import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
@@ -43,14 +42,13 @@ public class PostEntity extends BaseTimeEntity {
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private ProjectEntity project;
+    @Column(name = "project_step_id", nullable = false)
+    private Long projectStepId;
 
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = 10000)
     private String content;
 
     @Enumerated(EnumType.STRING)
@@ -71,7 +69,7 @@ public class PostEntity extends BaseTimeEntity {
     public PostEntity(Long id, Long parentId, String authorIp, UserEntity author,
         String title,
         String content, PostType type,
-        Integer priority, PostStatus status, ProjectEntity project, LocalDateTime completedAt) {
+        Integer priority, PostStatus status, Long projectStepId, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
         this.authorIp = authorIp;
@@ -81,8 +79,8 @@ public class PostEntity extends BaseTimeEntity {
         this.type = type;
         this.priority = priority;
         this.status = status;
-        this.project = project;
         this.completedAt = completedAt;
+        this.projectStepId = projectStepId;
     }
-    
+
 }

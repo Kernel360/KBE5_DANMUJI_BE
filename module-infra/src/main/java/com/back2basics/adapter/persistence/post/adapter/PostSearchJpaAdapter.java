@@ -1,9 +1,13 @@
 package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
+import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.post.model.Post;
+import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostType;
+import com.back2basics.post.port.in.command.PostSearchCommand;
 import com.back2basics.post.port.out.PostSearchPort;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,13 +27,20 @@ public class PostSearchJpaAdapter implements PostSearchPort {
     private final PostMapper mapper;
 
     @Override
-    public Page<Post> searchByKeyword(String keyword, Pageable pageable) {
+    public Page<Post> search(PostSearchCommand command, Pageable pageable) {
 
         // id 페이징
         List<Long> ids = queryFactory
             .select(postEntity.id)
             .from(postEntity)
-            .where(activePosts().and(matchesKeyword(keyword)))
+            .where(
+                postEntity.projectStepId.eq(command.getProjectStepId())
+                    .and(activePosts())
+                    .and(matchesTitle(command.getTitle()))
+                    .and(matchesAuthor(command.getAuthor()))
+                    .and(matchesPriority(command.getPriority()))
+                    .and(matchesStatus(command.getStatus()))
+                    .and(matchesType(command.getType())))
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -38,9 +49,15 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         // post 조회
         List<Post> posts = queryFactory
             .selectFrom(postEntity)
+            .join(postEntity.author, userEntity).fetchJoin()
             .where(postEntity.id.in(ids)
+                .and(postEntity.projectStepId.eq(command.getProjectStepId()))
                 .and(activePosts())
-                .and(matchesKeyword(keyword)))
+                .and(matchesTitle(command.getTitle()))
+                .and(matchesAuthor(command.getAuthor()))
+                .and(matchesPriority(command.getPriority()))
+                .and(matchesStatus(command.getStatus()))
+                .and(matchesType(command.getType())))
             .orderBy(postEntity.createdAt.desc())
             .fetch()
             .stream()
@@ -51,7 +68,14 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         Long total = queryFactory
             .select(postEntity.count())
             .from(postEntity)
-            .where(activePosts().and(matchesKeyword(keyword)))
+            .where(
+                postEntity.projectStepId.eq(command.getProjectStepId())
+                    .and(activePosts())
+                    .and(matchesTitle(command.getTitle()))
+                    .and(matchesAuthor(command.getAuthor()))
+                    .and(matchesPriority(command.getPriority()))
+                    .and(matchesStatus(command.getStatus()))
+                    .and(matchesType(command.getType())))
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
@@ -62,11 +86,24 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         return postEntity.deletedAt.isNull();
     }
 
-    private BooleanExpression matchesKeyword(String keyword) {
-        if (keyword == null || keyword.isBlank()) {
-            return null;
-        }
-        return postEntity.title.contains(keyword)
-            .or(postEntity.content.contains(keyword));
+    private BooleanExpression matchesTitle(String title) {
+        return (title == null || title.isBlank()) ? null : postEntity.title.contains(title);
+    }
+
+    private BooleanExpression matchesAuthor(String author) {
+        return (author == null || author.isBlank()) ? null
+            : postEntity.author.name.contains(author);
+    }
+
+    private BooleanExpression matchesPriority(Integer priority) {
+        return (priority == null) ? null : postEntity.priority.eq(priority);
+    }
+
+    private BooleanExpression matchesStatus(PostStatus status) {
+        return (status == null) ? null : postEntity.status.eq(status);
+    }
+
+    private BooleanExpression matchesType(PostType type) {
+        return (type == null) ? null : postEntity.type.eq(type);
     }
 }

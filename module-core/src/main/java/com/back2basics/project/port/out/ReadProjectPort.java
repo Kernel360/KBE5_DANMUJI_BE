@@ -11,6 +11,8 @@ public interface ReadProjectPort {
 
     Page<Project> findAll(Pageable pageable);
 
+    Page<Project> findAllByUserId(Long userId, Pageable pageable);
+
     Page<Project> searchByKeyword(String keyword, Pageable pageable);
 
 }

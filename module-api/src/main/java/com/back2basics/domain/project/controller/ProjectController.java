@@ -21,8 +21,8 @@ import com.back2basics.project.service.result.ProjectGetResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +44,7 @@ public class ProjectController {
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
 
+    // todo: 변수명 통일
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateRequest request) {
@@ -53,14 +54,30 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getAllProjects(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        @PageableDefault(
+            page = 0,
+            size = 10
+        )
+        Pageable pageable) {
         Page<ProjectGetResult> result = readProjectUseCase.getAllProjects(pageable);
         Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
     }
 
+    // 회원 별 프로젝트 목록
+    @GetMapping("/{userId}/user")
+    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getAllProjectsById(
+        @PageableDefault(
+            page = 0,
+            size = 10
+        )
+        Pageable pageable, @PathVariable Long userId) {
+        Page<ProjectGetResult> result = readProjectUseCase.getAllProjectsByUserId(userId, pageable);
+        Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
+    }
+
+    // 상세 정보 조회
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
         @PathVariable Long projectId) {
@@ -73,10 +90,12 @@ public class ProjectController {
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
         @RequestParam(required = false) String keyword,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size
-    ) {
-        Pageable pageable = PageRequest.of(page, size);
+
+        @PageableDefault(
+            page = 0,
+            size = 10
+        )
+        Pageable pageable) {
         Page<ProjectGetResult> resultPage = readProjectUseCase.searchProjects(keyword, pageable);
         Page<ProjectGetResponse> responsePage = resultPage.map(ProjectGetResponse::toResponse);
 

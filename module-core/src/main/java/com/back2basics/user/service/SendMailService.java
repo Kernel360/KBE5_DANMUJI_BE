@@ -20,8 +20,7 @@ public class SendMailService implements SendMailUseCase {
     public void send(SendMailCommand command) {
         userValidator.validateNotFoundUsername(command.getUsername());
         String token = passwordResetTokenPort.createToken(command.getUsername());
-//        String link = "https://danmuji.com/reset-password?token=" + token; // todo: 실제 도메인으로 변경
-        String link = "http://localhost:8080/reset-password?token=" + token;
+        String link = "https://www.danmuji.site/reset-password?token=" + token;
         mailSenderPort.sendMail(command.getEmail(), command.getUsername(), link);
 
     }

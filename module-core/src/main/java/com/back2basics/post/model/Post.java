@@ -15,6 +15,7 @@ public class Post {
 
     private final Long id;
     private final Long parentId;
+    private final Long projectStepId;
     private String authorIp;
     private User author;
     private String title;
@@ -28,10 +29,11 @@ public class Post {
     private LocalDateTime completedAt;
     private List<Comment> comments;
     private boolean isDelete;
-    private Project project;
+
 
     @Builder
-    public Post(Long id, Long parentId, String authorIp, User author, String title, String content,
+    public Post(Long id, Long parentId, Long projectStepId, String authorIp, User author,
+        String title, String content,
         PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
@@ -52,7 +54,7 @@ public class Post {
         this.completedAt = completedAt;
         this.comments = comments != null ? new ArrayList<>(comments) : new ArrayList<>();
         this.isDelete = false;
-        this.project = project;
+        this.projectStepId = projectStepId;
     }
 
     public void update(PostUpdateCommand command, String userIp) {
@@ -67,11 +69,5 @@ public class Post {
     public void markDeleted() {
         this.isDelete = true;
         this.deletedAt = LocalDateTime.now();
-    }
-
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
-        comment.assignPostId(this);
     }
 }
