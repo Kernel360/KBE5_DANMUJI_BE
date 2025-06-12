@@ -9,6 +9,8 @@ import com.back2basics.infra.exception.post.PostErrorCode;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostReadPort;
+import com.back2basics.post.service.result.ReadRecentPostResult;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
@@ -115,5 +117,20 @@ public class PostReadJpaAdapter implements PostReadPort {
         return new PageImpl<>(posts, pageable, total);
     }
 
+    @Override
+    public List<ReadRecentPostResult> getRecentPosts() {
+        return queryFactory
+            .select(Projections.constructor(
+                ReadRecentPostResult.class,
+                postEntity.id,
+                postEntity.title,
+                postEntity.createdAt
+            ))
+            .from(postEntity)
+            .where(postEntity.deletedAt.isNull())
+            .orderBy(postEntity.createdAt.desc())
+            .limit(5)
+            .fetch();
+    }
 
 }
