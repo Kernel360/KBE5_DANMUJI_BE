@@ -64,6 +64,21 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
+        @RequestParam(required = false) String keyword,
+
+        @PageableDefault(
+            page = 0,
+            size = 10
+        )
+        Pageable pageable) {
+        Page<ProjectGetResult> resultPage = readProjectUseCase.searchProjects(keyword, pageable);
+        Page<ProjectGetResponse> responsePage = resultPage.map(ProjectGetResponse::toResponse);
+
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, responsePage);
+    }
+
     // 회원 별 프로젝트 목록
     @GetMapping("/{userId}/user")
     public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getAllProjectsById(
@@ -84,22 +99,6 @@ public class ProjectController {
         ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId);
         ProjectDetailResponse response = ProjectDetailResponse.from(result);
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
-    }
-
-    // todo: 만약 카테고리 필터링 별로 안할거면 그냥 get 이랑 합쳐버리기
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
-        @RequestParam(required = false) String keyword,
-
-        @PageableDefault(
-            page = 0,
-            size = 10
-        )
-        Pageable pageable) {
-        Page<ProjectGetResult> resultPage = readProjectUseCase.searchProjects(keyword, pageable);
-        Page<ProjectGetResponse> responsePage = resultPage.map(ProjectGetResponse::toResponse);
-
-        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, responsePage);
     }
 
     @PutMapping("/{projectId}")

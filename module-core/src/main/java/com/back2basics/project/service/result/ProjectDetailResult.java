@@ -34,8 +34,8 @@ public record ProjectDetailResult(Long id, String name, String description, Loca
 
         return new ProjectDetailResult(
             project.getId(),
-            project.getDescription(),
             project.getName(),
+            project.getDescription(),
             project.getStartDate(),
             project.getEndDate(),
             project.getStatus().name(),

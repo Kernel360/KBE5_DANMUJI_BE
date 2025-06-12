@@ -3,6 +3,8 @@ package com.back2basics.projectstep.model;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -60,12 +62,15 @@ public class ProjectStep {
             .build();
     }
 
-    // todo: 일단 name, userId 만 변경
-    public void update(UpdateProjectStepCommand command) {
+    // todo: userId에 따라 feedbackStatus 변경
+    public void update(UpdateProjectStepCommand command, Long userId) {
         this.name = command.getName();
-//        this.stepOrder = command.getStepOrder();
         this.userId = command.getUserId();
-//        this.projectStepStatus = command.getProjectStepStatus();
+        if (!Objects.equals(userId, command.getUserId())) {
+            this.projectFeedbackStepStatus = ProjectFeedbackStepStatus.REQUESTED;
+        } else {
+            this.projectFeedbackStepStatus = command.getProjectFeedbackStepStatus();
+        } // 기존 userId 랑 들어온 userId 랑 다르면 REQUESTED
     }
 
     public void softDelete() {
@@ -73,8 +78,7 @@ public class ProjectStep {
         this.deletedAt = LocalDateTime.now();
     }
 
-    /* todo: 승인자랑 일치하는 지는 프론트에서 하시고 userid랑 로그인 id랑 같을때만 승인 버튼 보이게
-        switch문으로 해도 괜찮을 듯 (리팩토링) */
+    // todo: switch문으로 해도 괜찮을 듯 (리팩토링)
     public void approvalProjectFeedbackStepStatus(
         ProjectFeedbackStepStatus projectFeedbackStepStatus) {
         this.projectFeedbackStepStatus = projectFeedbackStepStatus;
