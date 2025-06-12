@@ -1,12 +1,10 @@
 package com.back2basics.domain.projectstep.controller;
 
-import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_READ_SUCCESS;
-
-import com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.*;
 import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.response.DetailProjectStepResponse;
-import com.back2basics.domain.projectstep.dto.response.ProjectStepSimpleResponse;
+import com.back2basics.domain.projectstep.dto.response.ReadProjectStepResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
@@ -16,7 +14,7 @@ import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.service.result.DetailProjectStepResult;
-import com.back2basics.projectstep.service.result.ProjectStepSimpleResult;
+import com.back2basics.projectstep.service.result.ReadProjectStepResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,13 +38,14 @@ public class ProjectStepController {
     private final DeleteProjectStepUseCase deleteProjectStepUseCase;
     private final ReadProjectStepUseCase readProjectStepUseCase;
 
-    // param
+    // /api/step?projectId={projectId}
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createStep(
         @RequestBody CreateProjectStepRequest request, @RequestParam Long projectId) {
+        System.out.println("stepOrder in request DTO = " + request.stepOrder()); // 이거 하니까 왜 되는거임 ;;
         CreateProjectStepCommand command = request.toCommand();
         createProjectStepUseCase.createStep(command, projectId);
-        return ApiResponse.success(ProjectStepResponseCode.STEP_CREATE_SUCCESS);
+        return ApiResponse.success(STEP_CREATE_SUCCESS);
     }
 
     @GetMapping("/{projectId}")
@@ -55,6 +54,13 @@ public class ProjectStepController {
         List<DetailProjectStepResult> result = readProjectStepUseCase.findDetailByProjectId(projectId);
         List<DetailProjectStepResponse> response = result.stream()
             .map(DetailProjectStepResponse::toResponse).toList();
+        return ApiResponse.success(STEP_ALL_READ_SUCCESS, response);
+    }
+
+    @GetMapping("/{stepId}")
+    public ResponseEntity<ApiResponse<ReadProjectStepResponse>> getStepById(@PathVariable Long stepId) {
+        ReadProjectStepResult result = readProjectStepUseCase.findById(stepId);
+        ReadProjectStepResponse response = ReadProjectStepResponse.toResponse(result);
         return ApiResponse.success(STEP_READ_SUCCESS, response);
     }
 
@@ -63,21 +69,21 @@ public class ProjectStepController {
     UpdateProjectStepRequest request) {
         UpdateProjectStepCommand command = request.toCommand();
         updateProjectStepUseCase.updateStep(command, stepId);
-        return ApiResponse.success(ProjectStepResponseCode.STEP_UPDATE_SUCCESS);
+        return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
-    // todo: RequestParam 으로 받았는데 RequestBody 도 가능
+    // todo: 승인, 거절 버튼마다 url - projectFeedbackStepStatus 다르게
     @PutMapping("/{stepId}/approval")
     public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId,
         @RequestParam
         ProjectFeedbackStepStatus projectFeedbackStepStatus) {
         updateProjectStepUseCase.updateApprovalStatus(projectFeedbackStepStatus, stepId);
-        return ApiResponse.success(ProjectStepResponseCode.STEP_UPDATE_SUCCESS);
+        return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> deleteStep(@PathVariable Long stepId) {
         deleteProjectStepUseCase.softDelete(stepId);
-        return ApiResponse.success(ProjectStepResponseCode.STEP_DELETE_SUCCESS);
+        return ApiResponse.success(STEP_DELETE_SUCCESS);
     }
 }
