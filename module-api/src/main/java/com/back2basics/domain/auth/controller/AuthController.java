@@ -39,7 +39,9 @@ public class AuthController {
 
         response.addHeader("Access-Control-Expose-Headers", "Authorization");
         response.setHeader("Authorization", "Bearer " + tokenPair.accessToken());
-        response.addCookie(cookieUtil.create(tokenPair.refreshToken()));
+
+        response.addCookie(cookieUtil.createRefreshToken(tokenPair.refreshToken()));
+        response.addCookie(cookieUtil.createAccessToken(tokenPair.accessToken()));
 
         updateUserUseCase.updateLastLoginAt(request.username());
         return ApiResponse.success(SUCCESS_LOGIN, tokenPair.accessToken());
@@ -55,6 +57,7 @@ public class AuthController {
         authService.logout(accessToken);
 
         response.addCookie(cookieUtil.deleteRefreshToken());
+        response.addCookie(cookieUtil.deleteAccessToken());
 
         return ApiResponse.success(AuthResponseCode.SUCCESS_LOGOUT);
     }
@@ -64,13 +67,17 @@ public class AuthController {
         HttpServletRequest request, HttpServletResponse response,
         @CookieValue(name = "refreshToken") String refreshToken) throws IOException {
         String accessToken = jwtTokenProvider.resolveAccessToken(request);
-
         TokenPair tokenPair = authService.reissue(refreshToken, accessToken);
 
         response.setHeader("Authorization", "Bearer " + tokenPair.accessToken());
-        response.addCookie(cookieUtil.deleteRefreshToken()); // 기존 쿠키 삭제
-        response.addCookie(cookieUtil.create(tokenPair.refreshToken())); // 새로운 쿠키 생성
 
+        // 기존 쿠키 삭제
+        response.addCookie(cookieUtil.deleteRefreshToken());
+        response.addCookie(cookieUtil.deleteAccessToken());
+
+        // 새로운 쿠키 생성
+        response.addCookie(cookieUtil.createRefreshToken(tokenPair.refreshToken()));
+        response.addCookie(cookieUtil.createAccessToken(tokenPair.accessToken()));
         return ApiResponse.success(SUCCESS_REISSUE, tokenPair.accessToken());
     }
 }
