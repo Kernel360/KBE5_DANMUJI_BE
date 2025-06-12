@@ -43,7 +43,16 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     @Override
     public List<ProjectGetResult> getAllProjects() {
-        List<Project> projects = port.
+        List<Project> projects = port.getAllProjects();
+        for (Project project : projects) {
+            List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
+            project.setSteps(steps);
+            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+                project.getId());
+            project.setUsers(projectUsers);
+        }
+        return projects.stream()
+            .map(ProjectGetResult::toResult).toList();
     }
 
     @Override
