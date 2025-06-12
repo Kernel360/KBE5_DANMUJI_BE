@@ -42,6 +42,11 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
+    public List<ProjectGetResult> getAllProjects() {
+        List<Project> projects = port.
+    }
+
+    @Override
     public Page<ProjectGetResult> getAllProjectsByUserId(Long userId, Pageable pageable) {
         Page<Project> projects = port.findAllByUserId(userId, pageable);
         for (Project project : projects) {

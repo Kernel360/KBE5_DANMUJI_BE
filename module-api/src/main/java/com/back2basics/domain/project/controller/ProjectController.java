@@ -137,6 +137,17 @@ public class ProjectController {
             responseList);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<ProjectGetResponse>>> getAllProjectsWithoutPagination() {
+        List<ProjectGetResult> projects = readProjectUseCase.getAllProjects();
+
+        List<ProjectGetResponse> responseList = projects.stream()
+            .map(ProjectGetResponse::toResponse)
+            .toList();
+
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, responseList);
+    }
+
     // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민.. -> 5순위
 
 }

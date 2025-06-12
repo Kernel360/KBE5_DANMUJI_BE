@@ -12,6 +12,8 @@ public interface ReadProjectUseCase {
     // 관리자용 전체 리스트
     Page<ProjectGetResult> getAllProjects(Pageable pageable);
 
+    List<ProjectGetResult> getAllProjects();
+
     // 회원용 전체 리스트
     Page<ProjectGetResult> getAllProjectsByUserId(Long userId, Pageable pageable);
 
