@@ -39,7 +39,7 @@ public class ProjectStepEntity {
     private ProjectEntity project;
 
     // todo: LAZY와 EAGER의 차이? - 지연로딩, 즉시로딩?
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

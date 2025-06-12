@@ -6,14 +6,13 @@ import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import jakarta.validation.constraints.NotBlank;
 
 
-public record UpdateProjectStepRequest(@NotBlank String name, Long userId) {
+public record UpdateProjectStepRequest(@NotBlank String name, Long userId, ProjectFeedbackStepStatus projectFeedbackStepStatus) {
 
     public UpdateProjectStepCommand toCommand() {
         return UpdateProjectStepCommand.builder()
             .name(name)
             .userId(userId)
-//            .projectStepStatus(projectStepStatus)
-//            .projectFeedbackStepStatus(projectFeedbackStepStatus)
+            .projectFeedbackStepStatus(projectFeedbackStepStatus)
             .build();
     }
 }

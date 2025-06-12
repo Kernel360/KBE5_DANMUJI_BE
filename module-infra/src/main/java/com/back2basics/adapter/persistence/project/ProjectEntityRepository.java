@@ -21,7 +21,8 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
             WHERE pu.user.id = :userId
               AND pu.project.isDeleted = false
         """)
-    Page<ProjectEntity> findProjectsByUserId(@Param("userId") Long userId, Pageable pageable);
+    Page<ProjectEntity> findProjectsByUserIdAndIsDeletedFalse(@Param("userId") Long userId,
+        Pageable pageable);
 
     Page<ProjectEntity> findAllByNameContainingAndIsDeletedFalse(Pageable pageable, String keyword);
 }

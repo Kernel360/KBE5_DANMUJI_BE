@@ -33,7 +33,7 @@ public class ReadProjectAdapter implements ReadProjectPort {
 
     @Override
     public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
-        return projectEntityRepository.findProjectsByUserId(userId, pageable)
+        return projectEntityRepository.findProjectsByUserIdAndIsDeletedFalse(userId, pageable)
             .map(projectMapper::toDomain);
     }
 
