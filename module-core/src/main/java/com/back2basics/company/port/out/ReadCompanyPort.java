@@ -15,4 +15,6 @@ public interface ReadCompanyPort {
     List<Company> getAllCompanies();
 
     Page<Company> findAll(Pageable pageable);
+
+    List<Company> getRecentCompanies();
 }

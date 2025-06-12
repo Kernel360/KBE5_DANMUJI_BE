@@ -4,7 +4,8 @@ import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.service.result.NotificationResult;
 import java.time.LocalDateTime;
 
-public record NotificationResponse(Long id, Long clientId, String message, NotificationType type,
+public record NotificationResponse(Long id, Long clientId, Long referenceId, String message,
+                                   NotificationType type,
                                    Boolean isRead, LocalDateTime createdAt, LocalDateTime updatedAt,
                                    LocalDateTime deletedAt) {
 
@@ -12,6 +13,7 @@ public record NotificationResponse(Long id, Long clientId, String message, Notif
         return new NotificationResponse(
             result.id(),
             result.clientId(),
+            result.referenceId(),
             result.message(),
             result.type(),
             result.isRead() != null ? result.isRead() : false,

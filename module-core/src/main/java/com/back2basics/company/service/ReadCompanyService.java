@@ -4,6 +4,7 @@ import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.out.ReadCompanyPort;
 import com.back2basics.company.service.result.ReadCompanyResult;
+import com.back2basics.company.service.result.ReadRecentCompanyResult;
 import com.back2basics.infra.validation.validator.CompanyValidator;
 import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserSummaryResult;
@@ -51,6 +52,12 @@ public class ReadCompanyService implements ReadCompanyUseCase {
         companyValidator.validateCompanyExists(companyId);
         return userQueryPort.findAllByCompanyId(companyId).stream()
             .map(UserSummaryResult::from).toList();
+    }
+
+    @Override
+    public List<ReadRecentCompanyResult> getRecentCompanies() {
+        return readCompanyPort.getRecentCompanies()
+            .stream().map(ReadRecentCompanyResult::toResult).toList();
     }
 
 }

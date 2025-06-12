@@ -23,13 +23,13 @@ public class NotificationEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "client_id", nullable = false)
+    @Column(name = "client_id")
     private Long clientId;
 
-    @Column(name = "reference_id", nullable = false)
+    @Column(name = "reference_id")
     private Long referenceId;
 
-    @Column(name = "message", nullable = false)
+    @Column(name = "message")
     private String message;
 
     @Column(name = "is_read", nullable = false)
