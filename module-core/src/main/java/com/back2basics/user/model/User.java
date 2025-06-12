@@ -82,4 +82,8 @@ public class User {
     public void updateLastLoginAt() {
         this.lastLoginAt = LocalDateTime.now();
     }
+
+    public void unlinkCompany() {
+        this.companyId = null;
+    }
 }
