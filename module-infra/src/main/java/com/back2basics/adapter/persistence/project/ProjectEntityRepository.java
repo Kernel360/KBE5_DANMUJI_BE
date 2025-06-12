@@ -28,4 +28,6 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
     Page<ProjectEntity> findAllByNameContainingAndIsDeletedFalse(Pageable pageable, String keyword);
 
     List<ProjectEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
+
+    List<ProjectEntity> findAllByIsDeletedFalse();
 }
