@@ -34,4 +34,9 @@ public class ReadProjectStepService implements ReadProjectStepUseCase {
             .stream().map(DetailProjectStepResult::toResult).toList();
         return results;
     }
+
+    @Override
+    public ReadProjectStepResult findById(Long stepId) {
+        return ReadProjectStepResult.toResult(projectStepPort.findById(stepId));
+    }
 }

@@ -11,4 +11,6 @@ public interface ReadProjectStepUseCase {
     List<ProjectStepSimpleResult> findByProjectId(Long projectId);
 
     List<DetailProjectStepResult> findDetailByProjectId(Long projectId);
+
+    ReadProjectStepResult findById(Long stepId);
 }
