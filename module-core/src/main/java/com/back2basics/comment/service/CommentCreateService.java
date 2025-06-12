@@ -4,6 +4,7 @@ import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.in.CommentCreateUseCase;
 import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.comment.port.out.CommentCreatePort;
+import com.back2basics.comment.service.notification.CommentNotificationSender;
 import com.back2basics.infra.validation.validator.CommentValidator;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.user.model.User;
@@ -19,6 +20,7 @@ public class CommentCreateService implements CommentCreateUseCase {
     private final PostValidator postValidator;
     private final CommentValidator commentValidator;
     private final UserQueryPort userQueryPort;
+    private final CommentNotificationSender commentNotificationSender;
 
     @Override
     public Long createComment(Long userId, String userIp, CommentCreateCommand command) {
@@ -40,6 +42,9 @@ public class CommentCreateService implements CommentCreateUseCase {
             .parentCommentId(command.getParentId())
             .build();
 
-        return commentCreatePort.save(comment);
+        Long commentId = commentCreatePort.save(comment);
+        commentNotificationSender.sendNotification(userId, commentId, command);
+        
+        return commentId;
     }
 }
