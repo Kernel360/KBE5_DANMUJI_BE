@@ -6,6 +6,7 @@ import com.back2basics.domain.post.dto.request.PostSearchRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
+import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
 import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.port.in.PostCreateUseCase;
@@ -15,8 +16,10 @@ import com.back2basics.post.port.in.PostSearchUseCase;
 import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
 import com.back2basics.post.service.result.PostReadResult;
+import com.back2basics.post.service.result.ReadRecentPostResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -125,5 +128,14 @@ public class PostController implements PostApiDocs {
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
+    }
+
+    @GetMapping("/recent-posts")
+    public ResponseEntity<ApiResponse<List<ReadRecentPostResponse>>> getRecentCompanies(
+    ) {
+        List<ReadRecentPostResult> results = postReadUseCase.getRecentPosts();
+        List<ReadRecentPostResponse> responseList = ReadRecentPostResponse.toResponse(results);
+
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responseList);
     }
 }
