@@ -1,5 +1,6 @@
 package com.back2basics.user.model;
 
+import com.back2basics.company.model.Company;
 import com.back2basics.user.port.in.command.UserCreateCommand;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -23,11 +24,12 @@ public class User {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
+    private Company company;
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
         String position, Role role, Long companyId, LocalDateTime lastLoginAt,
-        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Company company) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -41,6 +43,7 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+        this.company = company;
     }
 
     public static User create(UserCreateCommand command, String encodedPassword) {

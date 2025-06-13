@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 public class CompanyMapper {
 
     public Company toDomain(CompanyEntity entity) {
+        if (entity == null) {
+            return null;
+        }
         return Company.builder()
             .id(entity.getId())
             .name(entity.getName())
@@ -21,6 +24,9 @@ public class CompanyMapper {
     }
 
     public CompanyEntity toEntity(Company domain) {
+        if (domain == null) {
+            return null;
+        }
         return CompanyEntity.builder()
             .id(domain.getId())
             .name(domain.getName())

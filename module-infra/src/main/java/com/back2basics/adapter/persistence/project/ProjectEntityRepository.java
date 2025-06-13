@@ -22,8 +22,34 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
             WHERE pu.user.id = :userId
               AND pu.project.isDeleted = false
         """)
-    Page<ProjectEntity> findProjectsByUserIdAndIsDeletedFalse(@Param("userId") Long userId,
+    Page<ProjectEntity> findProjectsByUserIdAndIsDeletedFalse(Long userId,
         Pageable pageable);
+
+    // todo:project에 projectUser 연관을 걸어서 이걸 사용해보기, 네이밍 안통하면 쿼리로 바꿔보기
+//    @Query("""
+//        SELECT p
+//        FROM ProjectEntity p
+//        JOIN p.projectUsers pu
+//        WHERE pu.user.id    = :userId
+//         AND p.isDeleted   = false
+//        """)
+    Page<ProjectEntity> findAllByProjectUsersUser_IdAndIsDeletedFalse(
+        Long userId,
+        Pageable pageable
+    );
+
+    @Query("""
+          SELECT p
+            FROM ProjectEntity p
+            JOIN p.projectUsers pu
+           WHERE pu.user.id = :userId
+             AND p.isDeleted = false
+        """)
+    Page<ProjectEntity> findAllByUserId(
+        @Param("userId") Long userId,
+        Pageable pageable
+    );
+
 
     Page<ProjectEntity> findAllByNameContainingAndIsDeletedFalse(Pageable pageable, String keyword);
 

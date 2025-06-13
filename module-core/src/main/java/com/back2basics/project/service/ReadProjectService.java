@@ -39,6 +39,20 @@ public class ReadProjectService implements ReadProjectUseCase {
         }
         return projects
             .map(ProjectGetResult::toResult);
+
+    }
+
+    @Override
+    public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
+        Page<Project> projects = port.searchByKeyword(keyword, pageable);
+        for (Project project : projects) {
+            List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
+            project.setSteps(steps);
+            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+                project.getId());
+            project.setUsers(projectUsers);
+        }
+        return projects.map(ProjectGetResult::toResult);
     }
 
     @Override
@@ -66,12 +80,6 @@ public class ReadProjectService implements ReadProjectUseCase {
             project.setUsers(projectUsers);
         }
         return projects
-            .map(ProjectGetResult::toResult);
-    }
-
-    @Override
-    public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
-        return port.searchByKeyword(keyword, pageable)
             .map(ProjectGetResult::toResult);
     }
 
