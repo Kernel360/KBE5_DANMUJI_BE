@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.user.mapper;
 
 import com.back2basics.adapter.persistence.company.CompanyEntity;
+import com.back2basics.adapter.persistence.company.CompanyMapper;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.user.model.User;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
+
+    private final CompanyMapper companyMapper;
 
     public User toDomain(UserEntity entity) {
         return User.builder()
@@ -50,6 +53,22 @@ public class UserMapper {
             ? CompanyEntity.builder().id(user.getCompanyId()).build()
             : null;
         return toEntity(user, companyEntity);
+    }
+
+    // todo : 테스트 중 ㅎㅎㅎ
+    public UserEntity toEntityTest(User user) {
+        return UserEntity.builder()
+            .id(user.getId())
+            .username(user.getUsername())
+            .password(user.getPassword())
+            .name(user.getName())
+            .email(user.getEmail())
+            .phone(user.getPhone())
+            .position(user.getPosition())
+            .role(user.getRole())
+            .company(companyMapper.toEntity(user.getCompany()))
+            .lastLoginAt(user.getLastLoginAt())
+            .build();
     }
 
 }

@@ -1,12 +1,14 @@
 package com.back2basics.adapter.persistence.project.adapter;
 
+import static com.back2basics.infra.exception.project.ProjectErrorCode.*;
+
 import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
+import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.out.ReadProjectPort;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,14 +28,26 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
+    public Project findProjectById(Long id) {
+        return projectEntityRepository.findById(id).map(projectMapper::toDomain)
+            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+    }
+
+    @Override
     public Page<Project> findAll(Pageable pageable) {
         return projectEntityRepository.findAllByIsDeletedFalse(pageable)
             .map(projectMapper::toDomain);
     }
 
     @Override
+    public List<Project> getAllProjects() {
+        return projectEntityRepository.findAllByIsDeletedFalse().stream()
+            .map(projectMapper::toDomain).toList();
+    }
+
+    @Override
     public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
-        return projectEntityRepository.findProjectsByUserIdAndIsDeletedFalse(userId, pageable)
+        return projectEntityRepository.findAllByProjectUsersUser_IdAndIsDeletedFalse(userId, pageable)
             .map(projectMapper::toDomain);
     }
 
@@ -41,5 +55,11 @@ public class ReadProjectAdapter implements ReadProjectPort {
     public Page<Project> searchByKeyword(String keyword, Pageable pageable) {
         return projectEntityRepository.findAllByNameContainingAndIsDeletedFalse(pageable, keyword)
             .map(projectMapper::toDomain);
+    }
+
+    @Override
+    public List<Project> getRecentProjects() {
+        return projectEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
+            .stream().map(projectMapper::toDomain).toList();
     }
 }

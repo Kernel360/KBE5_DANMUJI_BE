@@ -34,7 +34,7 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final UserCommandPort userCommandPort;
     private final CompanyValidator companyValidator;
     private static final List<String> DEFAULT_STEPS =
-        List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
+        List.of("요구사항 정의", "화면설계"); // , "디자인", "퍼블리싱", "개발", "검수"
 
     // todo: service 에서 build() 하는 것은 객체지향적이지 못함 -> 나중에 도메인에 메서드 추가
     @Override
