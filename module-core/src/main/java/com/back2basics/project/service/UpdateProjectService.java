@@ -6,6 +6,7 @@ import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
+import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.project.port.out.UpdateProjectPort;
 import com.back2basics.projectuser.model.ProjectUser;
@@ -14,6 +15,7 @@ import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     private final ProjectValidator projectValidator;
     private final ProjectUserQueryPort projectUserQueryPort;
     private final SaveProjectUserPort saveProjectUserPort;
+
+    private final ReadProjectPort readProjectPort;
 
 
     // todo : 사용자 인증 로직 추가
@@ -63,9 +67,10 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
     }
 
+    // todo: if 조건 검증도 도메인에서 하라고 헀던거 같음.
     @Override
     public void changedStatus(Long projectId) {
-        Project project = projectValidator.findProjectById(projectId);
+        Project project = readProjectPort.findProjectById(projectId);
 
         if (project.getStatus() == ProjectStatus.IN_PROGRESS) {
             project.statusCompleted();

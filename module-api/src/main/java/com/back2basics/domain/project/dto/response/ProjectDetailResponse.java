@@ -2,12 +2,13 @@ package com.back2basics.domain.project.dto.response;
 
 import com.back2basics.domain.projectstep.dto.response.ProjectStepSimpleResponse;
 import com.back2basics.domain.user.dto.response.UserCompanyResponse;
+import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import java.time.LocalDate;
 import java.util.List;
 
 public record ProjectDetailResponse(Long id, String name, String description, LocalDate startDate,
-                                    LocalDate endDate, String status,
+                                    LocalDate endDate, ProjectStatus projectStatus,
                                     List<UserCompanyResponse> clients,
                                     List<UserCompanyResponse> developers,
                                     List<ProjectStepSimpleResponse> steps) {
@@ -19,7 +20,7 @@ public record ProjectDetailResponse(Long id, String name, String description, Lo
             result.description(),
             result.startDate(),
             result.endDate(),
-            result.status(),
+            result.projectStatus(),
             result.clients().stream()
                 .map(UserCompanyResponse::from)
                 .toList(),

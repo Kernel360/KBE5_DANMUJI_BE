@@ -38,11 +38,12 @@ public class ReadProjectService implements ReadProjectUseCase {
         }
         return projects
             .map(ProjectGetResult::toResult);
+
     }
 
     @Override
-    public Page<ProjectGetResult> getAllProjectsByUserId(Long userId, Pageable pageable) {
-        Page<Project> projects = port.findAllByUserId(userId, pageable);
+    public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
+        Page<Project> projects = port.searchByKeyword(keyword, pageable);
         for (Project project : projects) {
             List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
             project.setSteps(steps);
@@ -55,8 +56,18 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
-    public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
-        return port.searchByKeyword(keyword, pageable)
+    public Page<ProjectGetResult> getAllProjectsByUserId(Long userId, Pageable pageable) {
+        Page<Project> projects = port.findAllByUserId(userId, pageable);
+        for (Project project : projects) {
+            List<ProjectStep> steps = stepPort.findAllByProjectId(project.getId());
+            project.setSteps(steps);
+            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+                project.getId());
+            project.setUsers(projectUsers);
+        }
+
+        System.out.println("============================= getAllProjectsByUserId() 호출 " + userId);
+        return projects
             .map(ProjectGetResult::toResult);
     }
 
