@@ -57,17 +57,16 @@ public class ProjectEntity extends BaseTimeEntity {
     @Column(name = "status", nullable = false)
     private ProjectStatus status;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     private List<ProjectStepEntity> steps = new ArrayList<>();
 
-    // todo: projectUser와 양방향으로 단방향으로 고민쓰
-//    @OneToMany(mappedBy = "project_users", fetch = FetchType.EAGER)
-//    private List<ProjectUserEntity> projectUsers = new ArrayList<>();
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private List<ProjectUserEntity> projectUsers = new ArrayList<>();
 
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
         LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status,
-        List<ProjectStepEntity> steps) {
+        List<ProjectStepEntity> steps, List<ProjectUserEntity> projectUsers) {
 
         this.id = id;
         this.name = name;
@@ -78,5 +77,6 @@ public class ProjectEntity extends BaseTimeEntity {
         this.isDeleted = isDeleted;
         this.status = status;
         this.steps = steps;
+        this.projectUsers = projectUsers;
     }
 }

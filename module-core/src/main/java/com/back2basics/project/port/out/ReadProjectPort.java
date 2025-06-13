@@ -10,6 +10,8 @@ public interface ReadProjectPort {
 
     Optional<Project> findById(Long id);
 
+    Project findProjectById(Long id);
+
     Page<Project> findAll(Pageable pageable);
 
     List<Project> getAllProjects();
