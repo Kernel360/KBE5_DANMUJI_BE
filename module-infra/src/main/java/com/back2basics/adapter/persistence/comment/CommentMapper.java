@@ -1,6 +1,5 @@
 package com.back2basics.adapter.persistence.comment;
 
-import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.service.result.CommentWithPostAndAuthorResult;
 import lombok.RequiredArgsConstructor;
@@ -41,21 +40,6 @@ public class CommentMapper {
 
     public CommentEntity toEntity(Comment domain) {
         CommentEntity entity = CommentEntity.of(domain);
-
-        // todo : 게시글이랑 댓글 연관 끊고 이 이상한 코드 없앨거임
-        PostEntity post = new PostEntity(
-            domain.getPostId(),  // id
-            null,                // parentId
-            null,                // projectId
-            null,                // authorIp
-            null,                // author
-            null,                // title
-            null,                // content
-            null,                // type
-            null,                // priority
-            null,                // projectStepId
-            null                 // completedAt
-        );
 
         return entity;
     }
