@@ -1,4 +1,4 @@
-package com.back2basics.adapter.persistence.projectuser;
+package com.back2basics.adapter.persistence.assignment;
 
 import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.adapter.persistence.company.CompanyMapper;
@@ -7,20 +7,20 @@ import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.project.model.Project;
-import com.back2basics.projectuser.model.ProjectUser;
+import com.back2basics.assignment.model.Assignment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ProjectUserMapper {
+public class AssignmentMapper {
 
     private final ProjectMapper projectMapper;
     private final UserMapper userMapper;
     private final CompanyMapper companyMapper;
 
-    public ProjectUser toDomain(ProjectUserEntity entity) {
-        return ProjectUser.builder()
+    public Assignment toDomain(AssignmentEntity entity) {
+        return Assignment.builder()
             .id(entity.getId())
             .project(projectMapper.toDomain(entity.getProject()))
             .user(userMapper.toDomain(entity.getUser()))
@@ -30,8 +30,8 @@ public class ProjectUserMapper {
             .build();
     }
 
-    public ProjectUser toDomainTest(ProjectUserEntity entity) {
-        return ProjectUser.builder()
+    public Assignment toDomainTest(AssignmentEntity entity) {
+        return Assignment.builder()
             .id(entity.getId())
             .project(Project.builder().id(entity.getProject().getId()).build())
             .user(userMapper.toDomain(entity.getUser()))
@@ -43,26 +43,26 @@ public class ProjectUserMapper {
 
 
     // toEntity 할때 엔티티 자체를 받았네
-    public ProjectUserEntity toEntity(ProjectUser projectUser, ProjectEntity project,
+    public AssignmentEntity toEntity(Assignment assignment, ProjectEntity project,
         UserEntity user, CompanyEntity company) {
-        return ProjectUserEntity.builder()
-            .id(projectUser.getId())
+        return com.back2basics.adapter.persistence.assignment.AssignmentEntity.builder()
+            .id(assignment.getId())
             .project(project)
             .user(user)
             .company(company)
-            .userType(projectUser.getUserType())
-            .companyType(projectUser.getCompanyType())
+            .userType(assignment.getUserType())
+            .companyType(assignment.getCompanyType())
             .build();
     }
 
-    public ProjectUserEntity toEntityTest(ProjectUser projectUser) {
-        return ProjectUserEntity.builder()
-            .id(projectUser.getId())
-            .project(projectMapper.fromDomain(projectUser.getProject()))
-            .user(userMapper.toEntityTest(projectUser.getUser()))
-            .company(companyMapper.toEntity(projectUser.getCompany()))
-            .userType(projectUser.getUserType())
-            .companyType(projectUser.getCompanyType())
+    public AssignmentEntity toEntityTest(Assignment assignment) {
+        return com.back2basics.adapter.persistence.assignment.AssignmentEntity.builder()
+            .id(assignment.getId())
+            .project(projectMapper.fromDomain(assignment.getProject()))
+            .user(userMapper.toEntityTest(assignment.getUser()))
+            .company(companyMapper.toEntity(assignment.getCompany()))
+            .userType(assignment.getUserType())
+            .companyType(assignment.getCompanyType())
             .build();
     }
 }

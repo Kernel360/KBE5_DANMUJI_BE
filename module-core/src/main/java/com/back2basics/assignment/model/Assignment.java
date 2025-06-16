@@ -1,9 +1,8 @@
-package com.back2basics.projectuser.model;
+package com.back2basics.assignment.model;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.project.model.Project;
-import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProjectUser {
+public class Assignment {
 
     private final Long id;
     private final Project project;
@@ -22,7 +21,7 @@ public class ProjectUser {
     private CompanyType companyType;
 
     @Builder
-    public ProjectUser(Long id, Project project, User user,
+    public Assignment(Long id, Project project, User user,
         Company company, UserType userType, CompanyType companyType) {
         this.id = id;
         this.project = project;
@@ -33,9 +32,9 @@ public class ProjectUser {
     }
 
     // todo: 빌더 말고 다른 패턴 사용도 고려
-    public static ProjectUser create(Project project, User user,
+    public static Assignment create(Project project, User user,
         Company company, UserType userType, CompanyType companyType) {
-        return ProjectUser.builder()
+        return Assignment.builder()
             .project(project)
             .user(user)
             .company(company)
@@ -45,13 +44,13 @@ public class ProjectUser {
     }
 
     //todo: 개발사, 고객사 create로 분리하는게 좋을 지
-    public static List<ProjectUser> createProjectUser(Project project, User developer, User client,
+    public static List<Assignment> createProjectUser(Project project, User developer, User client,
         Company developerCompany, Company clientCompany, List<User> developers,
         List<User> clients) {
 
         // todo: bulider 두번하는거 리팩토링하기 , it 대신 다른 변수명 사용
-        List<ProjectUser> developerUsers = developers.stream()
-            .map(it -> ProjectUser.builder()
+        List<Assignment> developerUsers = developers.stream()
+            .map(it -> Assignment.builder()
                 .project(project)
                 .user(it)
                 .company(developerCompany)
@@ -60,8 +59,8 @@ public class ProjectUser {
                 .build())
             .toList();
 
-        List<ProjectUser> clientUsers = clients.stream()
-            .map(it -> ProjectUser.builder()
+        List<Assignment> clientUsers = clients.stream()
+            .map(it -> Assignment.builder()
                 .project(project)
                 .user(it)
                 .company(clientCompany)
@@ -70,7 +69,7 @@ public class ProjectUser {
                 .build())
             .toList();
 
-        List<ProjectUser> allUsers = new ArrayList<>();
+        List<Assignment> allUsers = new ArrayList<>();
         allUsers.addAll(developerUsers);
         allUsers.addAll(clientUsers);
 
