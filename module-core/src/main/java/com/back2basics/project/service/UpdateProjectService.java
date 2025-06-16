@@ -8,7 +8,7 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.port.out.ReadProjectPort;
-import com.back2basics.project.port.out.SaveProjectUserPort;
+import com.back2basics.project.port.out.SaveAssignmentPort;
 import com.back2basics.project.port.out.UpdateProjectPort;
 import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import com.back2basics.user.model.UserType;
@@ -23,7 +23,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     private final UpdateProjectPort port;
     private final ProjectValidator projectValidator;
     private final AssignmentQueryPort assignmentQueryPort;
-    private final SaveProjectUserPort saveProjectUserPort;
+    private final SaveAssignmentPort saveProjectUserPort;
 
     private final ReadProjectPort readProjectPort;
 

@@ -8,7 +8,7 @@ import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
 import com.back2basics.project.port.out.SaveProjectPort;
-import com.back2basics.project.port.out.SaveProjectUserPort;
+import com.back2basics.project.port.out.SaveAssignmentPort;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
@@ -29,7 +29,7 @@ public class CreateProjectService implements CreateProjectUseCase {
 
     private final SaveProjectPort saveProjectPort;
     private final SaveProjectStepPort saveProjectStepPort;
-    private final SaveProjectUserPort saveProjectUserPort;
+    private final SaveAssignmentPort saveProjectUserPort;
     private final UserQueryPort userQueryPort;
     private final UserCommandPort userCommandPort;
     private final CompanyValidator companyValidator;

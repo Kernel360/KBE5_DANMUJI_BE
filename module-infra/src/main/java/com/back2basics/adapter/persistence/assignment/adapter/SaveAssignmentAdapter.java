@@ -17,14 +17,14 @@ import com.back2basics.assignment.model.Assignment;
 import com.back2basics.infra.exception.company.CompanyException;
 import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.infra.exception.user.UserException;
-import com.back2basics.project.port.out.SaveProjectUserPort;
+import com.back2basics.project.port.out.SaveAssignmentPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SaveAssignmentAdapter implements SaveProjectUserPort {
+public class SaveAssignmentAdapter implements SaveAssignmentPort {
 
     private final AssignmentEntityRepository projectUserEntityRepository;
     private final ProjectEntityRepository projectEntityRepository;
