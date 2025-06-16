@@ -17,6 +17,8 @@ public class PostCreateResponse {
     private final PostType type;
     private final PostStatus status;
     private final Integer priority;
+    private final Long stepId;
+    private final Long proejctId;
 
     public static PostCreateResponse toResponse(PostCreateResult result) {
         return PostCreateResponse.builder()
@@ -27,6 +29,8 @@ public class PostCreateResponse {
             .type(result.getType())
             .status(result.getStatus())
             .priority(result.getPriority())
+            .stepId(result.getStepId())
+            .projectId(result.getProjectId())
             .build();
     }
 

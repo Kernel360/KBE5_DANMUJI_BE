@@ -1,11 +1,8 @@
 package com.back2basics.post.model;
 
-import com.back2basics.comment.model.Comment;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
-import com.back2basics.project.model.Project;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -37,8 +34,7 @@ public class Post {
         PostType type,
         PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt, List<Comment> comments,
-        Project project) {
+        LocalDateTime deletedAt, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
         this.authorIp = authorIp;

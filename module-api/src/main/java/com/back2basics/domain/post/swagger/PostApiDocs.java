@@ -1,8 +1,8 @@
 package com.back2basics.domain.post.swagger;
 
-import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
+import com.back2basics.domain.post.dto.request.PostCreateRequest;
 import com.back2basics.domain.post.dto.request.PostSearchRequest;
-import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
+import com.back2basics.domain.post.dto.request.PostUpdateRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.global.response.result.ApiResponse;
@@ -31,7 +31,7 @@ public interface PostApiDocs {
             required = true,
             content = @Content(
                 mediaType = "application/json",
-                schema = @Schema(implementation = PostCreateApiRequest.class),
+                schema = @Schema(implementation = PostCreateRequest.class),
                 examples = @ExampleObject(name = "요청 예시", value = PostDocsResult.POST_CREATE_REQUEST)
             )
         )
@@ -51,7 +51,7 @@ public interface PostApiDocs {
     })
     ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestBody @Valid PostCreateApiRequest request);
+        @RequestBody @Valid PostCreateRequest request);
 
     @Operation(summary = "게시글 단건 조회")
     @ApiResponses({
@@ -105,7 +105,7 @@ public interface PostApiDocs {
     ResponseEntity<ApiResponse<Void>> updatePost(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
-        @RequestBody @Valid PostUpdateApiRequest request);
+        @RequestBody @Valid PostUpdateRequest request);
 
     @Operation(summary = "게시글 삭제")
     @ApiResponses({

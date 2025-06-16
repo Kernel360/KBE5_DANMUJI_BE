@@ -3,17 +3,13 @@ package com.back2basics.domain.post.dto.request;
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import com.back2basics.post.port.in.command.PostCreateCommand;
-import jakarta.annotation.Nullable;
+import com.back2basics.post.port.in.command.PostUpdateCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class PostCreateApiRequest {
-
-    @Nullable
-    private Long parentId;
+public class PostUpdateRequest {
 
     @NotBlank(message = "제목은 필수입니다.")
     private String title;
@@ -30,16 +26,12 @@ public class PostCreateApiRequest {
     @NotNull(message = "우선순위가 입력되지 않았습니다.")
     private Integer priority;
 
-    @NotNull(message = "프로젝트 단계를 입력하세요.")
-    private Long stepId;
-
-    public PostCreateCommand toCommand() {
-        return PostCreateCommand.builder()
-            .parentId(parentId)
+    public PostUpdateCommand toCommand() {
+        return PostUpdateCommand.builder()
             .title(title)
             .content(content)
             .status(status)
-            .stepId(stepId)
-            .type(type).priority(priority).build();
+            .type(type).priority(priority)
+            .build();
     }
 }

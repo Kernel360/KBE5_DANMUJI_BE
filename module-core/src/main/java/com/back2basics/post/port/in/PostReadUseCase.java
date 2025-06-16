@@ -10,7 +10,10 @@ public interface PostReadUseCase {
 
     PostReadResult getPostById(Long userId, Long postId);
 
-    Page<PostReadResult> getAllPostsByProjectStepId(Long userId, Long projectStepId,
+    Page<PostReadResult> getAllPostsByProjectIdAndStepId(
+        Long userId,
+        Long projectId,
+        Long projectStepId,
         Pageable pageable);
 
     List<ReadRecentPostResult> getRecentPosts();

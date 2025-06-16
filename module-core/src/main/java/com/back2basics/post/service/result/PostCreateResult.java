@@ -21,6 +21,8 @@ public class PostCreateResult {
     private final PostStatus status;
     private final Integer priority;
     private final LocalDateTime createdAt;
+    private final Long stepId;
+    private final Long projectId;
 
 
     public static PostCreateResult toResult(Post post) {
@@ -34,6 +36,8 @@ public class PostCreateResult {
             .status(post.getStatus())
             .priority(post.getPriority())
             .createdAt(post.getCreatedAt())
+            .stepId(post.getProjectStepId())
+            .projectId(post.getProjectId())
             .build();
     }
 }

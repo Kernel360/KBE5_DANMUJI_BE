@@ -16,4 +16,5 @@ public class PostCreateCommand {
     private PostStatus status;
     private Integer priority;
     private Long stepId;
+    private Long projectId;
 }

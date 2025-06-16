@@ -12,6 +12,9 @@ import lombok.Setter;
 @Setter
 public class PostSearchRequest {
 
+    @NotNull(message = "프로젝트를 입력하세요.")
+    private Long projectId;
+
     @NotNull(message = "프로젝트 단계를 입력하세요.")
     private Long stepId;
 
@@ -45,6 +48,7 @@ public class PostSearchRequest {
             .priority(priority)
             .status(status)
             .type(type)
+            .projectId(projectId)
             .projectStepId(stepId)
             .build();
     }

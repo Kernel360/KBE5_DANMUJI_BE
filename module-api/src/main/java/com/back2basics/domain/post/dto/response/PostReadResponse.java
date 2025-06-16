@@ -14,6 +14,7 @@ public class PostReadResponse {
 
     private final Long postId;
     private final Long parentId;
+    private final Long projectId;
     private final Long projectStepId;
     private final String authorIp;
     private final UserSummaryResponse author;
@@ -34,6 +35,7 @@ public class PostReadResponse {
             .postId(postDetails.getId())
             .authorIp(postDetails.getAuthorIp())
             .author(UserSummaryResponse.from(postDetails.getAuthor()))
+            .projectId(postDetails.getProjectId())
             .projectStepId(postDetails.getProjectStepId())
             .title(postDetails.getTitle())
             .content(postDetails.getContent())

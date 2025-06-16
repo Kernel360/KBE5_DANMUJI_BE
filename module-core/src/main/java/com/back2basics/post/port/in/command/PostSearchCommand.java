@@ -17,5 +17,6 @@ public class PostSearchCommand {
     private Integer priority;
     private PostStatus status;
     private PostType type;
+    private Long projectId;
     private Long projectStepId;
 }
