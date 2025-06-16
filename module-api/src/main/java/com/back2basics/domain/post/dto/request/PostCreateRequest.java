@@ -21,14 +21,13 @@ public class PostCreateRequest {
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
+    @NotNull(message = "타입이 입력되지 않았습니다.")
     @CustomEnumCheck(enumClass = PostType.class, message = "올바른 enum type이 아닙니다")
     private PostType type;
 
-    @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
-    private PostPriority status;
-
     @NotNull(message = "우선순위가 입력되지 않았습니다.")
-    private Integer priority;
+    @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
+    private PostPriority priority;
 
     @NotNull(message = "프로젝트를 입력하세요.")
     private Long projectId;
@@ -41,11 +40,10 @@ public class PostCreateRequest {
             .parentId(parentId)
             .title(title)
             .content(content)
-            .status(status)
+            .priority(priority)
             .projectId(projectId)
             .stepId(stepId)
             .type(type)
-            .priority(priority)
             .build();
     }
 }

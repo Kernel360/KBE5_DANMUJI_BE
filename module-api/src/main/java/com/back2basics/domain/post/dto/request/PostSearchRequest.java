@@ -31,10 +31,7 @@ public class PostSearchRequest {
     private String developerCompany;
 
     @Nullable
-    private Integer priority;
-
-    @Nullable
-    private PostPriority status;
+    private PostPriority priority;
 
     @Nullable
     private PostType type;
@@ -46,7 +43,7 @@ public class PostSearchRequest {
             .developerCompany(developerCompany)
             .author(author)
             .priority(priority)
-            .status(status)
+            .priority(priority)
             .type(type)
             .projectId(projectId)
             .projectStepId(stepId)

@@ -18,8 +18,7 @@ public class Post {
     private String title;
     private String content;
     private PostType type;
-    private PostPriority status;
-    private int priority;
+    private PostPriority priority;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -39,7 +38,6 @@ public class Post {
             command.getTitle(),
             command.getContent(),
             command.getType(),
-            command.getStatus(),
             command.getPriority(),
             null, null, null, null
         );
@@ -48,12 +46,12 @@ public class Post {
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
         String authorIp, Long authorId, String authorName, String title, String content,
-        PostType type, PostPriority status, int priority,
+        PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
-            title, content, type, status, priority,
+            title, content, type, priority,
             createdAt, updatedAt, deletedAt, completedAt);
     }
 
@@ -61,7 +59,6 @@ public class Post {
         this.title = command.getTitle();
         this.content = command.getContent();
         this.type = command.getType();
-        this.status = command.getStatus();
         this.priority = command.getPriority();
         this.authorIp = userIp;
     }
@@ -73,7 +70,7 @@ public class Post {
 
     private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
         Long authorId, String authorName, String title, String content,
-        PostType type, PostPriority status, int priority,
+        PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt) {
         this.id = id;
@@ -86,7 +83,6 @@ public class Post {
         this.title = title;
         this.content = content;
         this.type = type;
-        this.status = status != null ? status : PostPriority.PENDING;
         this.priority = priority;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

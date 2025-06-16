@@ -15,8 +15,7 @@ public record PostWithAuthorResult(
     String title,
     String content,
     PostType type,
-    PostPriority status,
-    Integer priority,
+    PostPriority priority,
     LocalDateTime createdAt,
     LocalDateTime completedAt
 ) {

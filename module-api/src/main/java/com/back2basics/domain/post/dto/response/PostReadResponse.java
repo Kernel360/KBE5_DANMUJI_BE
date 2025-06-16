@@ -21,8 +21,7 @@ public class PostReadResponse {
     private final String title;
     private final String content;
     private final PostType type;
-    private final PostPriority status;
-    private final Integer priority;
+    private final PostPriority priority;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
@@ -41,7 +40,6 @@ public class PostReadResponse {
             .title(postDetails.getTitle())
             .content(postDetails.getContent())
             .type(postDetails.getType())
-            .status(postDetails.getStatus())
             .priority(postDetails.getPriority())
             .createdAt(postDetails.getCreatedAt())
             .updatedAt(postDetails.getUpdatedAt())

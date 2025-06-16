@@ -18,8 +18,7 @@ public class PostCreateResult {
     private final String title;
     private final String content;
     private final PostType type;
-    private final PostPriority status;
-    private final Integer priority;
+    private final PostPriority priority;
     private final LocalDateTime createdAt;
     private final Long stepId;
     private final Long projectId;
@@ -33,7 +32,6 @@ public class PostCreateResult {
             .title(post.getTitle())
             .content(post.getContent())
             .type(post.getType())
-            .status(post.getStatus())
             .priority(post.getPriority())
             .createdAt(post.getCreatedAt())
             .stepId(post.getProjectStepId())

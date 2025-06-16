@@ -14,8 +14,7 @@ public class PostSearchCommand {
     private String clientCompany;
     private String developerCompany;
     private String author;
-    private Integer priority;
-    private PostPriority status;
+    private PostPriority priority;
     private PostType type;
     private Long projectId;
     private Long projectStepId;

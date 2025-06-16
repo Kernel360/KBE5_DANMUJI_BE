@@ -45,7 +45,6 @@ public class CommentMapper {
             null,                // content
             null,                // type
             null,                // priority
-            null,                // status
             null,                // projectStepId
             null                 // completedAt
         );

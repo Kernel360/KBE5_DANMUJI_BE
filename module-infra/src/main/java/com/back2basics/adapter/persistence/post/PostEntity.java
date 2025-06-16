@@ -55,18 +55,15 @@ public class PostEntity extends BaseTimeEntity {
     private PostType type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private PostPriority status = PostPriority.PENDING;
-
     @Column(name = "priority", nullable = false)
-    private Integer priority;
+    private PostPriority priority;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt = null;
 
     public PostEntity(Long id, Long parentId, Long projectId, String authorIp, Long authorId,
         String title,
-        String content, PostType type, Integer priority, PostPriority status,
+        String content, PostType type, PostPriority priority,
         Long projectStepId, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
@@ -76,7 +73,6 @@ public class PostEntity extends BaseTimeEntity {
         this.content = content;
         this.type = type;
         this.priority = priority;
-        this.status = status;
         this.projectId = projectId;
         this.projectStepId = projectStepId;
         this.completedAt = completedAt;
@@ -93,7 +89,6 @@ public class PostEntity extends BaseTimeEntity {
             post.getContent(),
             post.getType(),
             post.getPriority(),
-            post.getStatus(),
             post.getProjectStepId(),
             post.getCompletedAt()
         );

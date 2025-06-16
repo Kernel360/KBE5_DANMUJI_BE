@@ -41,7 +41,6 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.title,
                 postEntity.content,
                 postEntity.type,
-                postEntity.status,
                 postEntity.priority,
                 postEntity.createdAt,
                 postEntity.completedAt
@@ -125,7 +124,6 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.title,
                 postEntity.content,
                 postEntity.type,
-                postEntity.status,
                 postEntity.priority,
                 postEntity.createdAt,
                 postEntity.completedAt

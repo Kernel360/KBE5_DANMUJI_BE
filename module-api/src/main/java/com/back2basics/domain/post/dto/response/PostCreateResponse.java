@@ -15,8 +15,7 @@ public class PostCreateResponse {
     private final String title;
     private final String content;
     private final PostType type;
-    private final PostPriority status;
-    private final Integer priority;
+    private final PostPriority priority;
     private final Long stepId;
     private final Long projectId;
 
@@ -27,7 +26,6 @@ public class PostCreateResponse {
             .title(result.getTitle())
             .content(result.getContent())
             .type(result.getType())
-            .status(result.getStatus())
             .priority(result.getPriority())
             .stepId(result.getStepId())
             .projectId(result.getProjectId())

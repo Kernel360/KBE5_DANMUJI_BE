@@ -13,8 +13,7 @@ public class PostCreateCommand {
     private String title;
     private String content;
     private PostType type;
-    private PostPriority status;
-    private Integer priority;
+    private PostPriority priority;
     private Long stepId;
     private Long projectId;
 }

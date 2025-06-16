@@ -43,7 +43,6 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 postEntity.title,
                 postEntity.content,
                 postEntity.type,
-                postEntity.status,
                 postEntity.priority,
                 postEntity.createdAt,
                 postEntity.updatedAt,
@@ -58,7 +57,6 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
-                matchesStatus(command.getStatus()),
                 matchesType(command.getType())
             )
             .orderBy(postEntity.createdAt.desc())
@@ -79,7 +77,6 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
-                matchesStatus(command.getStatus()),
                 matchesType(command.getType())
             )
             .fetchOne();
@@ -99,12 +96,8 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         return (author == null || author.isBlank()) ? null : userEntity.name.contains(author);
     }
 
-    private BooleanExpression matchesPriority(Integer priority) {
+    private BooleanExpression matchesPriority(PostPriority priority) {
         return (priority == null) ? null : postEntity.priority.eq(priority);
-    }
-
-    private BooleanExpression matchesStatus(PostPriority status) {
-        return (status == null) ? null : postEntity.status.eq(status);
     }
 
     private BooleanExpression matchesType(PostType type) {

@@ -17,21 +17,20 @@ public class PostUpdateRequest {
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
+    @NotNull(message = "타입이 입력되지 않았습니다.")
     @CustomEnumCheck(enumClass = PostType.class, message = "올바른 enum type이 아닙니다")
     private PostType type;
 
-    @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
-    private PostPriority status;
-
     @NotNull(message = "우선순위가 입력되지 않았습니다.")
-    private Integer priority;
+    @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
+    private PostPriority priority;
 
     public PostUpdateCommand toCommand() {
         return PostUpdateCommand.builder()
             .title(title)
             .content(content)
-            .status(status)
-            .type(type).priority(priority)
+            .type(type)
+            .priority(priority)
             .build();
     }
 }

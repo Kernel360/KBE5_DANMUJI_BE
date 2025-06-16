@@ -12,6 +12,5 @@ public class PostUpdateCommand {
     private String title;
     private String content;
     private PostType type;
-    private PostPriority status;
-    private Integer priority;
+    private PostPriority priority;
 }
