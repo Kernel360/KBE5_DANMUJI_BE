@@ -5,7 +5,6 @@ import com.back2basics.post.port.in.command.PostUpdateCommand;
 import com.back2basics.project.model.Project;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +14,7 @@ public class Post {
 
     private final Long id;
     private final Long parentId;
+    private final Long projectId;
     private final Long projectStepId;
     private String authorIp;
     private User author;
@@ -27,12 +27,12 @@ public class Post {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private LocalDateTime completedAt;
-    private List<Comment> comments;
     private boolean isDelete;
 
 
     @Builder
-    public Post(Long id, Long parentId, Long projectStepId, String authorIp, User author,
+    public Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
+        User author,
         String title, String content,
         PostType type,
         PostStatus status, int priority,
@@ -52,8 +52,8 @@ public class Post {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.completedAt = completedAt;
-        this.comments = comments != null ? new ArrayList<>(comments) : new ArrayList<>();
         this.isDelete = false;
+        this.projectId = projectId;
         this.projectStepId = projectStepId;
     }
 
