@@ -1,5 +1,6 @@
 package com.back2basics.project.service;
 
+import com.back2basics.assignment.model.Assignment;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
@@ -9,13 +10,9 @@ import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.project.port.out.UpdateProjectPort;
-import com.back2basics.projectuser.model.ProjectUser;
-import com.back2basics.projectuser.port.out.ProjectUserQueryPort;
-import com.back2basics.user.model.User;
+import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import com.back2basics.user.model.UserType;
 import jakarta.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +22,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
     private final UpdateProjectPort port;
     private final ProjectValidator projectValidator;
-    private final ProjectUserQueryPort projectUserQueryPort;
+    private final AssignmentQueryPort assignmentQueryPort;
     private final SaveProjectUserPort saveProjectUserPort;
 
     private final ReadProjectPort readProjectPort;
@@ -40,20 +37,20 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         project.update(command);
         port.update(project);
 
-        ProjectUser oldDeveloper = projectUserQueryPort.findByProjectIdAndUserTypeAndCompanyType(id,
+        Assignment oldDeveloper = assignmentQueryPort.findByProjectIdAndUserTypeAndCompanyType(id,
             UserType.MANAGER,
             CompanyType.DEVELOPER);
-        ProjectUser newDeveloper = projectUserQueryPort.findByProjectIdAndUserId(id,
+        Assignment newDeveloper = assignmentQueryPort.findByProjectIdAndUserId(id,
             command.getDeveloperId());
         if (!oldDeveloper.getUser().getId().equals(newDeveloper.getUser().getId())) {
             oldDeveloper.toMember();
             newDeveloper.toManager();
         }
 
-        ProjectUser oldClient = projectUserQueryPort.findByProjectIdAndUserTypeAndCompanyType(id,
+        Assignment oldClient = assignmentQueryPort.findByProjectIdAndUserTypeAndCompanyType(id,
             UserType.MANAGER,
             CompanyType.CLIENT);
-        ProjectUser newClient = projectUserQueryPort.findByProjectIdAndUserId(id,
+        Assignment newClient = assignmentQueryPort.findByProjectIdAndUserId(id,
             command.getClientId());
         if (!oldClient.getUser().getId().equals(newClient.getUser().getId())) {
             oldClient.toMember();

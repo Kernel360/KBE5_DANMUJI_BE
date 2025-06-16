@@ -1,10 +1,10 @@
 package com.back2basics.project.port.out;
 
-import com.back2basics.projectuser.model.ProjectUser;
+import com.back2basics.assignment.model.Assignment;
 import java.util.List;
 
 public interface SaveProjectUserPort {
-    void save(ProjectUser projectUser);
+    void save(Assignment assignment);
 
-    void saveAll(List<ProjectUser> projectUsers);
+    void saveAll(List<Assignment> assignments);
 }

@@ -1,6 +1,5 @@
 package com.back2basics.project.port.in.command;
 
-import com.back2basics.projectuser.model.ProjectUser;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;

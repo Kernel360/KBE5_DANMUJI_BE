@@ -1,5 +1,6 @@
 package com.back2basics.project.service;
 
+import com.back2basics.assignment.model.Assignment;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.ReadProjectUseCase;
@@ -10,8 +11,7 @@ import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
-import com.back2basics.projectuser.model.ProjectUser;
-import com.back2basics.projectuser.port.out.ProjectUserQueryPort;
+import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class ReadProjectService implements ReadProjectUseCase {
     private final ReadProjectPort readProjectPort;
     private final ReadProjectStepPort readProjectStepPort;
     private final ProjectValidator projectValidator;
-    private final ProjectUserQueryPort projectUserQueryPort;
+    private final AssignmentQueryPort assignmentQueryPort;
 
     @Override
     public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
@@ -34,9 +34,9 @@ public class ReadProjectService implements ReadProjectUseCase {
         for (Project project : projects) {
             List<ProjectStep> steps = readProjectStepPort.findAllByProjectId(project.getId());
             project.setSteps(steps);
-            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+            List<Assignment> assignments = assignmentQueryPort.findUsersByProjectId(
                 project.getId());
-            project.setUsers(projectUsers);
+            project.setUsers(assignments);
         }
         return projects
             .map(ProjectGetResult::toResult);
@@ -49,9 +49,9 @@ public class ReadProjectService implements ReadProjectUseCase {
         for (Project project : projects) {
             List<ProjectStep> steps = readProjectStepPort.findAllByProjectId(project.getId());
             project.setSteps(steps);
-            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+            List<Assignment> assignments = assignmentQueryPort.findUsersByProjectId(
                 project.getId());
-            project.setUsers(projectUsers);
+            project.setUsers(assignments);
         }
         return projects.map(ProjectGetResult::toResult);
     }
@@ -62,9 +62,9 @@ public class ReadProjectService implements ReadProjectUseCase {
         for (Project project : projects) {
             List<ProjectStep> steps = readProjectStepPort.findAllByProjectId(project.getId());
             project.setSteps(steps);
-            List<ProjectUser> projectUsers = projectUserQueryPort.findUsersByProjectId(
+            List<Assignment> assignments = assignmentQueryPort.findUsersByProjectId(
                 project.getId());
-            project.setUsers(projectUsers);
+            project.setUsers(assignments);
         }
         return projects.stream()
             .map(ProjectGetResult::toResult).toList();
@@ -74,7 +74,7 @@ public class ReadProjectService implements ReadProjectUseCase {
     public ProjectDetailResult getProjectDetails(Long projectId) {
         Project project = projectValidator.findProjectById(projectId);
         List<ProjectStep> steps = readProjectStepPort.findByProjectId(projectId);
-        List<ProjectUser> users = projectUserQueryPort.findUsersByProjectId(projectId);
+        List<Assignment> users = assignmentQueryPort.findUsersByProjectId(projectId);
 
         return ProjectDetailResult.of(project, steps, users);
     }

@@ -50,6 +50,7 @@ public class ProjectController {
     private final DeleteProjectUseCase deleteProjectUseCase;
     // todo: 변수명 통일, response 세분화
 
+    // 생성
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateRequest request) {
@@ -58,7 +59,7 @@ public class ProjectController {
     }
 
     // 회원별 프로젝트 목록, 양방향 연관관계
-    @GetMapping("/{userId}/twowaytest")
+    @GetMapping("/{userId}/user")
     public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getUserProjects(
         @PathVariable Long userId,
         @PageableDefault(
