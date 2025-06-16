@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 
 public record CommentWithPostAndAuthorResult(
     Long commentId,
-    Long postId,
     Long parentId,
+    Long postId,
     Long authorId,
-    String authorName,
     String authorIp,
+    String authorName,
     String content,
     LocalDateTime createdAt,
     LocalDateTime updatedAt
