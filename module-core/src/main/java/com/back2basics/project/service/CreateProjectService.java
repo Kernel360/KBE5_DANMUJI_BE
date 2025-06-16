@@ -54,8 +54,6 @@ public class CreateProjectService implements CreateProjectUseCase {
         User client = userQueryPort.findById(command.getClientId());
         Company developerCompany = companyValidator.findCompany(command.getDevelopCompanyId());
         Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
-//        List<User> developers = userQueryPort.findAllByCompanyId(command.getDevelopCompanyId());
-//        List<User> clients = userQueryPort.findAllByCompanyId(command.getClientCompanyId());
         List<User> developers = command.getDevelopMemberId().stream().map(userQueryPort::findById).toList();
         List<User> clients = command.getClientMemberId().stream().map(userQueryPort::findById).toList();
 

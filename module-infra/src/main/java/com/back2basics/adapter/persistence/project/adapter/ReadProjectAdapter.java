@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.project.adapter;
 
 import static com.back2basics.infra.exception.project.ProjectErrorCode.*;
 
+import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.infra.exception.project.ProjectException;
@@ -47,7 +48,8 @@ public class ReadProjectAdapter implements ReadProjectPort {
 
     @Override
     public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
-        return projectEntityRepository.findAllByProjectUsersUser_IdAndIsDeletedFalse(userId, pageable)
+        return projectEntityRepository.findAllByProjectUsersUser_IdAndIsDeletedFalse(userId,
+                pageable)
             .map(projectMapper::toDomain);
     }
 
@@ -61,5 +63,21 @@ public class ReadProjectAdapter implements ReadProjectPort {
     public List<Project> getRecentProjects() {
         return projectEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
             .stream().map(projectMapper::toDomain).toList();
+    }
+
+    @Override
+    public Page<Project> findAllByUserIdTwo(Long userId, Pageable pageable) {
+        Page<ProjectEntity> projectEntities = projectEntityRepository.findAllByUserId(userId,
+            pageable);
+        Page<Project> projects = projectEntities.map(projectMapper::toDomain);
+        return projects;
+    }
+
+    @Override
+    public Page<Project> findAllByUserIdOne(Long userId, Pageable pageable) {
+        Page<ProjectEntity> projectEntities = projectEntityRepository.findProjectsByUserIdAndIsDeletedFalse(
+            userId, pageable);
+        Page<Project> projects = projectEntities.map(projectMapper::toDomain);
+        return projects;
     }
 }
