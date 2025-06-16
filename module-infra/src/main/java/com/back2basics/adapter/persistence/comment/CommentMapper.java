@@ -33,8 +33,8 @@ public class CommentMapper {
             result.authorId(),
             result.authorName(),
             result.content(),
-            null,
-            null
+            result.createdAt(),
+            result.updatedAt()
         );
     }
 
