@@ -1,9 +1,9 @@
 package com.back2basics.post.model;
 
+import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -27,30 +27,33 @@ public class Post {
     private boolean isDelete;
 
 
-    @Builder
-    public Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
-        User author,
-        String title, String content,
-        PostType type,
-        PostStatus status, int priority,
+    public static Post create(PostCreateCommand command, User author, String userIp) {
+        return new Post(
+            null, // id는 생성 시점에는 null
+            command.getParentId(),
+            command.getProjectId(),
+            command.getStepId(),
+            userIp,
+            author,
+            command.getTitle(),
+            command.getContent(),
+            command.getType(),
+            command.getStatus(),
+            command.getPriority(),
+            null, null, null, null
+        );
+    }
+
+    public static Post create(
+        Long id, Long parentId, Long projectId, Long projectStepId,
+        String authorIp, User author, String title, String content,
+        PostType type, PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt) {
-        this.id = id;
-        this.parentId = parentId;
-        this.authorIp = authorIp;
-        this.author = author;
-        this.title = title;
-        this.content = content;
-        this.type = type;
-        this.status = status != null ? status : PostStatus.PENDING;
-        this.priority = priority;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-        this.completedAt = completedAt;
-        this.isDelete = false;
-        this.projectId = projectId;
-        this.projectStepId = projectStepId;
+        LocalDateTime deletedAt, LocalDateTime completedAt
+    ) {
+        return new Post(id, parentId, projectId, projectStepId, authorIp, author,
+            title, content, type, status, priority,
+            createdAt, updatedAt, deletedAt, completedAt);
     }
 
     public void update(PostUpdateCommand command, String userIp) {
@@ -65,5 +68,28 @@ public class Post {
     public void markDeleted() {
         this.isDelete = true;
         this.deletedAt = LocalDateTime.now();
+    }
+
+    private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
+        User author, String title, String content,
+        PostType type, PostStatus status, int priority,
+        LocalDateTime createdAt, LocalDateTime updatedAt,
+        LocalDateTime deletedAt, LocalDateTime completedAt) {
+        this.id = id;
+        this.parentId = parentId;
+        this.projectId = projectId;
+        this.projectStepId = projectStepId;
+        this.authorIp = authorIp;
+        this.author = author;
+        this.title = title;
+        this.content = content;
+        this.type = type;
+        this.status = status != null ? status : PostStatus.PENDING;
+        this.priority = priority;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.completedAt = completedAt;
+        this.isDelete = false;
     }
 }

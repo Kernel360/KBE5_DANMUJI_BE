@@ -34,7 +34,22 @@ public class CommentMapper {
             .content(domain.getContent())
             .build();
 
-        entity.assignPost(PostEntity.builder().id(domain.getPostId()).build());
+        // todo : 게시글이랑 댓글 연관 끊고 이 이상한 코드 없앨거임
+        PostEntity post = new PostEntity(
+            domain.getPostId(),  // id
+            null,                // parentId
+            null,                // projectId
+            null,                // authorIp
+            null,                // author
+            null,                // title
+            null,                // content
+            null,                // type
+            null,                // priority
+            null,                // status
+            null,                // projectStepId
+            null                 // completedAt
+        );
+        entity.assignPost(post);
         return entity;
     }
 

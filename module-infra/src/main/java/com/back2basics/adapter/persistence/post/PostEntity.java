@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import jakarta.persistence.Column;
@@ -17,7 +18,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -68,12 +68,10 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "completed_at")
     private LocalDateTime completedAt = null;
 
-    @Builder
-    public PostEntity(Long id, Long parentId, String authorIp, UserEntity author,
+    public PostEntity(Long id, Long parentId, Long projectId, String authorIp, UserEntity author,
         String title,
-        String content, PostType type,
-        Integer priority, PostStatus status, Long projectStepId, Long projectId,
-        LocalDateTime completedAt) {
+        String content, PostType type, Integer priority, PostStatus status,
+        Long projectStepId, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
         this.authorIp = authorIp;
@@ -83,9 +81,26 @@ public class PostEntity extends BaseTimeEntity {
         this.type = type;
         this.priority = priority;
         this.status = status;
-        this.completedAt = completedAt;
-        this.projectStepId = projectStepId;
         this.projectId = projectId;
+        this.projectStepId = projectStepId;
+        this.completedAt = completedAt;
+    }
+
+    public static PostEntity of(Post post, UserEntity author) {
+        return new PostEntity(
+            post.getId(),
+            post.getParentId(),
+            post.getProjectId(),
+            post.getAuthorIp(),
+            author,
+            post.getTitle(),
+            post.getContent(),
+            post.getType(),
+            post.getPriority(),
+            post.getStatus(),
+            post.getProjectStepId(),
+            post.getCompletedAt()
+        );
     }
 
 }

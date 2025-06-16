@@ -25,4 +25,11 @@ public class PostValidator {
             throw new PostException(PostErrorCode.INVALID_POST_AUTHOR);
         }
     }
+
+    public void findParentPost(Long parentId) {
+
+        if (parentId != null) {
+            findPost(parentId);
+        }
+    }
 }
