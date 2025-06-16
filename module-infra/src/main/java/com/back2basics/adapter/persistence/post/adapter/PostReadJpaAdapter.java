@@ -47,25 +47,6 @@ public class PostReadJpaAdapter implements PostReadPort {
         return Optional.of(mapper.toDomain(entity));
     }
 
-    @Override
-    public Optional<Post> findPostByProjectStepId(Long postId, Long projectStepId) {
-        PostEntity entity = queryFactory
-            .selectFrom(postEntity)
-            .join(postEntity.author, userEntity).fetchJoin()
-            .where(
-                postEntity.id.eq(postId),
-                postEntity.deletedAt.isNull(),
-                postEntity.projectStepId.eq(projectStepId)
-            )
-
-            .fetchOne();
-
-        if (entity == null) {
-            throw new PostException(PostErrorCode.POST_NOT_FOUND);
-        }
-
-        return Optional.of(mapper.toDomain(entity));
-    }
 //
 //    @Override
 //    public Page<Post> findAllPostsByProjectStepId(Long projectStepId, Pageable pageable) {
@@ -118,7 +99,8 @@ public class PostReadJpaAdapter implements PostReadPort {
 //    }
 
     @Override
-    public Page<Post> findAllPostsByProjectStepId(Long projectStepId, Pageable pageable) {
+    public Page<Post> findAllPostsByProjectIdAndStepId(Long projectId, Long projectStepId,
+        Pageable pageable) {
 
         // fetch join + paging
         List<Post> posts = queryFactory
@@ -126,6 +108,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .join(postEntity.author, userEntity).fetchJoin()
             .where(
                 postEntity.deletedAt.isNull(),
+                postEntity.projectId.eq(projectId),
                 postEntity.projectStepId.eq(projectStepId)
             )
             .orderBy(postEntity.createdAt.desc())
@@ -142,6 +125,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
+                postEntity.projectId.eq(projectId),
                 postEntity.projectStepId.eq(projectStepId)
             )
             .fetchOne();

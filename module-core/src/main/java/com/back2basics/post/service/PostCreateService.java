@@ -21,7 +21,8 @@ public class PostCreateService implements PostCreateUseCase {
     private final PostValidator postValidator;
 
     @Override
-    public PostCreateResult createPost(Long userId, Long projectStepId, String userIp,
+    public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
+        String userIp,
         PostCreateCommand command) {
         // 유저는 포트에서 찾아오고 프로젝트는 validator에서 받아오게 돼있는 이유
         // 서로 인터페이스 구현체 내부의 로직이 다릅니다.
@@ -38,6 +39,7 @@ public class PostCreateService implements PostCreateUseCase {
             .parentId(command.getParentId())
             .authorIp(userIp)
             .author(user)
+            .projectId(projectId)
             .projectStepId(projectStepId)
             .title(command.getTitle())
             .content(command.getContent())

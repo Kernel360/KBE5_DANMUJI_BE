@@ -27,9 +27,10 @@ public class PostReadService implements PostReadUseCase {
 
 
     @Override
-    public Page<PostReadResult> getAllPostsByProjectStepId(Long userId, Long projectStepId,
+    public Page<PostReadResult> getAllPostsByProjectIdAndStepId(Long userId, Long projectId,
+        Long projectStepId,
         Pageable pageable) {
-        return postReadPort.findAllPostsByProjectStepId(projectStepId, pageable)
+        return postReadPort.findAllPostsByProjectIdAndStepId(projectId, projectStepId, pageable)
             .map(PostReadResult::toResult);
     }
 

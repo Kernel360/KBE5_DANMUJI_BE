@@ -57,7 +57,11 @@ public class PostController /*implements PostApiDocs*/ {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
-        PostCreateResult result = createPostUseCase.createPost(userId, request.getStepId(), userIp,
+        PostCreateResult result = createPostUseCase.createPost(
+            userId,
+            request.getProjectId(),
+            request.getStepId(),
+            userIp,
             request.toCommand());
         PostCreateResponse response = PostCreateResponse.toResponse(result);
 
@@ -85,8 +89,11 @@ public class PostController /*implements PostApiDocs*/ {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         Long userId = customUserDetails.getId();
-        Page<PostReadResult> resultPage = postReadUseCase.getAllPostsByProjectStepId(
-            userId, projectId, projectStepId, pageable);
+        Page<PostReadResult> resultPage = postReadUseCase.getAllPostsByProjectIdAndStepId(
+            userId,
+            projectId,
+            projectStepId,
+            pageable);
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);

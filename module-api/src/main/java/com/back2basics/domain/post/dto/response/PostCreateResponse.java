@@ -18,7 +18,7 @@ public class PostCreateResponse {
     private final PostStatus status;
     private final Integer priority;
     private final Long stepId;
-    private final Long proejctId;
+    private final Long projectId;
 
     public static PostCreateResponse toResponse(PostCreateResult result) {
         return PostCreateResponse.builder()
