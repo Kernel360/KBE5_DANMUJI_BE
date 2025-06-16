@@ -13,17 +13,20 @@ public class Comment {
     private Long postId;
     private String authorIp;
     private Long authorId;
+    private String authorName;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     private Comment(Long id, Long parentId, Long postId, String authorIp,
-        Long authorId, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        Long authorId, String authorName, String content, LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
         this.id = id;
         this.parentId = parentId;
         this.postId = postId;
         this.authorIp = authorIp;
         this.authorId = authorId;
+        this.authorName = authorName;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -36,6 +39,7 @@ public class Comment {
             command.getPostId(),
             authorIp,
             authorId,
+            null,
             command.getContent(),
             null,
             null
@@ -43,9 +47,9 @@ public class Comment {
     }
 
     public static Comment create(Long id, Long parentId, Long postId,
-        String authorIp, Long authorId, String content,
+        String authorIp, Long authorId, String authorName, String content,
         LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Comment(id, parentId, postId, authorIp, authorId, content,
+        return new Comment(id, parentId, postId, authorIp, authorId, authorName, content,
             createdAt, updatedAt);
     }
 

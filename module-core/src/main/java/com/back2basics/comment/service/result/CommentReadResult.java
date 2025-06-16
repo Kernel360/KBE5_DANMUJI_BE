@@ -14,6 +14,7 @@ public class CommentReadResult {
     private final Long parentId;
     private final String authorIp;
     private final Long authorId;
+    private final String authorName;
     private final String content;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -25,6 +26,7 @@ public class CommentReadResult {
             .parentId(comment.getParentId())
             .authorIp(comment.getAuthorIp())
             .authorId(comment.getAuthorId())
+            .authorName(comment.getAuthorName())
             .content(comment.getContent())
             .createdAt(comment.getCreatedAt())
             .updatedAt(comment.getUpdatedAt())

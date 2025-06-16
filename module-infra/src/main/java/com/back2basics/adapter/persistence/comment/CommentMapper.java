@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.comment;
 
 import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.comment.model.Comment;
+import com.back2basics.comment.service.result.CommentWithPostAndAuthorResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +18,24 @@ public class CommentMapper {
             entity.getPostId(),
             entity.getAuthorIp(),
             entity.getAuthorId(),
+            null,
             entity.getContent(),
             entity.getCreatedAt(),
             entity.getUpdatedAt()
+        );
+    }
+
+    public Comment toDomain(CommentWithPostAndAuthorResult result) {
+        return Comment.create(
+            result.commentId(),
+            result.parentId(),
+            result.postId(),
+            result.authorIp(),
+            result.authorId(),
+            result.authorName(),
+            result.content(),
+            null,
+            null
         );
     }
 
@@ -40,7 +56,7 @@ public class CommentMapper {
             null,                // projectStepId
             null                 // completedAt
         );
-        
+
         return entity;
     }
 
