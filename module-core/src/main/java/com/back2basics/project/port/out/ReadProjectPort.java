@@ -22,4 +22,10 @@ public interface ReadProjectPort {
 
     List<Project> getRecentProjects();
 
+    // 양방향
+    Page<Project> findAllByUserIdTwo(Long userId, Pageable pageable);
+
+    // 단방향
+    Page<Project> findAllByUserIdOne(Long userId, Pageable pageable);
+
 }

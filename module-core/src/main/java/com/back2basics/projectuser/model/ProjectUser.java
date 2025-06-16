@@ -32,6 +32,7 @@ public class ProjectUser {
         this.userType = userType;
     }
 
+    // todo: 빌더 말고 다른 패턴 사용도 고려
     public static ProjectUser create(Project project, User user,
         Company company, UserType userType, CompanyType companyType) {
         return ProjectUser.builder()
@@ -69,7 +70,6 @@ public class ProjectUser {
                 .build())
             .toList();
 
-        // todo: concat 으로 했었는데 gpt가 addAll이 나을거같다고 함 ..
         List<ProjectUser> allUsers = new ArrayList<>();
         allUsers.addAll(developerUsers);
         allUsers.addAll(clientUsers);
@@ -77,7 +77,9 @@ public class ProjectUser {
         return allUsers;
     }
 
-    // todo: 담당자 변경 (userType 변경)
+    /*  todo: 담당자 변경
+         검증도 여기서 하는것도 괜찮음
+     */
     public void toManager() {
         this.userType = UserType.MANAGER;
     }

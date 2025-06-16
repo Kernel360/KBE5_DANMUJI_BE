@@ -1,15 +1,14 @@
 package com.back2basics.domain.project.dto.response;
 
 import com.back2basics.project.model.ProjectStatus;
-import com.back2basics.project.service.result.TestResult;
-import com.back2basics.projectstep.model.ProjectStepStatus;
+import com.back2basics.project.service.result.ProjectListResult;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class TestResponse {
+public class ProjectListResponse {
 
     private Long id;
     private String name;
@@ -20,8 +19,8 @@ public class TestResponse {
     private LocalDate endDate;
     private ProjectStatus projectStatus;
 
-    public static TestResponse toResponse(TestResult result) {
-        return TestResponse.builder()
+    public static ProjectListResponse toResponse(ProjectListResult result) {
+        return ProjectListResponse.builder()
             .id(result.getId())
             .name(result.getName())
             .description(result.getDescription())
