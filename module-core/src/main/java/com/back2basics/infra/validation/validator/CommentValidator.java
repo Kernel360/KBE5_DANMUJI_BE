@@ -19,14 +19,20 @@ public class CommentValidator {
     }
 
     public void isAuthor(Comment comment, Long requesterId) {
-        if (!comment.getAuthor().getId().equals(requesterId)) {
+        if (!comment.getAuthorId().equals(requesterId)) {
             throw new CommentException(CommentErrorCode.INVALID_COMMENT_AUTHOR);
         }
     }
 
-    // 부모 댓글이 존재할 경우, 그 부모 댓글의 postId가 현재 댓글이 달릴 postId와 일치하는지 검증하는 메소드 이름 추천받습니다.
-    public void validateParentPost(Long parentCommentId, Long targetPostId) {
+    // 부모 댓글 존재 여부 검증
+    // 부모 댓글이 존재할 경우, 그 부모 댓글의 postId가 현재 댓글이 달릴 postId와 일치하는지 검증
+    public void validateParentComment(Long parentCommentId, Long targetPostId) {
+        if (parentCommentId == null) {
+            return;
+        }
+
         Comment parentComment = findComment(parentCommentId);
+        
         if (!parentComment.getPostId().equals(targetPostId)) {
             throw new CommentException(CommentErrorCode.INVALID_COMMENT_PARENT_POST_ID);
         }

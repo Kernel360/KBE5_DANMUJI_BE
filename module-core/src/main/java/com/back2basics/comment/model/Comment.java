@@ -1,5 +1,6 @@
 package com.back2basics.comment.model;
 
+import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.comment.port.in.command.CommentUpdateCommand;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -28,6 +29,20 @@ public class Comment {
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public static Comment create(CommentCreateCommand command, String authorIp, Long authorId) {
+        return new Comment(
+            null,
+            command.getParentId(),
+            command.getPostId(),
+            command.getParentId(),
+            authorIp,
+            authorId,
+            command.getContent(),
+            null,
+            null
+        );
     }
 
     public static Comment create(Long id, Long parentId, Long postId, Long parentCommentId,
