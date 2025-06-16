@@ -11,7 +11,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -35,7 +34,7 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "author_ip")
     private String authorIp;
 
-    @JoinColumn(name = "author_id")
+    @Column(name = "author_id")
     private Long authorId;
 
     @Column(name = "project_id")
