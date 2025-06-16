@@ -2,7 +2,7 @@ package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,7 +56,7 @@ public class PostEntity extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private PostStatus status = PostStatus.PENDING;
+    private PostPriority status = PostPriority.PENDING;
 
     @Column(name = "priority", nullable = false)
     private Integer priority;
@@ -66,7 +66,7 @@ public class PostEntity extends BaseTimeEntity {
 
     public PostEntity(Long id, Long parentId, Long projectId, String authorIp, Long authorId,
         String title,
-        String content, PostType type, Integer priority, PostStatus status,
+        String content, PostType type, Integer priority, PostPriority status,
         Long projectStepId, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;

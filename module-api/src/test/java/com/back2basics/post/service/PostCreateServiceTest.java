@@ -6,7 +6,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.out.PostCreatePort;
@@ -88,13 +88,13 @@ class PostCreateServiceTest {
         PostCreateResult result = postCreateService.createPost(command);
 
         // then
-        assertThat(result.getStatus()).isEqualTo(PostStatus.PENDING);
+        assertThat(result.getStatus()).isEqualTo(PostPriority.PENDING);
 
         // ArgumentCaptor로 저장된 Post의 상태 검증
         ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
         verify(postCreatePort).save(postCaptor.capture());
 
         Post capturedPost = postCaptor.getValue();
-        assertThat(capturedPost.getStatus()).isEqualTo(PostStatus.PENDING);
+        assertThat(capturedPost.getStatus()).isEqualTo(PostPriority.PENDING);
     }
 }

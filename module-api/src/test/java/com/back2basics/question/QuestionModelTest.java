@@ -3,7 +3,7 @@ package com.back2basics.question;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.model.QuestionStatus;
@@ -50,7 +50,7 @@ public class QuestionModelTest {
             .title("게시글 제목")
             .content("게시글 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.back2basics.comment.port.in.command.CommentUpdateCommand;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -78,7 +78,7 @@ class AnswerTest {
             .title("테스트 게시글")
             .content("테스트 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
 

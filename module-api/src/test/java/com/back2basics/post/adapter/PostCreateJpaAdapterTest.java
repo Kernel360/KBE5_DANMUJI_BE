@@ -8,7 +8,7 @@ import com.back2basics.adapter.persistence.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.adapter.persistence.post.adapter.PostCreateJpaAdapter;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class PostCreateJpaAdapterTest {
             .title("테스트 제목")
             .content("테스트 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
 
@@ -48,7 +48,7 @@ class PostCreateJpaAdapterTest {
             .title("테스트 제목")
             .content("테스트 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
 
@@ -72,7 +72,7 @@ class PostCreateJpaAdapterTest {
             .title("삭제된 게시글")
             .content("삭제된 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
         deletedPost.markDeleted();
@@ -83,7 +83,7 @@ class PostCreateJpaAdapterTest {
             .title("삭제된 게시글")
             .content("삭제된 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
         deletedEntity.markDeleted();

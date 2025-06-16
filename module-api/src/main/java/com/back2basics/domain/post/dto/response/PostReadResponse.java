@@ -1,6 +1,6 @@
 package com.back2basics.domain.post.dto.response;
 
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostReadResult;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public class PostReadResponse {
     private final String title;
     private final String content;
     private final PostType type;
-    private final PostStatus status;
+    private final PostPriority status;
     private final Integer priority;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;

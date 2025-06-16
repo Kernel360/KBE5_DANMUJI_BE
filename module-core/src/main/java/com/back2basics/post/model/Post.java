@@ -18,7 +18,7 @@ public class Post {
     private String title;
     private String content;
     private PostType type;
-    private PostStatus status;
+    private PostPriority status;
     private int priority;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -48,7 +48,7 @@ public class Post {
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
         String authorIp, Long authorId, String authorName, String title, String content,
-        PostType type, PostStatus status, int priority,
+        PostType type, PostPriority status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt
     ) {
@@ -73,7 +73,7 @@ public class Post {
 
     private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
         Long authorId, String authorName, String title, String content,
-        PostType type, PostStatus status, int priority,
+        PostType type, PostPriority status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt) {
         this.id = id;
@@ -86,7 +86,7 @@ public class Post {
         this.title = title;
         this.content = content;
         this.type = type;
-        this.status = status != null ? status : PostStatus.PENDING;
+        this.status = status != null ? status : PostPriority.PENDING;
         this.priority = priority;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

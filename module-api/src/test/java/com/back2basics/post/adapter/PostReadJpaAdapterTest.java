@@ -11,7 +11,7 @@ import com.back2basics.adapter.persistence.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.adapter.persistence.post.adapter.PostReadJpaAdapter;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Collections;
@@ -59,7 +59,7 @@ class PostReadJpaAdapterTest {
             .title("첫 번째 게시글")
             .content("첫 번째 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
 
@@ -69,7 +69,7 @@ class PostReadJpaAdapterTest {
             .title("두 번째 게시글")
             .content("두 번째 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(2)
             .build();
 
@@ -79,7 +79,7 @@ class PostReadJpaAdapterTest {
             .title("첫 번째 게시글")
             .content("첫 번째 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
 
@@ -89,7 +89,7 @@ class PostReadJpaAdapterTest {
             .title("두 번째 게시글")
             .content("두 번째 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(2)
             .build();
     }

@@ -1,6 +1,6 @@
 package com.back2basics.domain.post.dto.request;
 
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostSearchCommand;
 import jakarta.annotation.Nullable;
@@ -34,7 +34,7 @@ public class PostSearchRequest {
     private Integer priority;
 
     @Nullable
-    private PostStatus status;
+    private PostPriority status;
 
     @Nullable
     private PostType type;

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
 import com.back2basics.post.port.out.PostUpdatePort;
@@ -45,7 +45,7 @@ class PostUpdateServiceTest {
             .title("기존 제목")
             .content("기존 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();
@@ -55,7 +55,7 @@ class PostUpdateServiceTest {
             .title("수정된 제목")
             .content("수정된 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(2)
             .build();
 
@@ -77,7 +77,7 @@ class PostUpdateServiceTest {
         assertThat(capturedPost.getTitle()).isEqualTo("수정된 제목");
         assertThat(capturedPost.getContent()).isEqualTo("수정된 내용");
         assertThat(capturedPost.getType()).isEqualTo(PostType.NOTICE);
-        assertThat(capturedPost.getStatus()).isEqualTo(PostStatus.PENDING);
+        assertThat(capturedPost.getStatus()).isEqualTo(PostPriority.PENDING);
         assertThat(capturedPost.getPriority()).isEqualTo(2);
     }
 
@@ -94,7 +94,7 @@ class PostUpdateServiceTest {
             .title("제목")
             .content("내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();
@@ -104,7 +104,7 @@ class PostUpdateServiceTest {
             .title("새 제목")
             .content("새 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
 
@@ -130,7 +130,7 @@ class PostUpdateServiceTest {
             .title("원본 제목")
             .content("원본 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();
@@ -140,7 +140,7 @@ class PostUpdateServiceTest {
             .title("변경된 제목")
             .content("변경된 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(3)
             .build();
 
@@ -158,7 +158,7 @@ class PostUpdateServiceTest {
         assertThat(capturedPost.getTitle()).isEqualTo("변경된 제목");
         assertThat(capturedPost.getContent()).isEqualTo("변경된 내용");
         assertThat(capturedPost.getType()).isEqualTo(PostType.NOTICE);
-        assertThat(capturedPost.getStatus()).isEqualTo(PostStatus.PENDING);
+        assertThat(capturedPost.getStatus()).isEqualTo(PostPriority.PENDING);
         assertThat(capturedPost.getPriority()).isEqualTo(3);
     }
 
@@ -175,7 +175,7 @@ class PostUpdateServiceTest {
             .title("기존 제목")
             .content("기존 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();
@@ -185,7 +185,7 @@ class PostUpdateServiceTest {
             .title("수정된 제목만")
             .content("기존 내용")  // 내용은 그대로
             .type(PostType.GENERAL)  // 타입도 그대로
-            .status(PostStatus.APPROVED)  // 상태만 변경
+            .status(PostPriority.APPROVED)  // 상태만 변경
             .priority(1)  // 우선순위도 그대로
             .build();
 
@@ -202,7 +202,7 @@ class PostUpdateServiceTest {
         assertThat(capturedPost.getTitle()).isEqualTo("수정된 제목만");
         assertThat(capturedPost.getContent()).isEqualTo("기존 내용");
         assertThat(capturedPost.getType()).isEqualTo(PostType.GENERAL);
-        assertThat(capturedPost.getStatus()).isEqualTo(PostStatus.APPROVED);
+        assertThat(capturedPost.getStatus()).isEqualTo(PostPriority.APPROVED);
         assertThat(capturedPost.getPriority()).isEqualTo(1);
     }
 
@@ -219,7 +219,7 @@ class PostUpdateServiceTest {
             .title("원본")
             .content("원본 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();
@@ -229,7 +229,7 @@ class PostUpdateServiceTest {
             .title("변경")
             .content("변경 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(2)
             .build();
 

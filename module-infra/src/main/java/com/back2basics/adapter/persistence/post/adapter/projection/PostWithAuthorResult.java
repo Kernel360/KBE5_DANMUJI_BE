@@ -1,6 +1,6 @@
 package com.back2basics.adapter.persistence.post.adapter.projection;
 
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import java.time.LocalDateTime;
 
@@ -15,7 +15,7 @@ public record PostWithAuthorResult(
     String title,
     String content,
     PostType type,
-    PostStatus status,
+    PostPriority status,
     Integer priority,
     LocalDateTime createdAt,
     LocalDateTime completedAt

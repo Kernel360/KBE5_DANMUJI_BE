@@ -1,7 +1,7 @@
 package com.back2basics.domain.post.dto.request;
 
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import jakarta.annotation.Nullable;
@@ -24,8 +24,8 @@ public class PostCreateRequest {
     @CustomEnumCheck(enumClass = PostType.class, message = "올바른 enum type이 아닙니다")
     private PostType type;
 
-    @CustomEnumCheck(enumClass = PostStatus.class, message = "올바른 enum type이 아닙니다")
-    private PostStatus status;
+    @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
+    private PostPriority status;
 
     @NotNull(message = "우선순위가 입력되지 않았습니다.")
     private Integer priority;

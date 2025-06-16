@@ -1,7 +1,7 @@
 package com.back2basics.post.service.result;
 
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -18,7 +18,7 @@ public class PostCreateResult {
     private final String title;
     private final String content;
     private final PostType type;
-    private final PostStatus status;
+    private final PostPriority status;
     private final Integer priority;
     private final LocalDateTime createdAt;
     private final Long stepId;

@@ -6,7 +6,7 @@ import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEn
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.adapter.persistence.post.adapter.projection.PostWithAuthorResult;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostSearchCommand;
 import com.back2basics.post.port.out.PostSearchPort;
@@ -103,7 +103,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
         return (priority == null) ? null : postEntity.priority.eq(priority);
     }
 
-    private BooleanExpression matchesStatus(PostStatus status) {
+    private BooleanExpression matchesStatus(PostPriority status) {
         return (status == null) ? null : postEntity.status.eq(status);
     }
 
