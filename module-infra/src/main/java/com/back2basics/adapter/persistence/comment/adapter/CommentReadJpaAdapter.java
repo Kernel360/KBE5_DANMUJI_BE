@@ -4,9 +4,9 @@ import static com.back2basics.adapter.persistence.comment.QCommentEntity.comment
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.comment.CommentMapper;
+import com.back2basics.adapter.persistence.comment.projection.CommentWithPostAndAuthorResult;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentReadPort;
-import com.back2basics.comment.service.result.CommentWithPostAndAuthorResult;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

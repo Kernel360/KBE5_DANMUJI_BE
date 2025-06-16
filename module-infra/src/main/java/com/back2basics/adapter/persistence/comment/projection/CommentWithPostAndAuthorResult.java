@@ -1,4 +1,4 @@
-package com.back2basics.comment.service.result;
+package com.back2basics.adapter.persistence.comment.projection;
 
 import java.time.LocalDateTime;
 

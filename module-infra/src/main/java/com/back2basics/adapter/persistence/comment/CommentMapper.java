@@ -1,7 +1,7 @@
 package com.back2basics.adapter.persistence.comment;
 
+import com.back2basics.adapter.persistence.comment.projection.CommentWithPostAndAuthorResult;
 import com.back2basics.comment.model.Comment;
-import com.back2basics.comment.service.result.CommentWithPostAndAuthorResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
