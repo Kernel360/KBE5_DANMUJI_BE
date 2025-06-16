@@ -9,6 +9,7 @@ public class PostDocsResult {
           "type": "GENERAL",
           "status": "PENDING",
           "priority": 1,
+          "projectId":1,
           "stepId": 1
         }
         """;

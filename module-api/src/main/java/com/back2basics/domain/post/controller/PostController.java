@@ -7,6 +7,7 @@ import com.back2basics.domain.post.dto.request.PostUpdateRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
+import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
@@ -42,7 +43,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController /*implements PostApiDocs*/ {
+public class PostController implements PostApiDocs {
 
     private final PostCreateUseCase createPostUseCase;
     private final PostReadUseCase postReadUseCase;
