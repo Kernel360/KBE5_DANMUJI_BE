@@ -42,6 +42,9 @@ public class PostEntity extends BaseTimeEntity {
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
+    @Column(name = "project_id")
+    private Long projectId;
+
     @Column(name = "project_step_id", nullable = false)
     private Long projectStepId;
 
@@ -69,7 +72,8 @@ public class PostEntity extends BaseTimeEntity {
     public PostEntity(Long id, Long parentId, String authorIp, UserEntity author,
         String title,
         String content, PostType type,
-        Integer priority, PostStatus status, Long projectStepId, LocalDateTime completedAt) {
+        Integer priority, PostStatus status, Long projectStepId, Long projectId,
+        LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
         this.authorIp = authorIp;
@@ -81,6 +85,7 @@ public class PostEntity extends BaseTimeEntity {
         this.status = status;
         this.completedAt = completedAt;
         this.projectStepId = projectStepId;
+        this.projectId = projectId;
     }
 
 }
