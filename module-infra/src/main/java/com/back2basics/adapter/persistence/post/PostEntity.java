@@ -1,7 +1,6 @@
 package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
-import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
@@ -9,12 +8,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -38,9 +35,8 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "author_ip")
     private String authorIp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    private UserEntity author;
+    private Long authorId;
 
     @Column(name = "project_id")
     private Long projectId;
@@ -68,14 +64,14 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "completed_at")
     private LocalDateTime completedAt = null;
 
-    public PostEntity(Long id, Long parentId, Long projectId, String authorIp, UserEntity author,
+    public PostEntity(Long id, Long parentId, Long projectId, String authorIp, Long authorId,
         String title,
         String content, PostType type, Integer priority, PostStatus status,
         Long projectStepId, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
         this.authorIp = authorIp;
-        this.author = author;
+        this.authorId = authorId;
         this.title = title;
         this.content = content;
         this.type = type;
@@ -86,13 +82,13 @@ public class PostEntity extends BaseTimeEntity {
         this.completedAt = completedAt;
     }
 
-    public static PostEntity of(Post post, UserEntity author) {
+    public static PostEntity of(Post post) {
         return new PostEntity(
             post.getId(),
             post.getParentId(),
             post.getProjectId(),
             post.getAuthorIp(),
-            author,
+            post.getAuthorId(),
             post.getTitle(),
             post.getContent(),
             post.getType(),

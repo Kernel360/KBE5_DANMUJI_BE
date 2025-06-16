@@ -1,7 +1,5 @@
 package com.back2basics.adapter.persistence.post;
 
-import com.back2basics.adapter.persistence.user.entity.UserEntity;
-import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,8 +8,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PostMapper {
 
-    private final UserMapper userMapper;
-
     public Post toDomain(PostEntity entity) {
         return Post.create(
             entity.getId(),
@@ -19,7 +15,7 @@ public class PostMapper {
             entity.getProjectId(),
             entity.getProjectStepId(),
             entity.getAuthorIp(),
-            userMapper.toDomain(entity.getAuthor()),
+            entity.getAuthorId(),
             entity.getTitle(),
             entity.getContent(),
             entity.getType(),
@@ -34,8 +30,7 @@ public class PostMapper {
 
     public PostEntity toEntity(Post domain) {
 
-        UserEntity author = userMapper.toEntity(domain.getAuthor());
-        PostEntity entity = PostEntity.of(domain, author);
+        PostEntity entity = PostEntity.of(domain);
 
         if (domain.isDelete()) {
             entity.markDeleted();

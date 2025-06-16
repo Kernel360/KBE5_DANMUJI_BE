@@ -29,7 +29,7 @@ public class PostCreateResult {
         return PostCreateResult.builder()
             .id(post.getId())
             .authorIp(post.getAuthorIp())
-            .authorId(post.getAuthor().getId())
+            .authorId(post.getAuthorId())
             .title(post.getTitle())
             .content(post.getContent())
             .type(post.getType())

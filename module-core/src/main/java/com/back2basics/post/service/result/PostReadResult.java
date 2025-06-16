@@ -3,7 +3,6 @@ package com.back2basics.post.service.result;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
-import com.back2basics.user.service.result.UserSummaryResult;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class PostReadResult {
     private final Long projectId;
     private final Long projectStepId;
     private final String authorIp;
-    private final UserSummaryResult author;
+    private final Long authorId;
     private final String title;
     private final String content;
     private final PostType type;
@@ -34,7 +33,7 @@ public class PostReadResult {
             .id(post.getId())
             .parentId(post.getParentId())
             .authorIp(post.getAuthorIp())
-            .author(UserSummaryResult.from(post.getAuthor()))
+            .authorId(post.getAuthorId())
             .projectId(post.getProjectId())
             .projectStepId(post.getProjectStepId())
             .title(post.getTitle())

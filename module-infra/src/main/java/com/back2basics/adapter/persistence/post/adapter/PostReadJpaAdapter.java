@@ -32,7 +32,7 @@ public class PostReadJpaAdapter implements PostReadPort {
     public Optional<Post> findById(Long id) {
         PostEntity entity = queryFactory
             .selectFrom(postEntity)
-            .join(postEntity.author, userEntity).fetchJoin()
+            .join(postEntity.authorId, userEntity).fetchJoin()
             .where(
                 postEntity.id.eq(id),
                 postEntity.deletedAt.isNull()
