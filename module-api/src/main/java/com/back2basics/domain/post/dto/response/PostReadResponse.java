@@ -1,6 +1,5 @@
 package com.back2basics.domain.post.dto.response;
 
-import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.post.model.PostStatus;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostReadResult;
@@ -17,7 +16,8 @@ public class PostReadResponse {
     private final Long projectId;
     private final Long projectStepId;
     private final String authorIp;
-    private final UserSummaryResponse author;
+    private final Long authorId;
+    private final String authorName;
     private final String title;
     private final String content;
     private final PostType type;
@@ -34,7 +34,8 @@ public class PostReadResponse {
             .parentId(postDetails.getParentId())
             .postId(postDetails.getId())
             .authorIp(postDetails.getAuthorIp())
-            .author(UserSummaryResponse.from(postDetails.getAuthor()))
+            .authorId(postDetails.getAuthorId())
+            .authorName(postDetails.getAuthorName())
             .projectId(postDetails.getProjectId())
             .projectStepId(postDetails.getProjectStepId())
             .title(postDetails.getTitle())

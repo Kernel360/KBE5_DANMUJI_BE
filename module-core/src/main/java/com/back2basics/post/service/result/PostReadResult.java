@@ -17,6 +17,7 @@ public class PostReadResult {
     private final Long projectStepId;
     private final String authorIp;
     private final Long authorId;
+    private final String authorName;
     private final String title;
     private final String content;
     private final PostType type;
@@ -34,6 +35,7 @@ public class PostReadResult {
             .parentId(post.getParentId())
             .authorIp(post.getAuthorIp())
             .authorId(post.getAuthorId())
+            .authorName(post.getAuthorName())
             .projectId(post.getProjectId())
             .projectStepId(post.getProjectStepId())
             .title(post.getTitle())

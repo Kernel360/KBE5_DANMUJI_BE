@@ -3,10 +3,8 @@ package com.back2basics.adapter.persistence.post.adapter;
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
-import com.back2basics.adapter.persistence.post.PostEntity;
 import com.back2basics.adapter.persistence.post.PostMapper;
-import com.back2basics.infra.exception.post.PostErrorCode;
-import com.back2basics.infra.exception.post.PostException;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostWithAuthorResult;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.service.result.ReadRecentPostResult;
@@ -30,21 +28,33 @@ public class PostReadJpaAdapter implements PostReadPort {
 
     @Override
     public Optional<Post> findById(Long id) {
-        PostEntity entity = queryFactory
-            .selectFrom(postEntity)
-            .join(postEntity.authorId, userEntity).fetchJoin()
+        PostWithAuthorResult result = queryFactory
+            .select(Projections.constructor(
+                PostWithAuthorResult.class,
+                postEntity.id,
+                postEntity.parentId,
+                postEntity.projectId,
+                postEntity.projectStepId,
+                postEntity.authorIp,
+                postEntity.authorId,
+                userEntity.name,
+                postEntity.title,
+                postEntity.content,
+                postEntity.type,
+                postEntity.status,
+                postEntity.priority,
+                postEntity.createdAt,
+                postEntity.completedAt
+            ))
+            .from(postEntity)
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
                 postEntity.id.eq(id),
                 postEntity.deletedAt.isNull()
             )
-
             .fetchOne();
 
-        if (entity == null) {
-            throw new PostException(PostErrorCode.POST_NOT_FOUND);
-        }
-
-        return Optional.of(mapper.toDomain(entity));
+        return Optional.of(mapper.toDomain(result));
     }
 
 //
@@ -102,10 +112,26 @@ public class PostReadJpaAdapter implements PostReadPort {
     public Page<Post> findAllPostsByProjectIdAndStepId(Long projectId, Long projectStepId,
         Pageable pageable) {
 
-        // fetch join + paging
-        List<Post> posts = queryFactory
-            .selectFrom(postEntity)
-            .join(postEntity.author, userEntity).fetchJoin()
+        List<PostWithAuthorResult> results = queryFactory
+            .select(Projections.constructor(
+                PostWithAuthorResult.class,
+                postEntity.id,
+                postEntity.parentId,
+                postEntity.projectId,
+                postEntity.projectStepId,
+                postEntity.authorIp,
+                postEntity.authorId,
+                userEntity.name,
+                postEntity.title,
+                postEntity.content,
+                postEntity.type,
+                postEntity.status,
+                postEntity.priority,
+                postEntity.createdAt,
+                postEntity.completedAt
+            ))
+            .from(postEntity)
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
                 postEntity.deletedAt.isNull(),
                 postEntity.projectId.eq(projectId),
@@ -114,12 +140,12 @@ public class PostReadJpaAdapter implements PostReadPort {
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
-            .fetch()
-            .stream()
+            .fetch();
+
+        List<Post> posts = results.stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
 
-        // 카운트 쿼리
         Long total = queryFactory
             .select(postEntity.count())
             .from(postEntity)

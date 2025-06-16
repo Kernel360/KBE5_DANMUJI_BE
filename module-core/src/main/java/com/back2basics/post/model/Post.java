@@ -14,6 +14,7 @@ public class Post {
     private final Long projectStepId;
     private String authorIp;
     private Long authorId;
+    private String authorName;
     private String title;
     private String content;
     private PostType type;
@@ -34,6 +35,7 @@ public class Post {
             command.getStepId(),
             userIp,
             userId,
+            null, // authorName 생성시점에는 null
             command.getTitle(),
             command.getContent(),
             command.getType(),
@@ -45,12 +47,12 @@ public class Post {
 
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
-        String authorIp, Long authorId, String title, String content,
+        String authorIp, Long authorId, String authorName, String title, String content,
         PostType type, PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt
     ) {
-        return new Post(id, parentId, projectId, projectStepId, authorIp, authorId,
+        return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
             title, content, type, status, priority,
             createdAt, updatedAt, deletedAt, completedAt);
     }
@@ -70,7 +72,7 @@ public class Post {
     }
 
     private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
-        Long authorId, String title, String content,
+        Long authorId, String authorName, String title, String content,
         PostType type, PostStatus status, int priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, LocalDateTime completedAt) {
@@ -80,6 +82,7 @@ public class Post {
         this.projectStepId = projectStepId;
         this.authorIp = authorIp;
         this.authorId = authorId;
+        this.authorName = authorName;
         this.title = title;
         this.content = content;
         this.type = type;

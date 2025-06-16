@@ -27,9 +27,13 @@ public class PostValidator {
     }
 
     public void findParentPost(Long parentId) {
+        if (parentId == null) {
+            return;
+        }
 
-        if (parentId != null) {
-            findPost(parentId);
+        boolean exists = postReadPort.findById(parentId).isPresent();
+        if (!exists) {
+            throw new PostException(PostErrorCode.POST_NOT_FOUND);
         }
     }
 }
