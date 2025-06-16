@@ -39,11 +39,12 @@ public class CommentEntity extends BaseTimeEntity {
 
     public static CommentEntity of(Comment comment) {
         CommentEntity entity = new CommentEntity();
+        entity.id = comment.getId();
+        entity.postId = comment.getPostId();
+        entity.parentId = comment.getParentId();
         entity.authorIp = comment.getAuthorIp();
         entity.authorId = comment.getAuthorId();
         entity.content = comment.getContent();
-        entity.postId = comment.getPostId();
-        entity.parentId = comment.getParentId();
         return entity;
     }
 
