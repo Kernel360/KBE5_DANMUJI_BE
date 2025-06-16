@@ -31,7 +31,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
     @Override
     public Page<Post> search(PostSearchCommand command, Pageable pageable) {
         List<PostWithAuthorResult> results = queryFactory
-            .select(Projections.fields(
+            .select(Projections.constructor(
                 PostWithAuthorResult.class,
                 postEntity.id.as("postId"),
                 postEntity.parentId,
