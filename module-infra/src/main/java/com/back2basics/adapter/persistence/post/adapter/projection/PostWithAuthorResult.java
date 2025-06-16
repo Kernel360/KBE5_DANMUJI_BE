@@ -17,6 +17,8 @@ public record PostWithAuthorResult(
     PostType type,
     PostPriority priority,
     LocalDateTime createdAt,
+    LocalDateTime updatedAt,
+    LocalDateTime deletedAt,
     LocalDateTime completedAt
 ) {
 

@@ -54,8 +54,8 @@ public class PostMapper {
             result.type(),
             result.priority(),
             result.createdAt(),
-            null,
-            null,
+            result.updatedAt(),
+            result.deletedAt(),
             result.completedAt()
         );
     }

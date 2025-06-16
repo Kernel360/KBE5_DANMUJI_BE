@@ -2,9 +2,11 @@ package com.back2basics.adapter.persistence.post.adapter;
 
 import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
+import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
 import com.back2basics.adapter.persistence.post.adapter.projection.PostWithAuthorResult;
+import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.service.result.ReadRecentPostResult;
@@ -43,6 +45,8 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.type,
                 postEntity.priority,
                 postEntity.createdAt,
+                postEntity.updatedAt,
+                postEntity.deletedAt,
                 postEntity.completedAt
             ))
             .from(postEntity)
@@ -52,6 +56,12 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.deletedAt.isNull()
             )
             .fetchOne();
+
+        // softdelete 처리 된 게시글을 조회했을 경우에는 where절에 의해 result가 null이 나오고
+        // 그래서 NPE 발생...
+        if (result == null) {
+            throw new PostException(POST_NOT_FOUND);
+        }
 
         return Optional.of(mapper.toDomain(result));
     }
@@ -126,6 +136,8 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.type,
                 postEntity.priority,
                 postEntity.createdAt,
+                postEntity.updatedAt,
+                postEntity.deletedAt,
                 postEntity.completedAt
             ))
             .from(postEntity)
