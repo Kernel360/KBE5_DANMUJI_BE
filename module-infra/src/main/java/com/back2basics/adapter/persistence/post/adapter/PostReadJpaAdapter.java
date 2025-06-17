@@ -12,14 +12,15 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.service.result.ReadRecentPostResult;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -98,17 +99,20 @@ public class PostReadJpaAdapter implements PostReadPort {
             .map(mapper::toDomain)
             .collect(Collectors.toList());
 
-        Long total = queryFactory
+        JPAQuery<Long> countQuery = queryFactory
             .select(postEntity.count())
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
                 postEntity.projectId.eq(projectId),
                 postEntity.projectStepId.eq(projectStepId)
-            )
-            .fetchOne();
+            );
 
-        return new PageImpl<>(posts, pageable, total);
+        return PageableExecutionUtils.getPage(
+            posts,
+            pageable,
+            () -> Optional.ofNullable(countQuery.fetchOne()).orElse(0L)
+        );
     }
 
     @Override
