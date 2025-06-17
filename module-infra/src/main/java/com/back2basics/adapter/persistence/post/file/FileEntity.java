@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.post.file;
 
+import com.back2basics.post.file.File;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
