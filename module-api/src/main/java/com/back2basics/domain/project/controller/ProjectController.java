@@ -10,6 +10,8 @@ import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
 import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
+import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
+import com.back2basics.domain.project.dto.response.ProjectListResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
@@ -18,7 +20,10 @@ import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
+import com.back2basics.project.service.result.ProjectRecentGetResult;
+import com.back2basics.project.service.result.ProjectListResult;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,8 +48,9 @@ public class ProjectController {
     private final UpdateProjectUseCase updateProjectUseCase;
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
+    // todo: 변수명 통일, response 세분화
 
-    // todo: 변수명 통일
+    // 생성
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createProject(
         @RequestBody @Valid ProjectCreateRequest request) {
@@ -52,29 +58,47 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
 
+    // 회원별 프로젝트 목록, 양방향 연관관계
+    @GetMapping("/{userId}/user")
+    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getUserProjects(
+        @PathVariable Long userId,
+        @PageableDefault(
+            page = 0,
+            size = 10
+        )
+        Pageable pageable) {
+
+        Page<ProjectListResult> result = readProjectUseCase.getAllByUserIdTwo(userId, pageable);
+        Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
+    }
+
+    // 전체 프로젝트 목록
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getAllProjects(
+    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getProjects(
         @PageableDefault(
             page = 0,
             size = 10
         )
         Pageable pageable) {
         Page<ProjectGetResult> result = readProjectUseCase.getAllProjects(pageable);
-        Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
-        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
+        Page<ProjectGetResponse> response = result.map(ProjectGetResponse::toResponse);
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
-    // 회원 별 프로젝트 목록
-    @GetMapping("/{userId}/user")
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getAllProjectsById(
+    // 검색 프로젝트 조회
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
+        @RequestParam(required = false) String keyword,
         @PageableDefault(
             page = 0,
             size = 10
         )
-        Pageable pageable, @PathVariable Long userId) {
-        Page<ProjectGetResult> result = readProjectUseCase.getAllProjectsByUserId(userId, pageable);
-        Page<ProjectGetResponse> list = result.map(ProjectGetResponse::toResponse);
-        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, list);
+        Pageable pageable) {
+        Page<ProjectGetResult> result = readProjectUseCase.searchProjects(keyword, pageable);
+        Page<ProjectGetResponse> response = result.map(ProjectGetResponse::toResponse);
+
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
     // 상세 정보 조회
@@ -86,22 +110,7 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 
-    // todo: 만약 카테고리 필터링 별로 안할거면 그냥 get 이랑 합쳐버리기
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
-        @RequestParam(required = false) String keyword,
-
-        @PageableDefault(
-            page = 0,
-            size = 10
-        )
-        Pageable pageable) {
-        Page<ProjectGetResult> resultPage = readProjectUseCase.searchProjects(keyword, pageable);
-        Page<ProjectGetResponse> responsePage = resultPage.map(ProjectGetResponse::toResponse);
-
-        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, responsePage);
-    }
-
+    // todo: 프로젝트 정보 수정, 할당 멤버 수정 나누기 고민.
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
         @PathVariable Long projectId,
@@ -111,19 +120,63 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
+    // 삭제
     @DeleteMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
         deleteProjectUseCase.deleteProject(projectId);
         return ApiResponse.success(PROJECT_DELETE_SUCCESS);
     }
 
+    // 프로젝트 상태 변경
     @PutMapping("/{projectId}/status")
-    public ResponseEntity<ApiResponse<Void>> changedStatus(
+    public ResponseEntity<ApiResponse<Void>> updateProjectStatus(
         @PathVariable Long projectId) {
         updateProjectUseCase.changedStatus(projectId);
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
+    // 프로젝트 최신순 조회 <- 프로젝트 전체 조회만 사용하고 top5는 프론트에서 처리하는 게 좋을 듯 api 중복되는 느낌
+    @GetMapping("/recent-projects")
+    public ResponseEntity<ApiResponse<List<ProjectRecentGetResponse>>> getRecentProjects(
+    ) {
+        List<ProjectRecentGetResult> result = readProjectUseCase.getRecentProjects();
+
+        List<ProjectRecentGetResponse> response = result.stream()
+            .map(ProjectRecentGetResponse::from).toList();
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
+    }
+
+    // 프로젝트 전체 조회
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<ProjectGetResponse>>> getProjectsWithoutPagination() {
+        List<ProjectGetResult> result = readProjectUseCase.getAllProjects();
+
+        List<ProjectGetResponse> response = result.stream()
+            .map(ProjectGetResponse::toResponse)
+            .toList();
+
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
+    }
+
     // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민.. -> 5순위
 
+    /* todo: 회원 별 프로젝트 목록 - 단반향 연관관계
+        현재 양방향으로 해놓았으나 단방향도 가능할 것으로 생각됨. 추후 테스트 해보고 단방향으로 변경 */
+//    @GetMapping("/{userId}/test")
+//    public ResponseEntity<ApiResponse<Page<TestResponse>>> getAllByUserIdOne(
+//        @PathVariable Long userId,
+//        @PageableDefault(
+//            page = 0,
+//            size = 10
+//        )
+//        Pageable pageable) {
+//
+//        Page<TestResult> result = readProjectUseCase.getAllByUserIdOne(userId, pageable);
+//        Page<TestResponse> response = result.map(TestResponse::toResponse);
+//        System.out.println("=== 단방향 === ");
+//        System.out.println("유저아이디: " + userId);
+//        System.out.println("페이저블: " + pageable);
+//        System.out.println("response 개수: " + response.stream().count());
+//        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
+//    }
 }

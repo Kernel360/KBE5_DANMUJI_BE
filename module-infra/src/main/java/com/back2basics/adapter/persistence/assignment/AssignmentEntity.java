@@ -1,4 +1,4 @@
-package com.back2basics.adapter.persistence.projectuser;
+package com.back2basics.adapter.persistence.assignment;
 
 import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "assignments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectUserEntity {
+public class AssignmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +51,7 @@ public class ProjectUserEntity {
     private CompanyType companyType;
 
     @Builder
-    public ProjectUserEntity(Long id, ProjectEntity project, UserEntity user, CompanyEntity company,
+    public AssignmentEntity(Long id, ProjectEntity project, UserEntity user, CompanyEntity company,
         CompanyType companyType,
         UserType userType) {
         this.id = id;

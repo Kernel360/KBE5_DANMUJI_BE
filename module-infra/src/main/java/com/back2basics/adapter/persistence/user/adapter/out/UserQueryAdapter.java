@@ -2,12 +2,14 @@ package com.back2basics.adapter.persistence.user.adapter.out;
 
 import static com.back2basics.infra.exception.user.UserErrorCode.USER_NOT_FOUND;
 
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,8 +63,23 @@ public class UserQueryAdapter implements UserQueryPort {
     }
 
     @Override
+    public List<User> findAllByCompanyIdAndDeletedAtIsNull(Long companyId) {
+        return userEntityRepository.findAllByCompany_IdAndDeletedAtIsNull(companyId)
+            .stream().map(userMapper::toDomain).toList();
+    }
+
+    @Override
     public boolean existsById(Long userId) {
         return userEntityRepository.existsById(userId);
+    }
+
+    @Override
+    public void saveAll(List<User> users) {
+        List<UserEntity> userEntities = users.stream()
+            .map(userMapper::toEntity)  // User → UserEntity 매핑
+            .collect(Collectors.toList());
+
+        userEntityRepository.saveAll(userEntities);
     }
 
 }

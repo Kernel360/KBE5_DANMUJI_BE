@@ -2,22 +2,25 @@ package com.back2basics.domain.project.dto.response;
 
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.service.result.ProjectGetResult;
-import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.service.result.ReadProjectStepResult;
-import com.back2basics.projectuser.service.result.ReadProjectUserResult;
+import com.back2basics.assignment.service.result.ReadAssignmentResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// todo: 필요없는 response 필드 삭제
 public record ProjectGetResponse(Long id, String name, String description,
                                  LocalDate startDate, LocalDate endDate, LocalDateTime createdAt,
                                  LocalDateTime updatedAt, LocalDateTime deletedAt,
-                                 boolean isDeleted, ProjectStatus status, List<ReadProjectStepResult> steps, String clientCompany, String developerCompany, List<ReadProjectUserResult> users) {
+                                 boolean isDeleted, ProjectStatus status,
+                                 List<ReadProjectStepResult> steps, String clientCompany,
+                                 String developerCompany, List<ReadAssignmentResult> users) {
 
     public static ProjectGetResponse toResponse(ProjectGetResult result) {
         return new ProjectGetResponse(result.getId(), result.getName(), result.getDescription(),
             result.getStartDate(), result.getEndDate(), result.getCreatedAt(),
-            result.getUpdatedAt(), result.getDeletedAt(), result.isDeleted(), result.getStatus(), result.getSteps(),
+            result.getUpdatedAt(), result.getDeletedAt(), result.isDeleted(), result.getStatus(),
+            result.getSteps(),
             result.getClientCompany(), result.getDeveloperCompany(), result.getProjectUsers());
     }
 }

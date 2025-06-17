@@ -39,7 +39,7 @@ public class ProjectStepEntity {
     private ProjectEntity project;
 
     // todo: LAZY와 EAGER의 차이? - 지연로딩, 즉시로딩?
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
@@ -47,7 +47,7 @@ public class ProjectStepEntity {
     private String name;
 
     @Column(name = "step_order", nullable = false)
-    private Integer stepOrder;
+    private int stepOrder;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "project_step_status", nullable = false)
@@ -65,7 +65,7 @@ public class ProjectStepEntity {
 
     @Builder
     public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
-        Integer stepOrder, ProjectStepStatus projectStepStatus,
+        int stepOrder, ProjectStepStatus projectStepStatus,
         ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
         this.stepId = stepId;

@@ -12,6 +12,6 @@ public class UpdateProjectStepCommand {
 
     @NotBlank
     private final String name;
-    private final ProjectStepStatus projectStepStatus;
+    private final Long userId;
     private final ProjectFeedbackStepStatus projectFeedbackStepStatus;
 }

@@ -12,7 +12,7 @@ import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
-import com.back2basics.projectuser.model.ProjectUser;
+import com.back2basics.assignment.model.Assignment;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
@@ -34,9 +34,11 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final UserCommandPort userCommandPort;
     private final CompanyValidator companyValidator;
     private static final List<String> DEFAULT_STEPS =
-        List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
+        List.of("요구사항 정의", "화면설계"); // , "디자인", "퍼블리싱", "개발", "검수"
 
-    // todo: service 에서 build() 하는 것은 객체지향적이지 못함 -> 나중에 도메인에 메서드 추가
+    /* todo: refactor
+        project builder 도메인으로 이동 및 페턴 변경 고려
+        assignments 생성 로직 및 request 변경 <- 업체, 담당자 여러개 할당 가능 */
     @Override
     @Transactional
     public void createProject(ProjectCreateCommand command) {
@@ -54,14 +56,12 @@ public class CreateProjectService implements CreateProjectUseCase {
         User client = userQueryPort.findById(command.getClientId());
         Company developerCompany = companyValidator.findCompany(command.getDevelopCompanyId());
         Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
-//        List<User> developers = userQueryPort.findAllByCompanyId(command.getDevelopCompanyId());
-//        List<User> clients = userQueryPort.findAllByCompanyId(command.getClientCompanyId());
         List<User> developers = command.getDevelopMemberId().stream().map(userQueryPort::findById).toList();
         List<User> clients = command.getClientMemberId().stream().map(userQueryPort::findById).toList();
 
-        List<ProjectUser> projectUsers = ProjectUser.createProjectUser(savedProject, developer,
+        List<Assignment> assignments = Assignment.createProjectUser(savedProject, developer,
             client, developerCompany, clientCompany, developers, clients);
-        saveProjectUserPort.saveAll(projectUsers);
+        saveProjectUserPort.saveAll(assignments);
     }
 
     private void createDefaultSteps(Long projectId) {
@@ -85,12 +85,12 @@ public class CreateProjectService implements CreateProjectUseCase {
         Company clientCompany = companyValidator.findCompany(command.getClientCompanyId());
 
         saveProjectUserPort.save(
-            ProjectUser.create(project, developer, developerCompany, UserType.MANAGER,
+            Assignment.create(project, developer, developerCompany, UserType.MANAGER,
                 CompanyType.DEVELOPER));
         developer.updateRole(Role.DEV);
         userCommandPort.save(developer);
         saveProjectUserPort.save(
-            ProjectUser.create(project, client, clientCompany, UserType.MANAGER,
+            Assignment.create(project, client, clientCompany, UserType.MANAGER,
                 CompanyType.CLIENT));
         client.updateRole(Role.CLIENT);
         userCommandPort.save(client);

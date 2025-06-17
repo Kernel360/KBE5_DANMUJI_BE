@@ -13,9 +13,11 @@ import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
 import com.back2basics.company.service.result.ReadCompanyResult;
+import com.back2basics.company.service.result.ReadRecentCompanyResult;
 import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
 import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
+import com.back2basics.domain.company.dto.response.ReadRecentCompanyResponse;
 import com.back2basics.domain.company.swagger.CompanyApiDocs;
 import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.global.response.result.ApiResponse;
@@ -52,6 +54,17 @@ public class CompanyController implements CompanyApiDocs {
         @RequestBody @Valid CreateCompanyRequest request) {
         Long id = createCompanyUseCase.createCompany(request.toCommand());
         return ApiResponse.success(COMPANY_CREATE_SUCCESS, id);
+    }
+
+    @GetMapping("/recent-companies")
+    public ResponseEntity<ApiResponse<List<ReadRecentCompanyResponse>>> getRecentCompanies(
+    ) {
+        List<ReadRecentCompanyResult> companies = readCompanyUseCase.getRecentCompanies();
+
+        List<ReadRecentCompanyResponse> responseList = companies.stream()
+            .map(ReadRecentCompanyResponse::toResponse).toList();
+        return ApiResponse.success(COMPANY_READ_ALL_SUCCESS,
+            responseList);
     }
 
     @GetMapping("/{companyId}")

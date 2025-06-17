@@ -4,7 +4,7 @@ import com.back2basics.company.model.CompanyType;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.projectstep.service.result.ReadProjectStepResult;
-import com.back2basics.projectuser.service.result.ReadProjectUserResult;
+import com.back2basics.assignment.service.result.ReadAssignmentResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
+// todo: 필요없는 result 필드 삭제
 @Getter
 @Builder
 public class ProjectGetResult {
@@ -29,15 +30,15 @@ public class ProjectGetResult {
     private final String clientCompany;
     private final String developerCompany;
     private final List<ReadProjectStepResult> steps;
-    private final List<ReadProjectUserResult> projectUsers;
+    private final List<ReadAssignmentResult> projectUsers;
 
     public static ProjectGetResult toResult(Project project) {
-        String clientCompany = project.getProjectUsers().stream()
+        String clientCompany = project.getAssignments().stream()
             .filter(user -> user.getCompanyType() == CompanyType.CLIENT)
             .map(user -> user.getCompany().getName())
             .findFirst().orElse(null);
 
-        String developerCompany = project.getProjectUsers().stream()
+        String developerCompany = project.getAssignments().stream()
             .filter(user -> user.getCompanyType() == CompanyType.DEVELOPER)
             .map(user -> user.getCompany().getName())
             .findFirst().orElse(null);
@@ -59,8 +60,8 @@ public class ProjectGetResult {
                 .map(ReadProjectStepResult::toResult)
                 .collect(Collectors.toList())
             )
-            .projectUsers(project.getProjectUsers().stream()
-                .map(ReadProjectUserResult::toResult)
+            .projectUsers(project.getAssignments().stream()
+                .map(ReadAssignmentResult::toResult)
                 .collect(Collectors.toList())
             )
             .build();

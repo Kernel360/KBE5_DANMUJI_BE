@@ -15,8 +15,8 @@ public class NotifyService implements NotifyUseCase {
     private final NotificationPublisher publisher;
 
     @Override
-    public void notify(Long clientId, SendNotificationCommand command) {
-        userValidator.validateNotFoundUserId(clientId);
+    public void notify(SendNotificationCommand command) {
+        userValidator.validateNotFoundUserId(command.clientId());
         publisher.publish(command);
     }
 }

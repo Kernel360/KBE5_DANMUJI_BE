@@ -1,10 +1,9 @@
 package com.back2basics.adapter.persistence.project;
 
+import com.back2basics.adapter.persistence.assignment.AssignmentEntity;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
-import com.back2basics.adapter.persistence.projectuser.ProjectUserEntity;
 import com.back2basics.project.model.ProjectStatus;
-import com.back2basics.projectuser.model.ProjectUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,7 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,17 +55,16 @@ public class ProjectEntity extends BaseTimeEntity {
     @Column(name = "status", nullable = false)
     private ProjectStatus status;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     private List<ProjectStepEntity> steps = new ArrayList<>();
 
-    // todo: projectUser와 양방향으로 단방향으로 고민쓰
-//    @OneToMany(mappedBy = "project_users", fetch = FetchType.EAGER)
-//    private List<ProjectUserEntity> projectUsers = new ArrayList<>();
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private List<AssignmentEntity> assignments = new ArrayList<>();
 
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
         LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status,
-        List<ProjectStepEntity> steps) {
+        List<ProjectStepEntity> steps, List<AssignmentEntity> assignments) {
 
         this.id = id;
         this.name = name;
@@ -78,5 +75,6 @@ public class ProjectEntity extends BaseTimeEntity {
         this.isDeleted = isDeleted;
         this.status = status;
         this.steps = steps;
+        this.assignments = assignments;
     }
 }

@@ -6,6 +6,7 @@ import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,8 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
     @Override
     public void updateStep(UpdateProjectStepCommand command, Long stepId) {
         ProjectStep step = readPort.findById(stepId);
-        step.update(command);
+        Long userId = readPort.findUserById(stepId);
+        step.update(command, userId);
         savePort.save(step);
     }
 
@@ -27,6 +29,7 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
     public void updateApprovalStatus(ProjectFeedbackStepStatus projectFeedbackStepStatus,
         Long stepId) {
         ProjectStep step = readPort.findById(stepId);
+        step.approvalProjectFeedbackStepStatus(projectFeedbackStepStatus);
         savePort.save(step);
     }
 }

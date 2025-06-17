@@ -15,12 +15,15 @@ import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.SubscribeNotificationUseCase;
 import com.back2basics.notify.port.in.UpdateNotificationUseCase;
 import com.back2basics.notify.service.result.NotificationResult;
+import com.back2basics.security.jwt.JwtTokenProvider;
 import com.back2basics.security.model.CustomUserDetails;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,23 +38,24 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequiredArgsConstructor
 public class NotifyController {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final NotifyUseCase notifyUseCase;
     private final NotificationQueryUseCase notificationQueryUseCase;
     private final UpdateNotificationUseCase updateNotificationUseCase;
     private final SubscribeNotificationUseCase subscribeNotificationUseCase;
 
     // SSE 연결 및 읽지 않은 알림 전송
-    @GetMapping("/subscribe")
-    public SseEmitter subscribe(@AuthenticationPrincipal CustomUserDetails userDetails)
+    @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter subscribe(
+        @CookieValue(value = "accessToken", required = false) String accessToken)
         throws IOException {
-        return subscribeNotificationUseCase.subscribe(userDetails.getId());
+        return subscribeNotificationUseCase.subscribe(jwtTokenProvider.getId(accessToken));
     }
 
     // 알림 생성 및 전송
     @PostMapping("/notify")
-    public ResponseEntity<?> notifyClient(@AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody NotificationCreateRequest request) {
-        notifyUseCase.notify(userDetails.getId(), request.toCommand(userDetails.getId()));
+    public ResponseEntity<?> notifyClient(@RequestBody NotificationCreateRequest request) {
+        notifyUseCase.notify(request.toCommand());
 
         return ApiResponse.success(NOTIFICATION_CREATE_SUCCESS);
     }
