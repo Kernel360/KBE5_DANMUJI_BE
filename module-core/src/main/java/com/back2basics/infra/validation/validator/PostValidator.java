@@ -21,8 +21,19 @@ public class PostValidator {
     }
 
     public void isAuthor(Post post, Long requesterId) {
-        if (!post.getAuthor().getId().equals(requesterId)) {
+        if (!post.getAuthorId().equals(requesterId)) {
             throw new PostException(PostErrorCode.INVALID_POST_AUTHOR);
+        }
+    }
+
+    public void findParentPost(Long parentId) {
+        if (parentId == null) {
+            return;
+        }
+
+        boolean exists = postReadPort.findById(parentId).isPresent();
+        if (!exists) {
+            throw new PostException(PostErrorCode.POST_NOT_FOUND);
         }
     }
 }

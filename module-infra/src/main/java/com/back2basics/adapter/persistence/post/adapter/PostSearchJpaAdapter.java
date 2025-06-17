@@ -4,11 +4,13 @@ import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostWithAuthorResult;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostSearchCommand;
 import com.back2basics.post.port.out.PostSearchPort;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -28,58 +30,58 @@ public class PostSearchJpaAdapter implements PostSearchPort {
 
     @Override
     public Page<Post> search(PostSearchCommand command, Pageable pageable) {
-
-        // id 페이징
-        List<Long> ids = queryFactory
-            .select(postEntity.id)
+        List<PostWithAuthorResult> results = queryFactory
+            .select(Projections.constructor(
+                PostWithAuthorResult.class,
+                postEntity.id.as("postId"),
+                postEntity.parentId,
+                postEntity.projectId,
+                postEntity.projectStepId,
+                postEntity.authorIp,
+                postEntity.authorId,
+                userEntity.name.as("authorName"),
+                postEntity.title,
+                postEntity.content,
+                postEntity.type,
+                postEntity.priority,
+                postEntity.createdAt,
+                postEntity.updatedAt,
+                postEntity.deletedAt,
+                postEntity.completedAt
+            ))
             .from(postEntity)
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
-                postEntity.projectStepId.eq(command.getProjectStepId())
-                    .and(activePosts())
-                    .and(matchesTitle(command.getTitle()))
-                    .and(matchesAuthor(command.getAuthor()))
-                    .and(matchesPriority(command.getPriority()))
-                    .and(matchesStatus(command.getStatus()))
-                    .and(matchesType(command.getType())))
+                postEntity.projectStepId.eq(command.getProjectStepId()),
+                activePosts(),
+                matchesTitle(command.getTitle()),
+                matchesAuthor(command.getAuthor()),
+                matchesPriority(command.getPriority()),
+                matchesType(command.getType())
+            )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
 
-        // post 조회
-        List<Post> posts = queryFactory
-            .selectFrom(postEntity)
-            .join(postEntity.author, userEntity).fetchJoin()
-            .where(postEntity.id.in(ids)
-                .and(postEntity.projectStepId.eq(command.getProjectStepId()))
-                .and(activePosts())
-                .and(matchesTitle(command.getTitle()))
-                .and(matchesAuthor(command.getAuthor()))
-                .and(matchesPriority(command.getPriority()))
-                .and(matchesStatus(command.getStatus()))
-                .and(matchesType(command.getType())))
-            .orderBy(postEntity.createdAt.desc())
-            .fetch()
-            .stream()
+        List<Post> posts = results.stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
 
-        // 카운트 쿼리
         Long total = queryFactory
             .select(postEntity.count())
             .from(postEntity)
             .where(
-                postEntity.projectStepId.eq(command.getProjectStepId())
-                    .and(activePosts())
-                    .and(matchesTitle(command.getTitle()))
-                    .and(matchesAuthor(command.getAuthor()))
-                    .and(matchesPriority(command.getPriority()))
-                    .and(matchesStatus(command.getStatus()))
-                    .and(matchesType(command.getType())))
+                postEntity.projectStepId.eq(command.getProjectStepId()),
+                activePosts(),
+                matchesTitle(command.getTitle()),
+                matchesAuthor(command.getAuthor()),
+                matchesPriority(command.getPriority()),
+                matchesType(command.getType())
+            )
             .fetchOne();
 
         return new PageImpl<>(posts, pageable, total);
-
     }
 
     private BooleanExpression activePosts() {
@@ -91,16 +93,11 @@ public class PostSearchJpaAdapter implements PostSearchPort {
     }
 
     private BooleanExpression matchesAuthor(String author) {
-        return (author == null || author.isBlank()) ? null
-            : postEntity.author.name.contains(author);
+        return (author == null || author.isBlank()) ? null : userEntity.name.contains(author);
     }
 
-    private BooleanExpression matchesPriority(Integer priority) {
+    private BooleanExpression matchesPriority(PostPriority priority) {
         return (priority == null) ? null : postEntity.priority.eq(priority);
-    }
-
-    private BooleanExpression matchesStatus(PostStatus status) {
-        return (status == null) ? null : postEntity.status.eq(status);
     }
 
     private BooleanExpression matchesType(PostType type) {

@@ -1,6 +1,6 @@
 package com.back2basics.domain.post.dto.response;
 
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostCreateResult;
 import lombok.Builder;
@@ -15,8 +15,9 @@ public class PostCreateResponse {
     private final String title;
     private final String content;
     private final PostType type;
-    private final PostStatus status;
-    private final Integer priority;
+    private final PostPriority priority;
+    private final Long stepId;
+    private final Long projectId;
 
     public static PostCreateResponse toResponse(PostCreateResult result) {
         return PostCreateResponse.builder()
@@ -25,8 +26,9 @@ public class PostCreateResponse {
             .title(result.getTitle())
             .content(result.getContent())
             .type(result.getType())
-            .status(result.getStatus())
             .priority(result.getPriority())
+            .stepId(result.getStepId())
+            .projectId(result.getProjectId())
             .build();
     }
 

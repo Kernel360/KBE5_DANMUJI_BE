@@ -1,9 +1,9 @@
 package com.back2basics.domain.post.controller;
 
 import com.back2basics.domain.post.controller.code.PostResponseCode;
-import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
+import com.back2basics.domain.post.dto.request.PostCreateRequest;
 import com.back2basics.domain.post.dto.request.PostSearchRequest;
-import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
+import com.back2basics.domain.post.dto.request.PostUpdateRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
 import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+// todo : 이거 어케 restful하게 해야알지 너무 고민.. 어떤건 pathvaraible, 어떤건 dto, 또 어떤건 경로자체가 이상...
 @Slf4j
 @RestController
 @RequestMapping("/api/posts")
@@ -54,11 +55,15 @@ public class PostController implements PostApiDocs {
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestBody @Valid PostCreateApiRequest request) {
+        @RequestBody @Valid PostCreateRequest request) {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
-        PostCreateResult result = createPostUseCase.createPost(userId, request.getStepId(), userIp,
+        PostCreateResult result = createPostUseCase.createPost(
+            userId,
+            request.getProjectId(),
+            request.getStepId(),
+            userIp,
             request.toCommand());
         PostCreateResponse response = PostCreateResponse.toResponse(result);
 
@@ -76,17 +81,21 @@ public class PostController implements PostApiDocs {
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
-    @GetMapping("/all/{projectStepId}")
+    @GetMapping("/project/{projectId}/steps/{projectStepId}")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getAllPostsByProjectStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId,
         @PathVariable Long projectStepId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
         Long userId = customUserDetails.getId();
-        Page<PostReadResult> resultPage = postReadUseCase.getAllPostsByProjectStepId(userId,
-            projectStepId, pageable);
+        Page<PostReadResult> resultPage = postReadUseCase.getAllPostsByProjectIdAndStepId(
+            userId,
+            projectId,
+            projectStepId,
+            pageable);
         Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
@@ -97,7 +106,7 @@ public class PostController implements PostApiDocs {
     public ResponseEntity<ApiResponse<Void>> updatePost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
-        @Valid @RequestBody PostUpdateApiRequest request) {
+        @Valid @RequestBody PostUpdateRequest request) {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
@@ -115,7 +124,7 @@ public class PostController implements PostApiDocs {
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }
 
-    @GetMapping("/all/search")
+    @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Valid @ModelAttribute PostSearchRequest request,

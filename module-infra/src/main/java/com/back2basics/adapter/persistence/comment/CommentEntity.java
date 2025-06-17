@@ -1,19 +1,14 @@
 package com.back2basics.adapter.persistence.comment;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
-import com.back2basics.adapter.persistence.post.PostEntity;
-import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.comment.model.Comment;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,33 +25,27 @@ public class CommentEntity extends BaseTimeEntity {
     @Column(name = "author_ip")
     private String authorIp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private UserEntity author;
+    @Column(name = "author_id", nullable = false)
+    private Long authorId;
 
     @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private PostEntity post;
+    @Column(name = "post_id", nullable = false)
+    private Long postId;
 
     @Column(name = "parent_comment_id")
     private Long parentId;
 
-    @Builder
-    public CommentEntity(Long id, String authorIp, UserEntity author, String content,
-        PostEntity post,
-        Long parentId) {
-        this.id = id;
-        this.authorIp = authorIp;
-        this.author = author;
-        this.content = content;
-        this.post = post;
-        this.parentId = parentId;
+    public static CommentEntity of(Comment comment) {
+        CommentEntity entity = new CommentEntity();
+        entity.id = comment.getId();
+        entity.postId = comment.getPostId();
+        entity.parentId = comment.getParentId();
+        entity.authorIp = comment.getAuthorIp();
+        entity.authorId = comment.getAuthorId();
+        entity.content = comment.getContent();
+        return entity;
     }
 
-    public void assignPost(PostEntity post) {
-        this.post = post;
-    }
 }

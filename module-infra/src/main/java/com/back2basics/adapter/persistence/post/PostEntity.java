@@ -1,23 +1,19 @@
 package com.back2basics.adapter.persistence.post;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
-import com.back2basics.adapter.persistence.user.entity.UserEntity;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.Post;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,9 +34,11 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "author_ip")
     private String authorIp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private UserEntity author;
+    @Column(name = "author_id")
+    private Long authorId;
+
+    @Column(name = "project_id")
+    private Long projectId;
 
     @Column(name = "project_step_id", nullable = false)
     private Long projectStepId;
@@ -56,31 +54,43 @@ public class PostEntity extends BaseTimeEntity {
     private PostType type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private PostStatus status = PostStatus.PENDING;
-
     @Column(name = "priority", nullable = false)
-    private Integer priority;
+    private PostPriority priority;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt = null;
 
-    @Builder
-    public PostEntity(Long id, Long parentId, String authorIp, UserEntity author,
+    public PostEntity(Long id, Long parentId, Long projectId, String authorIp, Long authorId,
         String title,
-        String content, PostType type,
-        Integer priority, PostStatus status, Long projectStepId, LocalDateTime completedAt) {
+        String content, PostType type, PostPriority priority,
+        Long projectStepId, LocalDateTime completedAt) {
         this.id = id;
         this.parentId = parentId;
         this.authorIp = authorIp;
-        this.author = author;
+        this.authorId = authorId;
         this.title = title;
         this.content = content;
         this.type = type;
         this.priority = priority;
-        this.status = status;
-        this.completedAt = completedAt;
+        this.projectId = projectId;
         this.projectStepId = projectStepId;
+        this.completedAt = completedAt;
+    }
+
+    public static PostEntity of(Post post) {
+        return new PostEntity(
+            post.getId(),
+            post.getParentId(),
+            post.getProjectId(),
+            post.getAuthorIp(),
+            post.getAuthorId(),
+            post.getTitle(),
+            post.getContent(),
+            post.getType(),
+            post.getPriority(),
+            post.getProjectStepId(),
+            post.getCompletedAt()
+        );
     }
 
 }

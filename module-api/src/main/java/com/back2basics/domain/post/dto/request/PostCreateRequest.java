@@ -1,7 +1,7 @@
 package com.back2basics.domain.post.dto.request;
 
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import jakarta.annotation.Nullable;
@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class PostCreateApiRequest {
+public class PostCreateRequest {
 
     @Nullable
     private Long parentId;
@@ -21,14 +21,16 @@ public class PostCreateApiRequest {
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
 
+    @NotNull(message = "타입이 입력되지 않았습니다.")
     @CustomEnumCheck(enumClass = PostType.class, message = "올바른 enum type이 아닙니다")
     private PostType type;
 
-    @CustomEnumCheck(enumClass = PostStatus.class, message = "올바른 enum type이 아닙니다")
-    private PostStatus status;
-
     @NotNull(message = "우선순위가 입력되지 않았습니다.")
-    private Integer priority;
+    @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
+    private PostPriority priority;
+
+    @NotNull(message = "프로젝트를 입력하세요.")
+    private Long projectId;
 
     @NotNull(message = "프로젝트 단계를 입력하세요.")
     private Long stepId;
@@ -38,8 +40,10 @@ public class PostCreateApiRequest {
             .parentId(parentId)
             .title(title)
             .content(content)
-            .status(status)
+            .priority(priority)
+            .projectId(projectId)
             .stepId(stepId)
-            .type(type).priority(priority).build();
+            .type(type)
+            .build();
     }
 }

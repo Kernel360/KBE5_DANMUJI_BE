@@ -1,10 +1,11 @@
 package com.back2basics.domain.post.swagger;
 
-import com.back2basics.domain.post.dto.request.PostCreateApiRequest;
+import com.back2basics.domain.post.dto.request.PostCreateRequest;
 import com.back2basics.domain.post.dto.request.PostSearchRequest;
-import com.back2basics.domain.post.dto.request.PostUpdateApiRequest;
+import com.back2basics.domain.post.dto.request.PostUpdateRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostReadResponse;
+import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,7 +33,7 @@ public interface PostApiDocs {
             required = true,
             content = @Content(
                 mediaType = "application/json",
-                schema = @Schema(implementation = PostCreateApiRequest.class),
+                schema = @Schema(implementation = PostCreateRequest.class),
                 examples = @ExampleObject(name = "요청 예시", value = PostDocsResult.POST_CREATE_REQUEST)
             )
         )
@@ -51,7 +53,7 @@ public interface PostApiDocs {
     })
     ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestBody @Valid PostCreateApiRequest request);
+        @RequestBody @Valid PostCreateRequest request);
 
     @Operation(summary = "게시글 단건 조회")
     @ApiResponses({
@@ -80,6 +82,7 @@ public interface PostApiDocs {
     })
     ResponseEntity<ApiResponse<Page<PostReadResponse>>> getAllPostsByProjectStep(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId,
         @PathVariable Long projectStepId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size);
@@ -105,7 +108,7 @@ public interface PostApiDocs {
     ResponseEntity<ApiResponse<Void>> updatePost(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
-        @RequestBody @Valid PostUpdateApiRequest request);
+        @RequestBody @Valid PostUpdateRequest request);
 
     @Operation(summary = "게시글 삭제")
     @ApiResponses({
@@ -142,4 +145,14 @@ public interface PostApiDocs {
         @Valid @ModelAttribute PostSearchRequest request,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size);
+
+    @Operation(summary = "최근 게시글 목록 조회")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "최근 게시글 조회 성공",
+            content = @Content(examples = @ExampleObject(value = PostDocsResult.POST_READ_ALL_SUCCESS))
+        )
+    })
+    ResponseEntity<ApiResponse<List<ReadRecentPostResponse>>> getRecentPosts();
 }

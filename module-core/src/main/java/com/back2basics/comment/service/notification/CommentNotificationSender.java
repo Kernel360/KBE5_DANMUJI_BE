@@ -24,7 +24,7 @@ public class CommentNotificationSender {
 
             // 대댓글 -> 부모 댓글 작성자에게
             Comment parent = commentValidator.findComment(command.getParentId());
-            Long receiverId = parent.getAuthor().getId();
+            Long receiverId = parent.getAuthorId();
             if (!receiverId.equals(senderId)) {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
@@ -36,7 +36,7 @@ public class CommentNotificationSender {
         } else {
             // 그냥 댓글 -> 게시글 작성자에게
             Post post = postValidator.findPost(command.getPostId());
-            Long receiverId = post.getAuthor().getId();
+            Long receiverId = post.getAuthorId();
             if (!receiverId.equals(senderId)) {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
