@@ -5,7 +5,8 @@ import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEn
 import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
-import com.back2basics.adapter.persistence.post.adapter.projection.PostWithAuthorResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostDetailResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryResult;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostReadPort;
@@ -30,23 +31,22 @@ public class PostReadJpaAdapter implements PostReadPort {
 
     @Override
     public Optional<Post> findById(Long id) {
-        PostWithAuthorResult result = queryFactory
+        PostDetailResult result = queryFactory
             .select(Projections.constructor(
-                PostWithAuthorResult.class,
-                postEntity.id,
+                PostDetailResult.class,
+                postEntity.id.as("postId"),
                 postEntity.parentId,
                 postEntity.projectId,
                 postEntity.projectStepId,
                 postEntity.authorIp,
                 postEntity.authorId,
-                userEntity.name,
+                userEntity.name.as("authorName"),
                 postEntity.title,
                 postEntity.content,
                 postEntity.type,
                 postEntity.priority,
                 postEntity.createdAt,
-                postEntity.updatedAt,
-                postEntity.deletedAt
+                postEntity.updatedAt
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
@@ -65,78 +65,22 @@ public class PostReadJpaAdapter implements PostReadPort {
         return Optional.of(mapper.toDomain(result));
     }
 
-//
-//    @Override
-//    public Page<Post> findAllPostsByProjectStepId(Long projectStepId, Pageable pageable) {
-//        // id 페이징
-//        List<Long> ids = queryFactory
-//            .select(postEntity.id)
-//            .from(postEntity)
-//            .where(
-//                postEntity.deletedAt.isNull(),
-//                postEntity.projectStepId.eq(projectStepId)
-//            )
-//            .orderBy(postEntity.createdAt.desc())
-//            .offset(pageable.getOffset())
-//            .limit(pageable.getPageSize())
-//            .fetch();
-//
-//        // id로 fetch join
-//        List<Post> posts = queryFactory
-//            .selectFrom(postEntity)
-//            .join(postEntity.author, userEntity).fetchJoin()
-//            .where(
-//                postEntity.id.in(ids),
-//                postEntity.deletedAt.isNull(),
-//                postEntity.projectStepId.eq(projectStepId)
-//            )
-//            .orderBy(postEntity.createdAt.desc())
-//            .fetch()
-//            .stream()
-//            .map(mapper::toDomain)
-//            .collect(Collectors.toList());
-//
-//        // 카운트 쿼리
-//        Long total = queryFactory
-//            .select(postEntity.count())
-//            .from(postEntity)
-//            .where(
-//                postEntity.deletedAt.isNull(),
-//                postEntity.projectStepId.eq(projectStepId)
-//            )
-//            .fetchOne();
-//
-//        // Unboxing of 'total' may produce 'NullPointerException'
-//        // total이 null일 수 있으며 그럴 경우 카운트쿼리가 결과를 반환하지 못해서
-//        // NPE 날 수 있다는 경고에 의한 조건 추가
-//        if (total == null) {
-//            total = 0L;
-//        }
-//
-//        return new PageImpl<>(posts, pageable, total);
-//    }
-
     @Override
     public Page<Post> findAllPostsByProjectIdAndStepId(Long projectId, Long projectStepId,
         Pageable pageable) {
 
-        List<PostWithAuthorResult> results = queryFactory
+        List<PostSummaryResult> results = queryFactory
             .select(Projections.constructor(
-                PostWithAuthorResult.class,
-                postEntity.id,
-                postEntity.parentId,
+                PostSummaryResult.class,
+                postEntity.id.as("postId"),
                 postEntity.projectId,
                 postEntity.projectStepId,
-                postEntity.authorIp,
                 postEntity.authorId,
-                userEntity.name,
+                userEntity.name.as("authorName"),
                 postEntity.title,
-                postEntity.content,
                 postEntity.type,
                 postEntity.priority,
-                postEntity.createdAt,
-                postEntity.updatedAt,
-                postEntity.deletedAt
+                postEntity.createdAt
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))

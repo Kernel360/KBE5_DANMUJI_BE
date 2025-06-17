@@ -54,6 +54,16 @@ public class Post {
             createdAt, updatedAt, deletedAt);
     }
 
+    public static Post create(
+        Long id, Long parentId, Long projectId, Long projectStepId,
+        String authorIp, Long authorId, String authorName, String title, String content,
+        PostType type, PostPriority priority,
+        LocalDateTime createdAt, LocalDateTime updatedAt
+    ) {
+        return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
+            title, content, type, priority, createdAt, updatedAt, null);
+    }
+
     public void update(PostUpdateCommand command, String userIp) {
         this.title = command.getTitle();
         this.content = command.getContent();
@@ -88,4 +98,6 @@ public class Post {
         this.deletedAt = deletedAt;
         this.isDelete = false;
     }
+
+
 }

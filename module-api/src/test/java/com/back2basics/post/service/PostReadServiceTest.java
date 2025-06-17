@@ -9,7 +9,7 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.out.PostReadPort;
-import com.back2basics.post.service.result.PostReadResult;
+import com.back2basics.post.service.result.PostDetailReadResult;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +71,7 @@ class PostReadServiceTest {
         given(postValidator.findPost(postId)).willReturn(samplePost1);
 
         // when
-        PostReadResult result = postReadService.getPost(postId);
+        PostDetailReadResult result = postReadService.getPost(postId);
 
         // then
         assertThat(result).isNotNull();
@@ -94,7 +94,7 @@ class PostReadServiceTest {
         given(postReadPort.findAllWithPaging(pageable)).willReturn(postPage);
 
         // when
-        Page<PostReadResult> results = postReadService.getPostList(pageable);
+        Page<PostDetailReadResult> results = postReadService.getPostList(pageable);
 
         // then
         assertThat(results).isNotNull();
@@ -118,7 +118,7 @@ class PostReadServiceTest {
         given(postReadPort.findAllWithPaging(pageable)).willReturn(emptyPage);
 
         // when
-        Page<PostReadResult> results = postReadService.getPostList(pageable);
+        Page<PostDetailReadResult> results = postReadService.getPostList(pageable);
 
         // then
         assertThat(results).isNotNull();
@@ -139,7 +139,7 @@ class PostReadServiceTest {
         given(postReadPort.findAllWithPaging(pageable)).willReturn(postPage);
 
         // when
-        Page<PostReadResult> results = postReadService.getPostList(pageable);
+        Page<PostDetailReadResult> results = postReadService.getPostList(pageable);
 
         // then
         assertThat(results).isNotNull();

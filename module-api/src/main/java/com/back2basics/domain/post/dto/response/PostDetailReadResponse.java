@@ -2,14 +2,14 @@ package com.back2basics.domain.post.dto.response;
 
 import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
-import com.back2basics.post.service.result.PostReadResult;
+import com.back2basics.post.service.result.PostDetailReadResult;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class PostReadResponse {
+public class PostDetailReadResponse {
 
     private final Long postId;
     private final Long parentId;
@@ -24,12 +24,10 @@ public class PostReadResponse {
     private final PostPriority priority;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-    private final LocalDateTime deletedAt;
-    private final LocalDateTime completedAt;
     private final boolean isDelete;
 
-    public static PostReadResponse toResponse(PostReadResult postDetails) {
-        return PostReadResponse.builder()
+    public static PostDetailReadResponse toResponse(PostDetailReadResult postDetails) {
+        return PostDetailReadResponse.builder()
             .parentId(postDetails.getParentId())
             .postId(postDetails.getId())
             .authorIp(postDetails.getAuthorIp())
@@ -43,7 +41,6 @@ public class PostReadResponse {
             .priority(postDetails.getPriority())
             .createdAt(postDetails.getCreatedAt())
             .updatedAt(postDetails.getUpdatedAt())
-            .deletedAt(postDetails.getDeletedAt())
             .isDelete(postDetails.isDeleted())
             .build();
     }

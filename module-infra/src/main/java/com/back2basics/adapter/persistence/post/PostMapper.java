@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.post;
 
-import com.back2basics.adapter.persistence.post.adapter.projection.PostWithAuthorResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostDetailResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryResult;
 import com.back2basics.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,7 @@ public class PostMapper {
         return entity;
     }
 
-    public Post toDomain(PostWithAuthorResult result) {
+    public Post toDomain(PostDetailResult result) {
         return Post.create(
             result.postId(),
             result.parentId(),
@@ -53,8 +54,25 @@ public class PostMapper {
             result.type(),
             result.priority(),
             result.createdAt(),
-            result.updatedAt(),
-            result.deletedAt()
+            result.updatedAt()
+        );
+    }
+
+    public Post toDomain(PostSummaryResult result) {
+        return Post.create(
+            result.postId(),
+            null, // parentId 없음
+            result.projectId(),
+            result.projectStepId(),
+            null, // ip 없음
+            result.authorId(),
+            result.authorName(),
+            result.title(),
+            null, // content 없음
+            result.type(),
+            result.priority(),
+            result.createdAt(),
+            null, null
         );
     }
 
