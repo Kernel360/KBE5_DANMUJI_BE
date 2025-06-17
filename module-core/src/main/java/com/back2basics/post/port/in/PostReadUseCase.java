@@ -1,6 +1,7 @@
 package com.back2basics.post.port.in;
 
-import com.back2basics.post.service.result.PostReadResult;
+import com.back2basics.post.service.result.PostDetailReadResult;
+import com.back2basics.post.service.result.PostSummaryReadResult;
 import com.back2basics.post.service.result.ReadRecentPostResult;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -8,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostReadUseCase {
 
-    PostReadResult getPostById(Long userId, Long postId);
+    PostDetailReadResult getPostById(Long userId, Long postId);
 
-    Page<PostReadResult> getAllPostsByProjectIdAndStepId(
+    Page<PostSummaryReadResult> getAllPostsByProjectIdAndStepId(
         Long userId,
         Long projectId,
         Long projectStepId,

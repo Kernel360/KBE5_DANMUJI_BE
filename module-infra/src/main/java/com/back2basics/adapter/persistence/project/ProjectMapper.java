@@ -14,6 +14,7 @@ public class ProjectMapper {
 
     private final ProjectStepMapper projectStepMapper;
 
+    // todo : 이거 어노테이션 왜 붙이셨는지 알수있을까요?
     @Autowired
     @Lazy
     private AssignmentMapper projectUserMapper;
