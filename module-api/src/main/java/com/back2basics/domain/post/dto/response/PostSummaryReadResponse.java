@@ -12,6 +12,7 @@ import lombok.Getter;
 public class PostSummaryReadResponse {
 
     private final Long postId;
+    private final Long parentId;
     private final Long projectId;
     private final Long projectStepId;
     private final Long authorId;
@@ -24,6 +25,7 @@ public class PostSummaryReadResponse {
     public static PostSummaryReadResponse toResponse(PostSummaryReadResult result) {
         return PostSummaryReadResponse.builder()
             .postId(result.getId())
+            .parentId(result.getParentId())
             .projectId(result.getProjectId())
             .projectStepId(result.getProjectStepId())
             .authorId(result.getAuthorId())

@@ -75,6 +75,7 @@ public class PostReadJpaAdapter implements PostReadPort {
                 PostSummaryResult.class,
                 postEntity.id.as("postId"),
                 postEntity.projectId,
+                postEntity.parentId,
                 postEntity.projectStepId,
                 postEntity.authorId,
                 userEntity.name.as("authorName"),

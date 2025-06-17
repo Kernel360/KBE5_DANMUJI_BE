@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public record PostSummaryResult(
     Long postId,
+    Long parentId,
     Long projectId,
     Long projectStepId,
     Long authorId,

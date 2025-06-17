@@ -4,7 +4,7 @@ import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
-import com.back2basics.adapter.persistence.post.adapter.projection.PostDetailResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryResult;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
@@ -32,22 +32,19 @@ public class PostSearchJpaAdapter implements PostSearchPort {
 
     @Override
     public Page<Post> search(PostSearchCommand command, Pageable pageable) {
-        List<PostDetailResult> results = queryFactory
+        List<PostSummaryResult> results = queryFactory
             .select(Projections.constructor(
-                PostDetailResult.class,
+                PostSummaryResult.class,
                 postEntity.id.as("postId"),
                 postEntity.parentId,
                 postEntity.projectId,
                 postEntity.projectStepId,
-                postEntity.authorIp,
                 postEntity.authorId,
                 userEntity.name.as("authorName"),
                 postEntity.title,
-                postEntity.content,
                 postEntity.type,
                 postEntity.priority,
-                postEntity.createdAt,
-                postEntity.updatedAt
+                postEntity.createdAt
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
