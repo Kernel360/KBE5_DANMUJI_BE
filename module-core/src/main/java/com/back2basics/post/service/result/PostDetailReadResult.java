@@ -1,9 +1,11 @@
 package com.back2basics.post.service.result;
 
+import com.back2basics.post.file.File;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,6 +27,8 @@ public class PostDetailReadResult {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final boolean isDeleted;
+    private final List<File> files;
+
 
     public static PostDetailReadResult toResult(Post post) {
         return PostDetailReadResult.builder()
@@ -42,6 +46,7 @@ public class PostDetailReadResult {
             .createdAt(post.getCreatedAt())
             .updatedAt(post.getUpdatedAt())
             .isDeleted(post.getDeletedAt() != null)
+            .files(post.getFiles())
             .build();
     }
 }
