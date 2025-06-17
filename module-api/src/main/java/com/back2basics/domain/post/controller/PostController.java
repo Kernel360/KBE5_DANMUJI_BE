@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -114,11 +113,13 @@ public class PostController /* implements PostApiDocs*/ {
     public ResponseEntity<ApiResponse<Void>> updatePost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
-        @Valid @RequestBody PostUpdateRequest request) {
+        @RequestPart("data") @Valid PostUpdateRequest request,
+        @RequestPart(value = "files", required = false) List<MultipartFile> files)
+        throws IOException {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
-        postUpdateUseCase.updatePost(userId, userIp, postId, request.toCommand());
+        postUpdateUseCase.updatePost(userId, userIp, postId, request.toCommand(), files);
 
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS);
     }
