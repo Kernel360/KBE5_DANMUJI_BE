@@ -22,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity
@@ -49,6 +50,7 @@ public class ProjectEntity extends BaseTimeEntity {
     private LocalDateTime deletedAt;
 
     @Column(name = "is_deleted")
+    @ColumnDefault(value = "false")
     private boolean isDeleted;
 
     @Enumerated(EnumType.STRING)

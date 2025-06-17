@@ -7,11 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record ProjectCreateRequest(@NotBlank(message = "프로젝트명은 필수입니다.") String name,
-                                   String description, @NotNull LocalDate startDate,
-                                   Long developerId, Long clientId,
-                                   Long developCompanyId, Long clientCompanyId,
-                                   LocalDate endDate, List<Long> developMemberId,
-                                   List<Long> clientMemberId
+                                   String description, LocalDate startDate, LocalDate endDate,
+                                   List<Long> devManagerId, List<Long> clientManagerId,
+                                   List<Long> devUserId,
+                                   List<Long> clientUserId
 ) {
 
     public ProjectCreateCommand toCommand() {
@@ -20,12 +19,10 @@ public record ProjectCreateRequest(@NotBlank(message = "프로젝트명은 필�
             .description(description)
             .startDate(startDate)
             .endDate(endDate)
-            .developerId(developerId)
-            .clientId(clientId)
-            .developCompanyId(developCompanyId)
-            .clientCompanyId(clientCompanyId)
-            .developMemberId(developMemberId)
-            .clientMemberId(clientMemberId)
+            .devManagerId(devManagerId)
+            .clientManagerId(clientManagerId)
+            .devUserId(devUserId)
+            .clientUserId(clientUserId)
             .build();
     }
 }

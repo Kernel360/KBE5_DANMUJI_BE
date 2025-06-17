@@ -44,41 +44,40 @@ public class Assignment {
     }
 
     //todo: 개발사, 고객사 create로 분리하는게 좋을 지
-    public static List<Assignment> createProjectUser(Project project, User developer, User client,
-        Company developerCompany, Company clientCompany, List<User> developers,
-        List<User> clients) {
+    public static List<Assignment> createProjectUser(Project project, List<User> devManagers,
+        List<User> clientManagers, List<User> devUsers, List<User> clientUsers) {
 
-        // todo: bulider 두번하는거 리팩토링하기 , it 대신 다른 변수명 사용
-        List<Assignment> developerUsers = developers.stream()
-            .map(it -> Assignment.builder()
+        // 개발사 멤버, 멤버가 담당자와 하나라도 일치하면 MANAGER, 참고 자료 : https://haenny.tistory.com/389
+        List<Assignment> developers = devUsers.stream()
+            .map(user -> Assignment.builder()
                 .project(project)
-                .user(it)
-                .company(developerCompany)
-                .userType(it.getId().equals(developer.getId()) ? UserType.MANAGER : UserType.MEMBER)
+                .user(user)
+                .company(user.getCompany())
+                .userType(
+                    devManagers.stream().anyMatch(manager -> manager.getId().equals(user.getId()))
+                        ? UserType.MANAGER : UserType.MEMBER)
                 .companyType(CompanyType.DEVELOPER)
-                .build())
-            .toList();
+                .build()).toList();
 
-        List<Assignment> clientUsers = clients.stream()
-            .map(it -> Assignment.builder()
+        // 고객사 멤버
+        List<Assignment> clients = clientUsers.stream()
+            .map(user -> Assignment.builder()
                 .project(project)
-                .user(it)
-                .company(clientCompany)
-                .userType(it.getId().equals(client.getId()) ? UserType.MANAGER : UserType.MEMBER)
+                .user(user)
+                .company(user.getCompany())
+                .userType(clientManagers.stream()
+                    .anyMatch(manager -> manager.getId().equals(user.getId())) ? UserType.MANAGER
+                    : UserType.MEMBER)
                 .companyType(CompanyType.CLIENT)
-                .build())
-            .toList();
+                .build()).toList();
 
         List<Assignment> allUsers = new ArrayList<>();
-        allUsers.addAll(developerUsers);
-        allUsers.addAll(clientUsers);
+        allUsers.addAll(developers);
+        allUsers.addAll(clients);
 
         return allUsers;
     }
 
-    /*  todo: 담당자 변경
-         검증도 여기서 하는것도 괜찮음
-     */
     public void toManager() {
         this.userType = UserType.MANAGER;
     }
@@ -88,4 +87,5 @@ public class Assignment {
     }
 
     // todo: 회사 변경 (등록된 회사 삭제, 새로운 회사로 등록 또는 변경)
+
 }
