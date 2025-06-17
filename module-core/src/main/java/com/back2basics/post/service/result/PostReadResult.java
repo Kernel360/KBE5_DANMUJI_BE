@@ -25,7 +25,6 @@ public class PostReadResult {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
-    private final LocalDateTime completedAt;
     private final boolean isDeleted;
 
     public static PostReadResult toResult(Post post) {
@@ -42,7 +41,6 @@ public class PostReadResult {
             .type(post.getType())
             .priority(post.getPriority())
             .deletedAt(post.getDeletedAt())
-            .completedAt(post.getCompletedAt())
             .createdAt(post.getCreatedAt())
             .updatedAt(post.getUpdatedAt())
             .isDeleted(post.getDeletedAt() != null)

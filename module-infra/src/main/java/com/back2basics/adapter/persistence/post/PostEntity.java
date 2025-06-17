@@ -12,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-// todo : ERD에 기반한 따른 필드 값 추가
 public class PostEntity extends BaseTimeEntity {
 
     @Id
@@ -57,13 +55,10 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "priority", nullable = false)
     private PostPriority priority;
 
-    @Column(name = "completed_at")
-    private LocalDateTime completedAt = null;
-
     public PostEntity(Long id, Long parentId, Long projectId, String authorIp, Long authorId,
         String title,
         String content, PostType type, PostPriority priority,
-        Long projectStepId, LocalDateTime completedAt) {
+        Long projectStepId) {
         this.id = id;
         this.parentId = parentId;
         this.authorIp = authorIp;
@@ -74,7 +69,6 @@ public class PostEntity extends BaseTimeEntity {
         this.priority = priority;
         this.projectId = projectId;
         this.projectStepId = projectStepId;
-        this.completedAt = completedAt;
     }
 
     public static PostEntity of(Post post) {
@@ -88,8 +82,7 @@ public class PostEntity extends BaseTimeEntity {
             post.getContent(),
             post.getType(),
             post.getPriority(),
-            post.getProjectStepId(),
-            post.getCompletedAt()
+            post.getProjectStepId()
         );
     }
 

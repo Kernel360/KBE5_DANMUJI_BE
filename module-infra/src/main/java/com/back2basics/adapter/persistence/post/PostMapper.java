@@ -24,8 +24,7 @@ public class PostMapper {
             entity.getPriority(),
             entity.getCreatedAt(),
             entity.getUpdatedAt(),
-            entity.getDeletedAt(),
-            entity.getCompletedAt()
+            entity.getDeletedAt()
         );
     }
 
@@ -55,8 +54,7 @@ public class PostMapper {
             result.priority(),
             result.createdAt(),
             result.updatedAt(),
-            result.deletedAt(),
-            result.completedAt()
+            result.deletedAt()
         );
     }
 

@@ -44,7 +44,6 @@ public class PostReadResponse {
             .createdAt(postDetails.getCreatedAt())
             .updatedAt(postDetails.getUpdatedAt())
             .deletedAt(postDetails.getDeletedAt())
-            .completedAt(postDetails.getCompletedAt())
             .isDelete(postDetails.isDeleted())
             .build();
     }

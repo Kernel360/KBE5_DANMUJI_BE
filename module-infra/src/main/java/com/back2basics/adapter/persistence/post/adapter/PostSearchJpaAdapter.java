@@ -46,8 +46,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 postEntity.priority,
                 postEntity.createdAt,
                 postEntity.updatedAt,
-                postEntity.deletedAt,
-                postEntity.completedAt
+                postEntity.deletedAt
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))

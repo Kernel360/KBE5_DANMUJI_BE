@@ -46,8 +46,7 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.priority,
                 postEntity.createdAt,
                 postEntity.updatedAt,
-                postEntity.deletedAt,
-                postEntity.completedAt
+                postEntity.deletedAt
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
@@ -137,8 +136,7 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.priority,
                 postEntity.createdAt,
                 postEntity.updatedAt,
-                postEntity.deletedAt,
-                postEntity.completedAt
+                postEntity.deletedAt
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
