@@ -4,7 +4,7 @@ import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.command.CreateCompanyCommand;
 import com.back2basics.company.port.out.CreateCompanyPort;
-import com.back2basics.infra.exception.company.DuplicateCompanyNameException;
+import com.back2basics.infra.validation.validator.CompanyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +13,12 @@ import org.springframework.stereotype.Service;
 public class CreateCompanyService implements CreateCompanyUseCase {
 
     private final CreateCompanyPort createCompanyPort;
+    private final CompanyValidator companyValidator;
 
     @Override
     public Long createCompany(CreateCompanyCommand createCompanyCommand) {
 
-        if (createCompanyPort.existsByName(createCompanyCommand.getName())) {
-            throw new DuplicateCompanyNameException(createCompanyCommand.getName());
-        }
+        companyValidator.validateDuplicate(createCompanyCommand);
 
         Company company = Company.builder()
             .name(createCompanyCommand.getName())

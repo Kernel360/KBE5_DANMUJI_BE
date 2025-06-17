@@ -8,4 +8,8 @@ public interface CreateCompanyPort {
 
     boolean existsByName(String name);
 
+    boolean existsByBizNo(Long bizNo);
+
+    boolean existsByAddress(String addr);
+
 }
