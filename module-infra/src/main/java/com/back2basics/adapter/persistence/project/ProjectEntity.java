@@ -77,4 +77,16 @@ public class ProjectEntity extends BaseTimeEntity {
         this.steps = steps;
         this.assignments = assignments;
     }
+
+    public ProjectStatus getStatus() {
+        updateStatusIfDelayed();
+        return this.status;
+    }
+
+    private void updateStatusIfDelayed() {
+        if (this.status == ProjectStatus.IN_PROGRESS && this.endDate != null
+            && this.endDate.isBefore(LocalDate.now())) {
+            this.status = ProjectStatus.DELAY;
+        }
+    }
 }

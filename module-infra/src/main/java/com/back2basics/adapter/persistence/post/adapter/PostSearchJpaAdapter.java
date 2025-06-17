@@ -4,7 +4,7 @@ import static com.back2basics.adapter.persistence.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
-import com.back2basics.adapter.persistence.post.adapter.projection.PostWithAuthorResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryResult;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
@@ -12,13 +12,15 @@ import com.back2basics.post.port.in.command.PostSearchCommand;
 import com.back2basics.post.port.out.PostSearchPort;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -30,24 +32,19 @@ public class PostSearchJpaAdapter implements PostSearchPort {
 
     @Override
     public Page<Post> search(PostSearchCommand command, Pageable pageable) {
-        List<PostWithAuthorResult> results = queryFactory
+        List<PostSummaryResult> results = queryFactory
             .select(Projections.constructor(
-                PostWithAuthorResult.class,
+                PostSummaryResult.class,
                 postEntity.id.as("postId"),
                 postEntity.parentId,
                 postEntity.projectId,
                 postEntity.projectStepId,
-                postEntity.authorIp,
                 postEntity.authorId,
                 userEntity.name.as("authorName"),
                 postEntity.title,
-                postEntity.content,
                 postEntity.type,
                 postEntity.priority,
-                postEntity.createdAt,
-                postEntity.updatedAt,
-                postEntity.deletedAt,
-                postEntity.completedAt
+                postEntity.createdAt
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
@@ -68,7 +65,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .map(mapper::toDomain)
             .collect(Collectors.toList());
 
-        Long total = queryFactory
+        JPAQuery<Long> countQuery = queryFactory
             .select(postEntity.count())
             .from(postEntity)
             .where(
@@ -78,10 +75,13 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
                 matchesType(command.getType())
-            )
-            .fetchOne();
+            );
 
-        return new PageImpl<>(posts, pageable, total);
+        return PageableExecutionUtils.getPage(
+            posts,
+            pageable,
+            () -> Optional.ofNullable(countQuery.fetchOne()).orElse(0L)
+        );
     }
 
     private BooleanExpression activePosts() {
