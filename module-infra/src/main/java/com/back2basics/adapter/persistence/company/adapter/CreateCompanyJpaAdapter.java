@@ -25,4 +25,14 @@ public class CreateCompanyJpaAdapter implements CreateCompanyPort {
     public boolean existsByName(String name) {
         return companyEntityRepository.existsByName(name);
     }
+    
+    @Override
+    public boolean existsByBizNo(Long bizNo) {
+        return companyEntityRepository.existsByBizNo(bizNo);
+    }
+
+    @Override
+    public boolean existsByAddress(String addr) {
+        return companyEntityRepository.existsByAddress(addr);
+    }
 }
