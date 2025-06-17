@@ -25,9 +25,9 @@ public class PostCreateService implements PostCreateUseCase {
     private final ProjectValidator projectValidator;
     private final PostValidator postValidator;
     private final UserValidator userValidator;
-
     private final FileUploadService fileUploadService;
     private final FileSavePort fileSavePort;
+    private final PostNotificationSender postNotificationSender;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -41,6 +41,7 @@ public class PostCreateService implements PostCreateUseCase {
         Post savedPost = postCreatePort.save(post);
 
         uploadAndSaveFiles(files, savedPost.getId());
+        postNotificationSender.sendNotification(userId, savedPost.getId(), command);
 
         return PostCreateResult.toResult(savedPost);
     }
