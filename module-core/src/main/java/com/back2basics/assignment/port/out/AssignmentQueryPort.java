@@ -12,4 +12,7 @@ public interface AssignmentQueryPort {
     Assignment findByProjectIdAndUserTypeAndCompanyType(Long projectId, UserType userType, CompanyType companyType);
 
     Assignment findByProjectIdAndUserId(Long projectId, Long userId);
+
+    // 할당된 회사 삭제를 위한 assignment 리스트 조회
+    List<Assignment> findByProjectIdAndCompanyId(Long projectId, Long companyId);
 }
