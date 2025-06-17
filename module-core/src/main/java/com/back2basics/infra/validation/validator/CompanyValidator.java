@@ -35,15 +35,15 @@ public class CompanyValidator {
         List<FieldError> errors = new ArrayList<>();
 
         if (createCompanyPort.existsByName(command.getName())) {
-            errors.add(new FieldError("name", command.getName(), "[COMP002]이미 존재하는 회사명입니다"));
+            errors.add(new FieldError("name", command.getName(), "이미 존재하는 회사명입니다"));
         }
         if (createCompanyPort.existsByBizNo(command.getBizNo())) {
             errors.add(
                 new FieldError("bizNo", command.getBizNo().toString(),
-                    "[COMP002]이미 존재하는 사업자등록번호입니다"));
+                    "이미 존재하는 사업자등록번호입니다"));
         }
         if (createCompanyPort.existsByAddress(command.getAddress())) {
-            errors.add(new FieldError("address", command.getAddress(), "[COMP002]이미 존재하는 주소입니다"));
+            errors.add(new FieldError("address", command.getAddress(), "이미 존재하는 주소입니다"));
         }
 
         if (!errors.isEmpty()) {
