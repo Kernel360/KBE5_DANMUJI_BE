@@ -1,4 +1,4 @@
-package com.back2basics.post.model;
+package com.back2basics.post.file;
 
 import lombok.Getter;
 
