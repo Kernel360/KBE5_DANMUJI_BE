@@ -1,4 +1,4 @@
-package com.back2basics.post.service;
+package com.back2basics.infra.s3;
 
 import java.io.IOException;
 import java.util.ArrayList;

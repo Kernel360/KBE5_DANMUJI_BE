@@ -4,13 +4,14 @@ import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.post.file.File;
+import com.back2basics.post.file.FileSavePort;
+import com.back2basics.post.file.FileUploadService;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.out.PostCreatePort;
 import com.back2basics.post.service.result.PostCreateResult;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,8 @@ public class PostCreateService implements PostCreateUseCase {
     private final PostValidator postValidator;
     private final UserValidator userValidator;
 
-    private final S3Util s3Util;
+    private final FileUploadService fileUploadService;
+    private final FileSavePort fileSavePort;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -36,33 +38,21 @@ public class PostCreateService implements PostCreateUseCase {
         postValidator.findParentPost(command.getParentId());
 
         Post post = Post.create(command, userId, userIp);
+        Post savedPost = postCreatePort.save(post);
 
-        List<File> fileModels = new ArrayList<>();
-        if (files != null && !files.isEmpty()) {
-            List<String> uploadedUrls = s3Util.uploadFiles(files);
-            for (int i = 0; i < files.size(); i++) {
-                MultipartFile multipartFile = files.get(i);
-                String fileUrl = uploadedUrls.get(i);
+        uploadAndSaveFiles(files, savedPost.getId());
 
-                fileModels.add(File.create(
-                    null,
-                    post.getId(),
-                    multipartFile.getOriginalFilename(),
-                    fileUrl,
-                    extractExtension(multipartFile.getOriginalFilename()),
-                    String.valueOf(multipartFile.getSize())
-                ));
-            }
-        }
-
-        postCreatePort.save(post, fileModels);
-        return PostCreateResult.toResult(post);
+        return PostCreateResult.toResult(savedPost);
     }
 
-    private String extractExtension(String fileName) {
-        if (fileName == null || !fileName.contains(".")) {
-            return "";
+    private void uploadAndSaveFiles(List<MultipartFile> files, Long postId) throws IOException {
+        if (files == null || files.isEmpty()) {
+            return;
         }
-        return fileName.substring(fileName.lastIndexOf('.') + 1);
+
+        List<File> fileModels = fileUploadService.upload(files, postId);
+        fileSavePort.saveAll(fileModels, postId);
     }
+
+
 }
