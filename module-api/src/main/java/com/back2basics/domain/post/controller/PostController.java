@@ -5,9 +5,9 @@ import com.back2basics.domain.post.dto.request.PostCreateRequest;
 import com.back2basics.domain.post.dto.request.PostSearchRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
-import com.back2basics.domain.post.dto.response.PostReadResponse;
+import com.back2basics.domain.post.dto.response.PostDetailReadResponse;
+import com.back2basics.domain.post.dto.response.PostSummaryReadResponse;
 import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
-import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
@@ -15,7 +15,8 @@ import com.back2basics.post.port.in.PostReadUseCase;
 import com.back2basics.post.port.in.PostSearchUseCase;
 import com.back2basics.post.port.in.PostUpdateUseCase;
 import com.back2basics.post.service.result.PostCreateResult;
-import com.back2basics.post.service.result.PostReadResult;
+import com.back2basics.post.service.result.PostDetailReadResult;
+import com.back2basics.post.service.result.PostSummaryReadResult;
 import com.back2basics.post.service.result.ReadRecentPostResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
@@ -44,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController implements PostApiDocs {
+public class PostController /* implements PostApiDocs*/ {
 
     private final PostCreateUseCase createPostUseCase;
     private final PostReadUseCase postReadUseCase;
@@ -71,18 +72,18 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<ApiResponse<PostReadResponse>> getPostByProjectStep(
+    public ResponseEntity<ApiResponse<PostDetailReadResponse>> getPostByProjectStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId) {
         Long userId = customUserDetails.getId();
-        PostReadResult result = postReadUseCase.getPostById(userId, postId);
-        PostReadResponse response = PostReadResponse.toResponse(result);
+        PostDetailReadResult result = postReadUseCase.getPostById(userId, postId);
+        PostDetailReadResponse response = PostDetailReadResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
     @GetMapping("/project/{projectId}/steps/{projectStepId}")
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> getAllPostsByProjectStep(
+    public ResponseEntity<ApiResponse<Page<PostSummaryReadResponse>>> getAllPostsByProjectStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId,
         @PathVariable Long projectStepId,
@@ -91,12 +92,13 @@ public class PostController implements PostApiDocs {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         Long userId = customUserDetails.getId();
-        Page<PostReadResult> resultPage = postReadUseCase.getAllPostsByProjectIdAndStepId(
+        Page<PostSummaryReadResult> resultPage = postReadUseCase.getAllPostsByProjectIdAndStepId(
             userId,
             projectId,
             projectStepId,
             pageable);
-        Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
+        Page<PostSummaryReadResponse> responsePage = resultPage.map(
+            PostSummaryReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
@@ -125,16 +127,17 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
+    public ResponseEntity<ApiResponse<Page<PostDetailReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Valid @ModelAttribute PostSearchRequest request,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PostReadResult> resultPage = postSearchUseCase.searchPost(
+        Page<PostDetailReadResult> resultPage = postSearchUseCase.searchPost(
             customUserDetails.getId(), request.toCommand(), pageable);
-        Page<PostReadResponse> responsePage = resultPage.map(PostReadResponse::toResponse);
+        Page<PostDetailReadResponse> responsePage = resultPage.map(
+            PostDetailReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }

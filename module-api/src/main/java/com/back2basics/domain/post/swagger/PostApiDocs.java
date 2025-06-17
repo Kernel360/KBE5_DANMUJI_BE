@@ -4,7 +4,7 @@ import com.back2basics.domain.post.dto.request.PostCreateRequest;
 import com.back2basics.domain.post.dto.request.PostSearchRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateRequest;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
-import com.back2basics.domain.post.dto.response.PostReadResponse;
+import com.back2basics.domain.post.dto.response.PostDetailReadResponse;
 import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
@@ -68,7 +68,7 @@ public interface PostApiDocs {
             content = @Content(examples = @ExampleObject(value = PostDocsResult.POST_NOT_FOUND))
         )
     })
-    ResponseEntity<ApiResponse<PostReadResponse>> getPostByProjectStep(
+    ResponseEntity<ApiResponse<PostDetailReadResponse>> getPostByProjectStep(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId);
 
@@ -80,7 +80,7 @@ public interface PostApiDocs {
             content = @Content(examples = @ExampleObject(value = PostDocsResult.POST_READ_ALL_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<Page<PostReadResponse>>> getAllPostsByProjectStep(
+    ResponseEntity<ApiResponse<Page<PostDetailReadResponse>>> getAllPostsByProjectStep(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId,
         @PathVariable Long projectStepId,
@@ -140,7 +140,7 @@ public interface PostApiDocs {
             content = @Content(examples = @ExampleObject(value = PostDocsResult.POST_SEARCH_SUCCESS))
         )
     })
-    ResponseEntity<ApiResponse<Page<PostReadResponse>>> searchPosts(
+    ResponseEntity<ApiResponse<Page<PostDetailReadResponse>>> searchPosts(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Valid @ModelAttribute PostSearchRequest request,
         @RequestParam(defaultValue = "0") int page,

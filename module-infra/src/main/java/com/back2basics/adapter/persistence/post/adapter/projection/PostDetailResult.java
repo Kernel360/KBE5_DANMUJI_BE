@@ -4,7 +4,7 @@ import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import java.time.LocalDateTime;
 
-public record PostWithAuthorResult(
+public record PostDetailResult(
     Long postId,
     Long parentId,
     Long projectId,
@@ -17,9 +17,7 @@ public record PostWithAuthorResult(
     PostType type,
     PostPriority priority,
     LocalDateTime createdAt,
-    LocalDateTime updatedAt,
-    LocalDateTime deletedAt,
-    LocalDateTime completedAt
+    LocalDateTime updatedAt
 ) {
 
 }
