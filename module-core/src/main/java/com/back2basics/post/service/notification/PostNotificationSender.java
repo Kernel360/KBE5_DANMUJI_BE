@@ -6,6 +6,8 @@ import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.command.PostCreateCommand;
+import com.back2basics.project.port.out.ProjectMemberQueryPort;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +17,11 @@ public class PostNotificationSender {
 
     private final NotifyUseCase notifyUseCase;
     private final PostValidator postValidator;
+    private final ProjectMemberQueryPort projectMemberQueryPort;
 
     public void sendNotification(Long senderId, Long postId, PostCreateCommand command) {
 
-        // 1. 답글인 경우: 부모 게시글 작성자에게
+        // 답글인 경우:부모 게시글 작성자에게
         if (command.getParentId() != null) {
             Post parentPost = postValidator.findPost(command.getParentId());
             Long receiverId = parentPost.getAuthorId();
@@ -33,10 +36,10 @@ public class PostNotificationSender {
             }
         }
 
-        // 2. 일반 게시글인 경우: 프로젝트 참여자 모두에게 알림
+        // 일반 게시글인 경우 : 프로젝트 참여자 모두에게 알림
         else {
             Long projectId = command.getProjectId();
-            List<Long> memberIds = projectMemberQuery.getUserIdsByProject(projectId);
+            List<Long> memberIds = projectMemberQueryPort.getUserIdsByProject(projectId);
 
             for (Long receiverId : memberIds) {
                 if (!receiverId.equals(senderId)) {
