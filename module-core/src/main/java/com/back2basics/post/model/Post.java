@@ -22,7 +22,6 @@ public class Post {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    private LocalDateTime completedAt;
     private boolean isDelete;
 
 
@@ -39,7 +38,7 @@ public class Post {
             command.getContent(),
             command.getType(),
             command.getPriority(),
-            null, null, null, null
+            null, null, null
         );
     }
 
@@ -48,11 +47,21 @@ public class Post {
         String authorIp, Long authorId, String authorName, String title, String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt
+        LocalDateTime deletedAt
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
             title, content, type, priority,
-            createdAt, updatedAt, deletedAt, completedAt);
+            createdAt, updatedAt, deletedAt);
+    }
+
+    public static Post create(
+        Long id, Long parentId, Long projectId, Long projectStepId,
+        String authorIp, Long authorId, String authorName, String title, String content,
+        PostType type, PostPriority priority,
+        LocalDateTime createdAt, LocalDateTime updatedAt
+    ) {
+        return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
+            title, content, type, priority, createdAt, updatedAt, null);
     }
 
     public void update(PostUpdateCommand command, String userIp) {
@@ -72,7 +81,7 @@ public class Post {
         Long authorId, String authorName, String title, String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, LocalDateTime completedAt) {
+        LocalDateTime deletedAt) {
         this.id = id;
         this.parentId = parentId;
         this.projectId = projectId;
@@ -87,7 +96,8 @@ public class Post {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
-        this.completedAt = completedAt;
         this.isDelete = false;
     }
+
+
 }

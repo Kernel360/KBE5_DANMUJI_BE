@@ -22,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity
@@ -49,6 +50,7 @@ public class ProjectEntity extends BaseTimeEntity {
     private LocalDateTime deletedAt;
 
     @Column(name = "is_deleted")
+    @ColumnDefault(value = "false")
     private boolean isDeleted;
 
     @Enumerated(EnumType.STRING)
@@ -76,5 +78,17 @@ public class ProjectEntity extends BaseTimeEntity {
         this.status = status;
         this.steps = steps;
         this.assignments = assignments;
+    }
+
+    public ProjectStatus getStatus() {
+        updateStatusIfDelayed();
+        return this.status;
+    }
+
+    private void updateStatusIfDelayed() {
+        if (this.status == ProjectStatus.IN_PROGRESS && this.endDate != null
+            && this.endDate.isBefore(LocalDate.now())) {
+            this.status = ProjectStatus.DELAY;
+        }
     }
 }

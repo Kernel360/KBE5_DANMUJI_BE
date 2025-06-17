@@ -40,7 +40,7 @@ public class SaveAssignmentAdapter implements SaveProjectUserPort {
         UserEntity user = userEntityRepository.findById(assignment.getUser().getId())
             .orElseThrow(() -> new UserException(USER_NOT_FOUND));
 
-        CompanyEntity company = companyEntityRepository.findById(assignment.getCompany().getId())
+        CompanyEntity company = companyEntityRepository.findById(assignment.getUser().getCompanyId())
             .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
 
         AssignmentEntity entity = mapper.toEntity(assignment, project, user, company);
@@ -50,17 +50,17 @@ public class SaveAssignmentAdapter implements SaveProjectUserPort {
     @Override
     public void saveAll(List<Assignment> assignments) {
         List<AssignmentEntity> entities = assignments.stream()
-            .map(projectUser -> {
-                ProjectEntity project = projectEntityRepository.findById(projectUser.getProject().getId())
+            .map(assignment -> {
+                ProjectEntity project = projectEntityRepository.findById(assignment.getProject().getId())
                     .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
 
-                UserEntity user = userEntityRepository.findById(projectUser.getUser().getId())
+                UserEntity user = userEntityRepository.findById(assignment.getUser().getId())
                     .orElseThrow(() -> new UserException(USER_NOT_FOUND));
 
-                CompanyEntity company = companyEntityRepository.findById(projectUser.getCompany().getId())
+                CompanyEntity company = companyEntityRepository.findById(assignment.getUser().getCompanyId())
                     .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
 
-                return mapper.toEntity(projectUser, project, user, company);
+                return mapper.toEntity(assignment, project, user, company);
             })
             .toList();
 
