@@ -1,8 +1,10 @@
 package com.back2basics.post.model;
 
+import com.back2basics.post.file.File;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -23,22 +25,23 @@ public class Post {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private boolean isDelete;
-
+    private List<File> files;
 
     public static Post create(PostCreateCommand command, Long userId, String userIp) {
         return new Post(
-            null, // id는 생성 시점에는 null
+            null,
             command.getParentId(),
             command.getProjectId(),
             command.getStepId(),
             userIp,
             userId,
-            null, // authorName 생성시점에는 null
+            null,
             command.getTitle(),
             command.getContent(),
             command.getType(),
             command.getPriority(),
-            null, null, null
+            null, null, null,
+            null // ← files
         );
     }
 
@@ -50,19 +53,21 @@ public class Post {
         LocalDateTime deletedAt
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
-            title, content, type, priority,
-            createdAt, updatedAt, deletedAt);
+            title, content, type, priority, createdAt, updatedAt, deletedAt, null);
     }
 
+    // files 포함한 팩토리 메서드
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
         String authorIp, Long authorId, String authorName, String title, String content,
         PostType type, PostPriority priority,
-        LocalDateTime createdAt, LocalDateTime updatedAt
+        LocalDateTime createdAt, LocalDateTime updatedAt,
+        LocalDateTime deletedAt, List<File> files
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
-            title, content, type, priority, createdAt, updatedAt, null);
+            title, content, type, priority, createdAt, updatedAt, deletedAt, files);
     }
+
 
     public void update(PostUpdateCommand command, String userIp) {
         this.title = command.getTitle();
@@ -81,7 +86,7 @@ public class Post {
         Long authorId, String authorName, String title, String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt) {
+        LocalDateTime deletedAt, List<File> files) {
         this.id = id;
         this.parentId = parentId;
         this.projectId = projectId;
@@ -97,6 +102,7 @@ public class Post {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.isDelete = false;
+        this.files = files;
     }
 
 

@@ -20,6 +20,7 @@ import com.back2basics.post.service.result.PostSummaryReadResult;
 import com.back2basics.post.service.result.ReadRecentPostResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 // todo : 이거 어케 restful하게 해야알지 너무 고민.. 어떤건 pathvaraible, 어떤건 dto, 또 어떤건 경로자체가 이상...
@@ -56,7 +58,9 @@ public class PostController /* implements PostApiDocs*/ {
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestBody @Valid PostCreateRequest request) {
+        @RequestPart("data") @Valid PostCreateRequest request,
+        @RequestPart(value = "files", required = false) List<MultipartFile> files)
+        throws IOException {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
@@ -65,7 +69,8 @@ public class PostController /* implements PostApiDocs*/ {
             request.getProjectId(),
             request.getStepId(),
             userIp,
-            request.toCommand());
+            request.toCommand(),
+            files);
         PostCreateResponse response = PostCreateResponse.toResponse(result);
 
         return ApiResponse.success(PostResponseCode.POST_CREATE_SUCCESS, response);
@@ -108,11 +113,13 @@ public class PostController /* implements PostApiDocs*/ {
     public ResponseEntity<ApiResponse<Void>> updatePost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
-        @Valid @RequestBody PostUpdateRequest request) {
+        @RequestPart("data") @Valid PostUpdateRequest request,
+        @RequestPart(value = "files", required = false) List<MultipartFile> files)
+        throws IOException {
 
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
-        postUpdateUseCase.updatePost(userId, userIp, postId, request.toCommand());
+        postUpdateUseCase.updatePost(userId, userIp, postId, request.toCommand(), files);
 
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS);
     }

@@ -86,8 +86,12 @@ public class ProjectEntity extends BaseTimeEntity {
     }
 
     private void updateStatusIfDelayed() {
-        if (this.status == ProjectStatus.IN_PROGRESS && this.endDate != null
-            && this.endDate.isBefore(LocalDate.now())) {
+        LocalDate today = LocalDate.now();
+
+        if (this.status == ProjectStatus.IN_PROGRESS
+            && this.endDate != null
+            && this.endDate.isBefore(today)) {
+
             this.status = ProjectStatus.DELAY;
         }
     }

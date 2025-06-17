@@ -1,9 +1,11 @@
 package com.back2basics.domain.post.dto.response;
 
+import com.back2basics.post.file.File;
 import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.service.result.PostDetailReadResult;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,6 +27,8 @@ public class PostDetailReadResponse {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final boolean isDelete;
+    private final List<File> files;
+
 
     public static PostDetailReadResponse toResponse(PostDetailReadResult postDetails) {
         return PostDetailReadResponse.builder()
@@ -42,6 +46,7 @@ public class PostDetailReadResponse {
             .createdAt(postDetails.getCreatedAt())
             .updatedAt(postDetails.getUpdatedAt())
             .isDelete(postDetails.isDeleted())
+            .files(postDetails.getFiles())
             .build();
     }
 

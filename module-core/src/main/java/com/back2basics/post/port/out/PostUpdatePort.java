@@ -4,5 +4,5 @@ import com.back2basics.post.model.Post;
 
 public interface PostUpdatePort {
 
-    void update(Post post);
+    Post update(Post post);
 }
