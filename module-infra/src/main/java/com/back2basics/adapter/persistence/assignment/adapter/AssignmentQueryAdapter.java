@@ -14,31 +14,43 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AssignmentQueryAdapter implements AssignmentQueryPort {
 
-    private final AssignmentEntityRepository projectUserEntityRepository;
-    private final AssignmentMapper projectUserMapper;
+    private final AssignmentEntityRepository assignmentEntityRepository;
+    private final AssignmentMapper assignmentMapper;
+
 
     @Override
     public List<Assignment> findUsersByProjectId(Long projectId) {
 
-        return projectUserEntityRepository.findByProject_Id(projectId)
+        return assignmentEntityRepository.findByProject_Id(projectId)
             .stream()
-            .map(projectUserMapper::toDomain)
+            .map(assignmentMapper::toDomain)
             .toList();
     }
 
     @Override
-    public Assignment findByProjectIdAndUserTypeAndCompanyType(Long projectId, UserType userType, CompanyType companyType) {
-        Assignment assignment = projectUserMapper.toDomain(
-            projectUserEntityRepository.findByProjectIdAndUserTypeAndCompanyType(projectId, userType, companyType)
+    public Assignment findByProjectIdAndUserTypeAndCompanyType(Long projectId, UserType userType,
+        CompanyType companyType) {
+        Assignment assignment = assignmentMapper.toDomain(
+            assignmentEntityRepository.findByProjectIdAndUserTypeAndCompanyType(projectId, userType,
+                companyType)
         );
         return assignment;
     }
 
     @Override
     public Assignment findByProjectIdAndUserId(Long projectId, Long userId) {
-        Assignment assignment = projectUserMapper.toDomain(
-            projectUserEntityRepository.findByProjectIdAndUserId(projectId, userId)
+        Assignment assignment = assignmentMapper.toDomain(
+            assignmentEntityRepository.findByProjectIdAndUserId(projectId, userId)
         );
         return assignment;
+    }
+
+    @Override
+    public List<Assignment> findByProjectIdAndCompanyId(Long projectId, Long companyId) {
+
+        return assignmentEntityRepository.findByProject_IdAndCompany_Id(projectId, companyId)
+            .stream()
+            .map(assignmentMapper::toDomainTest)
+            .toList(); // toDomain, toDomainTest 차이를 잘 모르겠음 내가 만든건데 내가 이해못함.
     }
 }

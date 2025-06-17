@@ -16,4 +16,6 @@ public interface AssignmentEntityRepository extends JpaRepository<AssignmentEnti
     AssignmentEntity findByProjectIdAndUserId(Long projectId, Long userId);
 
     List<AssignmentEntity> findByUserIdAndProjectIsDeletedFalse(Long userId);
+
+    List<AssignmentEntity> findByProject_IdAndCompany_Id(Long projectId, Long companyId);
 }

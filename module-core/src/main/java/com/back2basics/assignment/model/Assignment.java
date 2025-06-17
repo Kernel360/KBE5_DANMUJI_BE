@@ -47,7 +47,7 @@ public class Assignment {
     public static List<Assignment> createProjectUser(Project project, List<User> devManagers,
         List<User> clientManagers, List<User> devUsers, List<User> clientUsers) {
 
-        // 개발사 멤버, 멤버가 담당자와 하나라도 일치하면 MANAGER, 참고 자료 : https://haenny.tistory.com/389
+        // 개발사 멤버, 멤버가 담당자와 하나라도 일치하면 MANAGER
         List<Assignment> developers = devUsers.stream()
             .map(user -> Assignment.builder()
                 .project(project)
