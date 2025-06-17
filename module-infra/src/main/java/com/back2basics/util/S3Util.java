@@ -16,7 +16,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
 @RequiredArgsConstructor
-public class StorageUtil {
+public class S3Util {
 
     private final S3Client s3Client;
 
