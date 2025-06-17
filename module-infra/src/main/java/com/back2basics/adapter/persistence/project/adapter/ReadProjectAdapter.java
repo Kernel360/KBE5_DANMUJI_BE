@@ -1,10 +1,10 @@
 package com.back2basics.adapter.persistence.project.adapter;
 
-import static com.back2basics.infra.exception.project.ProjectErrorCode.*;
+import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.project.ProjectEntity;
-import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
+import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.out.ReadProjectPort;
@@ -48,7 +48,7 @@ public class ReadProjectAdapter implements ReadProjectPort {
 
     @Override
     public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
-        return projectEntityRepository.findAllByProjectUsersUser_IdAndIsDeletedFalse(userId,
+        return projectEntityRepository.findAllByAssignmentsUserIdAndIsDeletedFalse(userId,
                 pageable)
             .map(projectMapper::toDomain);
     }

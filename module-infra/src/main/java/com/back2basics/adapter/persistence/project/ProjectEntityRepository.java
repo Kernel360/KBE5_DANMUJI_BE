@@ -18,14 +18,14 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
 
     @Query("""
             SELECT pu.project
-            FROM ProjectUserEntity pu
+            FROM AssignmentEntity pu
             WHERE pu.user.id = :userId
               AND pu.project.isDeleted = false
         """)
     Page<ProjectEntity> findProjectsByUserIdAndIsDeletedFalse(Long userId,
         Pageable pageable);
 
-    Page<ProjectEntity> findAllByProjectUsersUser_IdAndIsDeletedFalse(
+    Page<ProjectEntity> findAllByAssignmentsUserIdAndIsDeletedFalse(
         Long userId,
         Pageable pageable
     );

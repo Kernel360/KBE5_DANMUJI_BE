@@ -59,12 +59,12 @@ public class ProjectEntity extends BaseTimeEntity {
     private List<ProjectStepEntity> steps = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
-    private List<AssignmentEntity> projectUsers = new ArrayList<>();
+    private List<AssignmentEntity> assignments = new ArrayList<>();
 
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
         LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status,
-        List<ProjectStepEntity> steps, List<AssignmentEntity> projectUsers) {
+        List<ProjectStepEntity> steps, List<AssignmentEntity> assignments) {
 
         this.id = id;
         this.name = name;
@@ -75,6 +75,6 @@ public class ProjectEntity extends BaseTimeEntity {
         this.isDeleted = isDeleted;
         this.status = status;
         this.steps = steps;
-        this.projectUsers = projectUsers;
+        this.assignments = assignments;
     }
 }

@@ -1,7 +1,7 @@
 package com.back2basics.adapter.persistence.project;
 
-import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.adapter.persistence.assignment.AssignmentMapper;
+import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.project.model.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,8 @@ public class ProjectMapper {
             .steps(
                 projectEntity.getSteps().stream().map(projectStepMapper::toDomain).toList())
             .assignments(
-                projectEntity.getProjectUsers().stream().map(projectUserMapper::toDomainTest).toList())
+                projectEntity.getAssignments().stream().map(projectUserMapper::toDomainTest)
+                    .toList())
             .build();
     }
 
@@ -49,7 +50,7 @@ public class ProjectMapper {
             .isDeleted(project.isDeleted())
             .status(project.getStatus())
             .steps(project.getSteps().stream().map(projectStepMapper::toEntity).toList())
-            .projectUsers(
+            .assignments(
                 project.getAssignments().stream().map(projectUserMapper::toEntityTest).toList())
             .build();
     }
