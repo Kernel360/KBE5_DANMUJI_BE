@@ -6,22 +6,26 @@ import lombok.Getter;
 public class File {
 
     private final Long id;
+    private Long postId;
     private String fileName;
     private String fileUrl;
     private String fileType;
     private String fileSize;
 
-    public File(Long id, String fileName, String fileUrl, String fileType, String fileSize) {
+    public File(Long id, Long postId, String fileName, String fileUrl, String fileType,
+        String fileSize) {
         this.id = id;
+        this.postId = postId;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.fileType = fileType;
         this.fileSize = fileSize;
     }
 
-    public static File create(Long id, String fileName, String fileUrl, String fileType,
+    public static File create(Long id, Long postId, String fileName, String fileUrl,
+        String fileType,
         String fileSize) {
-        return new File(id, fileName, fileUrl, fileType, fileSize);
+        return new File(id, postId, fileName, fileUrl, fileType, fileSize);
     }
 
     public void update(String fileName, String fileUrl, String fileType, String fileSize) {

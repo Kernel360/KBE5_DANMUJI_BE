@@ -21,6 +21,9 @@ public class FileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "post_id")
+    private Long postId;
+
     @Column(name = "file_name")
     private String fileName;
 
@@ -33,8 +36,10 @@ public class FileEntity {
     @Column(name = "file_size") // 파일 사이즈
     private String fileSize;
 
-    public FileEntity(Long id, String fileName, String fileUrl, String fileType, String fileSize) {
+    public FileEntity(Long id, Long postId, String fileName, String fileUrl, String fileType,
+        String fileSize) {
         this.id = id;
+        this.postId = postId;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.fileType = fileType;
@@ -45,6 +50,7 @@ public class FileEntity {
     public static FileEntity of(File file) {
         return new FileEntity(
             file.getId(),
+            file.getPostId(),
             file.getFileName(),
             file.getFileUrl(),
             file.getFileType(),

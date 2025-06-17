@@ -1,4 +1,4 @@
-package com.back2basics.util;
+package com.back2basics.post.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
