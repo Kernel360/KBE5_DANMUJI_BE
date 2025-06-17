@@ -22,7 +22,7 @@ class PostModelTest {
             .build();
 
         // then
-        assertThat(post.getStatus()).isEqualTo(PostStatus.PENDING);
+        assertThat(post.getStatus()).isEqualTo(PostPriority.PENDING);
         assertThat(post.getComments()).isEmpty();
         assertThat(post.isDelete()).isFalse();
     }
@@ -44,7 +44,7 @@ class PostModelTest {
             .title("수정된 제목")
             .content("수정된 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(2)
             .build();
 
@@ -55,7 +55,7 @@ class PostModelTest {
         assertThat(post.getTitle()).isEqualTo("수정된 제목");
         assertThat(post.getContent()).isEqualTo("수정된 내용");
         assertThat(post.getType()).isEqualTo(PostType.NOTICE);
-        assertThat(post.getStatus()).isEqualTo(PostStatus.PENDING);
+        assertThat(post.getStatus()).isEqualTo(PostPriority.PENDING);
         assertThat(post.getPriority()).isEqualTo(2);
     }
 

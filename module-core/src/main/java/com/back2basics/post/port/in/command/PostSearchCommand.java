@@ -1,7 +1,7 @@
 package com.back2basics.post.port.in.command;
 
 
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +14,8 @@ public class PostSearchCommand {
     private String clientCompany;
     private String developerCompany;
     private String author;
-    private Integer priority;
-    private PostStatus status;
+    private PostPriority priority;
     private PostType type;
+    private Long projectId;
     private Long projectStepId;
 }

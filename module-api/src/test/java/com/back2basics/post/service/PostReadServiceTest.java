@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.service.result.PostReadResult;
@@ -48,7 +48,7 @@ class PostReadServiceTest {
             .title("첫 번째 게시글")
             .content("첫 번째 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
 
@@ -58,7 +58,7 @@ class PostReadServiceTest {
             .title("두 번째 게시글")
             .content("두 번째 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(2)
             .build();
     }

@@ -1,6 +1,6 @@
 package com.back2basics.domain.post.dto.request;
 
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostSearchCommand;
 import jakarta.annotation.Nullable;
@@ -11,6 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostSearchRequest {
+
+    @NotNull(message = "프로젝트를 입력하세요.")
+    private Long projectId;
 
     @NotNull(message = "프로젝트 단계를 입력하세요.")
     private Long stepId;
@@ -28,10 +31,7 @@ public class PostSearchRequest {
     private String developerCompany;
 
     @Nullable
-    private Integer priority;
-
-    @Nullable
-    private PostStatus status;
+    private PostPriority priority;
 
     @Nullable
     private PostType type;
@@ -43,8 +43,9 @@ public class PostSearchRequest {
             .developerCompany(developerCompany)
             .author(author)
             .priority(priority)
-            .status(status)
+            .priority(priority)
             .type(type)
+            .projectId(projectId)
             .projectStepId(stepId)
             .build();
     }

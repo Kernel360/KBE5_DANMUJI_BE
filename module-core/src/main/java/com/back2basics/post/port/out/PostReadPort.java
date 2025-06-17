@@ -11,9 +11,8 @@ public interface PostReadPort {
 
     Optional<Post> findById(Long postId);
 
-    Optional<Post> findPostByProjectStepId(Long postId, Long projectStepId);
-
-    Page<Post> findAllPostsByProjectStepId(Long projectStepId, Pageable pageable);
+    Page<Post> findAllPostsByProjectIdAndStepId(Long projectId, Long projectStepId,
+        Pageable pageable);
 
     List<ReadRecentPostResult> getRecentPosts();
 }

@@ -12,7 +12,7 @@ import com.back2basics.adapter.persistence.post.adapter.PostDeleteJpaAdapter;
 import com.back2basics.infra.exception.post.PostErrorCode;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ class PostDeleteJpaAdapterTest {
             .title("삭제할 게시글")
             .content("삭제할 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
         post.markDeleted(); // 삭제 마킹
@@ -58,7 +58,7 @@ class PostDeleteJpaAdapterTest {
             .title("삭제할 게시글")
             .content("삭제할 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
     }
@@ -103,7 +103,7 @@ class PostDeleteJpaAdapterTest {
             .title("이미 삭제된 게시글")
             .content("이미 삭제된 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
         alreadyDeletedEntity.markDeleted(); // 이미 삭제된 상태

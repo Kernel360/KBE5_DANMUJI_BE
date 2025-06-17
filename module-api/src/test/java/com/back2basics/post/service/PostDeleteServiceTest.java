@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.out.PostSoftDeletePort;
 import java.time.LocalDateTime;
@@ -44,7 +44,7 @@ class PostDeleteServiceTest {
             .title("삭제할 게시글")
             .content("삭제할 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();
@@ -83,7 +83,7 @@ class PostDeleteServiceTest {
             .title("다른 사용자의 게시글")
             .content("다른 사용자의 내용")
             .type(PostType.NOTICE)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .createdAt(LocalDateTime.now())
             .build();
@@ -119,7 +119,7 @@ class PostDeleteServiceTest {
             .title("정확성 테스트")
             .content("정확성 테스트 내용")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(5)
             .createdAt(LocalDateTime.now())
             .build();
@@ -136,7 +136,7 @@ class PostDeleteServiceTest {
         Post capturedPost = postCaptor.getValue();
         assertThat(capturedPost).isEqualTo(post); // 동일한 객체인지 확인
         assertThat(capturedPost.getType()).isEqualTo(PostType.GENERAL);
-        assertThat(capturedPost.getStatus()).isEqualTo(PostStatus.PENDING);
+        assertThat(capturedPost.getStatus()).isEqualTo(PostPriority.PENDING);
         assertThat(capturedPost.getPriority()).isEqualTo(5);
     }
 }

@@ -8,7 +8,7 @@ import com.back2basics.infra.exception.post.PostErrorCode;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostStatus;
+import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.out.PostReadPort;
 import java.util.Optional;
@@ -43,7 +43,7 @@ class PostValidatorTest {
             .title("title")
             .content("content")
             .type(PostType.GENERAL)
-            .status(PostStatus.PENDING)
+            .status(PostPriority.PENDING)
             .priority(1)
             .build();
     }

@@ -3,13 +3,15 @@ package com.back2basics.post.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.STRING)
-public enum PostType {
-    GENERAL("일반"),
-    QUESTION("질문");
+public enum PostPriority {
+    LOW("낮음"),
+    MEDIUM("보통"),
+    HIGH("높음"),
+    URGENT("긴급");
 
     private final String label;
 
-    PostType(String label) {
+    PostPriority(String label) {
         this.label = label;
     }
 
