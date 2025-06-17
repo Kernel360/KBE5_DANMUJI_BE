@@ -8,6 +8,7 @@ import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostDetailReadResponse;
 import com.back2basics.domain.post.dto.response.PostSummaryReadResponse;
 import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
+import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
@@ -47,7 +48,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController /* implements PostApiDocs*/ {
+public class PostController implements PostApiDocs {
 
     private final PostCreateUseCase createPostUseCase;
     private final PostReadUseCase postReadUseCase;
