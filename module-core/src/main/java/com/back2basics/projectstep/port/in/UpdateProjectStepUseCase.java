@@ -1,6 +1,7 @@
-package com.back2basics.projectstep.port.in.command;
+package com.back2basics.projectstep.port.in;
 
 import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
+import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 
 public interface UpdateProjectStepUseCase {
 

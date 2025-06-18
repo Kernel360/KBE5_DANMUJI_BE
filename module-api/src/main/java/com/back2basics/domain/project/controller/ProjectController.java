@@ -110,7 +110,6 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 
-    // todo: 프로젝트 정보 수정, 할당 멤버 수정 나누기 고민.
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
         @PathVariable Long projectId,
