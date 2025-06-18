@@ -2,15 +2,20 @@ package com.back2basics.assignment.service.result;
 
 
 import com.back2basics.assignment.model.Assignment;
-import com.back2basics.company.model.CompanyType;
+import java.util.List;
 
-public record AssignProjectListResult(Long id, String companyName, CompanyType companyType,
-                                      String userName) {
+public record AssignProjectListResult(Long id, String companyName,
+                                      List<AssignUserResult> assignUsers) {
 
-    public static AssignProjectListResult toResult(Assignment assignment) {
+    public static AssignProjectListResult toResult(List<Assignment> assignments) {
 
-        return new AssignProjectListResult(assignment.getId(), assignment.getCompany().getName(),
-            assignment.getCompanyType(), assignment.getUser().getName());
+        Assignment assignment = assignments.get(0);
+
+        List<AssignUserResult> assignUsers = assignments.stream().map(AssignUserResult::toResult)
+            .toList();
+
+        return new AssignProjectListResult(assignment.getCompany().getId(),
+            assignment.getCompany().getName(),
+            assignUsers);
     }
-
 }

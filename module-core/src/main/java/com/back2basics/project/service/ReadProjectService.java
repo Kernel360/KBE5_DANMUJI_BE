@@ -73,10 +73,7 @@ public class ReadProjectService implements ReadProjectUseCase {
     @Override
     public ProjectDetailResult getProjectDetails(Long projectId) {
         Project project = projectValidator.findProjectById(projectId);
-        List<ProjectStep> steps = readProjectStepPort.findByProjectId(projectId);
-        List<Assignment> users = assignmentQueryPort.findUsersByProjectId(projectId);
-
-        return ProjectDetailResult.of(project, steps, users);
+        return ProjectDetailResult.of(project);
     }
 
     @Override
@@ -87,14 +84,12 @@ public class ReadProjectService implements ReadProjectUseCase {
     @Override
     public Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable) {
         Page<Project> projects = readProjectPort.findAllByUserId(userId, pageable);
-        Page<ProjectListResult> result = projects.map(ProjectListResult::toResult);
-        return result;
+        return projects.map(ProjectListResult::toResult);
     }
 
     @Override
     public Page<ProjectListResult> getAllByUserIdOne(Long userId, Pageable pageable) {
         Page<Project> projects = readProjectPort.findAllByUserIdOne(userId, pageable);
-        Page<ProjectListResult> result = projects.map(ProjectListResult::toResult);
-        return result;
+        return projects.map(ProjectListResult::toResult);
     }
 }
