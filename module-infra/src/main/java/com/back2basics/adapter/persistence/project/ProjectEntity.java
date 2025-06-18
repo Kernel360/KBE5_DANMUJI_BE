@@ -4,6 +4,7 @@ import com.back2basics.adapter.persistence.assignment.AssignmentEntity;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.project.model.ProjectStatus;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -57,10 +58,10 @@ public class ProjectEntity extends BaseTimeEntity {
     @Column(name = "status", nullable = false)
     private ProjectStatus status;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectStepEntity> steps = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true )
     private List<AssignmentEntity> assignments = new ArrayList<>();
 
     @Builder
@@ -76,6 +77,7 @@ public class ProjectEntity extends BaseTimeEntity {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status;
+
         this.steps = steps;
         this.assignments = assignments;
     }
