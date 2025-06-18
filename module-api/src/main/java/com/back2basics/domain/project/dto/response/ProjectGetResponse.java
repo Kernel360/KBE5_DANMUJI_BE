@@ -20,7 +20,7 @@ public record ProjectGetResponse(Long id, String name, String description,
         return new ProjectGetResponse(result.getId(), result.getName(), result.getDescription(),
             result.getStartDate(), result.getEndDate(), result.getCreatedAt(),
             result.getUpdatedAt(), result.getDeletedAt(), result.isDeleted(), result.getStatus(),
-            result.getSteps(),
-            result.getClientCompany(), result.getDeveloperCompany(), result.getProjectUsers());
+            result.getSteps(), result.getClientCompany(), result.getDeveloperCompany(),
+            result.getProjectUsers());
     }
 }
