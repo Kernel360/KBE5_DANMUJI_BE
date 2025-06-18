@@ -4,7 +4,6 @@ import com.back2basics.domain.post.controller.code.PostResponseCode;
 import com.back2basics.domain.post.dto.request.PostCreateRequest;
 import com.back2basics.domain.post.dto.request.PostSearchRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateRequest;
-import com.back2basics.domain.post.dto.response.FileDownloadResponse;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostDetailReadResponse;
 import com.back2basics.domain.post.dto.response.PostSummaryReadResponse;
@@ -31,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -164,17 +164,22 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping("/{postId}/files/{fileId}")
-    public ResponseEntity<ApiResponse<FileDownloadResponse>> downloadFile(
+    public ResponseEntity<byte[]> downloadFile(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
         @PathVariable Long fileId
     ) throws IOException {
-        FileDownloadResult result = fileDownloadUseCase.downloadFile(customUserDetails.getId(),
+        FileDownloadResult result = fileDownloadUseCase.downloadFile(
+            customUserDetails.getId(),
             postId,
-            fileId);
-        FileDownloadResponse response = FileDownloadResponse.toResponse(result);
+            fileId
+        );
 
-        return ApiResponse.success(PostResponseCode.POST_FILE_DOWNLOAD_SUCCESS, response);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + result.fileName() + "\"")
+            .header(HttpHeaders.CONTENT_TYPE, result.fileType())
+            .body(result.bytes());
     }
 
 
