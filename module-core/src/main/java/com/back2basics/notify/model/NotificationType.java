@@ -12,9 +12,8 @@ public enum NotificationType {
     QUESTION("질문"),
     ANSWER("답변"),
 
-    POST_APPROVAL_REQUEST("게시글승인요청"),
-    POST_APPROVAL_ACCEPTED("게시글승인완료"),
-    POST_APPROVAL_REJECTED("게시글승인거절"),
+    PROJECT_POST_CREATED("프로젝트에 새로운 게시글이 등록되었습니다."),
+    POST_REPLY_CREATED("내 게시글에 답글이 달렸습니다."),
 
     COMMENT_POST_CREATED("내 게시글에 댓글이 달렸습니다."),
     COMMENT_REPLY_CREATED("내 댓글에 답글이 달렸습니다."),

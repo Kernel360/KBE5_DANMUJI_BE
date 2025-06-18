@@ -10,6 +10,7 @@ import com.back2basics.post.model.Post;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.command.PostCreateCommand;
 import com.back2basics.post.port.out.PostCreatePort;
+import com.back2basics.post.service.notification.PostNotificationSender;
 import com.back2basics.post.service.result.PostCreateResult;
 import java.io.IOException;
 import java.util.List;
@@ -25,9 +26,9 @@ public class PostCreateService implements PostCreateUseCase {
     private final ProjectValidator projectValidator;
     private final PostValidator postValidator;
     private final UserValidator userValidator;
-
     private final FileUploadService fileUploadService;
     private final FileSavePort fileSavePort;
+    private final PostNotificationSender postNotificationSender;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -41,6 +42,7 @@ public class PostCreateService implements PostCreateUseCase {
         Post savedPost = postCreatePort.save(post);
 
         uploadAndSaveFiles(files, savedPost.getId());
+        postNotificationSender.sendNotification(userId, savedPost.getId(), command);
 
         return PostCreateResult.toResult(savedPost);
     }
