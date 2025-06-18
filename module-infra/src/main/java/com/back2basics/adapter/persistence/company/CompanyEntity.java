@@ -31,10 +31,10 @@ public class CompanyEntity extends BaseTimeEntity {
     @Column(name = "bio", nullable = false)
     private String bio;
 
-    @Column(name = "biz_no", nullable = false)
+    @Column(name = "biz_no", nullable = false, unique = true)
     private Long bizNo;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address", nullable = false, unique = true)
     private String address;
 
     @Column(name = "email", nullable = false)

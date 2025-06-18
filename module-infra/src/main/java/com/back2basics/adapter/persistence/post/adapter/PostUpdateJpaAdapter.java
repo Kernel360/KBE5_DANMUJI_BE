@@ -15,7 +15,9 @@ public class PostUpdateJpaAdapter implements PostUpdatePort {
     private final PostMapper mapper;
 
     @Override
-    public void update(Post post) {
-        postRepository.save(mapper.toEntity(post));
+    public Post update(Post post) {
+        return mapper.toDomain(
+            postRepository.save(mapper.toEntity(post))
+        );
     }
 }

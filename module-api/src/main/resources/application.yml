@@ -51,6 +51,13 @@ jwt:
 
 server:
   forward-headers-strategy: native
+
+cloudflare:
+  r2:
+    endpoint: ${R2_ENDPOINT}
+    bucket: ${R2_BUCKET}
+    access-key: ${R2_ACCESS_KEY}
+    secret-key: ${R2_SECRET_KEY}
 ---
 spring:
   config:

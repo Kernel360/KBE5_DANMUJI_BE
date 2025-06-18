@@ -21,5 +21,9 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
 
     boolean existsByName(String name);
 
+    boolean existsByBizNo(Long bizNo);
+
+    boolean existsByAddress(String addr);
+
     List<CompanyEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 }

@@ -4,20 +4,17 @@ import com.back2basics.post.model.PostPriority;
 import com.back2basics.post.model.PostType;
 import java.time.LocalDateTime;
 
-public record PostDetailResult(
+public record PostSummaryProjection(
     Long postId,
     Long parentId,
     Long projectId,
     Long projectStepId,
-    String authorIp,
     Long authorId,
     String authorName,
     String title,
-    String content,
     PostType type,
     PostPriority priority,
-    LocalDateTime createdAt,
-    LocalDateTime updatedAt
+    LocalDateTime createdAt
 ) {
 
 }

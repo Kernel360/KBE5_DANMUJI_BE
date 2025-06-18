@@ -5,9 +5,11 @@ import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEn
 import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.post.PostMapper;
-import com.back2basics.adapter.persistence.post.adapter.projection.PostDetailResult;
-import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostDetailProjection;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryProjection;
 import com.back2basics.infra.exception.post.PostException;
+import com.back2basics.post.file.File;
+import com.back2basics.post.file.FileReadPort;
 import com.back2basics.post.model.Post;
 import com.back2basics.post.port.out.PostReadPort;
 import com.back2basics.post.service.result.ReadRecentPostResult;
@@ -29,12 +31,13 @@ public class PostReadJpaAdapter implements PostReadPort {
 
     private final JPAQueryFactory queryFactory;
     private final PostMapper mapper;
+    private final FileReadPort fileReadPort;
 
     @Override
     public Optional<Post> findById(Long id) {
-        PostDetailResult result = queryFactory
+        PostDetailProjection result = queryFactory
             .select(Projections.constructor(
-                PostDetailResult.class,
+                PostDetailProjection.class,
                 postEntity.id.as("postId"),
                 postEntity.parentId,
                 postEntity.projectId,
@@ -63,16 +66,17 @@ public class PostReadJpaAdapter implements PostReadPort {
             throw new PostException(POST_NOT_FOUND);
         }
 
-        return Optional.of(mapper.toDomain(result));
+        List<File> files = fileReadPort.getFilesByPostId(id);
+        return Optional.of(mapper.toDomain(result, files));
     }
 
     @Override
     public Page<Post> findAllPostsByProjectIdAndStepId(Long projectId, Long projectStepId,
         Pageable pageable) {
 
-        List<PostSummaryResult> results = queryFactory
+        List<PostSummaryProjection> results = queryFactory
             .select(Projections.constructor(
-                PostSummaryResult.class,
+                PostSummaryProjection.class,
                 postEntity.id.as("postId"),
                 postEntity.projectId,
                 postEntity.parentId,

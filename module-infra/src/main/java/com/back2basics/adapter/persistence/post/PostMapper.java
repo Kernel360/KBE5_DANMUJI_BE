@@ -1,8 +1,10 @@
 package com.back2basics.adapter.persistence.post;
 
-import com.back2basics.adapter.persistence.post.adapter.projection.PostDetailResult;
-import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryResult;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostDetailProjection;
+import com.back2basics.adapter.persistence.post.adapter.projection.PostSummaryProjection;
+import com.back2basics.post.file.File;
 import com.back2basics.post.model.Post;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +42,7 @@ public class PostMapper {
         return entity;
     }
 
-    public Post toDomain(PostDetailResult result) {
+    public Post toDomain(PostDetailProjection result) {
         return Post.create(
             result.postId(),
             result.parentId(),
@@ -54,11 +56,13 @@ public class PostMapper {
             result.type(),
             result.priority(),
             result.createdAt(),
-            result.updatedAt()
+            result.updatedAt(),
+            null
+            , null
         );
     }
 
-    public Post toDomain(PostSummaryResult result) {
+    public Post toDomain(PostSummaryProjection result) {
         return Post.create(
             result.postId(),
             result.projectId(),
@@ -73,6 +77,26 @@ public class PostMapper {
             result.priority(),
             result.createdAt(),
             null, null
+        );
+    }
+
+    public Post toDomain(PostDetailProjection result, List<File> files) {
+        return Post.create(
+            result.postId(),
+            result.parentId(),
+            result.projectId(),
+            result.projectStepId(),
+            result.authorIp(),
+            result.authorId(),
+            result.authorName(),
+            result.title(),
+            result.content(),
+            result.type(),
+            result.priority(),
+            result.createdAt(),
+            result.updatedAt(),
+            null,
+            files
         );
     }
 

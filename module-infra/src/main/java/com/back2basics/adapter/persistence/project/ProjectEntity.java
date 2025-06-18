@@ -4,6 +4,7 @@ import com.back2basics.adapter.persistence.assignment.AssignmentEntity;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.project.model.ProjectStatus;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +23,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity
@@ -49,16 +51,17 @@ public class ProjectEntity extends BaseTimeEntity {
     private LocalDateTime deletedAt;
 
     @Column(name = "is_deleted")
+    @ColumnDefault(value = "false")
     private boolean isDeleted;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ProjectStatus status;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectStepEntity> steps = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true )
     private List<AssignmentEntity> assignments = new ArrayList<>();
 
     @Builder
@@ -74,6 +77,7 @@ public class ProjectEntity extends BaseTimeEntity {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status;
+
         this.steps = steps;
         this.assignments = assignments;
     }
@@ -84,8 +88,12 @@ public class ProjectEntity extends BaseTimeEntity {
     }
 
     private void updateStatusIfDelayed() {
-        if (this.status == ProjectStatus.IN_PROGRESS && this.endDate != null
-            && this.endDate.isBefore(LocalDate.now())) {
+        LocalDate today = LocalDate.now();
+
+        if (this.status == ProjectStatus.IN_PROGRESS
+            && this.endDate != null
+            && this.endDate.isBefore(today)) {
+
             this.status = ProjectStatus.DELAY;
         }
     }

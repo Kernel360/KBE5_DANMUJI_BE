@@ -41,8 +41,6 @@ public class AssignmentMapper {
             .build();
     }
 
-
-    // toEntity 할때 엔티티 자체를 받았네
     public AssignmentEntity toEntity(Assignment assignment, ProjectEntity project,
         UserEntity user, CompanyEntity company) {
         return com.back2basics.adapter.persistence.assignment.AssignmentEntity.builder()
@@ -55,6 +53,7 @@ public class AssignmentMapper {
             .build();
     }
 
+    // todo: 메서드명 변경
     public AssignmentEntity toEntityTest(Assignment assignment) {
         return com.back2basics.adapter.persistence.assignment.AssignmentEntity.builder()
             .id(assignment.getId())

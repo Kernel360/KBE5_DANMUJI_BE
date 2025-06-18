@@ -1,47 +1,42 @@
 package com.back2basics.project.service.result;
 
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.company.service.result.CompanySummaryResult;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
-import java.time.LocalDate;
-import lombok.Builder;
-import lombok.Getter;
 
-@Getter
-@Builder
-public class ProjectListResult {
-    private Long id;
-    private String name;
-    private String description;
-    private String clientCompany;
-    private String developCompany;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private ProjectStatus projectStatus;
+import java.time.LocalDate;
+import java.util.List;
+
+public record ProjectListResult(
+    Long id,
+    String name,
+    List<CompanySummaryResult> assignClientCompanies,
+    List<CompanySummaryResult> assignDevCompanies,
+    LocalDate startDate,
+    LocalDate endDate,
+    ProjectStatus projectStatus
+) {
 
     public static ProjectListResult toResult(Project project) {
-        // 고객사 -> project의 List<assignments> 중 회사타입이 고객사인 것의 첫번째를 찾아 회사이름을 반환
-        String clientCompany = project.getAssignments().stream()
-            .filter(user -> user.getCompanyType() == CompanyType.CLIENT) // assignments 중 고객사를 필터
-            .findFirst() // 첫번째 반환
-            .map(user -> user.getCompany().getName()) // 회사 이름
-            .orElse(null);
+        List<CompanySummaryResult> assignClientCompanies = project.getAssignments().stream()
+            .filter(assignment -> assignment.getCompanyType() == CompanyType.CLIENT)
+            .map(CompanySummaryResult::toResult)
+            .toList();
 
-        // 개발사
-        String developerCompany = project.getAssignments().stream()
-            .filter(user -> user.getCompanyType() == CompanyType.DEVELOPER)
-            .findFirst()
-            .map(user -> user.getCompany().getName())
-            .orElse(null);
+        List<CompanySummaryResult> assignDevCompanies = project.getAssignments().stream()
+            .filter(assignment -> assignment.getCompanyType() == CompanyType.DEVELOPER)
+            .map(CompanySummaryResult::toResult)
+            .toList();
 
-        return ProjectListResult.builder()
-            .id(project.getId())
-            .name(project.getName())
-            .clientCompany(clientCompany)
-            .developCompany(developerCompany)
-            .startDate(project.getStartDate())
-            .endDate(project.getEndDate())
-            .projectStatus(project.getStatus())
-            .build();
+        return new ProjectListResult(
+            project.getId(),
+            project.getName(),
+            assignClientCompanies,
+            assignDevCompanies,
+            project.getStartDate(),
+            project.getEndDate(),
+            project.getStatus()
+        );
     }
 }

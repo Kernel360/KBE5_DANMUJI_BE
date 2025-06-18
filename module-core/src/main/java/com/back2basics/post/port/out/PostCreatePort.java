@@ -4,5 +4,5 @@ import com.back2basics.post.model.Post;
 
 public interface PostCreatePort {
 
-    void save(Post post);
+    Post save(Post post);
 }
