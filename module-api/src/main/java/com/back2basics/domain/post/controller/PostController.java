@@ -4,12 +4,15 @@ import com.back2basics.domain.post.controller.code.PostResponseCode;
 import com.back2basics.domain.post.dto.request.PostCreateRequest;
 import com.back2basics.domain.post.dto.request.PostSearchRequest;
 import com.back2basics.domain.post.dto.request.PostUpdateRequest;
+import com.back2basics.domain.post.dto.response.FileDownloadResponse;
 import com.back2basics.domain.post.dto.response.PostCreateResponse;
 import com.back2basics.domain.post.dto.response.PostDetailReadResponse;
 import com.back2basics.domain.post.dto.response.PostSummaryReadResponse;
 import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
 import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.post.file.FileDownloadResult;
+import com.back2basics.post.file.FileDownloadUseCase;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
 import com.back2basics.post.port.in.PostReadUseCase;
@@ -55,6 +58,7 @@ public class PostController implements PostApiDocs {
     private final PostUpdateUseCase postUpdateUseCase;
     private final PostDeleteUseCase postDeleteUseCase;
     private final PostSearchUseCase postSearchUseCase;
+    private final FileDownloadUseCase fileDownloadUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -158,4 +162,20 @@ public class PostController implements PostApiDocs {
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responseList);
     }
+
+    @GetMapping("/{postId}/files/{fileId}")
+    public ResponseEntity<ApiResponse<FileDownloadResponse>> downloadFile(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId,
+        @PathVariable Long fileId
+    ) {
+        FileDownloadResult result = fileDownloadUseCase.downloadFile(customUserDetails.getId(),
+            postId,
+            fileId);
+        FileDownloadResponse response = FileDownloadResponse.toResponse(result);
+
+        return ApiResponse.success(PostResponseCode.POST_FILE_DOWNLOAD_SUCCESS, response);
+    }
+
+
 }
