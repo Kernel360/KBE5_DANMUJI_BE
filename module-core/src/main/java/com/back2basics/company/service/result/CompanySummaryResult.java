@@ -6,6 +6,6 @@ import com.back2basics.assignment.model.Assignment;
 public record CompanySummaryResult(Long id, String companyName) {
 
     public static CompanySummaryResult toResult(Assignment assignment) {
-        return new CompanySummaryResult(assignment.getId(), assignment.getCompany().getName());
+        return new CompanySummaryResult(assignment.getCompany().getId(), assignment.getCompany().getName());
     }
 }
