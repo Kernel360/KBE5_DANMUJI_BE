@@ -168,7 +168,7 @@ public class PostController implements PostApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
         @PathVariable Long fileId
-    ) {
+    ) throws IOException {
         FileDownloadResult result = fileDownloadUseCase.downloadFile(customUserDetails.getId(),
             postId,
             fileId);
