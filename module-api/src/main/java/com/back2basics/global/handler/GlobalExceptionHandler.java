@@ -2,6 +2,7 @@ package com.back2basics.global.handler;
 
 import static com.back2basics.global.response.code.CommonErrorCode.BAD_CREDENTIALS;
 import static com.back2basics.global.response.code.CommonErrorCode.INTERNAL_SERVER_ERROR;
+import static com.back2basics.infra.exception.file.FileErrorCode.FILE_DOWNLOAD_FAIL;
 import static com.back2basics.infra.exception.user.UserErrorCode.MAIL_SEND_FAILED;
 import static com.back2basics.security.code.AuthErrorCode.ACCESS_DENIED;
 
@@ -13,6 +14,7 @@ import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.infra.exception.company.DuplicateCompanyException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ApiResponse<ErrorResponse>> handleIOException(IOException ex) {
+        ErrorCode errorCode = FILE_DOWNLOAD_FAIL;
+        log.error("IOException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
 
     // NullPointerException 대응 추가 (customUserDetails == null 일 떄)
     @ExceptionHandler(NullPointerException.class)

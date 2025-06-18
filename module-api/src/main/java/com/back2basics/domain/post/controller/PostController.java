@@ -10,6 +10,8 @@ import com.back2basics.domain.post.dto.response.PostSummaryReadResponse;
 import com.back2basics.domain.post.dto.response.ReadRecentPostResponse;
 import com.back2basics.domain.post.swagger.PostApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.post.file.FileDownloadResult;
+import com.back2basics.post.file.FileDownloadUseCase;
 import com.back2basics.post.port.in.PostCreateUseCase;
 import com.back2basics.post.port.in.PostDeleteUseCase;
 import com.back2basics.post.port.in.PostReadUseCase;
@@ -28,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,6 +58,7 @@ public class PostController implements PostApiDocs {
     private final PostUpdateUseCase postUpdateUseCase;
     private final PostDeleteUseCase postDeleteUseCase;
     private final PostSearchUseCase postSearchUseCase;
+    private final FileDownloadUseCase fileDownloadUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -158,4 +162,25 @@ public class PostController implements PostApiDocs {
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responseList);
     }
+
+    @GetMapping("/{postId}/files/{fileId}")
+    public ResponseEntity<byte[]> downloadFile(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId,
+        @PathVariable Long fileId
+    ) throws IOException {
+        FileDownloadResult result = fileDownloadUseCase.downloadFile(
+            customUserDetails.getId(),
+            postId,
+            fileId
+        );
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + result.fileName() + "\"")
+            .header(HttpHeaders.CONTENT_TYPE, result.fileType())
+            .body(result.bytes());
+    }
+
+
 }
