@@ -34,4 +34,8 @@ public class File {
         this.fileType = fileType;
         this.fileSize = fileSize;
     }
+
+    public File withFileType(String newType) {
+        return new File(this.id, this.postId, this.fileName, this.fileUrl, newType, this.fileSize);
+    }
 }
