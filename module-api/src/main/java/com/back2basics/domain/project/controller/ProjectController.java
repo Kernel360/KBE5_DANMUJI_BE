@@ -68,7 +68,7 @@ public class ProjectController {
         )
         Pageable pageable) {
 
-        Page<ProjectListResult> result = readProjectUseCase.getAllByUserIdTwo(userId, pageable);
+        Page<ProjectListResult> result = readProjectUseCase.getUserProjects(userId, pageable);
         Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }

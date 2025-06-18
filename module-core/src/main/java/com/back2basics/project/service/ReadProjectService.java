@@ -85,8 +85,8 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
-    public Page<ProjectListResult> getAllByUserIdTwo(Long userId, Pageable pageable) {
-        Page<Project> projects = readProjectPort.findAllByUserIdTwo(userId, pageable);
+    public Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable) {
+        Page<Project> projects = readProjectPort.findAllByUserId(userId, pageable);
         Page<ProjectListResult> result = projects.map(ProjectListResult::toResult);
         return result;
     }
