@@ -1,7 +1,7 @@
 package com.back2basics.project.service.result;
 
-import com.back2basics.assignment.service.result.AssignProjectListResult;
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.company.service.result.CompanySummaryResult;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 
@@ -11,29 +11,29 @@ import java.util.List;
 public record ProjectListResult(
     Long id,
     String name,
-    List<AssignProjectListResult> assignClients,
-    List<AssignProjectListResult> assignDevs,
+    List<CompanySummaryResult> assignClientCompanies,
+    List<CompanySummaryResult> assignDevCompanies,
     LocalDate startDate,
     LocalDate endDate,
     ProjectStatus projectStatus
 ) {
 
     public static ProjectListResult toResult(Project project) {
-        List<AssignProjectListResult> assignClients = project.getAssignments().stream()
+        List<CompanySummaryResult> assignClientCompanies = project.getAssignments().stream()
             .filter(assignment -> assignment.getCompanyType() == CompanyType.CLIENT)
-            .map(AssignProjectListResult::toResult)
+            .map(CompanySummaryResult::toResult)
             .toList();
 
-        List<AssignProjectListResult> assignDevs = project.getAssignments().stream()
+        List<CompanySummaryResult> assignDevCompanies = project.getAssignments().stream()
             .filter(assignment -> assignment.getCompanyType() == CompanyType.DEVELOPER)
-            .map(AssignProjectListResult::toResult)
+            .map(CompanySummaryResult::toResult)
             .toList();
 
         return new ProjectListResult(
             project.getId(),
             project.getName(),
-            assignClients,
-            assignDevs,
+            assignClientCompanies,
+            assignDevCompanies,
             project.getStartDate(),
             project.getEndDate(),
             project.getStatus()

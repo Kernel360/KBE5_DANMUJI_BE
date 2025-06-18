@@ -24,7 +24,7 @@ public interface ReadProjectUseCase {
     List<ProjectRecentGetResult> getRecentProjects();
 
     // 양방향
-    Page<ProjectListResult> getAllByUserIdTwo(Long userId, Pageable pageable);
+    Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable);
 
     // 단방향
     Page<ProjectListResult> getAllByUserIdOne(Long userId, Pageable pageable);

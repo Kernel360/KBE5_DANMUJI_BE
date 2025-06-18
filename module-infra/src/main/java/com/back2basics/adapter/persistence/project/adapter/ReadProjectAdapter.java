@@ -46,12 +46,12 @@ public class ReadProjectAdapter implements ReadProjectPort {
             .map(projectMapper::toDomain).toList();
     }
 
-    @Override
-    public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
-        return projectEntityRepository.findAllByAssignmentsUserIdAndIsDeletedFalse(userId,
-                pageable)
-            .map(projectMapper::toDomain);
-    }
+//    @Override
+//    public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
+//        return projectEntityRepository.findAllByAssignmentsUserIdAndIsDeletedFalse(userId,
+//                pageable)
+//            .map(projectMapper::toDomain);
+//    }
 
     @Override
     public Page<Project> searchByKeyword(String keyword, Pageable pageable) {
@@ -66,18 +66,16 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
-    public Page<Project> findAllByUserIdTwo(Long userId, Pageable pageable) {
+    public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
         Page<ProjectEntity> projectEntities = projectEntityRepository.findAllByUserId(userId,
             pageable);
-        Page<Project> projects = projectEntities.map(projectMapper::toDomain);
-        return projects;
+        return projectEntities.map(projectMapper::toDomain);
     }
 
     @Override
     public Page<Project> findAllByUserIdOne(Long userId, Pageable pageable) {
         Page<ProjectEntity> projectEntities = projectEntityRepository.findProjectsByUserIdAndIsDeletedFalse(
             userId, pageable);
-        Page<Project> projects = projectEntities.map(projectMapper::toDomain);
-        return projects;
+        return projectEntities.map(projectMapper::toDomain);
     }
 }
