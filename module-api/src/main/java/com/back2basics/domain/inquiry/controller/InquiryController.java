@@ -1,5 +1,6 @@
 package com.back2basics.domain.inquiry.controller;
 
+import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_DELETE_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_CREATE_SUCCESS;
 
 import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
@@ -10,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,12 @@ public class InquiryController {
         Long id = createinquiryUseCase.createInquiry(request.toCommand(),
             customUserDetails.getId());
         return ApiResponse.success(INQUIRY_CREATE_SUCCESS, id);
+    }
+
+    @DeleteMapping("/{inquiryId}")
+    public ResponseEntity<ApiResponse<Void>> deleteInquiry(@PathVariable Long inquiryId) {
+        deleteinquiryUseCase.deleteCompany(inquiryId);
+        return ApiResponse.success(COMPANY_DELETE_SUCCESS);
     }
 
 }
