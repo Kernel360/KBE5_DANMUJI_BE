@@ -34,4 +34,8 @@ public class Inquiry {
         this.isDelete = false;
     }
 
+    public void markDeleted() {
+        this.isDelete = true;
+    }
+
 }
