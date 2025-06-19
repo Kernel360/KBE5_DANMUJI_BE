@@ -28,7 +28,7 @@ public class ProjectStep {
 
     public static ProjectStep create(Long projectId, String name, int stepOrder,
         ProjectStepStatus projectStepStatus) {
-        return new ProjectStep(projectId, name, stepOrder, projectStepStatus);
+        return new ProjectStep(null, projectId, name, stepOrder, projectStepStatus);
     }
 
     public void updateName(String name) {
@@ -38,4 +38,9 @@ public class ProjectStep {
     public void updateStatus(ProjectStepStatus projectStepStatus) {
         this.projectStepStatus = projectStepStatus;
     }
+
+    public void softDelete() {
+        this.isDeleted = true;
+    }
+
 }
