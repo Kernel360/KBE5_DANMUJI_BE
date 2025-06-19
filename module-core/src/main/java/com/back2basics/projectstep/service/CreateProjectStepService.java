@@ -19,7 +19,7 @@ public class CreateProjectStepService implements CreateProjectStepUseCase {
     @Override
     public void createStep(CreateProjectStepCommand command, Long projectId) {
         Integer maxOrder = readProjectStepPort.findMaxStepOrderByProjectId(projectId);
-        ProjectStep step = ProjectStep.create(projectId, command.getName(), maxOrder,
+        ProjectStep step = ProjectStep.create(projectId, command.getName(), maxOrder + 1,
             ProjectStepStatus.PENDING);
 
         saveProjectStepPort.save(step);
