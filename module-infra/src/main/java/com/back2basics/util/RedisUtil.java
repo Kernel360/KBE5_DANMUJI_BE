@@ -20,6 +20,7 @@ public class RedisUtil {
         this.redisTemplate = redisTemplate;
     }
 
+    // todo error 처리
     public void save(String key, Object val, Long time, TimeUnit timeUnit) {
         try {
             redisTemplate.opsForValue().set(key, val, time, timeUnit);

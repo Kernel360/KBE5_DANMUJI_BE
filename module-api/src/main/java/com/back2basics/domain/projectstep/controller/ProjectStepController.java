@@ -1,6 +1,11 @@
 package com.back2basics.domain.projectstep.controller;
 
-import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.*;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_ALL_READ_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_CREATE_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_DELETE_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_READ_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_UPDATE_SUCCESS;
+
 import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.response.DetailProjectStepResponse;
@@ -48,17 +53,26 @@ public class ProjectStepController {
         return ApiResponse.success(STEP_CREATE_SUCCESS);
     }
 
+    @PostMapping
+    public ResponseEntity<ApiResponse<Void>> addStep(
+
+    ) {
+
+    }
+
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<List<DetailProjectStepResponse>>> getStepsProjectId(
         @PathVariable Long projectId) {
-        List<DetailProjectStepResult> result = readProjectStepUseCase.findDetailByProjectId(projectId);
+        List<DetailProjectStepResult> result = readProjectStepUseCase.findDetailByProjectId(
+            projectId);
         List<DetailProjectStepResponse> response = result.stream()
             .map(DetailProjectStepResponse::toResponse).toList();
         return ApiResponse.success(STEP_ALL_READ_SUCCESS, response);
     }
 
     @GetMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<ReadProjectStepResponse>> getStepById(@PathVariable Long stepId) {
+    public ResponseEntity<ApiResponse<ReadProjectStepResponse>> getStepById(
+        @PathVariable Long stepId) {
         ReadProjectStepResult result = readProjectStepUseCase.findById(stepId);
         ReadProjectStepResponse response = ReadProjectStepResponse.toResponse(result);
         return ApiResponse.success(STEP_READ_SUCCESS, response);

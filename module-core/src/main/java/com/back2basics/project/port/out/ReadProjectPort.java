@@ -28,4 +28,5 @@ public interface ReadProjectPort {
     // 단방향
     Page<Project> findAllByUserIdOne(Long userId, Pageable pageable);
 
+    boolean existsById(Long id);
 }

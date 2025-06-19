@@ -1,5 +1,6 @@
 package com.back2basics.project.service;
 
+import com.back2basics.assignment.model.Assignment;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
@@ -8,7 +9,6 @@ import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
-import com.back2basics.assignment.model.Assignment;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserCommandPort;
 import com.back2basics.user.port.out.UserQueryPort;
@@ -51,9 +51,8 @@ public class CreateProjectService implements CreateProjectUseCase {
         List<String> defaultSteps = DEFAULT_STEPS;
         for (int i = 0; i < defaultSteps.size(); i++) {
             ProjectStep step = ProjectStep.create(
-                defaultSteps.get(i),
                 projectId,
-                null,
+                defaultSteps.get(i),
                 i + 1,
                 ProjectStepStatus.PENDING
             );
@@ -62,10 +61,13 @@ public class CreateProjectService implements CreateProjectUseCase {
     }
 
     private void assignMembers(Project project, ProjectCreateCommand command) {
-        List<User> devManagers = command.getDevManagerId().stream().map(userQueryPort::findById).toList();
-        List<User> clientManagers = command.getClientManagerId().stream().map(userQueryPort::findById).toList();
+        List<User> devManagers = command.getDevManagerId().stream().map(userQueryPort::findById)
+            .toList();
+        List<User> clientManagers = command.getClientManagerId().stream()
+            .map(userQueryPort::findById).toList();
         List<User> devUsers = command.getDevUserId().stream().map(userQueryPort::findById).toList();
-        List<User> clientUsers = command.getClientUserId().stream().map(userQueryPort::findById).toList();
+        List<User> clientUsers = command.getClientUserId().stream().map(userQueryPort::findById)
+            .toList();
 
         List<Assignment> assignments = Assignment.createProjectUser(project, devManagers,
             clientManagers, devUsers, clientUsers);
