@@ -2,6 +2,7 @@ package com.back2basics.project.port.in.command;
 
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,16 +10,20 @@ import lombok.Getter;
 @Builder
 public class ProjectUpdateCommand {
 
-    @NotBlank(message = "제목은 공백일 수 없습니다.")
-    private String name;
+    @NotBlank(message = "프로젝트명은 필수입니다.")
+    String name;
 
-    private String description;
+    String description;
 
-    private LocalDate startDate;
+    LocalDate startDate;
 
-    private LocalDate endDate;
+    LocalDate endDate;
 
-    private final Long developerId;
+    List<Long> devManagerId; // 담당자
 
-    private final Long clientId;
+    List<Long> clientManagerId;
+
+    List<Long> devUserId; // 멤버
+
+    List<Long> clientUserId;
 }
