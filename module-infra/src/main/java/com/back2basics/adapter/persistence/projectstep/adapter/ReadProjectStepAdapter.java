@@ -27,18 +27,10 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
 
     @Override
     public List<ProjectStep> findAllByProjectId(Long projectId) {
-        return repository.findAllByProjectIdAndIsDeletedFalse(projectId)
+        return repository.findAllByProjectIdAndDeletedAtIsNull(projectId)
             .stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProjectStep> findByProjectId(Long projectId) {
-        return repository.findByProject_Id(projectId)
-            .stream()
-            .map(mapper::toDomain)
-            .toList();
     }
 
 }

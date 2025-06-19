@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectStepEntityRepository extends JpaRepository<ProjectStepEntity, Long> {
 
-    List<ProjectStepEntity> findAllByProjectIdAndIsDeletedFalse(Long projectId);
-
-    List<ProjectStepEntity> findByProject_Id(Long projectId);
+    List<ProjectStepEntity> findAllByProjectIdAndDeletedAtIsNull(Long projectId);
 }
