@@ -1,9 +1,9 @@
 package com.back2basics.domain.project.dto.response;
 
+import com.back2basics.assignment.service.result.ReadAssignmentResult;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.service.result.ProjectGetResult;
-import com.back2basics.projectstep.service.result.ReadProjectStepResult;
-import com.back2basics.assignment.service.result.ReadAssignmentResult;
+import com.back2basics.projectstep.service.result.ProjectStepResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +13,7 @@ public record ProjectGetResponse(Long id, String name, String description,
                                  LocalDate startDate, LocalDate endDate, LocalDateTime createdAt,
                                  LocalDateTime updatedAt, LocalDateTime deletedAt,
                                  boolean isDeleted, ProjectStatus status,
-                                 List<ReadProjectStepResult> steps, String clientCompany,
+                                 List<ProjectStepResult> steps, String clientCompany,
                                  String developerCompany, List<ReadAssignmentResult> users) {
 
     public static ProjectGetResponse toResponse(ProjectGetResult result) {

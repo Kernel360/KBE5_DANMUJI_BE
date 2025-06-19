@@ -8,8 +8,7 @@ import static com.back2basics.domain.projectstep.controller.code.ProjectStepResp
 
 import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
-import com.back2basics.domain.projectstep.dto.response.DetailProjectStepResponse;
-import com.back2basics.domain.projectstep.dto.response.ReadProjectStepResponse;
+import com.back2basics.domain.projectstep.dto.response.ProjectStepResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
@@ -18,8 +17,7 @@ import com.back2basics.projectstep.port.in.ReadProjectStepUseCase;
 import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
-import com.back2basics.projectstep.service.result.DetailProjectStepResult;
-import com.back2basics.projectstep.service.result.ReadProjectStepResult;
+import com.back2basics.projectstep.service.result.ProjectStepResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -60,21 +58,21 @@ public class ProjectStepController {
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<List<DetailProjectStepResponse>>> getStepsProjectId(
+    public ResponseEntity<ApiResponse<List<ProjectStepResponse>>> getStepsProjectId(
         @PathVariable Long projectId) {
-        List<DetailProjectStepResult> result = readProjectStepUseCase.findDetailByProjectId(
+        List<ProjectStepResult> result = readProjectStepUseCase.findByProjectId(
             projectId);
-        List<DetailProjectStepResponse> response = result.stream()
-            .map(DetailProjectStepResponse::toResponse).toList();
+        List<ProjectStepResponse> response = result.stream()
+            .map(ProjectStepResponse::toResponse).toList();
         return ApiResponse.success(STEP_ALL_READ_SUCCESS, response);
     }
 
     // 단계 상세 조회
     @GetMapping("/{stepId}/detail")
-    public ResponseEntity<ApiResponse<ReadProjectStepResponse>> getStepById(
+    public ResponseEntity<ApiResponse<ProjectStepResponse>> getStepById(
         @PathVariable Long stepId) {
-        ReadProjectStepResult result = readProjectStepUseCase.findById(stepId);
-        ReadProjectStepResponse response = ReadProjectStepResponse.toResponse(result);
+        ProjectStepResult result = readProjectStepUseCase.findById(stepId);
+        ProjectStepResponse response = ProjectStepResponse.toResponse(result);
         return ApiResponse.success(STEP_READ_SUCCESS, response);
     }
 
