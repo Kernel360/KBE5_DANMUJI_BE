@@ -16,14 +16,14 @@ public interface ReadProjectPort {
 
     List<Project> getAllProjects();
 
-    Page<Project> findAllByUserId(Long userId, Pageable pageable);
+    // Page<Project> findAllByUserId(Long userId, Pageable pageable);
 
     Page<Project> searchByKeyword(String keyword, Pageable pageable);
 
     List<Project> getRecentProjects();
 
     // 양방향
-    Page<Project> findAllByUserIdTwo(Long userId, Pageable pageable);
+    Page<Project> findAllByUserId(Long userId, Pageable pageable);
 
     // 단방향
     Page<Project> findAllByUserIdOne(Long userId, Pageable pageable);

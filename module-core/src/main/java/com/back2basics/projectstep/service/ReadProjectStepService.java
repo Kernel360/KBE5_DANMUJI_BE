@@ -25,7 +25,7 @@ public class ReadProjectStepService implements ReadProjectStepUseCase {
     @Override
     public List<ProjectStepSimpleResult> findByProjectId(Long projectId) {
         return projectStepPort.findAllByProjectId(projectId)
-            .stream().map(ProjectStepSimpleResult::from).toList();
+            .stream().map(ProjectStepSimpleResult::toResult).toList();
     }
 
     @Override

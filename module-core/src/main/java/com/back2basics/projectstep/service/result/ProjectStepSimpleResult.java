@@ -6,7 +6,7 @@ import com.back2basics.projectstep.model.ProjectStepStatus;
 public record ProjectStepSimpleResult(Long id, int stepOrder, String name,
                                       ProjectStepStatus projectStepStatus) {
 
-    public static ProjectStepSimpleResult from(ProjectStep projectStep) {
+    public static ProjectStepSimpleResult toResult(ProjectStep projectStep) {
         return new ProjectStepSimpleResult(
             projectStep.getStepId(),
             projectStep.getStepOrder(),

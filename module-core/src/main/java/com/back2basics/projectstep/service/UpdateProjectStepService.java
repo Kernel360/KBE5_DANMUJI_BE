@@ -3,10 +3,9 @@ package com.back2basics.projectstep.service;
 import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
-import com.back2basics.projectstep.port.in.command.UpdateProjectStepUseCase;
+import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

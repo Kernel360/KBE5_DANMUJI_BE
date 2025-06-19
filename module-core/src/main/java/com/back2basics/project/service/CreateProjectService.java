@@ -30,9 +30,6 @@ public class CreateProjectService implements CreateProjectUseCase {
     private static final List<String> DEFAULT_STEPS =
         List.of("요구사항 정의", "화면설계"); // , "디자인", "퍼블리싱", "개발", "검수"
 
-    /* todo: refactor
-        project builder 도메인으로 이동 및 페턴 변경 고려
-        assignments 생성 로직 및 request 변경 <- 업체, 담당자 여러개 할당 가능 */
     @Override
     @Transactional
     public void createProject(ProjectCreateCommand command) {

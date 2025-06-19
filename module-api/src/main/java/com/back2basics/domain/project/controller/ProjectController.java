@@ -68,7 +68,7 @@ public class ProjectController {
         )
         Pageable pageable) {
 
-        Page<ProjectListResult> result = readProjectUseCase.getAllByUserIdTwo(userId, pageable);
+        Page<ProjectListResult> result = readProjectUseCase.getUserProjects(userId, pageable);
         Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
@@ -106,11 +106,10 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
         @PathVariable Long projectId) {
         ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId);
-        ProjectDetailResponse response = ProjectDetailResponse.from(result);
+        ProjectDetailResponse response = ProjectDetailResponse.toResponse(result);
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 
-    // todo: 프로젝트 정보 수정, 할당 멤버 수정 나누기 고민.
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
         @PathVariable Long projectId,
