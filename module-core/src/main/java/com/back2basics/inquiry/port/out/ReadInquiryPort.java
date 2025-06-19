@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface ReadInquiryPort {
 
+    Inquiry getInquiry(Long id);
+
     List<Inquiry> getAllInquiries();
 
 }

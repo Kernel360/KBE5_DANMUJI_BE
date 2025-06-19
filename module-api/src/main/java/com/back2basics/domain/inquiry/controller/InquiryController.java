@@ -2,6 +2,7 @@ package com.back2basics.domain.inquiry.controller;
 
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_CREATE_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_ALL_SUCCESS;
+import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_SUCCESS;
 
 import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,14 @@ public class InquiryController {
         Long id = createinquiryUseCase.createInquiry(request.toCommand(),
             customUserDetails.getId());
         return ApiResponse.success(INQUIRY_CREATE_SUCCESS, id);
+    }
+
+    @GetMapping("/{inquiryId}")
+    public ResponseEntity<ApiResponse<ReadInquiryResponse>> getInquiryById(
+        @PathVariable Long inquiryId) {
+        ReadInquiryResult result = readInquiryUseCase.getInquiry(inquiryId);
+        return ApiResponse.success(INQUIRY_READ_SUCCESS,
+            ReadInquiryResponse.toResponse(result));
     }
 
     @GetMapping("/all")

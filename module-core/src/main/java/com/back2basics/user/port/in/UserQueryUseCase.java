@@ -18,4 +18,6 @@ public interface UserQueryUseCase {
     Page<UserSimpleResult> getDeletedUsers(Pageable pageable);
 
     Map<Long, String> getNameByIds(List<Long> userIds);
+
+    String getNameById(Long userId);
 }

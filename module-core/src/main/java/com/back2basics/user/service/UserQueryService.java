@@ -60,6 +60,11 @@ public class UserQueryService implements UserQueryUseCase {
     }
 
     @Override
+    public String getNameById(Long userId) {
+        return userQueryPort.findById(userId).getName();
+    }
+
+    @Override
     public Map<Long, String> getNameByIds(List<Long> userIds) {
         return userQueryPort.findByIds(userIds).stream()
             .collect(Collectors.toMap(User::getId, User::getName));

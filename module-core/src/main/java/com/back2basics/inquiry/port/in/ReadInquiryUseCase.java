@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface ReadInquiryUseCase {
 
+    ReadInquiryResult getInquiry(Long id);
+
     List<ReadInquiryResult> getAllInquiries();
 
 }

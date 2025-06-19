@@ -5,7 +5,6 @@ import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.user.port.in.UserQueryUseCase;
-import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +15,17 @@ import org.springframework.stereotype.Service;
 public class ReadInquiryService implements ReadInquiryUseCase {
 
     private final ReadInquiryPort readInquiryPort;
-    private final UserQueryPort userQueryPort;
     private final UserQueryUseCase userQueryUseCase;
+
+    @Override
+    public ReadInquiryResult getInquiry(Long id) {
+        Inquiry inquiry = readInquiryPort.getInquiry(id);
+        Long authorId = inquiry.getAuthorId();
+
+        String authorName = userQueryUseCase.getNameById(authorId);
+
+        return ReadInquiryResult.toResult(inquiry, authorName);
+    }
 
     @Override
     public List<ReadInquiryResult> getAllInquiries() {
