@@ -5,7 +5,7 @@ import com.back2basics.adapter.persistence.inquiry.InquiryMapper;
 import com.back2basics.inquiry.model.Inquiry;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,9 +20,8 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
     private final InquiryMapper inquiryMapper;
 
     @Override
-    public Inquiry getInquiry(Long id) {
-        return inquiryEntityRepository.findById(id).map(inquiryMapper::toDomain)
-            .orElseThrow(() -> new NoSuchElementException("해당하는 문의사항이 없습니다."));
+    public Optional<Inquiry> getInquiry(Long id) {
+        return inquiryEntityRepository.findById(id).map(inquiryMapper::toDomain);
     }
 
     @Override

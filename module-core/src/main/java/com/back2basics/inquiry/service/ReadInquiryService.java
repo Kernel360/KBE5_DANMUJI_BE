@@ -1,5 +1,6 @@
 package com.back2basics.inquiry.service;
 
+import com.back2basics.infra.validation.validator.InquiryValidator;
 import com.back2basics.inquiry.model.Inquiry;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
@@ -18,11 +19,12 @@ import org.springframework.stereotype.Service;
 public class ReadInquiryService implements ReadInquiryUseCase {
 
     private final ReadInquiryPort readInquiryPort;
+    private final InquiryValidator inquiryValidator;
     private final UserQueryUseCase userQueryUseCase;
 
     @Override
     public ReadInquiryResult getInquiry(Long id) {
-        Inquiry inquiry = readInquiryPort.getInquiry(id);
+        Inquiry inquiry = inquiryValidator.findInquiry(id);
         Long authorId = inquiry.getAuthorId();
 
         String authorName = userQueryUseCase.getNameById(authorId);
