@@ -30,7 +30,7 @@ public class SaveAssignmentAdapter implements SaveProjectUserPort {
     private final ProjectEntityRepository projectEntityRepository;
     private final UserEntityRepository userEntityRepository;
     private final CompanyEntityRepository companyEntityRepository;
-    private final AssignmentMapper mapper;
+    private final AssignmentMapper assignmentMapper;
 
     @Override
     public void save(Assignment assignment) {
@@ -43,7 +43,7 @@ public class SaveAssignmentAdapter implements SaveProjectUserPort {
         CompanyEntity company = companyEntityRepository.findById(assignment.getUser().getCompanyId())
             .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
 
-        AssignmentEntity entity = mapper.toEntity(assignment, project, user, company);
+        AssignmentEntity entity = assignmentMapper.toEntity(assignment, project, user, company);
         projectUserEntityRepository.save(entity);
     }
 
@@ -60,7 +60,7 @@ public class SaveAssignmentAdapter implements SaveProjectUserPort {
                 CompanyEntity company = companyEntityRepository.findById(assignment.getUser().getCompanyId())
                     .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
 
-                return mapper.toEntity(assignment, project, user, company);
+                return assignmentMapper.toEntity(assignment, project, user, company);
             })
             .toList();
 

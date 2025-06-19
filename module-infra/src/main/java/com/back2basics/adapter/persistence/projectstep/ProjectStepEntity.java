@@ -33,12 +33,10 @@ public class ProjectStepEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stepId;
 
-    // todo: step은 projectId 만 필요한데 여기서 연관을 맺어서 양방향으로 할 필요 없을 듯
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 
-    // todo: LAZY와 EAGER의 차이? - 지연로딩, 즉시로딩?
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserEntity user;

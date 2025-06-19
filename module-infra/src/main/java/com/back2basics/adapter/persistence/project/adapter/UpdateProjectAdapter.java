@@ -17,6 +17,6 @@ public class UpdateProjectAdapter implements UpdateProjectPort {
 
     @Override
     public void update(Project project) {
-        projectEntityRepository.save(projectMapper.fromDomain(project));
+        projectEntityRepository.save(projectMapper.toEntity(project));
     }
 }

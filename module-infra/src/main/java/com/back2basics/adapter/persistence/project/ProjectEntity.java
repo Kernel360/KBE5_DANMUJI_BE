@@ -77,7 +77,6 @@ public class ProjectEntity extends BaseTimeEntity {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status;
-
         this.steps = steps;
         this.assignments = assignments;
     }
