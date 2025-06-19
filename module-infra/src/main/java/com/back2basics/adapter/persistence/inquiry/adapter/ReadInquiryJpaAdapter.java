@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,6 +29,12 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
     public List<Inquiry> getAllInquiries() {
         return inquiryEntityRepository.findAll()
             .stream().map(inquiryMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Inquiry> getAllInquiries(Pageable pageable) {
+        return inquiryEntityRepository.findByDeletedAtIsNull(pageable)
+            .map(inquiryMapper::toDomain);
     }
 
 }

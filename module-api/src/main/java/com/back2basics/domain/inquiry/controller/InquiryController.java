@@ -15,6 +15,10 @@ import com.back2basics.user.port.in.UserQueryUseCase;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +52,20 @@ public class InquiryController {
         ReadInquiryResult result = readInquiryUseCase.getInquiry(inquiryId);
         return ApiResponse.success(INQUIRY_READ_SUCCESS,
             ReadInquiryResponse.toResponse(result));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getAllInquiries(
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "id",
+            direction = Sort.Direction.DESC
+        )
+        Pageable pageable) {
+        Page<ReadInquiryResult> inquires = readInquiryUseCase.getAllInquiries(pageable);
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            inquires.map(ReadInquiryResponse::toResponse));
     }
 
     @GetMapping("/all")
