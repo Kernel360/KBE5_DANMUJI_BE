@@ -21,7 +21,7 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
 
     @Override
     public Optional<Inquiry> getInquiry(Long id) {
-        return inquiryEntityRepository.findById(id).map(inquiryMapper::toDomain);
+        return inquiryEntityRepository.findByIdAndDeletedAtIsNull(id).map(inquiryMapper::toDomain);
     }
 
     @Override

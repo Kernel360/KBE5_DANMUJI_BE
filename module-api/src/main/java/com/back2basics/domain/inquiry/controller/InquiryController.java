@@ -98,8 +98,9 @@ public class InquiryController {
     }
 
     @DeleteMapping("/{inquiryId}")
-    public ResponseEntity<ApiResponse<Void>> deleteInquiry(@PathVariable Long inquiryId) {
-        deleteInquiryUseCase.deleteInquiry(inquiryId);
+    public ResponseEntity<ApiResponse<Void>> deleteInquiry(@PathVariable Long inquiryId,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        deleteInquiryUseCase.deleteInquiry(inquiryId, customUserDetails.getId());
         return ApiResponse.success(INQUIRY_DELETE_SUCCESS);
     }
 
