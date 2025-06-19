@@ -9,6 +9,7 @@ import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,18 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
             readProjectPort.findProjectById(projectStep.getProjectId()));
         ProjectStepEntity projectStepEntity = mapper.toEntity(projectStep, projectEntity);
         stepRepository.save(projectStepEntity);
+    }
+
+    @Override
+    public void saveAll(List<ProjectStep> projectStepList) {
+        List<ProjectStepEntity> entities = projectStepList.stream()
+            .map(step -> {
+                ProjectEntity projectEntity = projectMapper.fromDomain(
+                    readProjectPort.findProjectById(step.getProjectId()));
+                return mapper.toEntity(step, projectEntity);
+            })
+            .toList();
+        stepRepository.saveAll(entities);
     }
 
 }

@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.projectstep.adapter;
 
 import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.STEP_NOT_FOUND;
 
+import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
@@ -31,6 +32,14 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
             .stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectStep> findAllById(List<Long> ids) {
+        List<ProjectStepEntity> entities = repository.findAllById(ids);
+        return entities.stream()
+            .map(mapper::toDomain)
+            .toList();
     }
 
     @Override
