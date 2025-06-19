@@ -35,20 +35,24 @@ public class PostUpdateService implements PostUpdateUseCase {
 
         Post updatedPost = postUpdatePort.update(post);
 
-        replaceFiles(files, updatedPost.getId());
+        replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
     }
 
-    private void replaceFiles(List<MultipartFile> files, Long postId) throws IOException {
-        if (files == null) {
-            return;
-        }
+    private void replaceFiles(List<MultipartFile> files, List<Long> fileIdsToDelete, Long postId)
+        throws IOException {
+
+        List<Long> finalFileIdsToDelete = (fileIdsToDelete != null) ? fileIdsToDelete : List.of();
 
         List<File> existingFiles = fileReadPort.getFilesByPostId(postId);
 
-        fileDeletePort.deleteAllByPostId(postId);
+        List<File> toDelete = existingFiles.stream()
+            .filter(f -> finalFileIdsToDelete.contains(f.getId()))
+            .toList();
+
+        fileDeletePort.deleteFiles(toDelete);
         fileDeletePort.deleteFromStorage(existingFiles);
 
-        if (!files.isEmpty()) {
+        if (files != null && !files.isEmpty()) {
             List<File> newFiles = fileUploadService.upload(files, postId);
             fileSavePort.saveAll(newFiles, postId);
         }
