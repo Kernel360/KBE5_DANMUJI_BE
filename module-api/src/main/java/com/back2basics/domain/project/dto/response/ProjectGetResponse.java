@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 // todo: 필요없는 response 필드 삭제
+// todo: (https://www.danmuji.site/projects: id, name, clientCompany, startDate, endDate, 진행률(계산 필요), status )
 public record ProjectGetResponse(Long id, String name, String description,
                                  LocalDate startDate, LocalDate endDate, LocalDateTime createdAt,
                                  LocalDateTime updatedAt, LocalDateTime deletedAt,
