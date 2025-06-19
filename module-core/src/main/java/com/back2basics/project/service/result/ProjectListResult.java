@@ -22,12 +22,12 @@ public record ProjectListResult(
         List<CompanySummaryResult> assignClientCompanies = project.getAssignments().stream()
             .filter(assignment -> assignment.getCompanyType() == CompanyType.CLIENT)
             .map(CompanySummaryResult::toResult)
-            .toList();
+            .distinct().toList();
 
         List<CompanySummaryResult> assignDevCompanies = project.getAssignments().stream()
             .filter(assignment -> assignment.getCompanyType() == CompanyType.DEVELOPER)
             .map(CompanySummaryResult::toResult)
-            .toList();
+            .distinct().toList();
 
         return new ProjectListResult(
             project.getId(),

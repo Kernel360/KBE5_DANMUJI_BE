@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 // todo: 뎁스 하나 더 파서 회사에 멤버 목록으로 나오도록
-public record ProjectListResponse(Long id, String name,
+public record ProjectListResponse(Long projectId, String projectTitle,
                                   List<CompanySummaryResponse> assignClientCompanies,
                                   List<CompanySummaryResponse> assignDevCompanies,
                                   LocalDate startDate, LocalDate endDate,
