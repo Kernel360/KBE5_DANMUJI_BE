@@ -12,6 +12,7 @@ import com.back2basics.security.model.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,13 +32,19 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "Post", description = "게시글 관리 API")
 public interface PostApiDocs {
 
-    @Operation(summary = "게시글 생성", description = "새로운 게시글을 생성합니다.",
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            required = true,
-            content = @Content(
-                mediaType = "multipart/form-data",
-                schema = @Schema(implementation = PostCreateRequest.class)
-            )
+    @Operation(
+        summary = "게시글 생성",
+        description = "게시글 데이터(JSON)와 첨부파일(Multipart)을 함께 전송"
+    )
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        required = true,
+        content = @Content(
+            mediaType = "multipart/form-data",
+            schema = @Schema(type = "object"),
+            encoding = {
+                @Encoding(name = "data", contentType = "application/json"),
+                @Encoding(name = "files", contentType = "application/octet-stream")
+            }
         )
     )
     @ApiResponses({
@@ -59,8 +66,8 @@ public interface PostApiDocs {
     ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestPart("data") @Valid PostCreateRequest request,
-        @RequestPart(value = "files", required = false) List<MultipartFile> files)
-        throws IOException;
+        @RequestPart(value = "files", required = false) List<MultipartFile> files
+    ) throws IOException;
 
     @Operation(summary = "게시글 단건 조회")
     @ApiResponses({

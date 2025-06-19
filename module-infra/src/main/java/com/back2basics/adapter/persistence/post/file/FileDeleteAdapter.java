@@ -22,6 +22,19 @@ public class FileDeleteAdapter implements FileDeletePort {
     }
 
     @Override
+    public void deleteFiles(List<File> files) {
+        if (files == null || files.isEmpty()) {
+            return;
+        }
+
+        List<Long> ids = files.stream()
+            .map(File::getId)
+            .toList();
+
+        fileRepository.deleteAllByIdInBatch(ids);
+    }
+
+    @Override
     public void deleteFromStorage(List<File> files) {
         for (File file : files) {
             String key = extractKeyFromUrl(file.getFileUrl());

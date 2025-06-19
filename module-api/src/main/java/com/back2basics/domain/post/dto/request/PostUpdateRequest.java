@@ -6,6 +6,7 @@ import com.back2basics.post.model.PostType;
 import com.back2basics.post.port.in.command.PostUpdateCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -25,12 +26,16 @@ public class PostUpdateRequest {
     @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
     private PostPriority priority;
 
+    // 삭제할 파일의 id
+    private List<Long> fileIdsToDelete;
+
     public PostUpdateCommand toCommand() {
         return PostUpdateCommand.builder()
             .title(title)
             .content(content)
             .type(type)
             .priority(priority)
+            .fileIdsToDelete(fileIdsToDelete)
             .build();
     }
 }
