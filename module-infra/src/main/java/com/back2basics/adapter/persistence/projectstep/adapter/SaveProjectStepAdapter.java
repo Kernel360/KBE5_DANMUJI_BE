@@ -8,10 +8,12 @@ import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@Transactional
 @RequiredArgsConstructor
 public class SaveProjectStepAdapter implements SaveProjectStepPort {
 

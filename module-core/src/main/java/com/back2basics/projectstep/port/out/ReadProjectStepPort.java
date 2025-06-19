@@ -9,4 +9,6 @@ public interface ReadProjectStepPort {
 
     // todo: 중복 메서드 제거
     List<ProjectStep> findAllByProjectId(Long projectId);
+
+    Integer findMaxStepOrderByProjectId(Long projectId);
 }

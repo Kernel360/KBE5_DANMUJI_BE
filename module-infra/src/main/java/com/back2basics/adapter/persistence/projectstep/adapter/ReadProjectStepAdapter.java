@@ -33,4 +33,9 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public Integer findMaxStepOrderByProjectId(Long projectId) {
+        return repository.findMaxStepOrderByProjectId(projectId);
+    }
+
 }
