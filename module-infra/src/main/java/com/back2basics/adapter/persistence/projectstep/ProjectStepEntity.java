@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 public class ProjectStepEntity extends BaseTimeEntity {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -41,9 +40,6 @@ public class ProjectStepEntity extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
-
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
 
     public ProjectStepEntity(Long id, ProjectEntity projectEntity, String name, int stepOrder,
         ProjectStepStatus projectStepStatus) {

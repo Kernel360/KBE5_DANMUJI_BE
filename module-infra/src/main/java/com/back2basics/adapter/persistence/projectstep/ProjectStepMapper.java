@@ -15,7 +15,11 @@ public class ProjectStepMapper {
     }
 
     public ProjectStepEntity toEntity(ProjectStep projectStep, ProjectEntity project) {
-        return new ProjectStepEntity(projectStep.getId(), project,
+        ProjectStepEntity projectStepEntity = new ProjectStepEntity(projectStep.getId(), project,
             projectStep.getName(), projectStep.getStepOrder(), projectStep.getProjectStepStatus());
+        if (projectStep.isDeleted()) {
+            projectStepEntity.markDeleted();
+        }
+        return projectStepEntity;
     }
 }
