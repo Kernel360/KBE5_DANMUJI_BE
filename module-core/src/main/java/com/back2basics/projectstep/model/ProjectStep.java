@@ -43,4 +43,8 @@ public class ProjectStep {
         this.isDeleted = true;
     }
 
+    public void updateStepOrder(int stepOrder) {
+        this.stepOrder = stepOrder;
+    }
+
 }
