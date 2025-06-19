@@ -32,7 +32,13 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
 
     @Override
     public Page<Inquiry> getAllInquiries(Pageable pageable) {
-        return inquiryEntityRepository.findByDeletedAtIsNull(pageable)
+        return inquiryEntityRepository.findAllByDeletedAtIsNull(pageable)
+            .map(inquiryMapper::toDomain);
+    }
+
+    @Override
+    public Page<Inquiry> getMyInquiries(Pageable pageable, Long id) {
+        return inquiryEntityRepository.findByAuthorIdAndDeletedAtIsNull(id, pageable)
             .map(inquiryMapper::toDomain);
     }
 

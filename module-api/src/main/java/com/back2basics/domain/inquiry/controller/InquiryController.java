@@ -1,6 +1,7 @@
 package com.back2basics.domain.inquiry.controller;
 
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_CREATE_SUCCESS;
+import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_DELETE_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_ALL_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_SUCCESS;
 
@@ -8,10 +9,10 @@ import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
+import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.security.model.CustomUserDetails;
-import com.back2basics.user.port.in.UserQueryUseCase;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +37,7 @@ public class InquiryController {
 
     private final CreateInquiryUseCase createinquiryUseCase;
     private final ReadInquiryUseCase readInquiryUseCase;
-    private final UserQueryUseCase userQueryUseCase;
+    private final DeleteInquiryUseCase deleteInquiryUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createInquiry(
@@ -68,6 +70,22 @@ public class InquiryController {
             inquires.map(ReadInquiryResponse::toResponse));
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getMyInquiries(
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "id",
+            direction = Sort.Direction.DESC
+        )
+        Pageable pageable,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Page<ReadInquiryResult> inquires = readInquiryUseCase.getMyInquiries(pageable,
+            customUserDetails.getId());
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            inquires.map(ReadInquiryResponse::toResponse));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<ReadInquiryResponse>>> getAllInquiriesWithoutPagination() {
         List<ReadInquiryResult> inquiries = readInquiryUseCase.getAllInquiries();
@@ -79,10 +97,10 @@ public class InquiryController {
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, responseList);
     }
 
-//    @DeleteMapping("/{inquiryId}")
-//    public ResponseEntity<ApiResponse<Void>> deleteInquiry(@PathVariable Long inquiryId) {
-//        deleteinquiryUseCase.deleteCompany(inquiryId);
-//        return ApiResponse.success(COMPANY_DELETE_SUCCESS);
-//    }
+    @DeleteMapping("/{inquiryId}")
+    public ResponseEntity<ApiResponse<Void>> deleteInquiry(@PathVariable Long inquiryId) {
+        deleteInquiryUseCase.deleteInquiry(inquiryId);
+        return ApiResponse.success(INQUIRY_DELETE_SUCCESS);
+    }
 
 }

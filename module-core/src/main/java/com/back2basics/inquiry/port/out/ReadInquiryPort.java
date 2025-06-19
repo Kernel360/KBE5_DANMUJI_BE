@@ -14,4 +14,6 @@ public interface ReadInquiryPort {
 
     Page<Inquiry> getAllInquiries(Pageable pageable);
 
+    Page<Inquiry> getMyInquiries(Pageable pageable, Long id);
+
 }

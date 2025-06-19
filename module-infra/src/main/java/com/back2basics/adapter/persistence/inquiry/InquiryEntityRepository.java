@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InquiryEntityRepository extends JpaRepository<InquiryEntity, Long> {
 
-    Page<InquiryEntity> findByDeletedAtIsNull(Pageable pageable);
+    Page<InquiryEntity> findAllByDeletedAtIsNull(Pageable pageable);
+
+    Page<InquiryEntity> findByAuthorIdAndDeletedAtIsNull(Long authorId, Pageable pageable);
 
 }

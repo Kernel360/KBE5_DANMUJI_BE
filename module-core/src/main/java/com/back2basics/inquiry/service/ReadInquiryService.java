@@ -68,4 +68,24 @@ public class ReadInquiryService implements ReadInquiryUseCase {
         return new PageImpl<>(results, pageable, inquiryPage.getTotalElements());
     }
 
+    @Override
+    public Page<ReadInquiryResult> getMyInquiries(Pageable pageable, Long id) {
+        Page<Inquiry> inquiryPage = readInquiryPort.getMyInquiries(pageable, id);
+
+        List<Long> authorIds = inquiryPage.getContent().stream()
+            .map(Inquiry::getAuthorId)
+            .toList();
+
+        Map<Long, String> authorNameMap = userQueryUseCase.getNameByIds(authorIds);
+
+        List<ReadInquiryResult> results = inquiryPage.getContent().stream()
+            .map(inquiry -> ReadInquiryResult.toResult(
+                inquiry,
+                authorNameMap.getOrDefault(inquiry.getAuthorId(), "알 수 없음")
+            ))
+            .toList();
+
+        return new PageImpl<>(results, pageable, inquiryPage.getTotalElements());
+    }
+
 }

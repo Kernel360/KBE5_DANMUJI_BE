@@ -13,4 +13,6 @@ public interface ReadInquiryUseCase {
 
     Page<ReadInquiryResult> getAllInquiries(Pageable pageable);
 
+    Page<ReadInquiryResult> getMyInquiries(Pageable pageable, Long id);
+
 }
