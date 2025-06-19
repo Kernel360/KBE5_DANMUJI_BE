@@ -11,7 +11,7 @@ import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.response.DetailProjectStepResponse;
 import com.back2basics.domain.projectstep.dto.response.ReadProjectStepResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
+import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.DeleteProjectStepUseCase;
 import com.back2basics.projectstep.port.in.ReadProjectStepUseCase;
@@ -80,19 +80,19 @@ public class ProjectStepController {
 
     // 수정
     @PutMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<Void>> updateStep(@PathVariable Long stepId, @RequestBody
+    public ResponseEntity<ApiResponse<Void>> updateStepName(@PathVariable Long stepId, @RequestBody
     UpdateProjectStepRequest request) {
         UpdateProjectStepCommand command = request.toCommand();
-        updateProjectStepUseCase.updateStep(command, stepId);
+        updateProjectStepUseCase.updateStepName(command, stepId);
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
-    // todo: 승인, 거절 버튼마다 url - projectFeedbackStepStatus 다르게
+    // todo: 승인, 거절 버튼마다 url - projectStepStatus 다르게
     @PutMapping("/{stepId}/approval")
     public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId,
         @RequestParam
-        ProjectFeedbackStepStatus projectFeedbackStepStatus) {
-        updateProjectStepUseCase.updateApprovalStatus(projectFeedbackStepStatus, stepId);
+        ProjectStepStatus projectStepStatus) {
+        updateProjectStepUseCase.updateApprovalStatus(projectStepStatus, stepId);
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 

@@ -8,6 +8,4 @@ public interface SaveProjectStepPort {
 
     void save(ProjectStep projectStep);
 
-    void update(ProjectStep projectStep);
-
 }

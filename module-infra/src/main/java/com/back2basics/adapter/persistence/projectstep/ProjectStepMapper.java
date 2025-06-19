@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.projectstep;
 
+import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.projectstep.model.ProjectStep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,12 +10,12 @@ import org.springframework.stereotype.Component;
 public class ProjectStepMapper {
 
     public ProjectStep toDomain(ProjectStepEntity entity) {
-        return new ProjectStep(entity.getStepId(), entity.getProjectId(), entity.getName(),
+        return new ProjectStep(entity.getStepId(), entity.getProject().getId(), entity.getName(),
             entity.getStepOrder(), entity.getProjectStepStatus());
     }
 
-    public ProjectStepEntity toEntity(ProjectStep projectStep) {
-        return new ProjectStepEntity(projectStep.getStepId(), projectStep.getProjectId(),
+    public ProjectStepEntity toEntity(ProjectStep projectStep, ProjectEntity project) {
+        return new ProjectStepEntity(projectStep.getStepId(), project,
             projectStep.getName(), projectStep.getStepOrder(), projectStep.getProjectStepStatus());
     }
 }
