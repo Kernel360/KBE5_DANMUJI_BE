@@ -8,7 +8,7 @@ import com.back2basics.user.model.User;
 public record ProjectStepSimpleResult(Long id, int stepOrder, String name,
                                       ProjectStepStatus projectStepStatus, ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted, User user) {
 
-    public static ProjectStepSimpleResult from(ProjectStep projectStep) {
+    public static ProjectStepSimpleResult toResult(ProjectStep projectStep) {
         return new ProjectStepSimpleResult(
             projectStep.getStepId(),
             projectStep.getStepOrder(),
