@@ -1,13 +1,10 @@
 package com.back2basics.adapter.persistence.projectstep.adapter;
 
-import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
-import com.back2basics.infra.exception.project.ProjectErrorCode;
-import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
@@ -33,8 +30,7 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
         // 1. project 연관 안들어간 step entity
         ProjectStepEntity projectStepEntity = mapper.toEntity(projectStep);
         // 2. project Entity 찾기
-        ProjectEntity projectEntity = projectRepository.findById(projectStep.getProjectId())
-            .orElseThrow(() -> new ProjectException(ProjectErrorCode.PROJECT_NOT_FOUND));
+        projectValidator.validateNotFoundProjectId(projectStep.getProjectId());
         // 3. project 연관
         stepRepository.save(projectStepEntity);
     }
