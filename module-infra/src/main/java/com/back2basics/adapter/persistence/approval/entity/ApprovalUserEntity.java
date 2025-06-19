@@ -1,7 +1,8 @@
 package com.back2basics.adapter.persistence.approval.entity;
 
-import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
-import com.back2basics.approval.model.ApprovalRequestStatus;
+
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.approval.model.ApprovalUserStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,24 +22,28 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "approval_requests")
-public class ApprovalRequestEntity {
+@Table(name = "approval_users")
+public class ApprovalUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "step_id")
-    private ProjectStepEntity projectStep;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
-    @Column(name = "status")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approval_request_id")
+    private ApprovalRequestEntity approvalRequest;
+
+    @Column(name = "message")
+    private String message;
+    
+    @Column
     @Enumerated(EnumType.STRING)
-    private ApprovalRequestStatus approvalRequestStatus;
+    private ApprovalUserStatus status;
 
-    @Column(name = "requested_at")
-    private LocalDateTime requestedAt;
-
-    @Column(name = "completed_at")
-    private LocalDateTime completedAt;
+    @Column(name = "responded_at")
+    private LocalDateTime respondedAt;
 }
