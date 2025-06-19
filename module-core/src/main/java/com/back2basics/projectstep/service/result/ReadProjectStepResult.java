@@ -23,7 +23,7 @@ public class ReadProjectStepResult {
 
     public static ReadProjectStepResult toResult(ProjectStep step) {
         return ReadProjectStepResult.builder()
-            .id(step.getStepId())
+            .id(step.getId())
             .projectId(step.getProjectId())
             .name(step.getName())
             .stepOrder(step.getStepOrder())

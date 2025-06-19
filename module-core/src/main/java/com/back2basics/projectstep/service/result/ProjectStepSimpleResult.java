@@ -8,7 +8,7 @@ public record ProjectStepSimpleResult(Long id, int stepOrder, String name,
 
     public static ProjectStepSimpleResult toResult(ProjectStep projectStep) {
         return new ProjectStepSimpleResult(
-            projectStep.getStepId(),
+            projectStep.getId(),
             projectStep.getStepOrder(),
             projectStep.getName(),
             projectStep.getProjectStepStatus()

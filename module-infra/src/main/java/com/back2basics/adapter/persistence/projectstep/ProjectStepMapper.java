@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 public class ProjectStepMapper {
 
     public ProjectStep toDomain(ProjectStepEntity entity) {
-        return new ProjectStep(entity.getStepId(), entity.getProject().getId(), entity.getName(),
+        return new ProjectStep(entity.getId(), entity.getProject().getId(), entity.getName(),
             entity.getStepOrder(), entity.getProjectStepStatus());
     }
 
     public ProjectStepEntity toEntity(ProjectStep projectStep, ProjectEntity project) {
-        return new ProjectStepEntity(projectStep.getStepId(), project,
+        return new ProjectStepEntity(projectStep.getId(), project,
             projectStep.getName(), projectStep.getStepOrder(), projectStep.getProjectStepStatus());
     }
 }

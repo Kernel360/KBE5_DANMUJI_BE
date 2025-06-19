@@ -23,7 +23,7 @@ public class DetailProjectStepResult {
 
     public static DetailProjectStepResult toResult(ProjectStep step) {
         return DetailProjectStepResult.builder()
-            .id(step.getStepId())
+            .id(step.getId())
             .name(step.getName())
             .stepOrder(step.getStepOrder())
             .projectStepStatus(step.getProjectStepStatus())

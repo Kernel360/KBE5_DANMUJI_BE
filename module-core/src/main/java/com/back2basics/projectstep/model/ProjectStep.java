@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class ProjectStep {
 
-    private final Long stepId;
+    private final Long id;
 
     private final Long projectId;
 
@@ -17,9 +17,9 @@ public class ProjectStep {
 
     private boolean isDeleted;
 
-    public ProjectStep(Long stepId, Long projectId, String name, int stepOrder,
+    public ProjectStep(Long id, Long projectId, String name, int stepOrder,
         ProjectStepStatus projectStepStatus) {
-        this.stepId = stepId;
+        this.id = id;
         this.projectId = projectId;
         this.name = name;
         this.stepOrder = stepOrder;
