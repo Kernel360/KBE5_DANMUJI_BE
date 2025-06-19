@@ -52,12 +52,12 @@ public class ProjectStepController {
         return ApiResponse.success(STEP_CREATE_SUCCESS);
     }
 
-//    @PostMapping
-//    public ResponseEntity<ApiResponse<Void>> addStep(
-//
-//    ) {
-//
-//    }
+    @PutMapping("/{projectId}/reorder")
+    public ResponseEntity<ApiResponse<Void>> reorderSteps(@PathVariable Long projectId,
+        @RequestBody List<Long> stepIdsInNewOrder) {
+        updateProjectStepUseCase.reorderSteps(projectId, stepIdsInNewOrder);
+        return ApiResponse.success(STEP_UPDATE_SUCCESS);
+    }
 
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<List<DetailProjectStepResponse>>> getStepsProjectId(
@@ -70,7 +70,7 @@ public class ProjectStepController {
     }
 
     // 단계 상세 조회
-    @GetMapping("/{stepId}")
+    @GetMapping("/{stepId}/detail")
     public ResponseEntity<ApiResponse<ReadProjectStepResponse>> getStepById(
         @PathVariable Long stepId) {
         ReadProjectStepResult result = readProjectStepUseCase.findById(stepId);
