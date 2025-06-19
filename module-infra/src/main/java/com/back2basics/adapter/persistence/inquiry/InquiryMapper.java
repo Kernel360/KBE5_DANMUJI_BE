@@ -17,6 +17,7 @@ public class InquiryMapper {
             .title(entity.getTitle())
             .content(entity.getContent())
             .inquiryStatus(entity.getInquiryStatus())
+            .createdAt(entity.getCreatedAt())
             .build();
     }
 

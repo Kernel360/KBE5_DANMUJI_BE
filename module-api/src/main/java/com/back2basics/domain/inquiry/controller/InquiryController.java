@@ -4,13 +4,17 @@ import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_DELETE_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_ALL_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_SUCCESS;
+import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_UPDATE_SUCCESS;
 
 import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
+import com.back2basics.domain.inquiry.dto.request.UpdateInquiryByUserRequest;
+import com.back2basics.domain.inquiry.dto.request.UpdateInquiryStatusByAdminRequest;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
 import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
+import com.back2basics.inquiry.port.in.UpdateInquiryUseCase;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
@@ -21,11 +25,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +44,7 @@ public class InquiryController {
     private final CreateInquiryUseCase createinquiryUseCase;
     private final ReadInquiryUseCase readInquiryUseCase;
     private final DeleteInquiryUseCase deleteInquiryUseCase;
+    private final UpdateInquiryUseCase updateInquiryUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createInquiry(
@@ -95,6 +102,27 @@ public class InquiryController {
             .toList();
 
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, responseList);
+    }
+
+    @PutMapping("/{inquiryId}/user")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<Void>> updateByUser(
+        @PathVariable Long inquiryId,
+        @RequestBody UpdateInquiryByUserRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        updateInquiryUseCase.updateByUser(inquiryId, userDetails.getId(), request.toCommand());
+        return ApiResponse.success(INQUIRY_UPDATE_SUCCESS);
+    }
+
+    @PutMapping("/{inquiryId}/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Void>> updateByAdmin(
+        @PathVariable Long inquiryId,
+        @RequestBody UpdateInquiryStatusByAdminRequest request
+    ) {
+        updateInquiryUseCase.updateByAdmin(inquiryId, request.toCommand());
+        return ApiResponse.success(INQUIRY_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{inquiryId}")

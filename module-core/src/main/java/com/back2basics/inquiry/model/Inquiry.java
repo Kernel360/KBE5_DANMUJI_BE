@@ -1,5 +1,7 @@
 package com.back2basics.inquiry.model;
 
+import com.back2basics.inquiry.port.in.command.UpdateInquiryCommand;
+import com.back2basics.inquiry.port.in.command.UpdateInquiryStatusCommand;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +34,19 @@ public class Inquiry {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.isDelete = false;
+    }
+
+    public void updateContent(UpdateInquiryCommand command) {
+        if (command.getTitle() != null) {
+            this.title = command.getTitle();
+        }
+        if (command.getContent() != null) {
+            this.content = command.getContent();
+        }
+    }
+
+    public void updateStatus(UpdateInquiryStatusCommand command) {
+        this.inquiryStatus = command.getStatus();
     }
 
     public void markDeleted() {
