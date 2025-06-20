@@ -1,11 +1,10 @@
 package com.back2basics.projectstep.service;
 
-import static com.back2basics.projectstep.model.ProjectStepStatus.*;
-import static com.back2basics.projectstep.model.ProjectFeedbackStepStatus.*;
-
 import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
+import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,19 +13,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateProjectStepService implements CreateProjectStepUseCase {
 
-    private final SaveProjectStepPort port;
+    private final ReadProjectStepPort readProjectStepPort;
+    private final SaveProjectStepPort saveProjectStepPort;
 
     @Override
     public void createStep(CreateProjectStepCommand command, Long projectId) {
-        ProjectStep step = ProjectStep.builder()
-            .projectId(projectId)
-            .userId(command.getUserId())
-            .name(command.getName())
-            .stepOrder(command.getStepOrder())
-            .projectStepStatus(PENDING)
-            .projectFeedbackStepStatus(command.getUserId() != null ? REQUESTED : null)
-            .build();
+        Integer maxOrder = readProjectStepPort.findMaxStepOrderByProjectId(projectId);
+        ProjectStep step = ProjectStep.create(projectId, command.getName(), maxOrder + 1,
+            ProjectStepStatus.PENDING);
 
-        port.save(step);
+        saveProjectStepPort.save(step);
     }
 }

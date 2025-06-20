@@ -10,8 +10,4 @@ public class CreateProjectStepCommand {
 
     @NotBlank(message = "단계명은 필수입니다.")
     private String name;
-
-    private Long userId;
-
-    private int stepOrder;
 }
