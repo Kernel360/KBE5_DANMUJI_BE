@@ -35,6 +35,12 @@ public class UserQueryAdapter implements UserQueryPort {
     }
 
     @Override
+    public List<User> findByIds(List<Long> ids) {
+        return userEntityRepository.findAllById(ids).stream()
+            .map(userMapper::toDomain).toList();
+    }
+
+    @Override
     public boolean existsByUsername(String username) {
         return userEntityRepository.existsByUsername(username);
     }
@@ -81,5 +87,4 @@ public class UserQueryAdapter implements UserQueryPort {
 
         userEntityRepository.saveAll(userEntities);
     }
-
 }
