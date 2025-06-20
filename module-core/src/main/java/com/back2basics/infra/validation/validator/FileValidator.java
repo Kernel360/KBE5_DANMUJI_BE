@@ -5,8 +5,8 @@ import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
 
 import com.back2basics.infra.exception.file.FileException;
 import com.back2basics.infra.exception.post.PostException;
-import com.back2basics.post.model.Post;
-import com.back2basics.post.port.out.PostReadPort;
+import com.back2basics.board.post.model.Post;
+import com.back2basics.board.post.port.out.PostReadPort;
 import com.back2basics.project.port.out.ProjectMemberQueryPort;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
