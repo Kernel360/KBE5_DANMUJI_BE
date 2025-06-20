@@ -74,7 +74,6 @@ public class Project {
         this.endDate = command.getEndDate();
     }
 
-    // todo: 두개 합쳐도 됨
     public void statusCompleted() {
         this.status = ProjectStatus.COMPLETED;
     }
