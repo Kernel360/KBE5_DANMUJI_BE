@@ -47,4 +47,9 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
         return repository.findMaxStepOrderByProjectId(projectId);
     }
 
+    @Override
+    public boolean existsById(Long stepId) {
+        return repository.existsById(stepId);
+    }
+
 }
