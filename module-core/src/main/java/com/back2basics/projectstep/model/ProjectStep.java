@@ -1,10 +1,10 @@
 package com.back2basics.projectstep.model;
 
+import com.back2basics.project.model.Project;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.user.model.User;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +16,8 @@ public class ProjectStep {
     private String name;
 
     private final Long projectId;
+
+    private Project project;
 
     private Long userId;
 
@@ -32,13 +34,15 @@ public class ProjectStep {
     private LocalDateTime deletedAt;
 
     @Builder
-    public ProjectStep(Long stepId, String name, Long projectId, Long userId, User user,
+    public ProjectStep(Long stepId, String name, Long projectId, Project project, Long userId,
+        User user,
         int stepOrder, ProjectStepStatus projectStepStatus,
         ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.name = name;
         this.projectId = projectId;
+        this.project = project;
         this.userId = userId;
         this.user = user;
         this.stepOrder = stepOrder;

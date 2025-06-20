@@ -37,10 +37,6 @@ public class ProjectStepEntity {
     @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -62,27 +58,18 @@ public class ProjectStepEntity {
     private LocalDateTime deletedAt;
 
     @Builder
-    public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
+    public ProjectStepEntity(Long stepId, ProjectEntity project, String name,
         int stepOrder, ProjectStepStatus projectStepStatus,
         ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.project = project;
-        this.user = user;
         this.name = name;
         this.stepOrder = stepOrder;
         this.projectStepStatus = projectStepStatus;
         this.projectFeedbackStepStatus = projectFeedbackStepStatus;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
-    }
-
-    public void assignProjectEntity(ProjectEntity project) {
-        this.project = project;
-    }
-
-    public void assignUserEntity(UserEntity user) {
-        this.user = user;
     }
 }
 
