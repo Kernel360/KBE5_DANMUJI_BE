@@ -11,7 +11,7 @@ import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.comment.port.out.CommentCreatePort;
 import com.back2basics.infra.validation.validator.CommentValidator;
 import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.post.model.Post;
+import com.back2basics.board.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
