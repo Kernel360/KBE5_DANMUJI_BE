@@ -8,7 +8,7 @@ public class ApprovalResponse {
 
     private final Long id;
 
-    private final Long approverId;
+    private final Long userId;
 
     private final Long projectStepId;
 
@@ -18,10 +18,10 @@ public class ApprovalResponse {
 
     private LocalDateTime respondedAt;
 
-    public ApprovalResponse(Long id, Long approverId, Long projectStepId, String message,
+    public ApprovalResponse(Long id, Long userId, Long projectStepId, String message,
         ApprovalResponseStatus status, LocalDateTime respondedAt) {
         this.id = id;
-        this.approverId = approverId;
+        this.userId = userId;
         this.projectStepId = projectStepId;
         this.message = message;
         this.status = status;

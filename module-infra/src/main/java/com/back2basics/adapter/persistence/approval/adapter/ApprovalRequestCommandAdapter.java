@@ -48,4 +48,5 @@ public class ApprovalRequestCommandAdapter implements ApprovalRequestCommandPort
         entity.addResponses(responses);
         approvalRequestEntityRepository.save(entity);
     }
+
 }
