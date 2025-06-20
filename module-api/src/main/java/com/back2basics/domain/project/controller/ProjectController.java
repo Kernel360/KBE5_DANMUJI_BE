@@ -110,6 +110,7 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 
+    // 수정 todo: member 제거
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
         @PathVariable Long projectId,

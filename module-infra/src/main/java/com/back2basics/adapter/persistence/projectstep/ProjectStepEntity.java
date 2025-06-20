@@ -33,15 +33,9 @@ public class ProjectStepEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stepId;
 
-    // todo: step은 projectId 만 필요한데 여기서 연관을 맺어서 양방향으로 할 필요 없을 듯
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
-
-    // todo: LAZY와 EAGER의 차이? - 지연로딩, 즉시로딩?
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -53,10 +47,6 @@ public class ProjectStepEntity {
     @Column(name = "project_step_status", nullable = false)
     private ProjectStepStatus projectStepStatus;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "project_feedback_step_status")
-    private ProjectFeedbackStepStatus projectFeedbackStepStatus;
-
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
@@ -64,27 +54,16 @@ public class ProjectStepEntity {
     private LocalDateTime deletedAt;
 
     @Builder
-    public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
-        int stepOrder, ProjectStepStatus projectStepStatus,
-        ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
+    public ProjectStepEntity(Long stepId, ProjectEntity project, String name,
+        int stepOrder, ProjectStepStatus projectStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.project = project;
-        this.user = user;
         this.name = name;
         this.stepOrder = stepOrder;
         this.projectStepStatus = projectStepStatus;
-        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
-    }
-
-    public void assignProjectEntity(ProjectEntity project) {
-        this.project = project;
-    }
-
-    public void assignUserEntity(UserEntity user) {
-        this.user = user;
     }
 }
 

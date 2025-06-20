@@ -1,14 +1,14 @@
 package com.back2basics.adapter.persistence.projectstep.adapter;
 
-import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.*;
+import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.STEP_NOT_FOUND;
 
+import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,24 +28,23 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
 
     @Override
     public List<ProjectStep> findAllByProjectId(Long projectId) {
-        return repository.findAllByProjectIdAndIsDeletedFalse(projectId)
+        return repository.findAllByProjectIdAndDeletedAtIsNull(projectId)
             .stream()
             .map(mapper::toDomain)
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProjectStep> findByProjectId(Long projectId) {
-        return repository.findByProject_Id(projectId)
-            .stream()
+    public List<ProjectStep> findAllById(List<Long> ids) {
+        List<ProjectStepEntity> entities = repository.findAllById(ids);
+        return entities.stream()
             .map(mapper::toDomain)
             .toList();
     }
 
     @Override
-    public Long findUserById(Long stepId) {
-        ProjectStep step = repository.findById(stepId).map(mapper::toDomain)
-            .orElseThrow(() -> new ProjectStepException(STEP_NOT_FOUND));
-        return step.getUserId();
+    public Integer findMaxStepOrderByProjectId(Long projectId) {
+        return repository.findMaxStepOrderByProjectId(projectId);
     }
+
 }

@@ -57,7 +57,7 @@ public class AssignmentMapper {
     public AssignmentEntity toEntityTest(Assignment assignment) {
         return com.back2basics.adapter.persistence.assignment.AssignmentEntity.builder()
             .id(assignment.getId())
-            .project(projectMapper.fromDomain(assignment.getProject()))
+            .project(projectMapper.toEntity(assignment.getProject()))
             .user(userMapper.toEntityTest(assignment.getUser()))
             .company(companyMapper.toEntity(assignment.getCompany()))
             .userType(assignment.getUserType())

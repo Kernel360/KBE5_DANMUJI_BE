@@ -1,22 +1,24 @@
 package com.back2basics.domain.answer.controller;
 
-import com.back2basics.answer.port.in.AnswerCreateUseCase;
-import com.back2basics.answer.port.in.AnswerDeleteUseCase;
-import com.back2basics.answer.port.in.AnswerReadUseCase;
-import com.back2basics.answer.port.in.AnswerUpdateUseCase;
-import com.back2basics.answer.service.result.AnswerReadResult;
+import com.back2basics.answer.port.in.CreateAnswerUseCase;
+import com.back2basics.answer.port.in.DeleteAnswerUseCase;
+import com.back2basics.answer.port.in.ReadAnswerUseCase;
+import com.back2basics.answer.port.in.UpdateAnswerUseCase;
+import com.back2basics.answer.service.result.ReadAnswerResult;
 import com.back2basics.domain.answer.controller.code.AnswerResponseCode;
-import com.back2basics.domain.answer.dto.request.AnswerCreateRequest;
-import com.back2basics.domain.answer.dto.request.AnswerUpdateRequest;
-import com.back2basics.domain.answer.dto.response.AnswerReadResponse;
-import com.back2basics.domain.answer.swagger.AnswerApiDocs;
+import com.back2basics.domain.answer.dto.request.CreateAnswerRequest;
+import com.back2basics.domain.answer.dto.request.UpdateAnswerRequest;
+import com.back2basics.domain.answer.dto.response.ReadAnswerResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,50 +32,57 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/answers")
 @RequiredArgsConstructor
-public class AnswerController implements AnswerApiDocs {
+public class AnswerController {
 
-    private final AnswerReadUseCase answerReadUseCase;
-    private final AnswerCreateUseCase createAnswerUseCase;
-    private final AnswerUpdateUseCase updateAnswerUseCase;
-    private final AnswerDeleteUseCase deleteAnswerUseCase;
+    private final ReadAnswerUseCase readAnswerUseCase;
+    private final CreateAnswerUseCase createAnswerUseCase;
+    private final UpdateAnswerUseCase updateAnswerUseCase;
+    private final DeleteAnswerUseCase deleteAnswerUseCase;
 
-    @GetMapping("/{questionId}")
-    public ResponseEntity<ApiResponse<List<AnswerReadResponse>>> getAnswersByQuestionId(
-        @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long questionId
+    @GetMapping("/{inquiryId}")
+    public ResponseEntity<ApiResponse<Page<ReadAnswerResponse>>> getAnswersByInquiryId(
+        @PathVariable Long inquiryId,
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "id",
+            direction = Sort.Direction.DESC
+        ) Pageable pageable
     ) {
 
-        List<AnswerReadResult> resultList = answerReadUseCase.getAnswersByQuestionId(
-            customUserDetails.getId(),
-            questionId);
-        List<AnswerReadResponse> responseList = resultList.stream()
-            .map(AnswerReadResponse::toResponse)
-            .collect(Collectors.toList());
-        return ApiResponse.success(AnswerResponseCode.ANSWER_READ_SUCCESS, responseList);
+        Page<ReadAnswerResult> results = readAnswerUseCase.getAnswersByInquiryId(
+            inquiryId,
+            pageable);
+
+        return ApiResponse.success(AnswerResponseCode.ANSWER_READ_SUCCESS,
+            results.map(ReadAnswerResponse::toResponse));
     }
 
-    @PostMapping
+    @PostMapping("/{inquiryId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Long>> createAnswer(
+        @PathVariable Long inquiryId,
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestBody @Valid AnswerCreateRequest request) {
-        Long createdId = createAnswerUseCase.createAnswer(customUserDetails.getId(),
-            customUserDetails.getIp(),
+        @RequestBody @Valid CreateAnswerRequest request) {
+        Long createdId = createAnswerUseCase.createAnswer(inquiryId, customUserDetails.getId(),
             request.toCommand());
         return ApiResponse.success(AnswerResponseCode.ANSWER_CREATE_SUCCESS, createdId);
     }
 
     @PutMapping("/{answerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> updateAnswer(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long answerId,
-        @Valid @RequestBody AnswerUpdateRequest request
+        @Valid @RequestBody UpdateAnswerRequest request
     ) {
-        updateAnswerUseCase.updateAnswer(customUserDetails.getId(), customUserDetails.getIp(),
+        updateAnswerUseCase.updateAnswer(customUserDetails.getId(),
             answerId, request.toCommand());
         return ApiResponse.success(AnswerResponseCode.ANSWER_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{answerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteAnswer(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long answerId

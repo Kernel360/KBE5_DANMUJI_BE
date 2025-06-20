@@ -11,6 +11,7 @@ import com.back2basics.global.response.code.ErrorCode;
 import com.back2basics.global.response.error.CustomException;
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.infra.exception.ForbiddenAccessException;
 import com.back2basics.infra.exception.company.DuplicateCompanyException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -32,7 +33,15 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
+
+    @ExceptionHandler(org.springframework.dao.InvalidDataAccessApiUsageException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleInvalidDataAccessApiUsageException(
+        org.springframework.dao.InvalidDataAccessApiUsageException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("InvalidDataAccessApiUsageException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleIOException(IOException ex) {
         ErrorCode errorCode = FILE_DOWNLOAD_FAIL;
@@ -200,7 +209,7 @@ public class GlobalExceptionHandler {
         }
 
         ErrorCode errorCode = INTERNAL_SERVER_ERROR;
-        log.error("UnhandledException 발생: {}", ex.getMessage());
+        log.error("UnhandledException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
 
@@ -209,6 +218,16 @@ public class GlobalExceptionHandler {
         DuplicateCompanyException ex) {
 
         log.warn("중복 회사 생성 예외 발생: {}", ex.getMessage());
+        ErrorResponse response = ErrorResponse.of(ex.getErrorCode(), ex.getErrors());
+
+        return ApiResponse.error(ex.getErrorCode(), response);
+    }
+
+    @ExceptionHandler(ForbiddenAccessException.class)
+    public ResponseEntity<ApiResponse<ErrorResponse>> handleForbiddenAccessException(
+        ForbiddenAccessException ex) {
+
+        log.warn("문의 사항 삭제 예외 발생: {}", ex.getMessage());
         ErrorResponse response = ErrorResponse.of(ex.getErrorCode(), ex.getErrors());
 
         return ApiResponse.error(ex.getErrorCode(), response);

@@ -7,7 +7,7 @@ import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
-import com.back2basics.post.model.Post;
+import com.back2basics.board.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

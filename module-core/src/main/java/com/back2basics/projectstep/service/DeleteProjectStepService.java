@@ -15,6 +15,7 @@ public class DeleteProjectStepService implements DeleteProjectStepUseCase {
     private final ReadProjectStepPort readPort;
 
     // save는 생성할 때 연관관계 부여하는데 삭제는 이미 연관관계 설정되어 있는 애들이라 다른 save를 만들어야 할 지 고민
+    // todo: step order 순서 변경 처리
     @Override
     public void softDelete(Long stepId) {
         ProjectStep step = readPort.findById(stepId);

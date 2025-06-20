@@ -18,6 +18,7 @@ public class AssignmentQueryAdapter implements AssignmentQueryPort {
     private final AssignmentMapper assignmentMapper;
 
 
+    // todo: 변수명 변경
     @Override
     public List<Assignment> findUsersByProjectId(Long projectId) {
 
@@ -30,19 +31,16 @@ public class AssignmentQueryAdapter implements AssignmentQueryPort {
     @Override
     public Assignment findByProjectIdAndUserTypeAndCompanyType(Long projectId, UserType userType,
         CompanyType companyType) {
-        Assignment assignment = assignmentMapper.toDomain(
+        return assignmentMapper.toDomain(
             assignmentEntityRepository.findByProjectIdAndUserTypeAndCompanyType(projectId, userType,
                 companyType)
         );
-        return assignment;
     }
 
     @Override
-    public Assignment findByProjectIdAndUserId(Long projectId, Long userId) {
-        Assignment assignment = assignmentMapper.toDomain(
-            assignmentEntityRepository.findByProjectIdAndUserId(projectId, userId)
-        );
-        return assignment;
+    public List<Assignment> findByProjectIdAndUserId(Long projectId, Long userId) {
+        return assignmentEntityRepository.findByProject_IdAndUser_Id(projectId, userId)
+            .stream().map(assignmentMapper::toDomainTest).toList();
     }
 
     @Override
