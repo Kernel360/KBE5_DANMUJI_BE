@@ -15,9 +15,8 @@ public class TestController {
     private final TestDocumentService testService;
 
     @PostMapping("/mongo/test")
-    public String testInsert() {
-        testService.saveTestDoc();
-        return "삽입 완료";
+    public TestDocument testInsert() {
+        return testService.saveTestDoc(); // 저장된 객체를 반환
     }
 
     @GetMapping("/mongo/test/{id}")

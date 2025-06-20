@@ -11,9 +11,9 @@ public class TestDocumentService {
     private final TestDocumentRepository repository;
 
     // 저장
-    public void saveTestDoc() {
+    public TestDocument saveTestDoc() {
         TestDocument doc = new TestDocument(null, "제목", "메시지입니다");
-        repository.save(doc);
+        return repository.save(doc);
     }
 
     // 조회
