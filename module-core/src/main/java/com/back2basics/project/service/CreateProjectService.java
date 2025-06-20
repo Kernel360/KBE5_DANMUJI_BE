@@ -41,7 +41,7 @@ public class CreateProjectService implements CreateProjectUseCase {
             .build();
         Project savedProject = saveProjectPort.save(project);
         createDefaultSteps(savedProject.getId());
-        assignMembers(savedProject, command);
+        assignUsers(savedProject, command);
     }
 
     private void createDefaultSteps(Long projectId) {
@@ -57,7 +57,8 @@ public class CreateProjectService implements CreateProjectUseCase {
         }
     }
 
-    private void assignMembers(Project project, ProjectCreateCommand command) {
+    private void assignUsers(Project project, ProjectCreateCommand command) {
+
         List<User> devManagers = command.getDevManagerId().stream().map(userQueryPort::findById)
             .toList();
         List<User> clientManagers = command.getClientManagerId().stream()

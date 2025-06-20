@@ -2,7 +2,6 @@ package com.back2basics.domain.project.dto.request;
 
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 

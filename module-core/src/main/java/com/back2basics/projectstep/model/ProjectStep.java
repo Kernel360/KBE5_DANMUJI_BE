@@ -1,11 +1,13 @@
 package com.back2basics.projectstep.model;
 
+import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class ProjectStep {
 
-    private final Long id;
+    private final Long stepId;
 
     private final Long projectId;
 
@@ -17,18 +19,23 @@ public class ProjectStep {
 
     private boolean isDeleted;
 
-    public ProjectStep(Long id, Long projectId, String name, int stepOrder,
-        ProjectStepStatus projectStepStatus) {
-        this.id = id;
+    private LocalDateTime deletedAt;
+
+    @Builder
+    public ProjectStep(Long stepId, Long projectId, String name, int stepOrder,
+        ProjectStepStatus projectStepStatus, boolean isDeleted, LocalDateTime deletedAt) {
+        this.stepId = stepId;
         this.projectId = projectId;
         this.name = name;
         this.stepOrder = stepOrder;
         this.projectStepStatus = projectStepStatus;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
     }
 
     public static ProjectStep create(Long projectId, String name, int stepOrder,
         ProjectStepStatus projectStepStatus) {
-        return new ProjectStep(null, projectId, name, stepOrder, projectStepStatus);
+        return new ProjectStep(null, projectId, name, stepOrder, projectStepStatus, false, null);
     }
 
     public void updateName(String name) {
@@ -41,6 +48,7 @@ public class ProjectStep {
 
     public void softDelete() {
         this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
     public void updateStepOrder(int stepOrder) {

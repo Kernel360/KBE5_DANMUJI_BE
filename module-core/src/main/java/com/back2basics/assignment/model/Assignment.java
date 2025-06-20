@@ -31,7 +31,6 @@ public class Assignment {
         this.userType = userType;
     }
 
-    // todo: 빌더 말고 다른 패턴 사용도 고려
     public static Assignment create(Project project, User user,
         Company company, UserType userType, CompanyType companyType) {
         return Assignment.builder()
@@ -78,14 +77,9 @@ public class Assignment {
         return allUsers;
     }
 
-    public void toManager() {
-        this.userType = UserType.MANAGER;
+    public void updateUserType(UserType userType) {
+        this.userType = userType;
     }
 
-    public void toMember() {
-        this.userType = UserType.MEMBER;
-    }
-
-    // todo: 회사 변경 (등록된 회사 삭제, 새로운 회사로 등록 또는 변경)
 
 }
