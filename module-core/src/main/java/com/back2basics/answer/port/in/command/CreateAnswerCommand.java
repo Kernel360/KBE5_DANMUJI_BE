@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class AnswerUpdateCommand {
-    
+public class CreateAnswerCommand {
+
     private String content;
 
 }

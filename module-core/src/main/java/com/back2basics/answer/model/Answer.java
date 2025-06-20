@@ -1,8 +1,6 @@
 package com.back2basics.answer.model;
 
-import com.back2basics.answer.port.in.command.AnswerUpdateCommand;
-import com.back2basics.question.model.Question;
-import com.back2basics.user.model.User;
+import com.back2basics.answer.port.in.command.UpdateAnswerCommand;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,36 +9,36 @@ import lombok.Getter;
 public class Answer {
 
     private Long id;
-    private Long questionId;
-    private Long parentId;
-    private String authorIp;
-    private User author;
+    private Long inquiryId;
+    private Long authorId;
     private String content;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
+    private boolean isDelete;
+
 
     @Builder
-    public Answer(Long id, Long questionId, Long parentId, String authorIp, User author,
-        String content,
-        LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Answer(Long id, Long inquiryId, Long authorId, String content,
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
-        this.questionId = questionId;
-        this.parentId = parentId;
-        this.authorIp = authorIp;
-        this.author = author;
+        this.inquiryId = inquiryId;
+        this.authorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.isDelete = false;
     }
 
-    public void update(AnswerUpdateCommand command, String userIp) {
-        this.authorIp = userIp;
-        this.content = command.getContent();
+    public void update(UpdateAnswerCommand command) {
+        if (command.getContent() != null) {
+            this.content = command.getContent();
+        }
     }
 
-    public void assignQuestionId(Question question) {
-        this.questionId = question.getId();
+    public void markDeleted() {
+        this.isDelete = true;
     }
-
 
 }
