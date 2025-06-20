@@ -92,7 +92,7 @@ public class PostController implements PostApiDocs {
         return ApiResponse.success(PostResponseCode.POST_READ_SUCCESS, response);
     }
 
-    @GetMapping("/project/{projectId}/steps/{projectStepId}")
+    @GetMapping("/projects/{projectId}/steps/{projectStepId}")
     public ResponseEntity<ApiResponse<Page<PostSummaryReadResponse>>> getAllPostsByProjectStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId,

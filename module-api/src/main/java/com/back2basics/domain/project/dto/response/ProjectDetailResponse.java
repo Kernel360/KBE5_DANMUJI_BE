@@ -1,8 +1,7 @@
 package com.back2basics.domain.project.dto.response;
 
 import com.back2basics.domain.assignment.dto.response.AssignProjectListResponse;
-import com.back2basics.domain.projectstep.dto.response.ProjectStepSimpleResponse;
-import com.back2basics.domain.user.dto.response.UserCompanyResponse;
+import com.back2basics.domain.projectstep.dto.response.ProjectStepResponse;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import java.time.LocalDate;
@@ -12,7 +11,7 @@ public record ProjectDetailResponse(Long id, String name, String description, Lo
                                     LocalDate endDate, ProjectStatus projectStatus,
                                     List<AssignProjectListResponse> clients,
                                     List<AssignProjectListResponse> developers,
-                                    List<ProjectStepSimpleResponse> steps) {
+                                    List<ProjectStepResponse> steps) {
 
     public static ProjectDetailResponse toResponse(ProjectDetailResult result) {
         return new ProjectDetailResponse(
@@ -29,7 +28,7 @@ public record ProjectDetailResponse(Long id, String name, String description, Lo
                 .map(AssignProjectListResponse::toResponse)
                 .toList(),
             result.steps().stream()
-                .map(ProjectStepSimpleResponse::toResponse)
+                .map(ProjectStepResponse::toResponse)
                 .toList()
         );
     }

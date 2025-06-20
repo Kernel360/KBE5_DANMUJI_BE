@@ -47,10 +47,6 @@ public class ProjectStepEntity {
     @Column(name = "project_step_status", nullable = false)
     private ProjectStepStatus projectStepStatus;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "project_feedback_step_status")
-    private ProjectFeedbackStepStatus projectFeedbackStepStatus;
-
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
@@ -59,15 +55,13 @@ public class ProjectStepEntity {
 
     @Builder
     public ProjectStepEntity(Long stepId, ProjectEntity project, String name,
-        int stepOrder, ProjectStepStatus projectStepStatus,
-        ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
+        int stepOrder, ProjectStepStatus projectStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
         this.stepId = stepId;
         this.project = project;
         this.name = name;
         this.stepOrder = stepOrder;
         this.projectStepStatus = projectStepStatus;
-        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }

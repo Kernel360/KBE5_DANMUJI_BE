@@ -7,8 +7,7 @@ public class PostDocsResult {
           "title": "새로운 게시글 제목",
           "content": "게시글 내용입니다.",
           "type": "GENERAL",
-          "status": "PENDING",
-          "priority": 1,
+          "priority": "HIGH",
           "projectId":1,
           "stepId": 1
         }

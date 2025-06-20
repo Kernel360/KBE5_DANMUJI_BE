@@ -2,6 +2,7 @@ package com.back2basics.project.service;
 
 import com.back2basics.assignment.model.Assignment;
 import com.back2basics.assignment.port.out.DeleteAssignmentPort;
+import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;

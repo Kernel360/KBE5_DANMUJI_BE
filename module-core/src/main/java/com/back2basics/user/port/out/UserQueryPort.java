@@ -11,6 +11,8 @@ public interface UserQueryPort {
 
     User findById(Long userId);
 
+    List<User> findByIds(List<Long> ids);
+
     boolean existsByUsername(String username);
 
     List<User> findAll();

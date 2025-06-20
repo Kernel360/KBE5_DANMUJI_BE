@@ -24,11 +24,9 @@ public class ProjectStepMapper {
         return ProjectStep.builder()
             .stepId(entity.getStepId())
             .projectId(entity.getProject().getId())
-            .project(projectMapper.toDomain(entity.getProject()))
             .name(entity.getName())
             .stepOrder(entity.getStepOrder())
             .projectStepStatus(entity.getProjectStepStatus())
-            .projectFeedbackStepStatus(entity.getProjectFeedbackStepStatus())
             .isDeleted(entity.isDeleted())
             .deletedAt(entity.getDeletedAt())
             .build();
@@ -38,11 +36,9 @@ public class ProjectStepMapper {
         return ProjectStep.builder()
             .stepId(entity.getStepId())
             .projectId(entity.getProject().getId())
-            .project(Project.builder().id(entity.getProject().getId()).build()) // 이걸 대체 뭐 해놓은거지
             .name(entity.getName())
             .stepOrder(entity.getStepOrder())
             .projectStepStatus(entity.getProjectStepStatus())
-            .projectFeedbackStepStatus(entity.getProjectFeedbackStepStatus())
             .isDeleted(entity.isDeleted())
             .deletedAt(entity.getDeletedAt())
             .build();
@@ -56,7 +52,6 @@ public class ProjectStepMapper {
             .name(projectStep.getName())
             .stepOrder(projectStep.getStepOrder())
             .projectStepStatus(projectStep.getProjectStepStatus())
-            .projectFeedbackStepStatus(projectStep.getProjectFeedbackStepStatus())
             .isDeleted(projectStep.isDeleted())
             .deletedAt(projectStep.getDeletedAt())
             .build();
@@ -65,11 +60,9 @@ public class ProjectStepMapper {
     public ProjectStepEntity toEntityTest(ProjectStep projectStep) {
         return ProjectStepEntity.builder()
             .stepId(projectStep.getStepId())
-            .project(projectMapper.toEntity(projectStep.getProject()))
             .name(projectStep.getName())
             .stepOrder(projectStep.getStepOrder())
             .projectStepStatus(projectStep.getProjectStepStatus())
-            .projectFeedbackStepStatus(projectStep.getProjectFeedbackStepStatus())
             .isDeleted(projectStep.isDeleted())
             .deletedAt(projectStep.getDeletedAt())
             .build();
