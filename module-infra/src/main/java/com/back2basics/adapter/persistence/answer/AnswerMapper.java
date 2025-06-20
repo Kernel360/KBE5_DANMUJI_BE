@@ -11,6 +11,7 @@ public class AnswerMapper {
     public Answer toDomain(AnswerEntity entity) {
         return Answer.builder()
             .id(entity.getId())
+            .inquiryId(entity.getInquiryId())
             .authorId(entity.getAuthorId())
             .content(entity.getContent())
             .createdAt(entity.getCreatedAt())
@@ -20,7 +21,7 @@ public class AnswerMapper {
 
     public AnswerEntity toEntity(Answer domain) {
         AnswerEntity entity = AnswerEntity.builder()
-            .id(domain.getId())
+            .inquiryId(domain.getInquiryId())
             .authorId(domain.getAuthorId())
             .content(domain.getContent())
             .build();
