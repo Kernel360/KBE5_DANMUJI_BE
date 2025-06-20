@@ -1,52 +1,57 @@
 package com.back2basics.adapter.persistence.projectstep.adapter;
 
+import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_NOT_FOUND;
+import static com.back2basics.infra.exception.user.UserErrorCode.USER_NOT_FOUND;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
+import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
+import com.back2basics.infra.exception.project.ProjectException;
+import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.out.SaveProjectStepPort;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@Transactional
 @RequiredArgsConstructor
 public class SaveProjectStepAdapter implements SaveProjectStepPort {
 
     private final ProjectStepEntityRepository stepRepository;
-    private final ProjectMapper projectMapper;
+    private final ProjectEntityRepository projectRepository;
     private final ReadProjectPort readProjectPort;
-    private final ProjectStepMapper mapper;
+    private final ProjectStepMapper projectStepMapper;
+    private final ProjectMapper projectMapper;
 
+    // todo: 메서드 기능 동일함. 추후 통합
     @Override
     public void defaultSave(ProjectStep projectStep) {
-        ProjectEntity projectEntity = projectMapper.fromDomain(
-            readProjectPort.findProjectById(projectStep.getProjectId()));
-        ProjectStepEntity projectStepEntity = mapper.toEntity(projectStep, projectEntity);
-        stepRepository.save(projectStepEntity);
+        ProjectEntity project = projectRepository.findById(projectStep.getProjectId())
+            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+        ProjectStepEntity step = projectStepMapper.toEntity(projectStep, project);
+        stepRepository.save(step);
     }
 
-    //todo: 단계 추가 시 save - user not null -> 근데 update할 때도 이 save 사용하는데 이미 할당되어있는 project, user를 계속 찾아서 할당시키는 게 맞는지 .. 다른 save 만들어야 하나
     @Override
     public void save(ProjectStep projectStep) {
-        ProjectEntity projectEntity = projectMapper.fromDomain(
-            readProjectPort.findProjectById(projectStep.getProjectId()));
-        ProjectStepEntity projectStepEntity = mapper.toEntity(projectStep, projectEntity);
-        stepRepository.save(projectStepEntity);
+        ProjectEntity project = projectRepository.findById(projectStep.getProjectId())
+            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+        ProjectStepEntity step = projectStepMapper.toEntity(projectStep, project);
+        stepRepository.save(step);
     }
-
     @Override
     public void saveAll(List<ProjectStep> projectStepList) {
         List<ProjectStepEntity> entities = projectStepList.stream()
             .map(step -> {
-                ProjectEntity projectEntity = projectMapper.fromDomain(
+                ProjectEntity projectEntity = projectMapper.toEntity(
                     readProjectPort.findProjectById(step.getProjectId()));
-                return mapper.toEntity(step, projectEntity);
+                return projectStepMapper.toEntity(step, projectEntity);
             })
             .toList();
         stepRepository.saveAll(entities);

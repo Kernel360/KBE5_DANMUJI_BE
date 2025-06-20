@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.project;
 
 import com.back2basics.adapter.persistence.assignment.AssignmentEntity;
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
+import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.project.model.ProjectStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
