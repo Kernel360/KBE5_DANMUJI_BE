@@ -1,21 +1,23 @@
 package com.back2basics.domain.projectstep.controller;
 
-import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.*;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_ALL_READ_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_CREATE_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_DELETE_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_READ_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_UPDATE_SUCCESS;
 
 import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
-import com.back2basics.domain.projectstep.dto.response.DetailProjectStepResponse;
-import com.back2basics.domain.projectstep.dto.response.ReadProjectStepResponse;
+import com.back2basics.domain.projectstep.dto.response.ProjectStepResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
+import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.DeleteProjectStepUseCase;
 import com.back2basics.projectstep.port.in.ReadProjectStepUseCase;
+import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
-import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
-import com.back2basics.projectstep.service.result.DetailProjectStepResult;
-import com.back2basics.projectstep.service.result.ReadProjectStepResult;
+import com.back2basics.projectstep.service.result.ProjectStepResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,41 +50,47 @@ public class ProjectStepController {
         return ApiResponse.success(STEP_CREATE_SUCCESS);
     }
 
-    // 프로젝트 별 단계 조회
+    @PutMapping("/{projectId}/reorder")
+    public ResponseEntity<ApiResponse<Void>> reorderSteps(@PathVariable Long projectId,
+        @RequestBody List<Long> stepIdsInNewOrder) {
+        updateProjectStepUseCase.reorderSteps(projectId, stepIdsInNewOrder);
+        return ApiResponse.success(STEP_UPDATE_SUCCESS);
+    }
+
     @GetMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<List<DetailProjectStepResponse>>> getStepsProjectId(
+    public ResponseEntity<ApiResponse<List<ProjectStepResponse>>> getStepsProjectId(
         @PathVariable Long projectId) {
-        List<DetailProjectStepResult> result = readProjectStepUseCase.findDetailByProjectId(
+        List<ProjectStepResult> result = readProjectStepUseCase.findByProjectId(
             projectId);
-        List<DetailProjectStepResponse> response = result.stream()
-            .map(DetailProjectStepResponse::toResponse).toList();
+        List<ProjectStepResponse> response = result.stream()
+            .map(ProjectStepResponse::toResponse).toList();
         return ApiResponse.success(STEP_ALL_READ_SUCCESS, response);
     }
 
     // 단계 상세 조회
-    @GetMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<ReadProjectStepResponse>> getStepById(
+    @GetMapping("/{stepId}/detail")
+    public ResponseEntity<ApiResponse<ProjectStepResponse>> getStepById(
         @PathVariable Long stepId) {
-        ReadProjectStepResult result = readProjectStepUseCase.findById(stepId);
-        ReadProjectStepResponse response = ReadProjectStepResponse.toResponse(result);
+        ProjectStepResult result = readProjectStepUseCase.findById(stepId);
+        ProjectStepResponse response = ProjectStepResponse.toResponse(result);
         return ApiResponse.success(STEP_READ_SUCCESS, response);
     }
 
     // 수정
     @PutMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<Void>> updateStep(@PathVariable Long stepId, @RequestBody
+    public ResponseEntity<ApiResponse<Void>> updateStepName(@PathVariable Long stepId, @RequestBody
     UpdateProjectStepRequest request) {
         UpdateProjectStepCommand command = request.toCommand();
-        updateProjectStepUseCase.updateStep(command, stepId);
+        updateProjectStepUseCase.updateStepName(command, stepId);
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
-    // todo: 승인, 거절 버튼마다 url - projectFeedbackStepStatus 다르게
+    // todo: 승인, 거절 버튼마다 url - projectStepStatus 다르게
     @PutMapping("/{stepId}/approval")
     public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId,
         @RequestParam
-        ProjectFeedbackStepStatus projectFeedbackStepStatus) {
-        updateProjectStepUseCase.updateApprovalStatus(projectFeedbackStepStatus, stepId);
+        ProjectStepStatus projectStepStatus) {
+        updateProjectStepUseCase.updateApprovalStatus(projectStepStatus, stepId);
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 

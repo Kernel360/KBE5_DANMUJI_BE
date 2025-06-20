@@ -1,10 +1,10 @@
 package com.back2basics.project.service.result;
 
+import com.back2basics.assignment.service.result.ReadAssignmentResult;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
-import com.back2basics.projectstep.service.result.ReadProjectStepResult;
-import com.back2basics.assignment.service.result.ReadAssignmentResult;
+import com.back2basics.projectstep.service.result.ProjectStepResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ProjectGetResult {
     private final ProjectStatus status;
     private final String clientCompany;
     private final String developerCompany;
-    private final List<ReadProjectStepResult> steps;
+    private final List<ProjectStepResult> steps;
     private final List<ReadAssignmentResult> projectUsers;
 
     public static ProjectGetResult toResult(Project project) {
@@ -57,7 +57,7 @@ public class ProjectGetResult {
             .clientCompany(clientCompany)
             .developerCompany(developerCompany)
             .steps(project.getSteps().stream()
-                .map(ReadProjectStepResult::toResult)
+                .map(ProjectStepResult::toResult)
                 .collect(Collectors.toList())
             )
             .projectUsers(project.getAssignments().stream()

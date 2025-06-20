@@ -1,7 +1,6 @@
 package com.back2basics.adapter.persistence.project;
 
 import com.back2basics.adapter.persistence.assignment.AssignmentMapper;
-import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.project.model.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ProjectMapper {
-
-    private final ProjectStepMapper projectStepMapper;
 
     // todo : 이거 어노테이션 왜 붙이셨는지 알수있을까요?
     @Autowired
@@ -31,8 +28,6 @@ public class ProjectMapper {
             .deletedAt(projectEntity.getDeletedAt())
             .isDeleted(projectEntity.isDeleted())
             .status(projectEntity.getStatus())
-            .steps(
-                projectEntity.getSteps().stream().map(projectStepMapper::toDomain).toList())
             .assignments(
                 projectEntity.getAssignments().stream().map(projectUserMapper::toDomainTest)
                     .toList())
@@ -50,7 +45,6 @@ public class ProjectMapper {
             .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
             .status(project.getStatus())
-            .steps(project.getSteps().stream().map(projectStepMapper::toEntity).toList())
             .assignments(
                 project.getAssignments().stream().map(projectUserMapper::toEntityTest).toList())
             .build();
