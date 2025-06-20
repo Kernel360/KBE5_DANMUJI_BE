@@ -47,6 +47,7 @@ public class InquiryController {
     private final UpdateInquiryUseCase updateInquiryUseCase;
 
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<Long>> createInquiry(
         @RequestBody @Valid CreateInquiryRequest request,
         @AuthenticationPrincipal CustomUserDetails customUserDetails) {

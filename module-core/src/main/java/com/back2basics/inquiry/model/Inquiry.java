@@ -46,7 +46,9 @@ public class Inquiry {
     }
 
     public void updateStatus(UpdateInquiryStatusCommand command) {
-        this.inquiryStatus = command.getStatus();
+        if (command.getStatus() != null) {
+            this.inquiryStatus = command.getStatus();
+        }
     }
 
     public void markDeleted() {

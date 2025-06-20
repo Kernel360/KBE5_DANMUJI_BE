@@ -31,6 +31,9 @@ public class UpdateInquiryService implements UpdateInquiryUseCase {
 
     @Override
     public void updateByAdmin(Long inquiryId, UpdateInquiryStatusCommand command) {
+        Inquiry inquiry = inquiryValidator.findInquiry(inquiryId);
 
+        inquiry.updateStatus(command);
+        updateInquiryPort.update(inquiry);
     }
 }
