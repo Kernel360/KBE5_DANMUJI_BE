@@ -25,7 +25,7 @@ public class ReadAnswerJpaAdapter implements ReadAnswerPort {
     @Override
     public Page<Answer> findAllByInquiryIdAndDeletedAtIsNull(Long inquiryId, Pageable pageable) {
         return answerEntityRepository.findAllByInquiryIdAndDeletedAtIsNull(
-            inquiryId).map(answerMapper::toDomain);
+            inquiryId, pageable).map(answerMapper::toDomain);
 
     }
 }

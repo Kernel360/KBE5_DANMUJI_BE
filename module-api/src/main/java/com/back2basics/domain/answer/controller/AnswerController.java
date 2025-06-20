@@ -70,6 +70,7 @@ public class AnswerController {
     }
 
     @PutMapping("/{answerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> updateAnswer(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long answerId,
@@ -81,6 +82,7 @@ public class AnswerController {
     }
 
     @DeleteMapping("/{answerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteAnswer(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long answerId
