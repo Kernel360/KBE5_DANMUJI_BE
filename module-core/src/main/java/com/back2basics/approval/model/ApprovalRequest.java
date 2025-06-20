@@ -1,7 +1,8 @@
 package com.back2basics.approval.model;
 
-import com.back2basics.projectstep.model.ProjectStep;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -9,7 +10,9 @@ public class ApprovalRequest {
 
     private final Long id;
 
-    private final ProjectStep projectStep;
+    private final Long projectStepId;
+
+    private final Long requesterId;
 
     private ApprovalRequestStatus approvalRequestStatus;
 
@@ -17,21 +20,24 @@ public class ApprovalRequest {
 
     private LocalDateTime completedAt;
 
-    public ApprovalRequest(Long id, ProjectStep projectStep,
+    private List<ApprovalResponse> responses = new ArrayList<>();
+
+    public ApprovalRequest(Long id, Long projectStepId, Long requesterId,
         ApprovalRequestStatus approvalRequestStatus, LocalDateTime requestedAt,
-        LocalDateTime completedAt) {
+        LocalDateTime completedAt, List<ApprovalResponse> responses) {
         this.id = id;
-        this.projectStep = projectStep;
+        this.projectStepId = projectStepId;
+        this.requesterId = requesterId;
         this.approvalRequestStatus = approvalRequestStatus;
         this.requestedAt = requestedAt;
         this.completedAt = completedAt;
+        this.responses = responses;
     }
 
-    public static ApprovalRequest create(ProjectStep projectStep,
-        ApprovalRequestStatus approvalRequestStatus, LocalDateTime requestedAt,
-        LocalDateTime completedAt) {
-        return new ApprovalRequest(null, projectStep, approvalRequestStatus, requestedAt,
-            completedAt);
+    public static ApprovalRequest create(Long projectStepId, Long requesterId,
+        List<ApprovalResponse> responses) {
+        return new ApprovalRequest(null, projectStepId, requesterId, ApprovalRequestStatus.PENDING,
+            LocalDateTime.now(), null, responses);
     }
 
     public void approve() {
