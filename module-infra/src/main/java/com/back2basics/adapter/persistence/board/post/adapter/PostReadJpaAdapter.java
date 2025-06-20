@@ -1,18 +1,18 @@
 package com.back2basics.adapter.persistence.board.post.adapter;
 
-import static com.back2basics.adapter.persistence.board.QPostEntity.postEntity;
+import static com.back2basics.adapter.persistence.board.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.board.post.PostMapper;
 import com.back2basics.adapter.persistence.board.post.dto.PostDetailProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostSummaryProjection;
-import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.file.port.out.FileReadPort;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.out.PostReadPort;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
+import com.back2basics.infra.exception.post.PostException;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;

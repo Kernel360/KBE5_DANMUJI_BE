@@ -1,6 +1,6 @@
 package com.back2basics.adapter.persistence.board.post.adapter;
 
-import static com.back2basics.adapter.persistence.board.QPostEntity.postEntity;
+import static com.back2basics.adapter.persistence.board.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.board.post.PostMapper;
