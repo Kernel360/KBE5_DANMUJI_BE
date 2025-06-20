@@ -78,4 +78,10 @@ public class ReadProjectAdapter implements ReadProjectPort {
             userId, pageable);
         return projectEntities.map(projectMapper::toDomain);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return projectEntityRepository.existsById(id);
+    }
+
 }
