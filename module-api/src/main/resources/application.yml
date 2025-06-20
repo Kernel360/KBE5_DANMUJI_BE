@@ -72,7 +72,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_CLUSTER}.ergif.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority
+      uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@danmuji.tlnmokf.mongodb.net/danmuji?retryWrites=true&w=majority&appName=danmuji
 
   jpa:
     open-in-view: false
