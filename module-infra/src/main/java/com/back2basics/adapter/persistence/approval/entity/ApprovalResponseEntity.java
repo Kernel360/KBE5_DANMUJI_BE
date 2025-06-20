@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.approval.entity;
 
 
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.approval.model.ApprovalResponse;
 import com.back2basics.approval.model.ApprovalResponseStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,5 +52,21 @@ public class ApprovalResponseEntity {
         this.approvalRequest = approvalRequest;
         this.approver = approver;
         this.status = ApprovalResponseStatus.PENDING;
+    }
+
+    public ApprovalResponseEntity(ApprovalResponse response,
+        ApprovalRequestEntity approvalRequest, UserEntity approver) {
+        this.id = response.getId();
+        this.approver = approver;
+        this.approvalRequest = approvalRequest;
+        this.message = response.getMessage();
+        this.status = response.getStatus();
+        this.respondedAt = response.getRespondedAt();
+    }
+
+    public void updateFromDomain(ApprovalResponse domain) {
+        this.status = domain.getStatus();
+        this.message = domain.getMessage();
+        this.respondedAt = domain.getRespondedAt();
     }
 }
