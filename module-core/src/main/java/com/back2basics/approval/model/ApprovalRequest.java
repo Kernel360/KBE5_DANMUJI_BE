@@ -20,24 +20,24 @@ public class ApprovalRequest {
 
     private LocalDateTime completedAt;
 
-    private List<ApprovalResponse> responses = new ArrayList<>();
+    private List<Long> responseIds = new ArrayList<>();
 
     public ApprovalRequest(Long id, Long projectStepId, Long requesterId,
         ApprovalRequestStatus approvalRequestStatus, LocalDateTime requestedAt,
-        LocalDateTime completedAt, List<ApprovalResponse> responses) {
+        LocalDateTime completedAt, List<Long> responseIds) {
         this.id = id;
         this.projectStepId = projectStepId;
         this.requesterId = requesterId;
         this.approvalRequestStatus = approvalRequestStatus;
         this.requestedAt = requestedAt;
         this.completedAt = completedAt;
-        this.responses = responses;
+        this.responseIds = responseIds;
     }
 
     public static ApprovalRequest create(Long projectStepId, Long requesterId,
-        List<ApprovalResponse> responses) {
+        List<Long> responseIds) {
         return new ApprovalRequest(null, projectStepId, requesterId, ApprovalRequestStatus.PENDING,
-            LocalDateTime.now(), null, responses);
+            LocalDateTime.now(), null, responseIds);
     }
 
     public void approve() {

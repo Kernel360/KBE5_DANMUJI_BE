@@ -46,4 +46,10 @@ public class ApprovalResponseEntity {
 
     @Column(name = "responded_at")
     private LocalDateTime respondedAt;
+
+    public ApprovalResponseEntity(ApprovalRequestEntity approvalRequest, UserEntity approver) {
+        this.approvalRequest = approvalRequest;
+        this.approver = approver;
+        this.status = ApprovalResponseStatus.PENDING;
+    }
 }

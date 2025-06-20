@@ -53,4 +53,16 @@ public class ApprovalRequestEntity {
 
     @OneToMany(mappedBy = "approvalRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApprovalResponseEntity> responses = new ArrayList<>();
+
+    public ApprovalRequestEntity(ProjectStepEntity projectStep, UserEntity requester,
+        ApprovalRequestStatus status) {
+        this.projectStep = projectStep;
+        this.requester = requester;
+        this.approvalRequestStatus = status;
+        this.requestedAt = LocalDateTime.now();
+    }
+
+    public void addResponses(List<ApprovalResponseEntity> responses) {
+        this.responses.addAll(responses);
+    }
 }
