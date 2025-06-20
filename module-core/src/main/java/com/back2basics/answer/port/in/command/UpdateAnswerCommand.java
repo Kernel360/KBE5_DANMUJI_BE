@@ -5,9 +5,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class AnswerCreateCommand {
+public class UpdateAnswerCommand {
 
-    private Long questionId;
-    private Long parentId;
     private String content;
+
 }
