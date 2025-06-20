@@ -34,6 +34,14 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(org.springframework.dao.InvalidDataAccessApiUsageException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleInvalidDataAccessApiUsageException(
+        org.springframework.dao.InvalidDataAccessApiUsageException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("InvalidDataAccessApiUsageException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleIOException(IOException ex) {
         ErrorCode errorCode = FILE_DOWNLOAD_FAIL;
@@ -201,7 +209,7 @@ public class GlobalExceptionHandler {
         }
 
         ErrorCode errorCode = INTERNAL_SERVER_ERROR;
-        log.error("UnhandledException 발생: {}", ex.getMessage());
+        log.error("UnhandledException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
 
