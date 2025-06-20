@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreateApprovalRequestService implements CreateApprovalRequestUseCase {
+public class CreateApprovalRequestRequestService implements CreateApprovalRequestUseCase {
 
     private final UserValidator userValidator; // validation 처리는 service에서 처리해야 함
     private final ProjectStepValidator projectStepValidator;
