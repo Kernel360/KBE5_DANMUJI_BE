@@ -55,7 +55,6 @@ public class UserMapper {
         return toEntity(user, companyEntity);
     }
 
-    // todo : 테스트 중 ㅎㅎㅎ
     public UserEntity toEntityTest(User user) {
         return UserEntity.builder()
             .id(user.getId())

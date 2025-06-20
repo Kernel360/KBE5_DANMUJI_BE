@@ -23,9 +23,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectStepEntity extends BaseTimeEntity {
 
-    @Id
+     @Id
+    @Column(name = "step_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long stepId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    private ProjectEntity project;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -34,20 +43,33 @@ public class ProjectStepEntity extends BaseTimeEntity {
     private int stepOrder;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "step_status", nullable = false)
+    @Column(name = "project_step_status", nullable = false)
     private ProjectStepStatus projectStepStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private ProjectEntity project;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "project_feedback_step_status")
+    private ProjectFeedbackStepStatus projectFeedbackStepStatus;
 
-    public ProjectStepEntity(Long id, ProjectEntity projectEntity, String name, int stepOrder,
-        ProjectStepStatus projectStepStatus) {
-        this.id = id;
-        this.project = projectEntity;
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Builder
+    public ProjectStepEntity(Long stepId, ProjectEntity project, UserEntity user, String name,
+        int stepOrder, ProjectStepStatus projectStepStatus,
+        ProjectFeedbackStepStatus projectFeedbackStepStatus, boolean isDeleted,
+        LocalDateTime deletedAt) {
+        this.stepId = stepId;
+        this.project = project;
+        this.user = user;
         this.name = name;
         this.stepOrder = stepOrder;
         this.projectStepStatus = projectStepStatus;
+        this.projectFeedbackStepStatus = projectFeedbackStepStatus;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
     }
 
 }
