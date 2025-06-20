@@ -2,7 +2,7 @@ package com.back2basics.answer.port.out;
 
 import com.back2basics.answer.model.Answer;
 
-public interface AnswerUpdatePort {
+public interface DeleteAnswerPort {
 
-    void update(Answer answer);
+    void softDelete(Answer answer);
 }

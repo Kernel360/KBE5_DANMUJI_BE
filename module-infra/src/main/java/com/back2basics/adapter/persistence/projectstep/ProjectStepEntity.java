@@ -2,6 +2,8 @@ package com.back2basics.adapter.persistence.projectstep;
 
 import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
+import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.projectstep.model.ProjectFeedbackStepStatus;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +15,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectStepEntity extends BaseTimeEntity {
 
-     @Id
+    @Id
     @Column(name = "step_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stepId;
