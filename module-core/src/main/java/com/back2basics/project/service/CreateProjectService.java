@@ -47,11 +47,12 @@ public class CreateProjectService implements CreateProjectUseCase {
     private void createDefaultSteps(Long projectId) {
         List<String> defaultSteps = DEFAULT_STEPS;
         for (int i = 0; i < defaultSteps.size(); i++) {
+            ProjectStepStatus projectStepStatus = (i == 0) ? ProjectStepStatus.IN_PROGRESS : ProjectStepStatus.PENDING;
             ProjectStep step = ProjectStep.create(
                 projectId,
                 defaultSteps.get(i),
                 i + 1,
-                ProjectStepStatus.PENDING
+                projectStepStatus
             );
             saveProjectStepPort.save(step);
         }
