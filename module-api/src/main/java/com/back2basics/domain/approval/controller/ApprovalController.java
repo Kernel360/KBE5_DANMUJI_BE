@@ -5,6 +5,7 @@ import static com.back2basics.domain.approval.controller.code.ApprovalResponseCo
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_READ_SUCCESS;
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_UPDATE_SUCCESS;
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_RESPONSE_READ_SUCCESS;
+import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_RESPONSE_STATUS_READ_SUCCESS;
 
 import com.back2basics.approval.port.in.CreateApprovalRequestUseCase;
 import com.back2basics.approval.port.in.ReadApprovalUseCase;
@@ -88,5 +89,13 @@ public class ApprovalController {
         @PathVariable Long requestId) {
         List<ApproverResult> results = readApprovalUseCase.findResponsesByRequestId(requestId);
         return ApiResponse.success(APPROVAL_RESPONSE_READ_SUCCESS, ApproverResponse.from(results));
+    }
+
+    @GetMapping("/response/{responseId}")
+    public ResponseEntity<ApiResponse<ApproverResponse>> getResponse(
+        @PathVariable Long responseId) {
+        ApproverResult result = readApprovalUseCase.findByResponseId(responseId);
+        return ApiResponse.success(APPROVAL_RESPONSE_STATUS_READ_SUCCESS,
+            ApproverResponse.from(result));
     }
 }

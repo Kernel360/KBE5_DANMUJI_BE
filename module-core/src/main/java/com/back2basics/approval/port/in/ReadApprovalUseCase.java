@@ -11,4 +11,6 @@ public interface ReadApprovalUseCase {
     List<ApprovalInfoResult> findAll();
 
     List<ApproverResult> findResponsesByRequestId(Long requestId);
+
+    ApproverResult findByResponseId(Long responseId);
 }

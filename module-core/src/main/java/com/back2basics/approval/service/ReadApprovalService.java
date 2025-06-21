@@ -54,4 +54,16 @@ public class ReadApprovalService implements ReadApprovalUseCase {
             ))
             .toList();
     }
+
+    @Override
+    public ApproverResult findByResponseId(Long responseId) {
+        ApprovalResponse response = approvalResponseQueryPort.findById(responseId);
+        return new ApproverResult(
+            response.getId(),
+            response.getProjectStepId(),
+            response.getUserId(),
+            response.getMessage(),
+            response.getStatus(),
+            response.getRespondedAt());
+    }
 }

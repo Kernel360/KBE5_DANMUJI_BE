@@ -15,6 +15,7 @@ public enum ApprovalResponseCode implements ResponseCode {
     APPROVAL_REQUEST_UPDATE_SUCCESS(HttpStatus.OK, "A204", "승인 요청 수정 완료"),
     APPROVAL_REQUEST_DELETE_SUCCESS(HttpStatus.OK, "A205", "승인 요청 삭제 완료"),
     APPROVAL_RESPONSE_READ_SUCCESS(HttpStatus.OK, "A206", "승인 요청에 대한 정보 조회 완료"),
+    APPROVAL_RESPONSE_STATUS_READ_SUCCESS(HttpStatus.OK, "A207", "승인 요청 상태 조회 완료"),
     ;
 
     private final HttpStatus status;
