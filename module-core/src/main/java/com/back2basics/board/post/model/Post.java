@@ -13,7 +13,7 @@ public class Post {
     private final Long id;
     private final Long parentId;
     private final Long projectId;
-    private final Long projectStepId;
+    private Long projectStepId;
     private String authorIp;
     private Long authorId;
     private String authorName;
@@ -75,6 +75,7 @@ public class Post {
         this.type = command.getType();
         this.priority = command.getPriority();
         this.authorIp = userIp;
+        this.projectStepId = command.getStepId();
     }
 
     public void markDeleted() {
