@@ -49,4 +49,26 @@ public class ApprovalRequestCommandAdapter implements ApprovalRequestCommandPort
         approvalRequestEntityRepository.save(entity);
     }
 
+    @Override
+    public void update(ApprovalRequest approvalRequest) {
+        ApprovalRequestEntity entity = approvalRequestEntityRepository.getReferenceById(
+            approvalRequest.getId());
+
+        List<Long> existingIds = entity.getResponses().stream()
+            .map(r -> r.getApprover().getId())
+            .toList();
+
+        List<ApprovalResponseEntity> newResponses = approvalRequest.getResponseIds().stream()
+            .filter(id -> !existingIds.contains(id))
+            .map(responseId -> {
+                UserEntity approver = userEntityRepository.getReferenceById(responseId);
+                return new ApprovalResponseEntity(entity, approver);
+            })
+            .toList();
+
+        entity.addResponses(newResponses);
+        approvalRequestEntityRepository.save(entity);
+
+    }
+
 }

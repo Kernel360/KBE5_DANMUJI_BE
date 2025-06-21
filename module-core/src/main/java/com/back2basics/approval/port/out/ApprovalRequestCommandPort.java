@@ -6,4 +6,5 @@ public interface ApprovalRequestCommandPort {
 
     void save(ApprovalRequest approvalRequest);
 
+    void update(ApprovalRequest approvalRequest);
 }

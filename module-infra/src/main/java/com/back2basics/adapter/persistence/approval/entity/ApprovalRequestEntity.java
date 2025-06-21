@@ -54,6 +54,18 @@ public class ApprovalRequestEntity {
     @OneToMany(mappedBy = "approvalRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApprovalResponseEntity> responses = new ArrayList<>();
 
+    public ApprovalRequestEntity(Long id, ProjectStepEntity projectStep, UserEntity requester,
+        ApprovalRequestStatus approvalRequestStatus, LocalDateTime requestedAt,
+        LocalDateTime completedAt, List<ApprovalResponseEntity> responses) {
+        this.id = id;
+        this.projectStep = projectStep;
+        this.requester = requester;
+        this.approvalRequestStatus = approvalRequestStatus;
+        this.requestedAt = requestedAt;
+        this.completedAt = completedAt;
+        this.responses = responses;
+    }
+
     public ApprovalRequestEntity(ProjectStepEntity projectStep, UserEntity requester,
         ApprovalRequestStatus status) {
         this.projectStep = projectStep;
@@ -62,7 +74,13 @@ public class ApprovalRequestEntity {
         this.requestedAt = LocalDateTime.now();
     }
 
-    public void addResponses(List<ApprovalResponseEntity> responses) {
-        this.responses.addAll(responses);
+    public void addResponses(List<ApprovalResponseEntity> newApprovers) {
+        List<Long> existingApproverIds = this.responses.stream()
+            .map(response -> response.getApprover().getId())
+            .toList();
+
+        newApprovers.stream()
+            .filter(approver -> !existingApproverIds.contains(approver.getApprover().getId()))
+            .forEach(this.responses::add);
     }
 }
