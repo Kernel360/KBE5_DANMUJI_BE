@@ -1,9 +1,9 @@
 package com.back2basics.domain.board.dto.request;
 
-import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
+import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -26,6 +26,9 @@ public class PostUpdateRequest {
     @CustomEnumCheck(enumClass = PostPriority.class, message = "올바른 enum type이 아닙니다")
     private PostPriority priority;
 
+    @NotNull(message = "단계가 입력되지 않았습니다.")
+    private Long stepId;
+
     // 삭제할 파일의 id
     private List<Long> fileIdsToDelete;
 
@@ -36,6 +39,7 @@ public class PostUpdateRequest {
             .type(type)
             .priority(priority)
             .fileIdsToDelete(fileIdsToDelete)
+            .stepId(stepId)
             .build();
     }
 }
