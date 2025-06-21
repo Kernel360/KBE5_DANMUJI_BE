@@ -20,7 +20,7 @@ public class ApprovalRequest {
 
     private LocalDateTime completedAt;
 
-    private List<Long> responseIds = new ArrayList<>();
+    private List<Long> responseIds;
 
     public ApprovalRequest(Long id, Long projectStepId, Long requesterId,
         ApprovalRequestStatus approvalRequestStatus, LocalDateTime requestedAt,
@@ -31,7 +31,7 @@ public class ApprovalRequest {
         this.approvalRequestStatus = approvalRequestStatus;
         this.requestedAt = requestedAt;
         this.completedAt = completedAt;
-        this.responseIds = responseIds;
+        this.responseIds = new ArrayList<>(responseIds != null ? responseIds : List.of());
     }
 
     public static ApprovalRequest create(Long projectStepId, Long requesterId,
@@ -48,5 +48,11 @@ public class ApprovalRequest {
     public void reject() {
         this.approvalRequestStatus = ApprovalRequestStatus.REJECTED;
         this.completedAt = LocalDateTime.now();
+    }
+
+    public void addResponse(Long approverId) {
+        if (!this.responseIds.contains(approverId)) {
+            this.responseIds.add(approverId);
+        }
     }
 }
