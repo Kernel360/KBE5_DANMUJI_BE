@@ -1,17 +1,22 @@
 package com.back2basics.domain.approval.controller;
 
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_CREATE_SUCCESS;
+import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_READ_SUCCESS;
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_UPDATE_SUCCESS;
 
 import com.back2basics.approval.port.in.CreateApprovalRequestUseCase;
+import com.back2basics.approval.port.in.ReadApprovalUseCase;
 import com.back2basics.approval.port.in.UpdateApprovalResponseUseCase;
+import com.back2basics.approval.service.result.ApproverIdsResult;
 import com.back2basics.domain.approval.dto.request.CreateApprovalRequest;
 import com.back2basics.domain.approval.dto.request.UpdateApprovalRequest;
+import com.back2basics.domain.approval.dto.response.ApproverIdsResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +31,7 @@ public class ApprovalController {
 
     private final CreateApprovalRequestUseCase createApprovalRequestUseCase;
     private final UpdateApprovalResponseUseCase updateApprovalResponseUseCase;
+    private final ReadApprovalUseCase readApprovalUseCase;
 
     // 승인 요청 생성
     @PostMapping("/{stepId}")
@@ -38,7 +44,7 @@ public class ApprovalController {
         return ApiResponse.success(APPROVAL_REQUEST_CREATE_SUCCESS);
     }
 
-    // todo:승인자 추가
+    // 승인자 추가
     @PutMapping("/add-responses/{requestId}")
     public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long requestId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -57,9 +63,11 @@ public class ApprovalController {
         return ApiResponse.success(APPROVAL_REQUEST_UPDATE_SUCCESS);
     }
 
-//    @GetMapping("/{projectId}/project")
-//    public ResponseEntity<ApiResponse> getApprovalStatusesByProjectId(
-//        @PathVariable Long projectId) {
-//
-//    }
+    @GetMapping("/{requestId}/request")
+    public ResponseEntity<ApiResponse<ApproverIdsResponse>> getApproverIdsByRequestId(
+        @PathVariable Long requestId) {
+        ApproverIdsResult result = readApprovalUseCase.findApproverIdsByRequestId(requestId);
+        return ApiResponse.success(APPROVAL_REQUEST_READ_SUCCESS,
+            new ApproverIdsResponse(result.ApproverIds()));
+    }
 }
