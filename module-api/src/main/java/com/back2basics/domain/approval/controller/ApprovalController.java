@@ -1,6 +1,7 @@
 package com.back2basics.domain.approval.controller;
 
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_CREATE_SUCCESS;
+import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_READ_ALL_SUCCESS;
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_READ_SUCCESS;
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_UPDATE_SUCCESS;
 
@@ -13,6 +14,7 @@ import com.back2basics.domain.approval.dto.request.UpdateApprovalRequest;
 import com.back2basics.domain.approval.dto.response.ApprovalInfoResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -69,5 +71,12 @@ public class ApprovalController {
         ApprovalInfoResult result = readApprovalUseCase.findByRequestId(requestId);
         return ApiResponse.success(APPROVAL_REQUEST_READ_SUCCESS,
             ApprovalInfoResponse.from(result));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ApprovalInfoResponse>>> getRequests() {
+        List<ApprovalInfoResult> results = readApprovalUseCase.findAll();
+        return ApiResponse.success(APPROVAL_REQUEST_READ_ALL_SUCCESS,
+            ApprovalInfoResponse.from(results));
     }
 }

@@ -7,6 +7,7 @@ import com.back2basics.adapter.persistence.approval.repository.ApprovalRequestEn
 import com.back2basics.approval.model.ApprovalRequest;
 import com.back2basics.approval.port.out.ApprovalRequestQueryPort;
 import com.back2basics.infra.exception.approval.ApprovalException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,5 +24,11 @@ public class ApprovalRequestQueryAdapter implements ApprovalRequestQueryPort {
     public ApprovalRequest findById(Long requestId) {
         return approvalRequestEntityRepository.findById(requestId).map(mapper::toDomain)
             .orElseThrow(() -> new ApprovalException(APPROVAL_NOT_FOUND));
+    }
+
+    @Override
+    public List<ApprovalRequest> findAll() {
+        return approvalRequestEntityRepository.findAll().stream()
+            .map(mapper::toDomain).toList();
     }
 }

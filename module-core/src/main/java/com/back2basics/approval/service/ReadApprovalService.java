@@ -5,6 +5,7 @@ import com.back2basics.approval.port.in.ReadApprovalUseCase;
 import com.back2basics.approval.port.out.ApprovalRequestQueryPort;
 import com.back2basics.approval.port.out.ApprovalResponseQueryPort;
 import com.back2basics.approval.service.result.ApprovalInfoResult;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,18 @@ public class ReadApprovalService implements ReadApprovalUseCase {
         ApprovalRequest request = approvalRequestQueryPort.findById(requestId);
         return new ApprovalInfoResult(request.getId(), request.getProjectStepId(),
             request.getRequesterId(), request.getApprovalRequestStatus(), request.getRequestedAt());
+    }
+
+    @Override
+    public List<ApprovalInfoResult> findAll() {
+        return approvalRequestQueryPort.findAll().stream()
+            .map(request -> new ApprovalInfoResult(
+                request.getId(),
+                request.getProjectStepId(),
+                request.getRequesterId(),
+                request.getApprovalRequestStatus(),
+                request.getCompletedAt()
+            ))
+            .toList();
     }
 }
