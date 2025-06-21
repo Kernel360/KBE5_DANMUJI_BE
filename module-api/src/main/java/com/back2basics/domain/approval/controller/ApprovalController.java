@@ -7,10 +7,10 @@ import static com.back2basics.domain.approval.controller.code.ApprovalResponseCo
 import com.back2basics.approval.port.in.CreateApprovalRequestUseCase;
 import com.back2basics.approval.port.in.ReadApprovalUseCase;
 import com.back2basics.approval.port.in.UpdateApprovalResponseUseCase;
-import com.back2basics.approval.service.result.ApproverIdsResult;
+import com.back2basics.approval.service.result.ApprovalInfoResult;
 import com.back2basics.domain.approval.dto.request.CreateApprovalRequest;
 import com.back2basics.domain.approval.dto.request.UpdateApprovalRequest;
-import com.back2basics.domain.approval.dto.response.ApproverIdsResponse;
+import com.back2basics.domain.approval.dto.response.ApprovalInfoResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -63,11 +63,11 @@ public class ApprovalController {
         return ApiResponse.success(APPROVAL_REQUEST_UPDATE_SUCCESS);
     }
 
-    @GetMapping("/{requestId}/request")
-    public ResponseEntity<ApiResponse<ApproverIdsResponse>> getApproverIdsByRequestId(
+    @GetMapping("/{requestId}")
+    public ResponseEntity<ApiResponse<ApprovalInfoResponse>> getRequestDetail(
         @PathVariable Long requestId) {
-        ApproverIdsResult result = readApprovalUseCase.findApproverIdsByRequestId(requestId);
+        ApprovalInfoResult result = readApprovalUseCase.findByRequestId(requestId);
         return ApiResponse.success(APPROVAL_REQUEST_READ_SUCCESS,
-            new ApproverIdsResponse(result.ApproverIds()));
+            ApprovalInfoResponse.from(result));
     }
 }

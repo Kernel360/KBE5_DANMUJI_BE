@@ -1,9 +1,10 @@
 package com.back2basics.approval.service;
 
+import com.back2basics.approval.model.ApprovalRequest;
 import com.back2basics.approval.port.in.ReadApprovalUseCase;
+import com.back2basics.approval.port.out.ApprovalRequestQueryPort;
 import com.back2basics.approval.port.out.ApprovalResponseQueryPort;
-import com.back2basics.approval.service.result.ApproverIdsResult;
-import java.util.List;
+import com.back2basics.approval.service.result.ApprovalInfoResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReadApprovalService implements ReadApprovalUseCase {
 
+    private final ApprovalRequestQueryPort approvalRequestQueryPort;
     private final ApprovalResponseQueryPort approvalResponseQueryPort;
 
     @Override
-    public ApproverIdsResult findApproverIdsByRequestId(Long requestId) {
-        List<Long> ids = approvalResponseQueryPort.findApproverIdsByRequestId(requestId);
-        return new ApproverIdsResult(ids);
+    public ApprovalInfoResult findByRequestId(Long requestId) {
+        ApprovalRequest request = approvalRequestQueryPort.findById(requestId);
+        return new ApprovalInfoResult(request.getId(), request.getProjectStepId(),
+            request.getRequesterId(), request.getApprovalRequestStatus(), request.getRequestedAt());
     }
 }

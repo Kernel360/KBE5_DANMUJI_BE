@@ -1,9 +1,9 @@
 package com.back2basics.approval.port.in;
 
-import com.back2basics.approval.service.result.ApproverIdsResult;
+import com.back2basics.approval.service.result.ApprovalInfoResult;
 
 public interface ReadApprovalUseCase {
 
-    ApproverIdsResult findApproverIdsByRequestId(Long requestId);
+    ApprovalInfoResult findByRequestId(Long requestId);
 
 }
