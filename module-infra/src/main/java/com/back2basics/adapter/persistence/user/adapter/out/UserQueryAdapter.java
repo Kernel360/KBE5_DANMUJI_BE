@@ -87,4 +87,10 @@ public class UserQueryAdapter implements UserQueryPort {
 
         userEntityRepository.saveAll(userEntities);
     }
+
+    @Override
+    public List<User> findAllByIds(List<Long> userIds) {
+        return userEntityRepository.findAllById(userIds)
+            .stream().map(userMapper::toDomain).toList();
+    }
 }

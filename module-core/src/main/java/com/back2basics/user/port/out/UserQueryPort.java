@@ -28,4 +28,6 @@ public interface UserQueryPort {
     boolean existsById(Long userId);
 
     void saveAll(List<User> users);
+
+    List<User> findAllByIds(List<Long> userIds);
 }

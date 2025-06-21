@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class ApprovalUser {
+public class ApprovalResponse {
 
     private final Long id;
 
@@ -14,13 +14,12 @@ public class ApprovalUser {
 
     private String message;
 
-    private ApprovalUserStatus status;
+    private ApprovalResponseStatus status;
 
     private LocalDateTime respondedAt;
 
-    public ApprovalUser(Long id, Long userId, Long projectStepId, String message,
-        ApprovalUserStatus status,
-        LocalDateTime respondedAt) {
+    public ApprovalResponse(Long id, Long userId, Long projectStepId, String message,
+        ApprovalResponseStatus status, LocalDateTime respondedAt) {
         this.id = id;
         this.userId = userId;
         this.projectStepId = projectStepId;
@@ -29,12 +28,12 @@ public class ApprovalUser {
         this.respondedAt = respondedAt;
     }
 
-    public static ApprovalUser create(Long userId, Long projectStepId) {
-        return new ApprovalUser(null, userId, projectStepId, null, ApprovalUserStatus.PENDING,
-            null);
+    public static ApprovalResponse create(Long userId, Long projectStepId) {
+        return new ApprovalResponse(null, userId, projectStepId, null,
+            ApprovalResponseStatus.PENDING, null);
     }
 
-    public void updateStatus(String message, ApprovalUserStatus status) {
+    public void updateStatus(String message, ApprovalResponseStatus status) {
         this.status = status;
         this.message = message;
         this.respondedAt = LocalDateTime.now();
