@@ -12,7 +12,6 @@ import com.back2basics.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,7 +27,7 @@ public class ApprovalController {
     private final CreateApprovalRequestUseCase createApprovalRequestUseCase;
     private final UpdateApprovalResponseUseCase updateApprovalResponseUseCase;
 
-    // 생성
+    // 승인 요청 생성
     @PostMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> create(@PathVariable Long stepId,
         @AuthenticationPrincipal
@@ -39,8 +38,15 @@ public class ApprovalController {
         return ApiResponse.success(APPROVAL_REQUEST_CREATE_SUCCESS);
     }
 
-    // todo:유저 추가
-
+    // todo:승인자 추가
+    @PutMapping("/add-responses/{requestId}")
+    public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long requestId,
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestBody CreateApprovalRequest request) {
+        updateApprovalResponseUseCase.addApprover(requestId, userDetails.getId(),
+            request.toCommand());
+        return ApiResponse.success(APPROVAL_REQUEST_UPDATE_SUCCESS);
+    }
 
     // 상태 변경
     @PutMapping("/{responseId}/status")
@@ -51,9 +57,9 @@ public class ApprovalController {
         return ApiResponse.success(APPROVAL_REQUEST_UPDATE_SUCCESS);
     }
 
-    @GetMapping("/{projectId}/project")
-    public ResponseEntity<ApiResponse> getApprovalStatusesByProjectId(
-        @PathVariable Long projectId) {
-
-    }
+//    @GetMapping("/{projectId}/project")
+//    public ResponseEntity<ApiResponse> getApprovalStatusesByProjectId(
+//        @PathVariable Long projectId) {
+//
+//    }
 }
