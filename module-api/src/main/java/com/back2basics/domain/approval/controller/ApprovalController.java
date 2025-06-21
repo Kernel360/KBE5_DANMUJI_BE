@@ -4,14 +4,17 @@ import static com.back2basics.domain.approval.controller.code.ApprovalResponseCo
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_READ_ALL_SUCCESS;
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_READ_SUCCESS;
 import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_REQUEST_UPDATE_SUCCESS;
+import static com.back2basics.domain.approval.controller.code.ApprovalResponseCode.APPROVAL_RESPONSE_READ_SUCCESS;
 
 import com.back2basics.approval.port.in.CreateApprovalRequestUseCase;
 import com.back2basics.approval.port.in.ReadApprovalUseCase;
 import com.back2basics.approval.port.in.UpdateApprovalResponseUseCase;
 import com.back2basics.approval.service.result.ApprovalInfoResult;
+import com.back2basics.approval.service.result.ApproverResult;
 import com.back2basics.domain.approval.dto.request.CreateApprovalRequest;
 import com.back2basics.domain.approval.dto.request.UpdateApprovalRequest;
 import com.back2basics.domain.approval.dto.response.ApprovalInfoResponse;
+import com.back2basics.domain.approval.dto.response.ApproverResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import java.util.List;
@@ -78,5 +81,12 @@ public class ApprovalController {
         List<ApprovalInfoResult> results = readApprovalUseCase.findAll();
         return ApiResponse.success(APPROVAL_REQUEST_READ_ALL_SUCCESS,
             ApprovalInfoResponse.from(results));
+    }
+
+    @GetMapping("/{requestId}/info")
+    public ResponseEntity<ApiResponse<List<ApproverResponse>>> getResponsesByRequestId(
+        @PathVariable Long requestId) {
+        List<ApproverResult> results = readApprovalUseCase.findResponsesByRequestId(requestId);
+        return ApiResponse.success(APPROVAL_RESPONSE_READ_SUCCESS, ApproverResponse.from(results));
     }
 }

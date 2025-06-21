@@ -10,4 +10,6 @@ public interface ApprovalResponseQueryPort {
     ApprovalResponse findById(Long responseId);
 
     List<Long> findApproverIdsByRequestId(Long stepId);
+
+    List<ApprovalResponse> findResponsesByRequestId(Long requestId);
 }

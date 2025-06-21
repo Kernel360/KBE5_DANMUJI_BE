@@ -14,4 +14,6 @@ public interface ApprovalResponseEntityRepository extends
 
     @Query("select r.approver.id from ApprovalResponseEntity r where r.approvalRequest.id = :requestId")
     List<Long> findApproverIdByApprovalRequestId(Long requestId);
+
+    List<ApprovalResponseEntity> findAllByApprovalRequestId(Long requestId);
 }

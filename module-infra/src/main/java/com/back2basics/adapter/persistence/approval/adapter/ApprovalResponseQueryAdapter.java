@@ -38,4 +38,11 @@ public class ApprovalResponseQueryAdapter implements ApprovalResponseQueryPort {
         return approvalResponseEntityRepository.findApproverIdByApprovalRequestId(requestId);
     }
 
+    @Override
+    public List<ApprovalResponse> findResponsesByRequestId(Long requestId) {
+        return approvalResponseEntityRepository.findAllByApprovalRequestId(requestId).stream()
+            .map(mapper::toDomain)
+            .toList();
+    }
+
 }
