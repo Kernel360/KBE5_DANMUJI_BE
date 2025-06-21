@@ -39,7 +39,7 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
     @Override
     public void addApprover(Long requestId, Long userId, CreateApprovalCommand command) {
         userValidator.validateAllUsersExist(command.responseIds());
-
+        // todo request, userId validation
         ApprovalRequest approvalRequest = approvalRequestQueryPort.findById(requestId);
         command.responseIds().forEach(approvalRequest::addResponse);
 

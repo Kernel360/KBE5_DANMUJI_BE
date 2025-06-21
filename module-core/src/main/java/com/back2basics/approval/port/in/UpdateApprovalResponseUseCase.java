@@ -7,5 +7,5 @@ public interface UpdateApprovalResponseUseCase {
 
     void change(Long responseId, Long userId, UpdateApprovalCommand command);
 
-    void addApprover(Long requestId, Long id, CreateApprovalCommand command);
+    void addApprover(Long requestId, Long userId, CreateApprovalCommand command);
 }
