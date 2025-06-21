@@ -70,6 +70,10 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@danmuji.tlnmokf.mongodb.net/danmuji?retryWrites=true&w=majority&appName=danmuji
+
   jpa:
     open-in-view: false
     hibernate:
@@ -89,6 +93,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
 
 ---
 
