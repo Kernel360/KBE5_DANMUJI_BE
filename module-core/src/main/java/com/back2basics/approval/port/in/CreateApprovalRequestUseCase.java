@@ -1,8 +1,8 @@
 package com.back2basics.approval.port.in;
 
-import java.util.List;
+import com.back2basics.approval.port.in.command.CreateApprovalCommand;
 
 public interface CreateApprovalRequestUseCase {
 
-    void create(Long stepId, Long requesterId, List<Long> responseIds);
+    void create(Long stepId, Long requesterId, CreateApprovalCommand command);
 }
