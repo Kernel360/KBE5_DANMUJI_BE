@@ -1,8 +1,5 @@
 package com.back2basics.board.post.service;
 
-import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.ProjectValidator;
-import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.file.port.out.FileSavePort;
 import com.back2basics.board.file.service.FileUploadService;
@@ -12,6 +9,10 @@ import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.out.PostCreatePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
+import com.back2basics.infra.validation.validator.PostValidator;
+import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class PostCreateService implements PostCreateUseCase {
     private final FileUploadService fileUploadService;
     private final FileSavePort fileSavePort;
     private final PostNotificationSender postNotificationSender;
+    private final MentionNotificationSender mentionNotificationSender;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -43,6 +45,8 @@ public class PostCreateService implements PostCreateUseCase {
 
         uploadAndSaveFiles(files, savedPost.getId());
         postNotificationSender.sendNotification(userId, savedPost.getId(), command);
+        mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
+            post.getContent());
 
         return PostCreateResult.toResult(savedPost);
     }

@@ -5,6 +5,7 @@ import com.back2basics.comment.port.in.CommentUpdateUseCase;
 import com.back2basics.comment.port.in.command.CommentUpdateCommand;
 import com.back2basics.comment.port.out.CommentUpdatePort;
 import com.back2basics.infra.validation.validator.CommentValidator;
+import com.back2basics.mention.MentionNotificationSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ public class CommentUpdateService implements CommentUpdateUseCase {
 
     private final CommentValidator commentValidator;
     private final CommentUpdatePort commentUpdatePort;
+    private final MentionNotificationSender mentionNotificationSender;
 
 
     @Override
@@ -24,5 +26,6 @@ public class CommentUpdateService implements CommentUpdateUseCase {
 
         comment.update(command, userIp);
         commentUpdatePort.update(comment);
+        mentionNotificationSender.notifyMentionedUsers(userId, commentId, command.getContent());
     }
 }

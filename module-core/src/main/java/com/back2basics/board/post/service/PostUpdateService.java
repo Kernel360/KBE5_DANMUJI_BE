@@ -1,6 +1,5 @@
 package com.back2basics.board.post.service;
 
-import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.file.port.out.FileDeletePort;
 import com.back2basics.board.file.port.out.FileReadPort;
@@ -10,6 +9,8 @@ import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
+import com.back2basics.infra.validation.validator.PostValidator;
+import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class PostUpdateService implements PostUpdateUseCase {
     private final FileSavePort fileSavePort;
     private final FileDeletePort fileDeletePort;
     private final FileReadPort fileReadPort;
+    private final MentionNotificationSender mentionNotificationSender;
 
     @Override
     public void updatePost(Long userId, String userIp, Long postId,
@@ -34,6 +36,7 @@ public class PostUpdateService implements PostUpdateUseCase {
         post.update(command, userIp);
 
         Post updatedPost = postUpdatePort.update(post);
+        mentionNotificationSender.notifyMentionedUsers(userId, postId, post.getContent());
 
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
     }

@@ -7,6 +7,7 @@ import com.back2basics.comment.port.out.CommentCreatePort;
 import com.back2basics.comment.service.notification.CommentNotificationSender;
 import com.back2basics.infra.validation.validator.CommentValidator;
 import com.back2basics.infra.validation.validator.PostValidator;
+import com.back2basics.mention.MentionNotificationSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class CommentCreateService implements CommentCreateUseCase {
     private final PostValidator postValidator;
     private final CommentValidator commentValidator;
     private final CommentNotificationSender commentNotificationSender;
+    private final MentionNotificationSender mentionNotificationSender;
 
     @Override
     public Long createComment(Long userId, String userIp, CommentCreateCommand command) {
@@ -28,6 +30,12 @@ public class CommentCreateService implements CommentCreateUseCase {
 
         Long commentId = commentCreatePort.save(comment);
         commentNotificationSender.sendNotification(userId, commentId, command);
+
+        mentionNotificationSender.notifyMentionedUsers(
+            userId,
+            commentId,
+            command.getContent()
+        );
 
         return commentId;
     }
