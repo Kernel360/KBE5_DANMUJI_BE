@@ -1,5 +1,6 @@
 package com.back2basics.mention;
 
+import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
 import com.back2basics.user.port.out.UserQueryPort;
@@ -15,7 +16,7 @@ public class MentionNotificationSender {
     private final UserQueryPort userQueryPort;
     private final NotifyUseCase notifyUseCase;
 
-    public void notifyMentionedUsers(Long senderId, Long commentId, String content) {
+    public void notifyMentionedUsers(Long senderId, Long targetId, String content) {
         List<String> mentionedUsernames = MentionUtils.extractMentionUsernames(content);
 
         if (mentionedUsernames.isEmpty()) {
@@ -28,8 +29,8 @@ public class MentionNotificationSender {
             if (!receiverId.equals(senderId)) {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
-                    commentId,
-                    "댓글에서 언급되었습니다.",
+                    targetId,
+                    "멘션으로 언급되었습니다.",
                     NotificationType.MENTIONED
                 ));
             }
