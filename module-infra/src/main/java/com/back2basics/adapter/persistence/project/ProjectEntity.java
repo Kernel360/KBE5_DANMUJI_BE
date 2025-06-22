@@ -64,10 +64,13 @@ public class ProjectEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AssignmentEntity> assignments = new ArrayList<>();
 
+    @Column(name = "progress", nullable = false)
+    private int progress;
+
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
         LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status,
-        List<ProjectStepEntity> steps, List<AssignmentEntity> assignments) {
+        List<ProjectStepEntity> steps, List<AssignmentEntity> assignments, int progress) {
 
         this.id = id;
         this.name = name;
@@ -79,6 +82,7 @@ public class ProjectEntity extends BaseTimeEntity {
         this.status = status;
         this.steps = steps;
         this.assignments = assignments;
+        this.progress = progress;
     }
 
     public ProjectStatus getStatus() {
