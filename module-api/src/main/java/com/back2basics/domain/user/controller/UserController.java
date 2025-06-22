@@ -10,6 +10,7 @@ import com.back2basics.domain.user.dto.request.ResetPasswordByTokenRequest;
 import com.back2basics.domain.user.dto.request.ResetPasswordRequest;
 import com.back2basics.domain.user.dto.request.SendMailRequest;
 import com.back2basics.domain.user.dto.response.UserInfoResponse;
+import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.port.in.ChangePasswordUseCase;
@@ -89,10 +90,12 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<String>>> searchUsernames(
+    public ResponseEntity<ApiResponse<List<UserSummaryResponse>>> searchUsernames(
         @RequestParam String username) {
-        List<String> usernames = userSearchUseCase.searchByUsername(username);
-        return ApiResponse.success(USER_READ_SUCCESS, usernames);
+        List<UserSummaryResponse> responses = userSearchUseCase.searchByUsername(username).stream()
+            .map(UserSummaryResponse::from)
+            .toList();
+        return ApiResponse.success(USER_READ_SUCCESS, responses);
     }
 
 }

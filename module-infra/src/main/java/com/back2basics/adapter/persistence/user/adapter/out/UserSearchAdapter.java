@@ -2,6 +2,8 @@ package com.back2basics.adapter.persistence.user.adapter.out;
 
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
+import com.back2basics.adapter.persistence.user.mapper.UserMapper;
+import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserSearchPort;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -13,14 +15,16 @@ import org.springframework.stereotype.Component;
 public class UserSearchAdapter implements UserSearchPort {
 
     private final JPAQueryFactory queryFactory;
+    private final UserMapper userMapper;
 
     @Override
-    public List<String> searchByUsername(String username) {
+    public List<User> searchByUsername(String username) {
         return queryFactory
-            .select(userEntity.username)
+            .select(userEntity)
             .from(userEntity)
             .where(userEntity.username.startsWithIgnoreCase(username))
-            .limit(10) // username이 같은 애들이 얼마나 많을지..?
-            .fetch();
+            .stream()
+            .map(userMapper::toDomain)
+            .toList();
     }
 }

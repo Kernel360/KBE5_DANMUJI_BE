@@ -1,8 +1,9 @@
 package com.back2basics.user.port.out;
 
+import com.back2basics.user.model.User;
 import java.util.List;
 
 public interface UserSearchPort {
 
-    List<String> searchByUsername(String username);
+    List<User> searchByUsername(String username);
 }
