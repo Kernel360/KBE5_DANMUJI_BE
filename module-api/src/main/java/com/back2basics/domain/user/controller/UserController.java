@@ -17,10 +17,12 @@ import com.back2basics.user.port.in.ResetPasswordByTokenUseCase;
 import com.back2basics.user.port.in.ResetPasswordUseCase;
 import com.back2basics.user.port.in.SendMailUseCase;
 import com.back2basics.user.port.in.UserQueryUseCase;
+import com.back2basics.user.port.in.UserSearchUseCase;
 import com.back2basics.user.port.in.command.ChangePasswordCommand;
 import com.back2basics.user.port.in.command.ResetPasswordCommand;
 import com.back2basics.user.service.result.UserInfoResult;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -41,6 +44,7 @@ public class UserController {
     private final ResetPasswordUseCase resetPasswordUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ResetPasswordByTokenUseCase resetPasswordByTokenUseCase;
+    private final UserSearchUseCase userSearchUseCase;
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserInfoResponse>> getMyInfo(
@@ -82,6 +86,13 @@ public class UserController {
 
         resetPasswordUseCase.reset(userDetails.getId(), command);
         return ApiResponse.success(USER_RESET_PASSWORD_SUCCESS);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<String>>> searchUsernames(
+        @RequestParam String username) {
+        List<String> usernames = userSearchUseCase.searchByUsername(username);
+        return ApiResponse.success(USER_READ_SUCCESS, usernames);
     }
 
 }
