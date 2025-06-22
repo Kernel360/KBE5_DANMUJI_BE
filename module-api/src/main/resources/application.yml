@@ -58,6 +58,11 @@ cloudflare:
     bucket: ${R2_BUCKET}
     access-key: ${R2_ACCESS_KEY}
     secret-key: ${R2_SECRET_KEY}
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 ---
 spring:
   config:
@@ -69,6 +74,10 @@ spring:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@danmuji.tlnmokf.mongodb.net/danmuji?retryWrites=true&w=majority&appName=danmuji
 
   jpa:
     open-in-view: false
@@ -90,6 +99,7 @@ logging:
   level:
     org.hibernate.SQL: debug
 
+
 ---
 
 spring:
@@ -102,6 +112,10 @@ spring:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@danmuji.tlnmokf.mongodb.net/danmuji?retryWrites=true&w=majority&appName=danmuji
 
   jpa:
     open-in-view: false

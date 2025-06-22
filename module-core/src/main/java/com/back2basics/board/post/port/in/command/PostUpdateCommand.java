@@ -14,5 +14,6 @@ public class PostUpdateCommand {
     private String content;
     private PostType type;
     private PostPriority priority;
+    private Long stepId;
     private List<Long> fileIdsToDelete;
 }
