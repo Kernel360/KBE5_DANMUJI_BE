@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.history;
 
+import com.back2basics.history.model.HistoryType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -15,6 +16,9 @@ public class HistoryDocument {
 
     @Id
     private ObjectId id;
+
+    @Field("history_type")
+    private HistoryType historyType;
 
     @Field("domain_type")
     private String domainType; // user, project, step, post ...
@@ -39,6 +43,7 @@ public class HistoryDocument {
     private LocalDateTime createdAt;
 
     public HistoryDocument(ObjectId id,
+        HistoryType historyType,
         String domainType,
         String domainId,
         LocalDateTime changedAt,
@@ -46,6 +51,7 @@ public class HistoryDocument {
         Map<String, Object> before,
         Map<String, Object> after, LocalDateTime createdAt) {
         this.id = id;
+        this.historyType = historyType;
         this.domainType = domainType;
         this.domainId = domainId;
         this.changedAt = changedAt;
@@ -55,7 +61,8 @@ public class HistoryDocument {
         this.createdAt = createdAt;
     }
 
-    public static HistoryDocument of(String domainType,
+    public static HistoryDocument of(HistoryType historyType,
+        String domainType,
         Long domainId,
         LocalDateTime changedAt,
         String changedBy,
@@ -63,6 +70,7 @@ public class HistoryDocument {
         Map<String, Object> after) {
         return new HistoryDocument(
             new ObjectId(),
+            historyType,
             domainType,
             String.valueOf(domainId),
             changedAt,

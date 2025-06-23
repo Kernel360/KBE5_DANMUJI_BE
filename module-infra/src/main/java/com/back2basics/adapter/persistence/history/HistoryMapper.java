@@ -10,6 +10,7 @@ public class HistoryMapper {
     public static HistoryDocument toDocument(History history) {
         return new HistoryDocument(
             new ObjectId(),
+            history.getHistoryType(),
             history.getDomainType(),
             String.valueOf(history.getDomainId()),
             history.getChangedAt(),
