@@ -55,4 +55,15 @@ public class ProjectStep {
         this.stepOrder = stepOrder;
     }
 
+    public void updateStepStatus(ProjectStep projectStep) {
+        if (projectStep.getProjectStepStatus() == ProjectStepStatus.IN_PROGRESS) {
+            this.projectStepStatus = ProjectStepStatus.COMPLETED;
+        } else if (projectStep.getProjectStepStatus() == ProjectStepStatus.COMPLETED) {
+            this.projectStepStatus = ProjectStepStatus.IN_PROGRESS;
+        }
+    }
+
+    public void revertStepStatus() {
+        this.projectStepStatus = ProjectStepStatus.PENDING;
+    }
 }

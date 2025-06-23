@@ -1,6 +1,6 @@
 package com.back2basics.projectstep.model;
 
-public enum ProjectFeedbackStepStatus {
+public enum StepApprovalStatus {
     REQUESTED,
     REJECTED,
     APPROVED

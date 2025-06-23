@@ -7,8 +7,8 @@ import com.back2basics.project.service.result.ProjectListResult;
 import java.time.LocalDate;
 import java.util.List;
 
-// todo: 뎁스 하나 더 파서 회사에 멤버 목록으로 나오도록
-public record ProjectListResponse(Long projectId, String projectTitle,
+// todo: 다시 뎁스 줄이기. 회사 목록의 멤버는 response 따로 요청
+public record ProjectListResponse(Long projectId, String projectTitle, int progress,
                                   List<CompanySummaryResponse> assignClientCompanies,
                                   List<CompanySummaryResponse> assignDevCompanies,
                                   LocalDate startDate, LocalDate endDate,
@@ -22,8 +22,8 @@ public record ProjectListResponse(Long projectId, String projectTitle,
         List<CompanySummaryResponse> assignDevCompanies = result.assignDevCompanies().stream()
             .map(CompanySummaryResponse::toResponse).toList();
 
-        return new ProjectListResponse(result.id(), result.name(), assignClientCompanies,
-            assignDevCompanies,
+        return new ProjectListResponse(result.id(), result.name(), result.progress(),
+            assignClientCompanies, assignDevCompanies,
             result.startDate(), result.endDate(), result.projectStatus());
     }
 }

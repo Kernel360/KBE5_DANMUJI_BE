@@ -38,11 +38,13 @@ public class Project {
 
     private List<Assignment> assignments;
 
+    private int progress; // 프로젝트 단계 진행률
+
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
         boolean isDeleted, ProjectStatus status, List<ProjectStep> steps,
-        List<Assignment> assignments) {
+        List<Assignment> assignments, int progress) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -56,6 +58,7 @@ public class Project {
         this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
         this.assignments =
             assignments != null ? new ArrayList<>(assignments) : new ArrayList<>();
+        this.progress = progress;
     }
 
     // todo: 조회 시 steps 세팅해주는데 먼가 맘에 안듦. 위에서 값 초기화를 해주는거 같은데 안먹혀서 일단 해놓음
@@ -85,5 +88,11 @@ public class Project {
     public void softDeleted() {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
+    }
+
+    public void calculateProgress(int totalStep, int completedStep) {
+        System.out.println("진행률 계산");
+        double result = ((double) completedStep / totalStep) * 100;
+        this.progress = (int) result;
     }
 }

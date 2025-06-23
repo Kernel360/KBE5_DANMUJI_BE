@@ -20,4 +20,11 @@ public class SaveProjectAdapter implements SaveProjectPort {
         projectEntityRepository.save(entity);
         return projectMapper.toDomain(entity);
     }
+
+    @Override
+    public Project createSave(Project project) {
+        ProjectEntity entity = projectMapper.toCreateEntity(project);
+        projectEntityRepository.save(entity);
+        return projectMapper.toDomain(entity);
+    }
 }
