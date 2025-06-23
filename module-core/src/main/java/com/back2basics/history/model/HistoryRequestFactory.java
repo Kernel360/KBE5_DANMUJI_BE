@@ -13,7 +13,7 @@ public class HistoryRequestFactory {
             DomainType.POST,
             savedPost.getId(),
             savedPost.getAuthorId(),
-            null,
+            "empty",
             savedPost
         );
     }
@@ -31,7 +31,7 @@ public class HistoryRequestFactory {
 
     public static HistoryRequestCommand postDeleted(Post before, Post after, Long userId) {
         return new HistoryRequestCommand(
-            HistoryType.UPDATED,
+            HistoryType.DELETED,
             DomainType.POST,
             after.getId(),
             userId,
