@@ -6,6 +6,7 @@ import com.back2basics.notify.port.in.command.SendNotificationCommand;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,14 +27,17 @@ public class MentionNotificationSender {
         Map<String, Long> userMap = userQueryPort.findUserIdsByUsernames(mentionedUsernames);
 
         for (Long receiverId : userMap.values()) {
-            if (!receiverId.equals(senderId)) {
-                notifyUseCase.notify(new SendNotificationCommand(
-                    receiverId,
-                    targetId,
-                    "멘션으로 언급되었습니다.",
-                    NotificationType.MENTIONED
-                ));
+
+            if (Objects.equals(receiverId, senderId)) {
+                continue;
             }
+
+            notifyUseCase.notify(new SendNotificationCommand(
+                receiverId,
+                targetId,
+                "멘션으로 언급되었습니다.",
+                NotificationType.MENTIONED
+            ));
         }
     }
 }

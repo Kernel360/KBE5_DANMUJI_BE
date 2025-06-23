@@ -42,6 +42,7 @@ public class PostUpdateService implements PostUpdateUseCase {
         post.update(command, userIp);
 
         Post updatedPost = postUpdatePort.update(post);
+
         mentionNotificationSender.notifyMentionedUsers(userId, postId, post.getContent());
 
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
