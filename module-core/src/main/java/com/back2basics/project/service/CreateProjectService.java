@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CreateProjectService implements CreateProjectUseCase {
 
@@ -31,6 +30,7 @@ public class CreateProjectService implements CreateProjectUseCase {
         List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
 
     @Override
+    @Transactional
     public void createProject(ProjectCreateCommand command) {
         Project project = Project.builder()
             .name(command.getName())
@@ -39,7 +39,7 @@ public class CreateProjectService implements CreateProjectUseCase {
             .endDate(command.getEndDate())
             .status(ProjectStatus.IN_PROGRESS)
             .build();
-        Project savedProject = saveProjectPort.save(project);
+        Project savedProject = saveProjectPort.createSave(project);
         createDefaultSteps(savedProject.getId());
         assignUsers(savedProject, command);
     }
@@ -59,7 +59,6 @@ public class CreateProjectService implements CreateProjectUseCase {
     }
 
     private void assignUsers(Project project, ProjectCreateCommand command) {
-
         List<User> devManagers = command.getDevManagerId().stream().map(userQueryPort::findById)
             .toList();
         List<User> clientManagers = command.getClientManagerId().stream()

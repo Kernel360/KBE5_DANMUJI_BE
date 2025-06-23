@@ -22,7 +22,8 @@ public class UserSearchService implements UserSearchUseCase {
                 user.getId(),
                 user.getUsername(),
                 user.getName(),
-                user.getRole()
+                user.getRole(),
+                user.getPosition()
             ))
             .toList();
     }

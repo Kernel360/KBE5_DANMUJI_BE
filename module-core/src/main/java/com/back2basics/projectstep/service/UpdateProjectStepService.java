@@ -21,27 +21,27 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UpdateProjectStepService implements UpdateProjectStepUseCase {
 
-    private final ReadProjectStepPort readPort;
-    private final SaveProjectStepPort savePort;
+    private final ReadProjectStepPort readProjectStepPort;
+    private final SaveProjectStepPort saveProjectStepPort;
 
     @Override
     public void updateStepName(UpdateProjectStepCommand command, Long stepId) {
-        ProjectStep step = readPort.findById(stepId);
+        ProjectStep step = readProjectStepPort.findById(stepId);
         step.updateName(command.getName());
-        savePort.save(step);
+        saveProjectStepPort.save(step);
     }
 
     @Override
     public void updateApprovalStatus(ProjectStepStatus projectStepStatus,
         Long stepId) {
-        ProjectStep step = readPort.findById(stepId);
+        ProjectStep step = readProjectStepPort.findById(stepId);
         step.updateStatus(projectStepStatus);
-        savePort.save(step);
+        saveProjectStepPort.save(step);
     }
 
     @Override
     public void reorderSteps(Long projectId, List<Long> stepIdsInNewOrder) {
-        List<ProjectStep> steps = readPort.findAllById(stepIdsInNewOrder);
+        List<ProjectStep> steps = readProjectStepPort.findAllById(stepIdsInNewOrder);
 
         Map<Long, ProjectStep> stepMap = steps.stream()
             .collect(Collectors.toMap(ProjectStep::getStepId, s -> s));
@@ -56,6 +56,19 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
             step.updateStepOrder(i + 1);
         }
 
-        savePort.saveAll(steps);
+        saveProjectStepPort.saveAll(steps);
+    }
+    @Override
+    public void updateStepStatus(Long stepId) {
+        ProjectStep projectStep = readProjectStepPort.findById(stepId);
+        projectStep.updateStepStatus(projectStep);
+        saveProjectStepPort.save(projectStep);
+    }
+
+    @Override
+    public void revertStepStatus(Long stepId) {
+        ProjectStep projectStep = readProjectStepPort.findById(stepId);
+        projectStep.revertStepStatus();
+        saveProjectStepPort.save(projectStep);
     }
 }

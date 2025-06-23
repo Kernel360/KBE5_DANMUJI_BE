@@ -11,6 +11,7 @@ import java.util.List;
 public record ProjectListResult(
     Long id,
     String name,
+    int progress,
     List<CompanySummaryResult> assignClientCompanies,
     List<CompanySummaryResult> assignDevCompanies,
     LocalDate startDate,
@@ -32,6 +33,7 @@ public record ProjectListResult(
         return new ProjectListResult(
             project.getId(),
             project.getName(),
+            project.getProgress(),
             assignClientCompanies,
             assignDevCompanies,
             project.getStartDate(),

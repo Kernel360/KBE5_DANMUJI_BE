@@ -20,9 +20,9 @@ public enum NotificationType {
 
     MENTIONED("회원님이 언급되었습니다."),
 
-    STEP_APPROVAL_REQUEST("단계승인요청"),
-    STEP_APPROVAL_ACCEPTED("단계승인완료"),
-    STEP_APPROVAL_REJECTED("단계승인거절");
+    STEP_APPROVAL_REQUEST("단계 승인 요청이 도착했습니다."),
+    STEP_APPROVAL_ACCEPTED("단계 승인이 완료되었습니다."),
+    STEP_APPROVAL_REJECTED("단계 승인이 거절되었습니다.");
 
     private final String description;
 

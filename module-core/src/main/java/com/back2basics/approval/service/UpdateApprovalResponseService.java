@@ -2,6 +2,7 @@ package com.back2basics.approval.service;
 
 import com.back2basics.approval.model.ApprovalRequest;
 import com.back2basics.approval.model.ApprovalResponse;
+import com.back2basics.approval.model.ApprovalResponseStatus;
 import com.back2basics.approval.port.in.UpdateApprovalResponseUseCase;
 import com.back2basics.approval.port.in.command.CreateApprovalCommand;
 import com.back2basics.approval.port.in.command.UpdateApprovalCommand;
@@ -11,6 +12,10 @@ import com.back2basics.approval.port.out.ApprovalResponseCommandPort;
 import com.back2basics.approval.port.out.ApprovalResponseQueryPort;
 import com.back2basics.infra.validation.validator.ApprovalValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.notify.model.NotificationType;
+import com.back2basics.notify.port.in.NotifyUseCase;
+import com.back2basics.notify.port.in.command.SendNotificationCommand;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +31,7 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
     private final ApprovalRequestQueryPort approvalRequestQueryPort;
     private final ApprovalResponseQueryPort approvalResponseQueryPort;
     private final ApprovalResponseCommandPort approvalResponseCommandPort;
+    private final NotifyUseCase notifyUseCase;
 
     @Override
     public void change(Long responseId, Long userId, UpdateApprovalCommand command) {
@@ -34,6 +40,42 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
         ApprovalResponse approvalResponse = approvalResponseQueryPort.findById(responseId);
         approvalResponse.updateStatus(command.message(), command.status());
         approvalResponseCommandPort.update(approvalResponse);
+
+        ApprovalRequest approvalRequest = approvalRequestQueryPort.findById(
+            approvalResponse.getApprovalRequestId());
+
+        SendNotificationCommand notifyCommand = getSendNotificationCommand(
+            command, approvalRequest, approvalResponse);
+        notifyUseCase.notify(notifyCommand);
+
+        if (command.status().equals(ApprovalResponseStatus.REJECTED)) {
+            approvalRequest.reject();
+            approvalRequestCommandPort.save(approvalRequest);
+        } else {
+            List<ApprovalResponse> responseList = approvalResponseQueryPort.findResponsesByRequestId(
+                approvalRequest.getId());
+            boolean allResponded = responseList.stream()
+                .allMatch(r -> r.getStatus() != ApprovalResponseStatus.PENDING);
+
+            if (allResponded) {
+                approvalRequest.approve();
+                approvalRequestCommandPort.save(approvalRequest);
+            }
+        }
+
+    }
+
+    private static SendNotificationCommand getSendNotificationCommand(UpdateApprovalCommand command,
+        ApprovalRequest approvalRequest, ApprovalResponse approvalResponse) {
+        NotificationType type = command.status().equals(ApprovalResponseStatus.REJECTED)
+            ? NotificationType.STEP_APPROVAL_REJECTED : NotificationType.STEP_APPROVAL_ACCEPTED;
+
+        return new SendNotificationCommand(
+            approvalRequest.getRequesterId(),
+            approvalResponse.getApprovalRequestId(),
+            type.getDescription(),
+            type
+        );
     }
 
     @Override
@@ -44,5 +86,15 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
         command.responseIds().forEach(approvalRequest::addResponse);
 
         approvalRequestCommandPort.update(approvalRequest);
+
+        for (Long clientId : command.responseIds()) {
+            SendNotificationCommand notifyCommand = new SendNotificationCommand(
+                clientId,
+                requestId,
+                NotificationType.STEP_APPROVAL_REQUEST.getDescription(),
+                NotificationType.STEP_APPROVAL_REQUEST
+            );
+            notifyUseCase.notify(notifyCommand);
+        }
     }
 }
