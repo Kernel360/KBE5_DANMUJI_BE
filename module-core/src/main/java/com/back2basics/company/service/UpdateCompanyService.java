@@ -17,6 +17,8 @@ public class UpdateCompanyService implements UpdateCompanyUseCase {
 
     @Override
     public void updateCompany(Long id, UpdateCompanyCommand command) {
+        companyValidator.validateDuplicate(command, id);
+
         Company company = companyValidator.findCompany(id);
 
         company.update(command);

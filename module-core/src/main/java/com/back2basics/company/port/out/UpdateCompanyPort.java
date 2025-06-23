@@ -6,4 +6,9 @@ public interface UpdateCompanyPort {
 
     void update(Company company);
 
+    boolean existsByNameAndIdNot(String name, Long id);
+
+    boolean existsByBizNoAndIdNot(Long bizNo, Long id);
+
+    boolean existsByAddressAndIdNot(String address, Long id);
 }

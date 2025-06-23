@@ -19,4 +19,19 @@ public class UpdateCompanyJpaAdapter implements UpdateCompanyPort {
         companyEntityRepository.save(companyMapper.toEntity(company));
     }
 
+    @Override
+    public boolean existsByNameAndIdNot(String name, Long id) {
+        return companyEntityRepository.existsByNameAndIdNot(name, id);
+    }
+
+    @Override
+    public boolean existsByBizNoAndIdNot(Long bizNo, Long id) {
+        return companyEntityRepository.existsByBizNoAndIdNot(bizNo, id);
+    }
+
+    @Override
+    public boolean existsByAddressAndIdNot(String address, Long id) {
+        return companyEntityRepository.existsByAddressAndIdNot(address, id);
+    }
+
 }
