@@ -3,14 +3,16 @@ package com.back2basics.history.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.STRING)
-public enum HistoryType {
-    CREATED("생성"),
-    UPDATED("수정"),
-    DELETED("삭제");
+public enum DomainType {
+    POST("게시글"),
+    USER("회원"),
+    PROJECT("프로젝트"),
+    COMPANY("회사"),
+    STEP("단계");
 
     private final String message;
 
-    HistoryType(String message) {
+    DomainType(String message) {
         this.message = message;
     }
 
@@ -18,4 +20,3 @@ public enum HistoryType {
         return message;
     }
 }
-
