@@ -73,7 +73,7 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
-    // 전체 프로젝트 목록
+    // 전체 프로젝트 목록, todo: projectListResponse 로 변경
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getProjects(
         @PageableDefault(
@@ -110,7 +110,6 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 
-    // 수정 todo: member 제거
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
         @PathVariable Long projectId,
@@ -120,7 +119,7 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
-    // 삭제
+    // 삭제, todo: 프로젝트 softDelete -> 단계, 할당멤버도 softDelete
     @DeleteMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
         deleteProjectUseCase.deleteProject(projectId);
