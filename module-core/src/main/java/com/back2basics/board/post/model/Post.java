@@ -3,12 +3,13 @@ package com.back2basics.board.post.model;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
+import com.back2basics.history.strategy.TargetDomain;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class Post {
+public class Post implements TargetDomain {
 
     private final Long id;
     private final Long parentId;
@@ -127,4 +128,13 @@ public class Post {
     }
 
 
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    @Override
+    public Long getChangedBy() {
+        return this.authorId;
+    }
 }

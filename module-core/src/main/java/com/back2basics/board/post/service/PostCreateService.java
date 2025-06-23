@@ -9,6 +9,7 @@ import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.out.PostCreatePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
+import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryRequestFactory;
 import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
@@ -51,7 +52,7 @@ public class PostCreateService implements PostCreateUseCase {
         mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
             post.getContent());
 
-        historyCreateService.create(HistoryRequestFactory.postCreated(savedPost));
+        historyCreateService.create(HistoryRequestFactory.created(DomainType.POST, savedPost));
 
         return PostCreateResult.toResult(savedPost);
     }

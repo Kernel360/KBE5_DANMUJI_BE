@@ -9,6 +9,7 @@ import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
+import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryRequestFactory;
 import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
@@ -45,7 +46,8 @@ public class PostUpdateService implements PostUpdateUseCase {
 
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
 
-        historyCreateService.create(HistoryRequestFactory.postUpdated(beforePost, updatedPost));
+        historyCreateService.create(
+            HistoryRequestFactory.updated(DomainType.POST, beforePost, updatedPost));
     }
 
     private void replaceFiles(List<MultipartFile> files, List<Long> fileIdsToDelete, Long postId)

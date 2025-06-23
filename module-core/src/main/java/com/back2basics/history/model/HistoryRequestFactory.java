@@ -1,44 +1,82 @@
 package com.back2basics.history.model;
 
-import com.back2basics.board.post.model.Post;
 import com.back2basics.history.port.command.HistoryRequestCommand;
+import com.back2basics.history.strategy.TargetDomain;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryRequestFactory {
 
-    public static HistoryRequestCommand postCreated(Post savedPost) {
+    // static으로 해줄 필요가 굳이 있나? 처음에는 팩토리메소드 개념 넣는다고 해서 한건데 갑자기 하다보니 굳이? 오버로딩도아니고 메소드이름도 다른데
+    public static <T extends TargetDomain> HistoryRequestCommand created(DomainType domainType,
+        T after) {
         return new HistoryRequestCommand(
             HistoryType.CREATED,
-            DomainType.POST,
-            savedPost.getId(),
-            savedPost.getAuthorId(),
+            domainType,
+            after.getId(),
+            after.getChangedBy(),
             "empty",
-            savedPost
+            after
         );
     }
 
-    public static HistoryRequestCommand postUpdated(Post before, Post after) {
+    public static <T extends TargetDomain> HistoryRequestCommand updated(DomainType domainType,
+        T before,
+        T after) {
         return new HistoryRequestCommand(
             HistoryType.UPDATED,
-            DomainType.POST,
+            domainType,
             after.getId(),
-            after.getAuthorId(),
+            after.getChangedBy(),
             before,
             after
         );
     }
 
-    public static HistoryRequestCommand postDeleted(Post before, Post after, Long userId) {
+    public static <T extends TargetDomain> HistoryRequestCommand deleted(DomainType domainType,
+        T before,
+        T after, Long changedBy) {
         return new HistoryRequestCommand(
             HistoryType.DELETED,
-            DomainType.POST,
+            domainType,
             after.getId(),
-            userId,
+            changedBy,
             before,
             after
         );
     }
 
-    // 기타 다른 도메인들 ... 너무 많으니까 각 클래스에서 private으로 빼기보단 빈으로 만들어주는게 낫다고 생각했음
+//    public static HistoryRequestCommand postCreated(Post savedPost) {
+//        return new HistoryRequestCommand(
+//            HistoryType.CREATED,
+//            DomainType.POST,
+//            savedPost.getId(),
+//            savedPost.getAuthorId(),
+//            "empty",
+//            savedPost
+//        );
+//    }
+//
+//    public static HistoryRequestCommand postUpdated(Post before, Post after) {
+//        return new HistoryRequestCommand(
+//            HistoryType.UPDATED,
+//            DomainType.POST,
+//            after.getId(),
+//            after.getAuthorId(),
+//            before,
+//            after
+//        );
+//    }
+//
+//    public static HistoryRequestCommand postDeleted(Post before, Post after, Long userId) {
+//        return new HistoryRequestCommand(
+//            HistoryType.DELETED,
+//            DomainType.POST,
+//            after.getId(),
+//            userId,
+//            before,
+//            after
+//        );
+//    }
+
 }
