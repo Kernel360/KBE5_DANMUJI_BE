@@ -11,7 +11,6 @@ import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryType;
-import com.back2basics.history.port.out.HistoryCreatePort;
 import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
@@ -19,7 +18,6 @@ import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +34,6 @@ public class PostCreateService implements PostCreateUseCase {
     private final FileSavePort fileSavePort;
     private final PostNotificationSender postNotificationSender;
     private final MentionNotificationSender mentionNotificationSender;
-    private final HistoryCreatePort historyCreatePort;
     private final HistoryCreateService historyCreateService;
 
     @Override
@@ -61,9 +58,8 @@ public class PostCreateService implements PostCreateUseCase {
             savedPost.getId(),
             userId,
             null,
-            Map.of(
-                "details", savedPost
-            ));
+            savedPost
+        );
 
         return PostCreateResult.toResult(savedPost);
     }

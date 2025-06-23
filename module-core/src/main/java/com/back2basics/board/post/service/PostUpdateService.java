@@ -9,15 +9,13 @@ import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
-import com.back2basics.history.model.History;
+import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryType;
-import com.back2basics.history.port.out.HistoryCreatePort;
+import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +31,7 @@ public class PostUpdateService implements PostUpdateUseCase {
     private final FileDeletePort fileDeletePort;
     private final FileReadPort fileReadPort;
     private final MentionNotificationSender mentionNotificationSender;
-    private final HistoryCreatePort historyCreatePort;
+    private final HistoryCreateService historyCreateService;
 
     @Override
     public void updatePost(Long userId, String userIp, Long postId,
@@ -46,21 +44,14 @@ public class PostUpdateService implements PostUpdateUseCase {
 
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
 
-        History history = History.create(
-            HistoryType.POST_UPDATED,
-            "post",
+        historyCreateService.createHistory(
+            HistoryType.UPDATED,
+            DomainType.POST,
             updatedPost.getId(),
-            String.valueOf(userId),
-            Map.of(
-                "before", post
-            ),
-            Map.of(
-                "after", updatedPost
-            ),
-            LocalDateTime.now()
+            userId,
+            post,
+            updatedPost
         );
-
-        historyCreatePort.save(history);
     }
 
     private void replaceFiles(List<MultipartFile> files, List<Long> fileIdsToDelete, Long postId)
