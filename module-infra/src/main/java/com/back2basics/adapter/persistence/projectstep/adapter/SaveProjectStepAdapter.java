@@ -29,15 +29,6 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
     private final ProjectStepMapper projectStepMapper;
     private final ProjectMapper projectMapper;
 
-    // todo: 메서드 기능 동일함. 추후 통합
-    @Override
-    public void defaultSave(ProjectStep projectStep) {
-        ProjectEntity project = projectRepository.findById(projectStep.getProjectId())
-            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
-        ProjectStepEntity step = projectStepMapper.toEntity(projectStep, project);
-        stepRepository.save(step);
-    }
-
     @Override
     public void save(ProjectStep projectStep) {
         ProjectEntity project = projectRepository.findById(projectStep.getProjectId())
