@@ -46,7 +46,7 @@ public class ReadApprovalService implements ReadApprovalUseCase {
         return responses.stream()
             .map(response -> new ApproverResult(
                 response.getId(),
-                response.getProjectStepId(),
+                response.getApprovalRequestId(),
                 response.getUserId(),
                 response.getMessage(),
                 response.getStatus(),
@@ -60,7 +60,7 @@ public class ReadApprovalService implements ReadApprovalUseCase {
         ApprovalResponse response = approvalResponseQueryPort.findById(responseId);
         return new ApproverResult(
             response.getId(),
-            response.getProjectStepId(),
+            response.getApprovalRequestId(),
             response.getUserId(),
             response.getMessage(),
             response.getStatus(),
