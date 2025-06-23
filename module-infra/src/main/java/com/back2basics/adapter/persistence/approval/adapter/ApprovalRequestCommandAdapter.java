@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.approval.adapter;
 
 import com.back2basics.adapter.persistence.approval.entity.ApprovalRequestEntity;
 import com.back2basics.adapter.persistence.approval.entity.ApprovalResponseEntity;
+import com.back2basics.adapter.persistence.approval.mapper.ApprovalRequestMapper;
 import com.back2basics.adapter.persistence.approval.repository.ApprovalRequestEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityRepository;
@@ -20,12 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApprovalRequestCommandAdapter implements ApprovalRequestCommandPort {
 
+    private final ApprovalRequestMapper mapper;
     private final ApprovalRequestEntityRepository approvalRequestEntityRepository;
     private final UserEntityRepository userEntityRepository;
     private final ProjectStepEntityRepository projectStepEntityRepository;
 
     @Override
-    public void save(ApprovalRequest approvalRequest) {
+    public Long save(ApprovalRequest approvalRequest) {
 
         // 실제 쿼리를 즉시 실행하지 않고, 해당 ID에 대한 지연 프록시 객체 반환
         // 실제 값이 필요할 때까지 DB에 접근하지 않음
@@ -47,6 +49,7 @@ public class ApprovalRequestCommandAdapter implements ApprovalRequestCommandPort
 
         entity.addResponses(responses);
         approvalRequestEntityRepository.save(entity);
+        return entity.getId();
     }
 
     @Override
