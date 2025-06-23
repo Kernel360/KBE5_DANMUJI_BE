@@ -10,6 +10,7 @@ import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
 import com.back2basics.history.model.History;
+import com.back2basics.history.model.HistoryType;
 import com.back2basics.history.port.out.HistoryCreatePort;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.mention.MentionNotificationSender;
@@ -46,6 +47,7 @@ public class PostUpdateService implements PostUpdateUseCase {
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
 
         History history = History.create(
+            HistoryType.POST_UPDATED,
             "post",
             updatedPost.getId(),
             String.valueOf(userId),

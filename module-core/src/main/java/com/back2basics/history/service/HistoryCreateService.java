@@ -1,0 +1,55 @@
+package com.back2basics.history.service;
+
+import com.back2basics.history.model.History;
+import com.back2basics.history.model.HistoryType;
+import com.back2basics.history.port.out.HistoryCreatePort;
+import java.time.LocalDateTime;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class HistoryCreateService {
+
+    private final HistoryCreatePort historyCreatePort;
+
+    public void createHistory(
+        HistoryType historyType,
+        String domainType, // "post", "user", "company", "project", "step" 등
+        Long domainId,
+        Long changedBy,
+        Object before,
+        Object after
+    ) {
+        History history = History.create(
+            historyType,
+            domainType,
+            domainId,
+            String.valueOf(changedBy),
+            Map.of("before", before),
+            Map.of("after", after),
+            LocalDateTime.now()
+        );
+        historyCreatePort.save(history);
+    }
+
+    public void createHistory(
+        HistoryType historyType,
+        String domainType,
+        Long domainId,
+        Long changedBy,
+        Object before
+    ) {
+        History history = History.create(
+            historyType,
+            domainType,
+            domainId,
+            String.valueOf(changedBy),
+            Map.of("before", before),
+            Map.of("isDeleted", true),
+            LocalDateTime.now()
+        );
+        historyCreatePort.save(history);
+    }
+}
