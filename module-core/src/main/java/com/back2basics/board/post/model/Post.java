@@ -106,5 +106,25 @@ public class Post {
         this.files = files;
     }
 
+    public static Post copyOf(Post post) {
+        return Post.create(
+            post.getId(),
+            post.getParentId(),
+            post.getProjectId(),
+            post.getProjectStepId(),
+            post.getAuthorIp(),
+            post.getAuthorId(),
+            post.getAuthorName(),
+            post.getTitle(),
+            post.getContent(),
+            post.getType(),
+            post.getPriority(),
+            post.getCreatedAt(),
+            post.getUpdatedAt(),
+            post.getDeletedAt(),
+            post.getFiles()
+        );
+    }
+
 
 }

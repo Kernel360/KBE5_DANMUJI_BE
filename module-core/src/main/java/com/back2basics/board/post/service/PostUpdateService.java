@@ -37,6 +37,8 @@ public class PostUpdateService implements PostUpdateUseCase {
     public void updatePost(Long userId, String userIp, Long postId,
         PostUpdateCommand command, List<MultipartFile> files) throws IOException {
         Post post = postValidator.findPost(postId);
+        Post beforePost = Post.copyOf(post);
+
         post.update(command, userIp);
 
         Post updatedPost = postUpdatePort.update(post);
@@ -49,7 +51,7 @@ public class PostUpdateService implements PostUpdateUseCase {
             DomainType.POST,
             updatedPost.getId(),
             userId,
-            post,
+            beforePost,
             updatedPost
         );
     }
