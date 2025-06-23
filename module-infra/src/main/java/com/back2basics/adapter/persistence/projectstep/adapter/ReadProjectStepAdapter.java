@@ -6,11 +6,12 @@ import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
+import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.project.model.Project;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,48 +19,55 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReadProjectStepAdapter implements ReadProjectStepPort {
 
-    private final ProjectStepEntityRepository repository;
-    private final ProjectStepMapper mapper;
+    private final ProjectStepEntityRepository projectStepEntityRepository;
+    private final ProjectValidator projectValidator;
+    private final ProjectStepMapper projectStepMapper;
 
     @Override
     public ProjectStep findById(Long stepId) {
-        return repository.findById(stepId).map(mapper::toDomain)
+        return projectStepEntityRepository.findById(stepId).map(projectStepMapper::toDomain)
             .orElseThrow(() -> new ProjectStepException(STEP_NOT_FOUND));
     }
 
     @Override
     public List<ProjectStep> findAllByProjectId(Long projectId) {
-        return repository.findAllByProjectIdAndDeletedAtIsNull(projectId)
-            .stream()
-            .map(mapper::toDomain)
-            .collect(Collectors.toList());
+        Project project = projectValidator.findProjectById(projectId);
+
+        List<ProjectStepEntity> stepEntities = projectStepEntityRepository.findAllByProjectIdAndDeletedAtIsNull(
+            project.getId());
+
+        if (stepEntities.isEmpty()) {
+            throw new ProjectStepException(STEP_NOT_FOUND);
+        }
+        return stepEntities.stream().map(projectStepMapper::toDomain).toList();
     }
 
     @Override
     public List<ProjectStep> findAllById(List<Long> ids) {
-        List<ProjectStepEntity> entities = repository.findAllById(ids);
+        List<ProjectStepEntity> entities = projectStepEntityRepository.findAllById(ids);
         return entities.stream()
-            .map(mapper::toDomain)
+            .map(projectStepMapper::toDomain)
             .toList();
     }
 
     @Override
     public Integer findMaxStepOrderByProjectId(Long projectId) {
-        return repository.findMaxStepOrderByProjectId(projectId);
+        return projectStepEntityRepository.findMaxStepOrderByProjectId(projectId);
     }
 
     @Override
 
     public int totalCompletedStep(Long projectId) {
-        return repository.countByProject_IdAndProjectStepStatus(projectId, ProjectStepStatus.COMPLETED);
+        return projectStepEntityRepository.countByProject_IdAndProjectStepStatus(projectId,
+            ProjectStepStatus.COMPLETED);
     }
 
     @Override
     public int totalStep(Long projectId) {
-        return repository.countByProject_Id(projectId);
+        return projectStepEntityRepository.countByProject_Id(projectId);
     }
 
     public boolean existsById(Long stepId) {
-        return repository.existsById(stepId);
+        return projectStepEntityRepository.existsById(stepId);
     }
 }
