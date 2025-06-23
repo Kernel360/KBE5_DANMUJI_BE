@@ -50,16 +50,13 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
 
     private static SendNotificationCommand getSendNotificationCommand(UpdateApprovalCommand command,
         ApprovalRequest approvalRequest, ApprovalResponse approvalResponse) {
-        String msg = command.status().equals(ApprovalResponseStatus.REJECTED) ? "단계 승인 요청이 거절되었습니다."
-            : "단계 승인이 완료되었습니다";
-
         NotificationType type = command.status().equals(ApprovalResponseStatus.REJECTED)
             ? NotificationType.STEP_APPROVAL_REJECTED : NotificationType.STEP_APPROVAL_ACCEPTED;
 
         return new SendNotificationCommand(
             approvalRequest.getRequesterId(),
             approvalResponse.getApprovalRequestId(),
-            msg,
+            type.getDescription(),
             type
         );
     }
@@ -77,7 +74,7 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
             SendNotificationCommand notifyCommand = new SendNotificationCommand(
                 clientId,
                 requestId,
-                "새로운 승인 요청이 도착했습니다.",
+                NotificationType.STEP_APPROVAL_REQUEST.getDescription(),
                 NotificationType.STEP_APPROVAL_REQUEST
             );
             notifyUseCase.notify(notifyCommand);

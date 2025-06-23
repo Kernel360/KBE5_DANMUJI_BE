@@ -30,12 +30,12 @@ public class CreateApprovalRequestRequestService implements CreateApprovalReques
         ApprovalRequest approvalRequest = ApprovalRequest.create(stepId, requesterId,
             command.responseIds());
         Long savedId = approvalRequestCommandPort.save(approvalRequest);
-        
+
         for (Long clientId : command.responseIds()) {
             SendNotificationCommand notifyCommand = new SendNotificationCommand(
                 clientId,
                 savedId,
-                "새로운 승인 요청이 도착했습니다.",
+                NotificationType.STEP_APPROVAL_REQUEST.getDescription(),
                 NotificationType.STEP_APPROVAL_REQUEST
             );
             notifyUseCase.notify(notifyCommand);
