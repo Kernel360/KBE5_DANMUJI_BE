@@ -1,19 +1,12 @@
 package com.back2basics.assignment.port.out;
 
 import com.back2basics.assignment.model.Assignment;
-import com.back2basics.company.model.CompanyType;
-import com.back2basics.user.model.UserType;
 import java.util.List;
 
 public interface AssignmentQueryPort {
 
-    List<Assignment> findUsersByProjectId(Long projectId);
-
-    Assignment findByProjectIdAndUserTypeAndCompanyType(Long projectId, UserType userType, CompanyType companyType);
-
-    // 할당 멤버 조회
-    List<Assignment> findByProjectIdAndUserId(Long projectId, Long userId);
+    List<Assignment> findAllByProjectId(Long projectId);
 
     // 할당된 회사 삭제를 위한 assignment 리스트 조회
-    List<Assignment> findByProjectIdAndCompanyId(Long projectId, Long companyId);
+    List<Assignment> findAllByProjectIdAndCompanyId(Long projectId, Long companyId);
 }
