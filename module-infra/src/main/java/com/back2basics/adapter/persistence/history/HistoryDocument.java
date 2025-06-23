@@ -38,7 +38,7 @@ public class HistoryDocument {
     @Field("history_created_at")
     private LocalDateTime createdAt;
 
-    private HistoryDocument(ObjectId id,
+    public HistoryDocument(ObjectId id,
         String domainType,
         String domainId,
         LocalDateTime changedAt,

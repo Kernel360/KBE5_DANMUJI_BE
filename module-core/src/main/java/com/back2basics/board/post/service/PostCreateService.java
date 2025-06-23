@@ -9,12 +9,16 @@ import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.out.PostCreatePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
+import com.back2basics.history.model.History;
+import com.back2basics.history.port.out.HistoryCreatePort;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +35,7 @@ public class PostCreateService implements PostCreateUseCase {
     private final FileSavePort fileSavePort;
     private final PostNotificationSender postNotificationSender;
     private final MentionNotificationSender mentionNotificationSender;
+    private final HistoryCreatePort historyCreatePort;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -48,6 +53,18 @@ public class PostCreateService implements PostCreateUseCase {
         mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
             post.getContent());
 
+        History history = History.create(
+            "post",
+            savedPost.getId(),
+            String.valueOf(userId),
+            null,
+            Map.of(
+                "details", savedPost
+            ),
+            LocalDateTime.now()
+        );
+
+        historyCreatePort.save(history);
         return PostCreateResult.toResult(savedPost);
     }
 
