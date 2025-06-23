@@ -15,6 +15,7 @@ import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,22 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
         SendNotificationCommand notifyCommand = getSendNotificationCommand(
             command, approvalRequest, approvalResponse);
         notifyUseCase.notify(notifyCommand);
+
+        if (command.status().equals(ApprovalResponseStatus.REJECTED)) {
+            approvalRequest.reject();
+            approvalRequestCommandPort.save(approvalRequest);
+        } else {
+            List<ApprovalResponse> responseList = approvalResponseQueryPort.findResponsesByRequestId(
+                approvalRequest.getId());
+            boolean allResponded = responseList.stream()
+                .allMatch(r -> r.getStatus() != ApprovalResponseStatus.PENDING);
+
+            if (allResponded) {
+                approvalRequest.approve();
+                approvalRequestCommandPort.save(approvalRequest);
+            }
+        }
+
     }
 
     private static SendNotificationCommand getSendNotificationCommand(UpdateApprovalCommand command,
