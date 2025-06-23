@@ -2,9 +2,9 @@ package com.back2basics.user.service.result;
 
 import com.back2basics.user.model.User;
 
-public record UserSummaryResult(Long id, String username, String name) {
+public record UserSummaryResult(Long id, String username, String name, String position) {
 
     public static UserSummaryResult from(User user) {
-        return new UserSummaryResult(user.getId(), user.getUsername(), user.getName());
+        return new UserSummaryResult(user.getId(), user.getUsername(), user.getName(), user.getPosition());
     }
 }
