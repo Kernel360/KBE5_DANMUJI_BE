@@ -11,6 +11,7 @@ import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryType;
+import com.back2basics.history.port.command.HistoryRequestCommand;
 import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.mention.MentionNotificationSender;
@@ -46,13 +47,15 @@ public class PostUpdateService implements PostUpdateUseCase {
 
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
 
-        historyCreateService.createHistory(
-            HistoryType.UPDATED,
-            DomainType.POST,
-            updatedPost.getId(),
-            userId,
-            beforePost,
-            updatedPost
+        historyCreateService.create(
+            new HistoryRequestCommand(
+                HistoryType.UPDATED,
+                DomainType.POST,
+                updatedPost.getId(),
+                userId,
+                beforePost,
+                updatedPost
+            )
         );
     }
 

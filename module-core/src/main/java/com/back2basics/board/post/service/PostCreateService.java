@@ -11,6 +11,7 @@ import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryType;
+import com.back2basics.history.port.command.HistoryRequestCommand;
 import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
@@ -52,13 +53,15 @@ public class PostCreateService implements PostCreateUseCase {
         mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
             post.getContent());
 
-        historyCreateService.createHistory(
-            HistoryType.CREATED,
-            DomainType.POST,
-            savedPost.getId(),
-            userId,
-            null,
-            savedPost
+        historyCreateService.create(
+            new HistoryRequestCommand(
+                HistoryType.CREATED,
+                DomainType.POST,
+                savedPost.getId(),
+                userId,
+                null,
+                savedPost
+            )
         );
 
         return PostCreateResult.toResult(savedPost);
