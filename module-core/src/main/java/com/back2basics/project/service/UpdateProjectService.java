@@ -12,7 +12,7 @@ import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.project.port.out.UpdateProjectPort;
-import com.back2basics.assignment.port.out.AssignmentQueryPort;
+import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
 import com.back2basics.user.port.out.UserQueryPort;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UpdateProjectService implements UpdateProjectUseCase {
 
-    private final UpdateProjectPort port;
+    private final UpdateProjectPort updateProjectPort;
     private final ProjectValidator projectValidator;
     private final AssignmentQueryPort assignmentQueryPort;
     private final SaveProjectUserPort saveProjectUserPort;
@@ -36,7 +36,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
 
     private final ReadProjectPort readProjectPort;
-
+    private final ReadProjectStepPort readProjectStepPort;
 
     // todo : 사용자 인증 로직 추가
     // PR 작성 : 수정 시 새로 등록된 유저의 경우 updateService 에서 create 해주는 게 맞는건지 의문
@@ -46,7 +46,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         ProjectUpdateCommand command) {
         Project project = projectValidator.findProjectById(projectId);
         project.update(command);
-        port.update(project);
+        updateProjectPort.update(project);
 
         // 업체 타입 별 기존 assignments
         List<Assignment> oldDevs = assignmentQueryPort.findUsersByProjectId(projectId)
@@ -85,7 +85,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         } else {
             project.statusInProgress();
         }
-        port.update(project);
+        updateProjectPort.update(project);
     }
 
     private void updateAssignments(List<Assignment> oldAssignments, List<User> updatedUsers,
@@ -108,7 +108,6 @@ public class UpdateProjectService implements UpdateProjectUseCase {
                 assignment.updateUserType(newUserType);
             });
 
-        // todo: 포함안되면 삭제
         List<Assignment> deleteUsers = oldAssignments.stream()
             .filter(assignment -> !updatedUserIds.contains(assignment.getUser().getId()))
             .toList();
@@ -143,5 +142,17 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         );
 
         saveProjectUserPort.saveAll(newAssignments);
+    }
+
+    @Override
+    public void calculateProgressRate(Long projectId) {
+        Project project = readProjectPort.findProjectById(projectId);
+        int totalStep = readProjectStepPort.totalStep(projectId);
+        System.out.println("총 단계 수 : " + totalStep);
+        int completedStep = readProjectStepPort.totalCompletedStep(projectId);
+        System.out.println("완료 단계 수 : " + completedStep);
+        project.calculateProgress(totalStep, completedStep);
+        updateProjectPort.update(project);
+        System.out.println("updateProjectService 5: " + project.getProgress());
     }
 }

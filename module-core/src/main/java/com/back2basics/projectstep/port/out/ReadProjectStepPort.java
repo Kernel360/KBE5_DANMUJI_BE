@@ -12,4 +12,12 @@ public interface ReadProjectStepPort {
     List<ProjectStep> findAllById(List<Long> ids);
 
     Integer findMaxStepOrderByProjectId(Long projectId);
+
+
+    int totalCompletedStep(Long projectId);
+
+    int totalStep(Long projectId);
+
+    boolean existsById(Long stepId);
+
 }

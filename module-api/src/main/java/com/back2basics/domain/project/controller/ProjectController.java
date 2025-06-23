@@ -135,7 +135,7 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
-    // 프로젝트 최신순 조회 <- 프로젝트 전체 조회만 사용하고 top5는 프론트에서 처리하는 게 좋을 듯 api 중복되는 느낌
+    // 프로젝트 최신순 조회
     @GetMapping("/recent-projects")
     public ResponseEntity<ApiResponse<List<ProjectRecentGetResponse>>> getRecentProjects(
     ) {

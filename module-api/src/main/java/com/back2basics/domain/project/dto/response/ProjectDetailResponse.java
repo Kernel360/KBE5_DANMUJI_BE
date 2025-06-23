@@ -9,6 +9,7 @@ import java.util.List;
 
 public record ProjectDetailResponse(Long id, String name, String description, LocalDate startDate,
                                     LocalDate endDate, ProjectStatus projectStatus,
+                                    int progress,
                                     List<AssignProjectListResponse> clients,
                                     List<AssignProjectListResponse> developers,
                                     List<ProjectStepResponse> steps) {
@@ -21,6 +22,7 @@ public record ProjectDetailResponse(Long id, String name, String description, Lo
             result.startDate(),
             result.endDate(),
             result.projectStatus(),
+            result.progress(),
             result.clients().stream()
                 .map(AssignProjectListResponse::toResponse)
                 .toList(),

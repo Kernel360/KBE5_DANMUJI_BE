@@ -7,6 +7,7 @@ import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityReposito
 import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
 import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,4 +48,18 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
         return repository.findMaxStepOrderByProjectId(projectId);
     }
 
+    @Override
+
+    public int totalCompletedStep(Long projectId) {
+        return repository.countByProject_IdAndProjectStepStatus(projectId, ProjectStepStatus.COMPLETED);
+    }
+
+    @Override
+    public int totalStep(Long projectId) {
+        return repository.countByProject_Id(projectId);
+    }
+
+    public boolean existsById(Long stepId) {
+        return repository.existsById(stepId);
+    }
 }

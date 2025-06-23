@@ -84,7 +84,7 @@ public class CompanyController implements CompanyApiDocs {
             direction = Sort.Direction.ASC
         )
         Pageable pageable,
-        @RequestParam String name) {
+        @RequestParam(defaultValue = "") String name) {
         Page<ReadCompanyResult> companies = readCompanyUseCase.getCompaniesByNameContaining(
             pageable,
             name);

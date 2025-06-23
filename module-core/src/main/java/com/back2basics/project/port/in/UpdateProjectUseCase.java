@@ -7,4 +7,6 @@ public interface UpdateProjectUseCase {
     void updateProject(Long projectId, ProjectUpdateCommand projectUpdateCommand);
 
     void changedStatus(Long projectId);
+
+    void calculateProgressRate(Long projectId);
 }

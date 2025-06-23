@@ -11,4 +11,8 @@ public interface UpdateProjectStepUseCase {
     void updateApprovalStatus(ProjectStepStatus projectStepStatus, Long stepId);
 
     void reorderSteps(Long projectId, List<Long> stepIdsInNewOrder);
+
+    void updateStepStatus(Long stepId);
+
+    void revertStepStatus(Long stepId);
 }

@@ -4,12 +4,15 @@ import static com.back2basics.domain.projectstep.controller.code.ProjectStepResp
 import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_CREATE_SUCCESS;
 import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_DELETE_SUCCESS;
 import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_READ_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_STATUS_REVERT_SUCCESS;
+import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_STATUS_UPDATE_SUCCESS;
 import static com.back2basics.domain.projectstep.controller.code.ProjectStepResponseCode.STEP_UPDATE_SUCCESS;
 
 import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.response.ProjectStepResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.DeleteProjectStepUseCase;
@@ -33,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/projects/steps")
+@RequestMapping("/api/project-steps")
 public class ProjectStepController {
 
     private final CreateProjectStepUseCase createProjectStepUseCase;
@@ -41,15 +44,19 @@ public class ProjectStepController {
     private final DeleteProjectStepUseCase deleteProjectStepUseCase;
     private final ReadProjectStepUseCase readProjectStepUseCase;
 
-    // /api/projects/steps?projectId={projectId}
+    private final UpdateProjectUseCase updateProjectUseCase;
+
+    //todo: projectId 를 pathVariable - RequestParam ?
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createStep(
         @RequestBody CreateProjectStepRequest request, @RequestParam Long projectId) {
         CreateProjectStepCommand command = request.toCommand();
         createProjectStepUseCase.createStep(command, projectId);
+        updateProjectUseCase.calculateProgressRate(projectId);
         return ApiResponse.success(STEP_CREATE_SUCCESS);
     }
 
+    // 단계 순서 변경
     @PutMapping("/{projectId}/reorder")
     public ResponseEntity<ApiResponse<Void>> reorderSteps(@PathVariable Long projectId,
         @RequestBody List<Long> stepIdsInNewOrder) {
@@ -57,6 +64,7 @@ public class ProjectStepController {
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
+    // 프로젝트 별 단계 목록
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<List<ProjectStepResponse>>> getStepsProjectId(
         @PathVariable Long projectId) {
@@ -85,7 +93,7 @@ public class ProjectStepController {
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
-    // todo: 승인, 거절 버튼마다 url - projectStepStatus 다르게
+    // todo: 유진님이 승인하시면 필요없을 듯 나중에 삭제
     @PutMapping("/{stepId}/approval")
     public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId,
         @RequestParam
@@ -100,4 +108,20 @@ public class ProjectStepController {
         deleteProjectStepUseCase.softDelete(stepId);
         return ApiResponse.success(STEP_DELETE_SUCCESS);
     }
+
+    // todo: 단계 상태 변경, 진행중 -> 완료 / (취소: 완료 -> 진행중) api 따로?
+    @PutMapping("/{stepId}/status")
+    public ResponseEntity<ApiResponse<Void>> updateProjectStepStatus(@PathVariable Long stepId, @RequestParam Long projectId) {
+       updateProjectStepUseCase.updateStepStatus(stepId);
+       updateProjectUseCase.calculateProgressRate(projectId);
+       return ApiResponse.success(STEP_STATUS_UPDATE_SUCCESS);
+    }
+
+    // ProjectStepStatus PENDING 으로 초기화
+    @PutMapping("/{stepId}/revert")
+    public ResponseEntity<ApiResponse<Void>> revertStepStatus(@PathVariable Long stepId) {
+        updateProjectStepUseCase.revertStepStatus(stepId);
+        return ApiResponse.success(STEP_STATUS_REVERT_SUCCESS);
+    }
+
 }

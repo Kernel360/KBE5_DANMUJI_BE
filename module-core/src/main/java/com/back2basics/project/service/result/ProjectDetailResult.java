@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public record ProjectDetailResult(Long id, String name, String description, LocalDate startDate,
                                   LocalDate endDate, ProjectStatus projectStatus,
+                                  int progress,
                                   List<AssignProjectListResult> clients,
                                   List<AssignProjectListResult> developers,
                                   List<ProjectStepResult> steps) {
@@ -43,6 +44,7 @@ public record ProjectDetailResult(Long id, String name, String description, Loca
             project.getStartDate(),
             project.getEndDate(),
             project.getStatus(),
+            project.getProgress(),
             clientUsers,
             developerUsers,
             stepResults

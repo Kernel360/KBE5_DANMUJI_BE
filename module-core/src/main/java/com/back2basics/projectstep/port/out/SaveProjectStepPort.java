@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface SaveProjectStepPort {
 
-    void defaultSave(ProjectStep projectStep);
-
     void save(ProjectStep projectStep);
 
     void saveAll(List<ProjectStep> projectStepList);
