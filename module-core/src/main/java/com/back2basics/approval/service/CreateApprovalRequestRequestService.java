@@ -29,7 +29,7 @@ public class CreateApprovalRequestRequestService implements CreateApprovalReques
 
         ApprovalRequest approvalRequest = ApprovalRequest.create(stepId, requesterId,
             command.responseIds());
-        Long savedId = approvalRequestCommandPort.save(approvalRequest);
+        Long savedId = approvalRequestCommandPort.create(approvalRequest);
 
         for (Long clientId : command.responseIds()) {
             SendNotificationCommand notifyCommand = new SendNotificationCommand(
