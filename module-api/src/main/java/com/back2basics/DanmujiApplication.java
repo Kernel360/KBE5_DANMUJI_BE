@@ -4,10 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication(scanBasePackages = "com.back2basics")
 @EntityScan("com.back2basics")
 @EnableJpaRepositories(basePackages = "com.back2basics")
+@EnableMongoRepositories(basePackages = "com.back2basics")
 public class DanmujiApplication {
 
     public static void main(String[] args) {
