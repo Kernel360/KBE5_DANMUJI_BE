@@ -1,5 +1,6 @@
 package com.back2basics.history.service;
 
+import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.History;
 import com.back2basics.history.model.HistoryType;
 import com.back2basics.history.port.out.HistoryCreatePort;
@@ -16,7 +17,7 @@ public class HistoryCreateService {
 
     public void createHistory(
         HistoryType historyType,
-        String domainType, // "post", "user", "company", "project", "step" 등
+        DomainType domainType, // "post", "user", "company", "project", "step" 등
         Long domainId,
         Long changedBy,
         Object before,
@@ -36,7 +37,7 @@ public class HistoryCreateService {
 
     public void createHistory(
         HistoryType historyType,
-        String domainType,
+        DomainType domainType,
         Long domainId,
         Long changedBy,
         Object before

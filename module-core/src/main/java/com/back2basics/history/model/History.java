@@ -8,7 +8,7 @@ import lombok.Getter;
 public class History {
 
     private final HistoryType historyType;
-    private final String domainType;
+    private final DomainType domainType;
     private final Long domainId;
     private final LocalDateTime changedAt;
     private final String changedBy;
@@ -16,7 +16,7 @@ public class History {
     private final Map<String, Object> after;
     private final LocalDateTime createdAt;
 
-    public History(HistoryType historyType, String domainType, Long domainId,
+    public History(HistoryType historyType, DomainType domainType, Long domainId,
         LocalDateTime changedAt,
         String changedBy, Map<String, Object> before, Map<String, Object> after,
         LocalDateTime createdAt) {
@@ -31,7 +31,7 @@ public class History {
         this.createdAt = createdAt;
     }
 
-    public static History create(HistoryType historyType, String domainType, Long domainId,
+    public static History create(HistoryType historyType, DomainType domainType, Long domainId,
         String changedBy,
         Map<String, Object> before, Map<String, Object> after, LocalDateTime createdAt) {
         return new History(

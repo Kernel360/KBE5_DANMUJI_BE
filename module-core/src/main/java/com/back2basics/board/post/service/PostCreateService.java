@@ -9,6 +9,7 @@ import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.out.PostCreatePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
+import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryType;
 import com.back2basics.history.port.out.HistoryCreatePort;
 import com.back2basics.history.service.HistoryCreateService;
@@ -55,8 +56,8 @@ public class PostCreateService implements PostCreateUseCase {
             post.getContent());
 
         historyCreateService.createHistory(
-            HistoryType.POST_CREATED,
-            "post",
+            HistoryType.CREATED,
+            DomainType.POST,
             savedPost.getId(),
             userId,
             null,

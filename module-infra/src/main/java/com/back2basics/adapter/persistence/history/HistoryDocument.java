@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.history;
 
+import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ public class HistoryDocument {
     private HistoryType historyType;
 
     @Field("domain_type")
-    private String domainType; // user, project, step, post ...
+    private DomainType domainType; // user, project, step, post ...
 
     @Field("domain_id")
     private String domainId;   // 얘는 어케해야되냐 string <-> long
@@ -44,7 +45,7 @@ public class HistoryDocument {
 
     public HistoryDocument(ObjectId id,
         HistoryType historyType,
-        String domainType,
+        DomainType domainType,
         String domainId,
         LocalDateTime changedAt,
         String changedBy,
@@ -62,7 +63,7 @@ public class HistoryDocument {
     }
 
     public static HistoryDocument of(HistoryType historyType,
-        String domainType,
+        DomainType domainType,
         Long domainId,
         LocalDateTime changedAt,
         String changedBy,
