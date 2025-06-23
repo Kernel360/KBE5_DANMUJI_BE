@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Getter
-@Document("history_document")
+@Document("history_documents")
 public class HistoryDocument {
 
     @Id
