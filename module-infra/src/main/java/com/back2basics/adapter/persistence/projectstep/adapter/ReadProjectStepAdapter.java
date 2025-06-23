@@ -49,6 +49,7 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
     }
 
     @Override
+
     public int totalCompletedStep(Long projectId) {
         return repository.countByProject_IdAndProjectStepStatus(projectId, ProjectStepStatus.COMPLETED);
     }
@@ -56,5 +57,9 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
     @Override
     public int totalStep(Long projectId) {
         return repository.countByProject_Id(projectId);
+    }
+
+    public boolean existsById(Long stepId) {
+        return repository.existsById(stepId);
     }
 }

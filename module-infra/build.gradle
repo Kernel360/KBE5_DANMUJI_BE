@@ -36,6 +36,9 @@ dependencies {
 
     // aws s3 sdk
     implementation 'software.amazon.awssdk:s3:2.28.23'
+
+    // mongodb atlas
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
 
 def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile

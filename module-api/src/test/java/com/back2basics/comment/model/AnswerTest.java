@@ -3,9 +3,9 @@ package com.back2basics.comment.model;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.back2basics.comment.port.in.command.CommentUpdateCommand;
-import com.back2basics.post.model.Post;
-import com.back2basics.post.model.PostPriority;
-import com.back2basics.post.model.PostType;
+import com.back2basics.board.post.model.Post;
+import com.back2basics.board.post.model.PostPriority;
+import com.back2basics.board.post.model.PostType;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

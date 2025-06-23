@@ -9,6 +9,7 @@ import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -86,5 +87,17 @@ public class UserQueryAdapter implements UserQueryPort {
             .collect(Collectors.toList());
 
         userEntityRepository.saveAll(userEntities);
+    }
+
+    @Override
+    public List<User> findAllByIds(List<Long> userIds) {
+        return userEntityRepository.findAllById(userIds)
+            .stream().map(userMapper::toDomain).toList();
+    }
+
+    @Override
+    public Map<String, Long> findUserIdsByUsernames(List<String> usernames) {
+        return userEntityRepository.findAllByUsernames(usernames).stream()
+            .collect(Collectors.toMap(UserEntity::getUsername, UserEntity::getId));
     }
 }

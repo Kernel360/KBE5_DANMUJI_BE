@@ -29,10 +29,30 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleMaxUploadSizeExceededException(
+        MaxUploadSizeExceededException ex) {
+
+        ErrorCode errorCode = CommonErrorCode.FILE_SIZE_EXCEEDED;
+        log.error("MaxUploadSizeExceededException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
+    
+
+    @ExceptionHandler(org.springframework.dao.InvalidDataAccessApiUsageException.class)
+    protected ResponseEntity<ApiResponse<ErrorResponse>> handleInvalidDataAccessApiUsageException(
+        org.springframework.dao.InvalidDataAccessApiUsageException ex) {
+        ErrorCode errorCode = CommonErrorCode.INVALID_INPUT_VALUE;
+        log.error("InvalidDataAccessApiUsageException 발생: {}", ex.getMessage(), ex);
+        return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
+    }
 
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleIOException(IOException ex) {
@@ -201,7 +221,7 @@ public class GlobalExceptionHandler {
         }
 
         ErrorCode errorCode = INTERNAL_SERVER_ERROR;
-        log.error("UnhandledException 발생: {}", ex.getMessage());
+        log.error("UnhandledException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
 
