@@ -55,13 +55,13 @@ public class SecurityConfig {
                 session -> session.sessionCreationPolicy(
                     SessionCreationPolicy.STATELESS)) // 세션 비활성화
             .authorizeHttpRequests(auth -> auth
-//                    .requestMatchers(allowedUrls).permitAll()
-//                    .requestMatchers(swaggerUrls).permitAll()
-//                    .requestMatchers("/static/**", "/assets/**").permitAll()
-//                    .requestMatchers("/api/notifications/subscribe").permitAll()  // 따로 인증 처리
-//                    .requestMatchers("/api/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
-//                    .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
-                    .anyRequest().permitAll() // todo
+                    .requestMatchers(allowedUrls).permitAll()
+                    .requestMatchers(swaggerUrls).permitAll()
+                    .requestMatchers("/static/**", "/assets/**").permitAll()
+                    .requestMatchers("/api/notifications/subscribe").permitAll()  // 따로 인증 처리
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
+                    .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
+//                    .anyRequest().permitAll() // todo
             )
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(ipInjectionFilter, UsernamePasswordAuthenticationFilter.class)
