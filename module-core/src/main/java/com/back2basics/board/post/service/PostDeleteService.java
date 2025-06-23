@@ -3,9 +3,7 @@ package com.back2basics.board.post.service;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostDeleteUseCase;
 import com.back2basics.board.post.port.out.PostSoftDeletePort;
-import com.back2basics.history.model.DomainType;
-import com.back2basics.history.model.HistoryType;
-import com.back2basics.history.port.command.HistoryRequestCommand;
+import com.back2basics.history.model.HistoryRequestFactory;
 import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +24,7 @@ public class PostDeleteService implements PostDeleteUseCase {
 
         post.markDeleted();
 
-        historyCreateService.create(
-            new HistoryRequestCommand(
-                HistoryType.UPDATED,
-                DomainType.POST,
-                post.getId(),
-                requesterId,
-                post,
-                post
-            ), true
-        );
+        historyCreateService.create(HistoryRequestFactory.postDeleted(post, post, requesterId));
         postSoftDeletePort.softDelete(post);
     }
 }
