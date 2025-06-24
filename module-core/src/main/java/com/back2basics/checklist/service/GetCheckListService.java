@@ -30,4 +30,12 @@ public class GetCheckListService implements GetCheckListUseCase {
             .map(CheckListResult::from)
             .toList();
     }
+
+    @Override
+    public List<CheckListResult> findByToday(Long userId) {
+        List<CheckList> checkLists = checkListQueryPort.findByToday(userId);
+        return checkLists.stream()
+            .map(CheckListResult::from)
+            .toList();
+    }
 }

@@ -8,6 +8,8 @@ import com.back2basics.adapter.persistence.checklist.repository.CheckListEntityR
 import com.back2basics.checklist.model.CheckList;
 import com.back2basics.checklist.port.out.CheckListQueryPort;
 import com.back2basics.infra.exception.checklist.CheckListException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,16 @@ public class CheckListQueryAdapter implements CheckListQueryPort {
     @Override
     public List<CheckList> findByPostId(Long postId, Long userId) {
         return checkListEntityRepository.findAllByPostIdAndUserId(postId, userId).stream()
+            .map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<CheckList> findByToday(Long userId) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay();
+        LocalDateTime end = today.plusDays(1).atStartOfDay();
+
+        return checkListEntityRepository.findByToday(userId, start, end).stream()
             .map(mapper::toDomain).toList();
     }
 }

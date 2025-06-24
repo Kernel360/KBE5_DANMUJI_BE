@@ -11,11 +11,12 @@ public class CheckListMapper {
 
     public CheckList toDomain(CheckListEntity entity) {
         return new CheckList(entity.getId(), entity.getContent(), entity.getUser().getId(),
-            entity.getPost().getId(), entity.getCheckedAt(), entity.getIsChecked());
+            entity.getPost().getId(), entity.getCreatedAt(), entity.getCheckedAt(),
+            entity.getIsChecked());
     }
 
     public CheckListEntity toEntity(CheckList domain, UserEntity user, PostEntity post) {
         return new CheckListEntity(domain.getId(), domain.getContent(), user, post,
-            domain.getCheckedAt(), domain.getIsChecked());
+            domain.getCreatedAt(), domain.getCheckedAt(), domain.getIsChecked());
     }
 }
