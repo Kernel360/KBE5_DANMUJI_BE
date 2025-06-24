@@ -23,49 +23,23 @@ import org.springframework.stereotype.Service;
 public class ReadProjectService implements ReadProjectUseCase {
 
     private final ReadProjectPort readProjectPort;
-    private final ReadProjectStepPort readProjectStepPort;
     private final ProjectValidator projectValidator;
-    private final AssignmentQueryPort assignmentQueryPort;
 
     @Override
     public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
         Page<Project> projects = readProjectPort.findAll(pageable);
-        // todo: mapper 에서 추가하면 따로 set 해줄 필요 없음.
-        for (Project project : projects) {
-            List<ProjectStep> steps = readProjectStepPort.findAllByProjectId(project.getId());
-            project.setSteps(steps);
-            List<Assignment> assignments = assignmentQueryPort.findUsersByProjectId(
-                project.getId());
-            project.setUsers(assignments);
-        }
-        return projects
-            .map(ProjectGetResult::toResult);
-
+        return projects.map(ProjectGetResult::toResult);
     }
 
     @Override
     public Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable) {
         Page<Project> projects = readProjectPort.searchByKeyword(keyword, pageable);
-        for (Project project : projects) {
-            List<ProjectStep> steps = readProjectStepPort.findAllByProjectId(project.getId());
-            project.setSteps(steps);
-            List<Assignment> assignments = assignmentQueryPort.findUsersByProjectId(
-                project.getId());
-            project.setUsers(assignments);
-        }
         return projects.map(ProjectGetResult::toResult);
     }
 
     @Override
     public List<ProjectGetResult> getAllProjects() {
         List<Project> projects = readProjectPort.getAllProjects();
-        for (Project project : projects) {
-            List<ProjectStep> steps = readProjectStepPort.findAllByProjectId(project.getId());
-            project.setSteps(steps);
-            List<Assignment> assignments = assignmentQueryPort.findUsersByProjectId(
-                project.getId());
-            project.setUsers(assignments);
-        }
         return projects.stream()
             .map(ProjectGetResult::toResult).toList();
     }
@@ -78,7 +52,8 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     @Override
     public List<ProjectRecentGetResult> getRecentProjects() {
-        return readProjectPort.getRecentProjects().stream().map(ProjectRecentGetResult::toResult).toList();
+        return readProjectPort.getRecentProjects().stream().map(ProjectRecentGetResult::toResult)
+            .toList();
     }
 
     @Override

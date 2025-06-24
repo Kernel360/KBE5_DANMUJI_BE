@@ -49,10 +49,10 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         updateProjectPort.update(project);
 
         // 업체 타입 별 기존 assignments
-        List<Assignment> oldDevs = assignmentQueryPort.findUsersByProjectId(projectId)
+        List<Assignment> oldDevs = assignmentQueryPort.findAllByProjectId(projectId)
             .stream().filter(assignment -> assignment.getCompanyType() == CompanyType.DEVELOPER)
             .toList();
-        List<Assignment> oldClients = assignmentQueryPort.findUsersByProjectId(projectId)
+        List<Assignment> oldClients = assignmentQueryPort.findAllByProjectId(projectId)
             .stream().filter(assignment -> assignment.getCompanyType() == CompanyType.CLIENT)
             .toList();
 
@@ -71,7 +71,6 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
         updateAssignments(oldDevs, devUsers, devManagers);
         updateAssignments(oldClients, clientUsers, clientManagers);
-
         newAssignUsers(project, oldDevs, oldClients, devManagers, devUsers,
             clientManagers, clientUsers);
     }
@@ -97,7 +96,6 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         // 변경된 manager userId 집합
         Set<Long> managerIds = updatedManagers.stream().map(User::getId)
             .collect(Collectors.toSet());
-
         // 기존 멤버의 아이디와 변경된 아이디가 같으면 각 deManagers의 id 중 devUsers의 id와 하나라도 일치하면 userType MANAGER로 변경, 일치하지 않으면 MEMBER로 변경
         oldAssignments.stream()
             .filter(assignment -> updatedUserIds.contains(assignment.getUser().getId())) // 변경 유저아이디에 기존 아이디가 포함되어 있으면 내용 변경
@@ -111,13 +109,12 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         List<Assignment> deleteUsers = oldAssignments.stream()
             .filter(assignment -> !updatedUserIds.contains(assignment.getUser().getId()))
             .toList();
-        deleteAssignmentPort.DeleteAllInBatch(deleteUsers);
+        deleteAssignmentPort.deleteAll(deleteUsers);
     }
 
     private void newAssignUsers(Project project, List<Assignment> oldDevs,
         List<Assignment> oldClients, List<User> devManagers, List<User> devUsers,
         List<User> clientManagers, List<User> clientUsers) {
-
         // 기존 userId 리스트
         List<Long> oldDevUserIds = oldDevs.stream().map(assignment -> assignment.getUser().getId())
             .toList();
@@ -148,11 +145,8 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     public void calculateProgressRate(Long projectId) {
         Project project = readProjectPort.findProjectById(projectId);
         int totalStep = readProjectStepPort.totalStep(projectId);
-        System.out.println("총 단계 수 : " + totalStep);
         int completedStep = readProjectStepPort.totalCompletedStep(projectId);
-        System.out.println("완료 단계 수 : " + completedStep);
         project.calculateProgress(totalStep, completedStep);
         updateProjectPort.update(project);
-        System.out.println("updateProjectService 5: " + project.getProgress());
     }
 }

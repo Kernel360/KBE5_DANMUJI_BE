@@ -16,8 +16,8 @@ public class DeleteAssignmentService implements DeleteAssignmentUseCase {
     private final DeleteAssignmentPort deleteAssignmentPort;
 
     @Override
-    public void deleteCompany(Long projectId, Long companyId) {
-        List<Assignment> assignments = assignmentQueryPort.findByProjectIdAndCompanyId(projectId, companyId);
-        deleteAssignmentPort.DeleteAllInBatch(assignments);
+    public void deleteCompanies(Long projectId, Long companyId) {
+        List<Assignment> assignments = assignmentQueryPort.findAllByProjectIdAndCompanyId(projectId, companyId);
+        deleteAssignmentPort.deleteAll(assignments);
     }
 }

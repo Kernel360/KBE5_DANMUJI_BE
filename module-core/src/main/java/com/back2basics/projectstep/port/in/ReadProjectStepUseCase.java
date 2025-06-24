@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ReadProjectStepUseCase {
 
-    List<ProjectStepResult> findByProjectId(Long projectId);
+    List<ProjectStepResult> findAllByProjectId(Long projectId);
 
     ProjectStepResult findById(Long stepId);
 }

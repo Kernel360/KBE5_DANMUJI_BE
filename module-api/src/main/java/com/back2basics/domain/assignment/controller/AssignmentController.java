@@ -3,7 +3,6 @@ package com.back2basics.domain.assignment.controller;
 import static com.back2basics.domain.assignment.controller.code.AssignmentResponseCode.*;
 
 import com.back2basics.assignment.port.in.DeleteAssignmentUseCase;
-import com.back2basics.domain.assignment.controller.code.AssignmentResponseCode;
 import com.back2basics.global.response.result.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class AssignmentController {
 
     @DeleteMapping("/{projectId}/companies/{companyId}")
     public ResponseEntity<ApiResponse<Void>> deleteCompany(@PathVariable Long projectId, @PathVariable Long companyId) {
-        deleteAssignmentUseCase.deleteCompany(projectId, companyId);
+        deleteAssignmentUseCase.deleteCompanies(projectId, companyId);
         return ApiResponse.success(ASSIGNMENT_COMPANY_DELETE_SUCCESS);
     }
 }

@@ -66,9 +66,9 @@ public class ProjectStepController {
 
     // 프로젝트 별 단계 목록
     @GetMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<List<ProjectStepResponse>>> getStepsProjectId(
+    public ResponseEntity<ApiResponse<List<ProjectStepResponse>>> getStepsByProjectId(
         @PathVariable Long projectId) {
-        List<ProjectStepResult> result = readProjectStepUseCase.findByProjectId(
+        List<ProjectStepResult> result = readProjectStepUseCase.findAllByProjectId(
             projectId);
         List<ProjectStepResponse> response = result.stream()
             .map(ProjectStepResponse::toResponse).toList();
@@ -111,7 +111,7 @@ public class ProjectStepController {
 
     // todo: 단계 상태 변경, 진행중 -> 완료 / (취소: 완료 -> 진행중) api 따로?
     @PutMapping("/{stepId}/status")
-    public ResponseEntity<ApiResponse<Void>> updateProjectStepStatus(@PathVariable Long stepId, @RequestParam Long projectId) {
+    public ResponseEntity<ApiResponse<Void>> updateStepStatus(@PathVariable Long stepId, @RequestParam Long projectId) {
        updateProjectStepUseCase.updateStepStatus(stepId);
        updateProjectUseCase.calculateProgressRate(projectId);
        return ApiResponse.success(STEP_STATUS_UPDATE_SUCCESS);
