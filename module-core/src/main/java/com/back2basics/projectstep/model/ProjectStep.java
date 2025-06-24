@@ -1,11 +1,12 @@
 package com.back2basics.projectstep.model;
 
+import com.back2basics.history.strategy.TargetDomain;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProjectStep {
+public class ProjectStep implements TargetDomain {
 
     private final Long stepId;
 
@@ -55,4 +56,8 @@ public class ProjectStep {
         this.stepOrder = stepOrder;
     }
 
+    @Override
+    public Long getId() {
+        return this.stepId;
+    }
 }

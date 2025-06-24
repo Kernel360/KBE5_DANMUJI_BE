@@ -5,6 +5,7 @@ import com.back2basics.history.model.HistoryRequestFactory;
 import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,16 @@ public class HistoryLogService {
         User user = userQueryPort.findById(userId);
         historyCreateService.create(
             HistoryRequestFactory.created(domainType, user, after, message));
+    }
+
+    public <T extends TargetDomain> void logCreated(DomainType domainType, Long userId,
+        List<T> afterList, String message) {
+        User user = userQueryPort.findById(userId);
+        for (T after : afterList) {
+            historyCreateService.create(
+                HistoryRequestFactory.created(domainType, user, after, message)
+            );
+        }
     }
 
     public <T extends TargetDomain> void logUpdated(DomainType domainType, Long userId, T before,

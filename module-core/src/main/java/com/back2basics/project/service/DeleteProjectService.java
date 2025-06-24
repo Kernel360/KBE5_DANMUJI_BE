@@ -1,5 +1,7 @@
 package com.back2basics.project.service;
 
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
@@ -13,12 +15,16 @@ public class DeleteProjectService implements DeleteProjectUseCase {
 
     private final UpdateProjectPort port;
     private final ProjectValidator projectValidator;
+    private final HistoryLogService historyLogService;
 
     // todo : softDelete 의견 공유
     @Override
-    public void deleteProject(Long id) {
+    public void deleteProject(Long id, Long loggedInUserId) {
         Project project = projectValidator.findProjectById(id);
         project.softDeleted();
         port.update(project);
+
+        historyLogService.logDeleted(DomainType.PROJECT, loggedInUserId, project,
+            "프로젝트 비활성화");
     }
 }
