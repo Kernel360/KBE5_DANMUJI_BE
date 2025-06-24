@@ -18,6 +18,6 @@ public class HistorySearchService implements HistorySearchUseCase {
     @Override
     public Page<HistorySimpleResult> searchHistories(Long userId, HistorySearchCommand command,
         Pageable pageable) {
-        return null;
+        return historySearchPort.searchHistories(command, pageable);
     }
 }
