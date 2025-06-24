@@ -2,6 +2,7 @@ package com.back2basics.project.service;
 
 import com.back2basics.assignment.model.Assignment;
 import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.out.ReadProjectPort;
@@ -9,9 +10,6 @@ import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
-import com.back2basics.projectstep.model.ProjectStep;
-import com.back2basics.projectstep.port.out.ReadProjectStepPort;
-import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +22,7 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     private final ReadProjectPort readProjectPort;
     private final ProjectValidator projectValidator;
+    private final UserValidator userValidator;
 
     @Override
     public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
@@ -46,7 +45,7 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     @Override
     public ProjectDetailResult getProjectDetails(Long projectId) {
-        Project project = projectValidator.findProjectById(projectId);
+        Project project = projectValidator.findById(projectId);
         return ProjectDetailResult.of(project);
     }
 
@@ -58,12 +57,14 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     @Override
     public Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable) {
+        userValidator.validateNotFoundUserId(userId);
         Page<Project> projects = readProjectPort.findAllByUserId(userId, pageable);
         return projects.map(ProjectListResult::toResult);
     }
 
     @Override
     public Page<ProjectListResult> getAllByUserIdOne(Long userId, Pageable pageable) {
+        userValidator.validateNotFoundUserId(userId);
         Page<Project> projects = readProjectPort.findAllByUserIdOne(userId, pageable);
         return projects.map(ProjectListResult::toResult);
     }
