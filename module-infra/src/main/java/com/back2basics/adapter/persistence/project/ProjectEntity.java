@@ -58,6 +58,12 @@ public class ProjectEntity extends BaseTimeEntity {
     @Column(name = "status", nullable = false)
     private ProjectStatus status;
 
+    @Column(name = "progress", nullable = false)
+    private int progress;
+
+    @Column(name = "project_cost")
+    private String projectCost;
+
     // todo: 현재 잘못된 설계로 EAGER로 하지 않으면 에러 발생. 추후 리팩토링 하겠음
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectStepEntity> steps = new ArrayList<>();
@@ -65,13 +71,11 @@ public class ProjectEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AssignmentEntity> assignments = new ArrayList<>();
 
-    @Column(name = "progress", nullable = false)
-    private int progress;
-
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
         LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status,
-        List<ProjectStepEntity> steps, List<AssignmentEntity> assignments, int progress) {
+        int progress, String projectCost, List<ProjectStepEntity> steps,
+        List<AssignmentEntity> assignments) {
 
         this.id = id;
         this.name = name;
@@ -81,9 +85,10 @@ public class ProjectEntity extends BaseTimeEntity {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status;
+        this.progress = progress;
+        this.projectCost = projectCost;
         this.steps = steps;
         this.assignments = assignments;
-        this.progress = progress;
     }
 
     public ProjectStatus getStatus() {

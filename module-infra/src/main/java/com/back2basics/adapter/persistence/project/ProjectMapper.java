@@ -38,6 +38,7 @@ public class ProjectMapper {
             .deletedAt(projectEntity.getDeletedAt())
             .isDeleted(projectEntity.isDeleted())
             .status(projectEntity.getStatus())
+            .projectCost(projectEntity.getProjectCost())
             .steps(
                 projectEntity.getSteps().stream().map(projectStepMapper::toDomain).toList())
             .assignments(
@@ -59,6 +60,7 @@ public class ProjectMapper {
             .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
             .status(project.getStatus())
+            .projectCost(project.getProjectCost())
             .steps(stepEntities)
             .assignments(assignmentEntities)
             .progress(project.getProgress())
