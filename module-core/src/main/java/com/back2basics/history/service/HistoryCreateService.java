@@ -6,6 +6,7 @@ import com.back2basics.history.port.out.HistoryCreatePort;
 import java.time.LocalDateTime;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ public class HistoryCreateService {
 
     private final HistoryCreatePort historyCreatePort;
 
+    @Async
     public void create(HistoryCreateCommand command) {
         History history = History.create(
             command.historyType(),
@@ -27,6 +29,7 @@ public class HistoryCreateService {
         historyCreatePort.save(history);
     }
 
+    @Async
     public void create(HistoryCreateCommand command, Boolean isDeleted) {
         History history = History.create(
             command.historyType(),

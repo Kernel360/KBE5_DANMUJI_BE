@@ -16,6 +16,7 @@ public class History {
     private final Map<String, Object> after;
     private final LocalDateTime createdAt;
 
+
     public History(HistoryType historyType, DomainType domainType, Long domainId,
         LocalDateTime changedAt,
         String changedBy, Map<String, Object> before, Map<String, Object> after,
