@@ -1,6 +1,6 @@
 package com.back2basics.history.model;
 
-import com.back2basics.history.port.command.HistoryRequestCommand;
+import com.back2basics.history.port.in.command.HistoryRequestCommand;
 import com.back2basics.history.strategy.TargetDomain;
 import org.springframework.stereotype.Component;
 

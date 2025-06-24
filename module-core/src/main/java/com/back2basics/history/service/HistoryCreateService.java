@@ -1,7 +1,7 @@
 package com.back2basics.history.service;
 
 import com.back2basics.history.model.History;
-import com.back2basics.history.port.command.HistoryRequestCommand;
+import com.back2basics.history.port.in.command.HistoryRequestCommand;
 import com.back2basics.history.port.out.HistoryCreatePort;
 import java.time.LocalDateTime;
 import java.util.Map;
