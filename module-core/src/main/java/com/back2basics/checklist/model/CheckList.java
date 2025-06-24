@@ -10,21 +10,24 @@ public class CheckList {
     private String content;
     private final Long userId;
     private final Long postId;
+    private final LocalDateTime createdAt;
     private LocalDateTime checkedAt;
     private Boolean isChecked;
 
-    public CheckList(Long id, String content, Long userId, Long postId, LocalDateTime checkedAt,
+    public CheckList(Long id, String content, Long userId, Long postId, LocalDateTime createdAt,
+        LocalDateTime checkedAt,
         Boolean isChecked) {
         this.id = id;
         this.content = content;
         this.userId = userId;
         this.postId = postId;
+        this.createdAt = createdAt;
         this.checkedAt = checkedAt;
         this.isChecked = isChecked;
     }
 
     public static CheckList create(String content, Long userId, Long postId) {
-        return new CheckList(null, content, userId, postId, null, false);
+        return new CheckList(null, content, userId, postId, LocalDateTime.now(), null, false);
     }
 
     public void update(String newContent) {
