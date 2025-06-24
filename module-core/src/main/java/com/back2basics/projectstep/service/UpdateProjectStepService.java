@@ -3,6 +3,7 @@ package com.back2basics.projectstep.service;
 import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.STEP_NOT_FOUND;
 
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
+import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
@@ -23,6 +24,7 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
 
     private final ReadProjectStepPort readProjectStepPort;
     private final SaveProjectStepPort saveProjectStepPort;
+    private final ProjectValidator projectValidator;
 
     @Override
     public void updateStepName(UpdateProjectStepCommand command, Long stepId) {
@@ -41,6 +43,7 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
 
     @Override
     public void reorderSteps(Long projectId, List<Long> stepIdsInNewOrder) {
+        projectValidator.findById(projectId);
         List<ProjectStep> steps = readProjectStepPort.findAllById(stepIdsInNewOrder);
 
         Map<Long, ProjectStep> stepMap = steps.stream()
