@@ -20,12 +20,12 @@ public class DeleteUserService implements DeleteUserUseCase {
 
     @Override
     public void delete(Long userId, Long loggedInUserId) {
-
+        User beforeUser = userQueryPort.findById(userId);
         userCommandPort.deleteById(userId);
 
         User loggedInUser = userQueryPort.findById(loggedInUserId);
         User deletedUser = userQueryPort.findById(userId);
         historyCreateService.create(
-            HistoryRequestFactory.deleted(DomainType.USER, loggedInUser, deletedUser, null));
+            HistoryRequestFactory.deleted(DomainType.USER, loggedInUser, beforeUser, deletedUser));
     }
 }
