@@ -16,7 +16,7 @@ public class HistoryRequestFactory {
             HistoryType.CREATED,
             domainType,
             after.getId(),
-            after.getChangerId(),
+            user.getId(),
             user.getName(),
             user.getUsername(),
             user.getRole(),
@@ -33,7 +33,7 @@ public class HistoryRequestFactory {
             HistoryType.UPDATED,
             domainType,
             after.getId(),
-            after.getChangerId(),
+            user.getId(),
             user.getName(),
             user.getUsername(),
             user.getRole(),
@@ -45,12 +45,12 @@ public class HistoryRequestFactory {
     public static <T extends TargetDomain> HistoryCreateCommand deleted(DomainType domainType,
         User user,
         T before,
-        T after, Long changedBy) {
+        T after) {
         return new HistoryCreateCommand(
             HistoryType.DELETED,
             domainType,
             after.getId(),
-            changedBy,
+            user.getId(),
             user.getName(),
             user.getUsername(),
             user.getRole(),

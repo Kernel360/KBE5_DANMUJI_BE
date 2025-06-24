@@ -92,6 +92,25 @@ public class User implements TargetDomain {
         this.companyId = null;
     }
 
+    public static User copyOf(User user) {
+        return User.builder()
+            .id(user.getId())
+            .username(user.getUsername())
+            .password(user.getPassword())
+            .name(user.getName())
+            .email(user.getEmail())
+            .phone(user.getPhone())
+            .position(user.getPosition())
+            .role(user.getRole())
+            .companyId(user.getCompanyId())
+            .lastLoginAt(user.getLastLoginAt())
+            .createdAt(user.getCreatedAt())
+            .updatedAt(user.getUpdatedAt())
+            .deletedAt(user.getDeletedAt())
+            .company(user.getCompany())
+            .build();
+    }
+
     @Override
     public Long getId() {
         return this.id;

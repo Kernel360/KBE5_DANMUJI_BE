@@ -23,6 +23,7 @@ public class UpdateUserService implements UpdateUserUseCase {
     @Override
     public void update(Long userId, UserUpdateCommand command, Long loggedInUserId) {
         User user = userQueryPort.findById(userId);
+        User beforeUser = User.copyOf(user);
         user.updateUser(command.getUsername(), command.getName(), command.getEmail(),
             command.getPhone(), command.getPosition(), command.getCompanyId());
 
@@ -30,19 +31,20 @@ public class UpdateUserService implements UpdateUserUseCase {
 
         User loggedInUser = userQueryPort.findById(loggedInUserId);
         historyCreateService.create(
-            HistoryRequestFactory.created(DomainType.USER, loggedInUser, user));
+            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user));
     }
 
     @Override
     public void updateUserRole(Long userId, String role, Long loggedInUserId) {
         User user = userQueryPort.findById(userId);
+        User beforeUser = User.copyOf(user);
         user.updateRole(Role.valueOf(role));
 
         userCommandPort.save(user);
 
         User loggedInUser = userQueryPort.findById(loggedInUserId);
         historyCreateService.create(
-            HistoryRequestFactory.created(DomainType.USER, loggedInUser, user));
+            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user));
     }
 
     @Override
