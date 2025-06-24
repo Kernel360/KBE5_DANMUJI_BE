@@ -43,17 +43,13 @@ public class CheckListEntity {
     @Column(name = "is_checked", nullable = false)
     private Boolean isChecked;
 
-    @Column(name = "deletedAt")
-    private LocalDateTime deletedAt;
-
     public CheckListEntity(Long id, String content, UserEntity user, PostEntity post,
-        LocalDateTime checkedAt, Boolean isChecked, LocalDateTime deletedAt) {
+        LocalDateTime checkedAt, Boolean isChecked) {
         this.id = id;
         this.content = content;
         this.user = user;
         this.post = post;
         this.checkedAt = checkedAt;
         this.isChecked = isChecked;
-        this.deletedAt = deletedAt;
     }
 }

@@ -12,25 +12,19 @@ public class CheckList {
     private final Long postId;
     private LocalDateTime checkedAt;
     private Boolean isChecked;
-    private Boolean isDeleted;
 
     public CheckList(Long id, String content, Long userId, Long postId, LocalDateTime checkedAt,
-        Boolean isChecked, Boolean isDeleted) {
+        Boolean isChecked) {
         this.id = id;
         this.content = content;
         this.userId = userId;
         this.postId = postId;
         this.checkedAt = checkedAt;
         this.isChecked = isChecked;
-        this.isDeleted = isDeleted;
     }
 
     public static CheckList create(String content, Long userId, Long postId) {
-        return new CheckList(null, content, userId, postId, null, false, false);
-    }
-
-    public void delete() {
-        this.isDeleted = true;
+        return new CheckList(null, content, userId, postId, null, false);
     }
 
     public void update(String newContent) {
