@@ -30,7 +30,7 @@ public class PostDeleteService implements PostDeleteUseCase {
 
         User user = userQueryPort.findById(requesterId);
         historyCreateService.create(
-            HistoryRequestFactory.deleted(DomainType.POST, user, post, post));
+            HistoryRequestFactory.deleted(DomainType.POST, user, post, post, "게시글 삭제"));
         postSoftDeletePort.softDelete(post);
     }
 }

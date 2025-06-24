@@ -52,7 +52,8 @@ public class PostUpdateService implements PostUpdateUseCase {
 
         User user = userQueryPort.findById(userId);
         historyCreateService.create(
-            HistoryRequestFactory.updated(DomainType.POST, user, beforePost, updatedPost));
+            HistoryRequestFactory.updated(DomainType.POST, user, beforePost, updatedPost,
+                "게시글 수정"));
     }
 
     private void replaceFiles(List<MultipartFile> files, List<Long> fileIdsToDelete, Long postId)

@@ -57,7 +57,7 @@ public class PostCreateService implements PostCreateUseCase {
 
         User user = userQueryPort.findById(userId);
         historyCreateService.create(
-            HistoryRequestFactory.created(DomainType.POST, user, savedPost));
+            HistoryRequestFactory.created(DomainType.POST, user, savedPost, "게시글 생성"));
 
         return PostCreateResult.toResult(savedPost);
     }

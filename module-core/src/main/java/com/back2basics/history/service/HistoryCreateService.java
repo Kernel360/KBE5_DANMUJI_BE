@@ -27,7 +27,8 @@ public class HistoryCreateService {
             command.changerRole(),
             Map.of("before", command.before()),
             Map.of("after", command.after()),
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            command.message()
         );
         historyCreatePort.save(history);
     }
@@ -44,7 +45,8 @@ public class HistoryCreateService {
             command.changerRole(),
             Map.of("before", command.before()),
             Map.of("isDeleted", isDeleted),
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            command.message()
         );
         historyCreatePort.save(history);
     }

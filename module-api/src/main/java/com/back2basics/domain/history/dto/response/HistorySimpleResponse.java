@@ -15,7 +15,8 @@ public record HistorySimpleResponse(
     String changerId,
     String changerName,
     Role changerRole,
-    String changerUsername
+    String changerUsername,
+    String message
 ) {
 
     public static HistorySimpleResponse toResponse(HistorySimpleResult result) {
@@ -28,7 +29,8 @@ public record HistorySimpleResponse(
             result.changerId(),
             result.changerName(),
             result.changerRole(),
-            result.changerUsername()
+            result.changerUsername(),
+            result.message()
         );
     }
 }

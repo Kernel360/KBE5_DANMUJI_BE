@@ -18,7 +18,8 @@ public record HistoryDetailResponse(
     Role changerRole,
     Map<String, Object> before,
     Map<String, Object> after,
-    LocalDateTime createdAt
+    LocalDateTime createdAt,
+    String message
 ) {
 
     public static HistoryDetailResponse toResponse(HistoryDetailResult result) {
@@ -33,7 +34,8 @@ public record HistoryDetailResponse(
             result.changerRole(),
             result.before(),
             result.after(),
-            result.createdAt()
+            result.createdAt(),
+            result.message()
         );
     }
 }

@@ -13,7 +13,8 @@ public record HistoryCreateCommand(
     String changerUsername,
     Role changerRole,
     Object before,
-    Object after
+    Object after,
+    String message
 ) {
 
 }

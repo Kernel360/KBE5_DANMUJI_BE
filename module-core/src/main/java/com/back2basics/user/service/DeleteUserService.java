@@ -26,6 +26,7 @@ public class DeleteUserService implements DeleteUserUseCase {
         User loggedInUser = userQueryPort.findById(loggedInUserId);
         User deletedUser = userQueryPort.findById(userId);
         historyCreateService.create(
-            HistoryRequestFactory.deleted(DomainType.USER, loggedInUser, beforeUser, deletedUser));
+            HistoryRequestFactory.deleted(DomainType.USER, loggedInUser, beforeUser, deletedUser,
+                "관리자에 의한 유저 삭제"));
     }
 }

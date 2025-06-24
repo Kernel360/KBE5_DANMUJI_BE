@@ -40,7 +40,6 @@ public class HistoryDocument {
     @Field("changer_username")
     private String changerUsername;
 
-
     @Field("changer_role")
     private Role changerRole;
 
@@ -54,6 +53,9 @@ public class HistoryDocument {
     @Field("history_created_at")
     private LocalDateTime createdAt;
 
+    @Field("message")
+    private String message;
+
     public HistoryDocument(ObjectId id,
         HistoryType historyType,
         DomainType domainType,
@@ -64,7 +66,7 @@ public class HistoryDocument {
         String changerUsername,
         Role changerRole,
         Map<String, Object> before,
-        Map<String, Object> after, LocalDateTime createdAt) {
+        Map<String, Object> after, LocalDateTime createdAt, String message) {
         this.id = id;
         this.historyType = historyType;
         this.domainType = domainType;
@@ -77,6 +79,7 @@ public class HistoryDocument {
         this.before = before;
         this.after = after;
         this.createdAt = createdAt;
+        this.message = message;
     }
 
     public static HistoryDocument of(HistoryType historyType,
@@ -88,7 +91,7 @@ public class HistoryDocument {
         String changerUsername,
         Role changerRole,
         Map<String, Object> before,
-        Map<String, Object> after) {
+        Map<String, Object> after, String message) {
         return new HistoryDocument(
             new ObjectId(),
             historyType,
@@ -101,7 +104,8 @@ public class HistoryDocument {
             changerRole,
             before,
             after,
-            null
+            null,
+            message
         );
     }
 }

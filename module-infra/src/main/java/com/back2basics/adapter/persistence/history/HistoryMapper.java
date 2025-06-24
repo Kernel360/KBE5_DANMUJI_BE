@@ -22,7 +22,8 @@ public class HistoryMapper {
             history.getChangerRole(),
             history.getBefore(),
             history.getAfter(),
-            history.getCreatedAt()
+            history.getCreatedAt(),
+            history.getMessage()
         );
     }
 
@@ -36,7 +37,8 @@ public class HistoryMapper {
             doc.getChangerId(),
             doc.getChangerName(),
             doc.getChangerRole(),
-            doc.getChangerUsername()
+            doc.getChangerUsername(),
+            doc.getMessage()
         );
     }
 
@@ -53,7 +55,8 @@ public class HistoryMapper {
             doc.getChangerRole(),
             doc.getBefore(),
             doc.getAfter(),
-            doc.getCreatedAt()
+            doc.getCreatedAt(),
+            doc.getMessage()
         );
     }
 }

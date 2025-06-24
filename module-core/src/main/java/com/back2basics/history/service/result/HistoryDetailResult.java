@@ -18,7 +18,8 @@ public record HistoryDetailResult(
     Role changerRole,
     Map<String, Object> before,
     Map<String, Object> after,
-    LocalDateTime createdAt
+    LocalDateTime createdAt,
+    String message
 ) {
 
 }

@@ -19,12 +19,13 @@ public class History {
     private final Map<String, Object> before;
     private final Map<String, Object> after;
     private final LocalDateTime createdAt;
+    private final String message;
 
     public History(HistoryType historyType, DomainType domainType, Long domainId,
         LocalDateTime changedAt, String changerId, String changerName, String changerUsername,
         Role changerRole,
         Map<String, Object> before, Map<String, Object> after,
-        LocalDateTime createdAt) {
+        LocalDateTime createdAt, String message) {
 
         this.historyType = historyType;
         this.domainType = domainType;
@@ -37,11 +38,13 @@ public class History {
         this.before = before;
         this.after = after;
         this.createdAt = createdAt;
+        this.message = message;
     }
 
     public static History create(HistoryType historyType, DomainType domainType, Long domainId,
         String changerId, String changerName, String changerUsername, Role changerRole,
-        Map<String, Object> before, Map<String, Object> after, LocalDateTime createdAt) {
+        Map<String, Object> before, Map<String, Object> after, LocalDateTime createdAt,
+        String message) {
         return new History(
             historyType,
             domainType,
@@ -53,7 +56,7 @@ public class History {
             changerRole,
             before,
             after,
-            createdAt);
+            createdAt, message);
     }
 
 }

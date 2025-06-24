@@ -31,7 +31,8 @@ public class UpdateUserService implements UpdateUserUseCase {
 
         User loggedInUser = userQueryPort.findById(loggedInUserId);
         historyCreateService.create(
-            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user));
+            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user,
+                "사용자 정보 번경"));
     }
 
     @Override
@@ -44,7 +45,8 @@ public class UpdateUserService implements UpdateUserUseCase {
 
         User loggedInUser = userQueryPort.findById(loggedInUserId);
         historyCreateService.create(
-            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user));
+            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user,
+                "사용자 권한 변경"));
     }
 
     @Override

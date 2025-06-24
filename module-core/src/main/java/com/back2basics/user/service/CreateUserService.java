@@ -38,7 +38,7 @@ public class CreateUserService implements CreateUserUseCase {
 
         User loggedInUser = userQueryPort.findById(loggedInUserId);
         historyCreateService.create(
-            HistoryRequestFactory.created(DomainType.USER, loggedInUser, saved));
+            HistoryRequestFactory.created(DomainType.USER, loggedInUser, saved, "사용자 추가"));
 
         return new UserCreateResult(saved.getId(), saved.getUsername(), generatedPassword);
     }
