@@ -1,5 +1,8 @@
 package com.back2basics.user.service;
 
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.model.HistoryRequestFactory;
+import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.exception.user.UserErrorCode;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.User;
@@ -18,6 +21,7 @@ public class ChangePasswordService implements ChangePasswordUseCase {
     private final UserQueryPort userQueryPort;
     private final UserCommandPort userCommandPort;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final HistoryCreateService historyCreateService;
 
     @Override
     public void change(Long userId, ChangePasswordCommand command) {
@@ -30,5 +34,8 @@ public class ChangePasswordService implements ChangePasswordUseCase {
         String encodedNewPassword = bCryptPasswordEncoder.encode(command.getNewPassword());
         user.changePassword(encodedNewPassword);
         userCommandPort.save(user);
+
+        historyCreateService.create(
+            HistoryRequestFactory.created(DomainType.USER, user, user));
     }
 }

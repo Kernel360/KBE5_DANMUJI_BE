@@ -1,6 +1,7 @@
 package com.back2basics.user.model;
 
 import com.back2basics.company.model.Company;
+import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.user.port.in.command.UserCreateCommand;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -8,7 +9,7 @@ import lombok.Getter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
-public class User {
+public class User implements TargetDomain {
 
     private final Long id;
 
@@ -29,7 +30,8 @@ public class User {
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
         String position, Role role, Long companyId, LocalDateTime lastLoginAt,
-        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Company company) {
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
+        Company company) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -88,5 +90,15 @@ public class User {
 
     public void unlinkCompany() {
         this.companyId = null;
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    @Override
+    public Long getChangerId() {
+        return this.id;
     }
 }
