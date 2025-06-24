@@ -84,4 +84,13 @@ public class CheckListController {
         List<CheckListResponse> responses = results.stream().map(CheckListResponse::from).toList();
         return ApiResponse.success(CHECK_LIST_READ_ALL_SUCCESS, responses);
     }
+
+    // 오늘자
+    @GetMapping("/today")
+    public ResponseEntity<ApiResponse<List<CheckListResponse>>> getTodayByUserId(
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<CheckListResult> results = getCheckListUseCase.findByToday(userDetails.getId());
+        List<CheckListResponse> responses = results.stream().map(CheckListResponse::from).toList();
+        return ApiResponse.success(CHECK_LIST_READ_ALL_SUCCESS, responses);
+    }
 }

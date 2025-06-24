@@ -10,4 +10,6 @@ public interface CheckListQueryPort {
     List<CheckList> findByUserId(Long userId);
 
     List<CheckList> findByPostId(Long postId, Long userId);
+
+    List<CheckList> findByToday(Long userId);
 }
