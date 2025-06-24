@@ -4,5 +4,7 @@ public interface TargetDomain {
 
     Long getId();
 
-    Long getChangedBy();
+    Long getChangerId();
+
+    String getChangerIp();
 }

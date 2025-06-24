@@ -7,6 +7,8 @@ import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryRequestFactory;
 import com.back2basics.history.service.HistoryCreateService;
 import com.back2basics.infra.validation.validator.PostValidator;
+import com.back2basics.user.model.User;
+import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class PostDeleteService implements PostDeleteUseCase {
     private final PostSoftDeletePort postSoftDeletePort;
     private final PostValidator postValidator;
     private final HistoryCreateService historyCreateService;
+    private final UserQueryPort userQueryPort;
 
     @Override
     public void softDeletePost(Long requesterId, Long postId) {
@@ -25,8 +28,9 @@ public class PostDeleteService implements PostDeleteUseCase {
 
         post.markDeleted();
 
+        User user = userQueryPort.findById(requesterId);
         historyCreateService.create(
-            HistoryRequestFactory.deleted(DomainType.POST, post, post, requesterId));
+            HistoryRequestFactory.deleted(DomainType.POST, user, post, post, requesterId));
         postSoftDeletePort.softDelete(post);
     }
 }

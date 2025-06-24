@@ -16,7 +16,10 @@ public class HistoryMapper {
             history.getDomainType(),
             String.valueOf(history.getDomainId()),
             history.getChangedAt(),
-            history.getChangedBy(),
+            history.getChangerId(),
+            history.getChangerName(),
+            history.getChangerRole(),
+            history.getChangerIp(),
             history.getBefore(),
             history.getAfter(),
             history.getCreatedAt()
@@ -30,7 +33,10 @@ public class HistoryMapper {
             doc.getDomainType(),
             Long.valueOf(doc.getDomainId()),
             doc.getChangedAt(),
-            doc.getChangedBy()
+            doc.getChangerId(),
+            doc.getChangerName(),
+            doc.getChangerRole(),
+            doc.getChangerIp()
         );
     }
 
@@ -41,7 +47,10 @@ public class HistoryMapper {
             doc.getDomainType(),
             Long.valueOf(doc.getDomainId()),
             doc.getChangedAt(),
-            Long.valueOf(doc.getChangedBy()),
+            doc.getChangerId(),
+            doc.getChangerName(),
+            doc.getChangerRole(),
+            doc.getChangerIp(),
             doc.getBefore(),
             doc.getAfter(),
             doc.getCreatedAt()

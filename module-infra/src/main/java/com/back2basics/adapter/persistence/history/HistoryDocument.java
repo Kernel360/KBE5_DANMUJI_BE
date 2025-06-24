@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.history;
 
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.model.HistoryType;
+import com.back2basics.user.model.Role;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -30,8 +31,17 @@ public class HistoryDocument {
     @Field("changed_at")
     private LocalDateTime changedAt;
 
-    @Field("changed_by")
-    private String changedBy; // 사용자 ID 또는 이름
+    @Field("changer_id")
+    private String changerId;
+
+    @Field("changer_name")
+    private String changerName;
+
+    @Field("changer_role")
+    private Role changerRole;
+
+    @Field("changer_ip")
+    private String changerIp;
 
     @Field("before")
     private Map<String, Object> before;
@@ -48,7 +58,10 @@ public class HistoryDocument {
         DomainType domainType,
         String domainId,
         LocalDateTime changedAt,
-        String changedBy,
+        String changerId,
+        String changerName,
+        Role changerRole,
+        String changerIp,
         Map<String, Object> before,
         Map<String, Object> after, LocalDateTime createdAt) {
         this.id = id;
@@ -56,7 +69,10 @@ public class HistoryDocument {
         this.domainType = domainType;
         this.domainId = domainId;
         this.changedAt = changedAt;
-        this.changedBy = changedBy;
+        this.changerId = changerId;
+        this.changerName = changerName;
+        this.changerRole = changerRole;
+        this.changerIp = changerIp;
         this.before = before;
         this.after = after;
         this.createdAt = createdAt;
@@ -66,7 +82,10 @@ public class HistoryDocument {
         DomainType domainType,
         Long domainId,
         LocalDateTime changedAt,
-        String changedBy,
+        String changerId,
+        String changerName,
+        Role changerRole,
+        String changerIp,
         Map<String, Object> before,
         Map<String, Object> after) {
         return new HistoryDocument(
@@ -75,7 +94,10 @@ public class HistoryDocument {
             domainType,
             String.valueOf(domainId),
             changedAt,
-            changedBy,
+            changerId,
+            changerName,
+            changerRole,
+            changerIp,
             before,
             after,
             null

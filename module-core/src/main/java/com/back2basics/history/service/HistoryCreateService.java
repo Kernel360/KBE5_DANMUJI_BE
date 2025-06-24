@@ -21,7 +21,10 @@ public class HistoryCreateService {
             command.historyType(),
             command.domainType(),
             command.domainId(),
-            String.valueOf(command.changedBy()),
+            String.valueOf(command.changerId()),
+            String.valueOf(command.changerName()),
+            command.changerRole(),
+            String.valueOf(command.changerIp()),
             Map.of("before", command.before()),
             Map.of("after", command.after()),
             LocalDateTime.now()
@@ -35,7 +38,10 @@ public class HistoryCreateService {
             command.historyType(),
             command.domainType(),
             command.domainId(),
-            String.valueOf(command.changedBy()),
+            String.valueOf(command.changerId()),
+            String.valueOf(command.changerName()),
+            command.changerRole(),
+            String.valueOf(command.changerIp()),
             Map.of("before", command.before()),
             Map.of("isDeleted", isDeleted),
             LocalDateTime.now()

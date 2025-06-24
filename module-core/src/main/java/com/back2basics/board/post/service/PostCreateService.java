@@ -16,6 +16,8 @@ import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.mention.MentionNotificationSender;
+import com.back2basics.user.model.User;
+import com.back2basics.user.port.out.UserQueryPort;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class PostCreateService implements PostCreateUseCase {
     private final PostNotificationSender postNotificationSender;
     private final MentionNotificationSender mentionNotificationSender;
     private final HistoryCreateService historyCreateService;
+    private final UserQueryPort userQueryPort;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -52,7 +55,9 @@ public class PostCreateService implements PostCreateUseCase {
         mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
             post.getContent());
 
-        historyCreateService.create(HistoryRequestFactory.created(DomainType.POST, savedPost));
+        User user = userQueryPort.findById(userId);
+        historyCreateService.create(
+            HistoryRequestFactory.created(DomainType.POST, user, savedPost));
 
         return PostCreateResult.toResult(savedPost);
     }

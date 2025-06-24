@@ -41,6 +41,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 postEntity.projectStepId,
                 postEntity.authorId,
                 userEntity.name.as("authorName"),
+                userEntity.role.as("authorRole"),
                 postEntity.title,
                 postEntity.type,
                 postEntity.priority,
