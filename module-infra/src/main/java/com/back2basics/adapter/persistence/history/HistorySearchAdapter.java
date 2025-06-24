@@ -24,7 +24,8 @@ public class HistorySearchAdapter implements HistorySearchPort {
     public Page<HistorySimpleResult> searchHistories(HistorySearchCommand command,
         Pageable pageable) {
         Criteria criteria = createCriteria(command);
-        Query query = new Query(criteria).with(pageable);
+        Query query = (criteria == null) ? new Query() : new Query(criteria);
+        query.with(pageable);
 
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
         long total = mongoTemplate.count(new Query(criteria), HistoryDocument.class);
@@ -45,16 +46,14 @@ public class HistorySearchAdapter implements HistorySearchPort {
         addIfPresent(filters, "changedBy", command.changedBy());
         addIfPresent(filters, "userRole", command.userRole());
 
-        if (command.changedFrom() != null || command.changedTo() != null) {
-            Criteria dateCriteria = Criteria.where("changedAt");
-            if (command.changedFrom() != null && command.changedTo() != null) {
-                dateCriteria.gte(command.changedFrom()).lte(command.changedTo());
-            } else if (command.changedFrom() != null) {
-                dateCriteria.gte(command.changedFrom());
-            } else {
-                dateCriteria.lte(command.changedTo());
-            }
-            filters.add(dateCriteria);
+        if (command.changedFrom() != null && command.changedTo() != null) {
+            filters.add(Criteria.where("changed_at")
+                .gte(command.changedFrom())
+                .lte(command.changedTo()));
+        } else if (command.changedFrom() != null) {
+            filters.add(Criteria.where("changed_at").gte(command.changedFrom()));
+        } else if (command.changedTo() != null) {
+            filters.add(Criteria.where("changed_at").lte(command.changedTo()));
         }
 
         return filters.isEmpty() ? new Criteria()
