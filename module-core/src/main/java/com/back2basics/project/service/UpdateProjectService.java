@@ -28,14 +28,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UpdateProjectService implements UpdateProjectUseCase {
 
-    private final UpdateProjectPort updateProjectPort;
     private final ProjectValidator projectValidator;
+    private final UpdateProjectPort updateProjectPort;
     private final AssignmentQueryPort assignmentQueryPort;
     private final SaveProjectUserPort saveProjectUserPort;
     private final UserQueryPort userQueryPort;
     private final DeleteAssignmentPort deleteAssignmentPort;
     private final AssignmentNotificationSender assignmentNotificationSender;
-
 
     private final ReadProjectPort readProjectPort;
     private final ReadProjectStepPort readProjectStepPort;

@@ -2,6 +2,7 @@ package com.back2basics.project.service;
 
 import com.back2basics.assignment.model.Assignment;
 import com.back2basics.assignment.service.notification.AssignmentNotificationSender;
+import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
@@ -27,6 +28,7 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final SaveProjectUserPort saveProjectUserPort;
     private final UserQueryPort userQueryPort;
     private final AssignmentNotificationSender assignmentNotificationSender;
+    private final ProjectValidator projectValidator;
 
     private static final List<String> DEFAULT_STEPS =
         List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
@@ -42,6 +44,7 @@ public class CreateProjectService implements CreateProjectUseCase {
             .status(ProjectStatus.IN_PROGRESS)
             .build();
         Project savedProject = saveProjectPort.createSave(project);
+        projectValidator.findById(savedProject.getId());
         createDefaultSteps(savedProject.getId());
         assignUsers(savedProject, command);
     }
@@ -61,7 +64,6 @@ public class CreateProjectService implements CreateProjectUseCase {
         }
     }
 
-    // todo: 알림
     private void assignUsers(Project project, ProjectCreateCommand command) {
         List<User> devManagers = command.getDevManagerId().stream().map(userQueryPort::findById)
             .toList();
