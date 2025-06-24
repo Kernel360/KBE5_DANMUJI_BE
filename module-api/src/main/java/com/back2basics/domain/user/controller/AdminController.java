@@ -96,10 +96,10 @@ public class AdminController {
     }
 
     @GetMapping("/allUsers")
-    public ResponseEntity<ApiResponse<Page<UserSimpleResponse>>> getAllUsers(
+    public ResponseEntity<ApiResponse<Page<UserInfoResponse>>> getAllUsers(
         @PageableDefault Pageable pageable) {
-        Page<UserSimpleResult> resultList = userQueryUseCase.getAllUsers(pageable);
-        Page<UserSimpleResponse> responseList = resultList.map(UserSimpleResponse::from);
+        Page<UserInfoResult> resultList = userQueryUseCase.getAllUsers(pageable);
+        Page<UserInfoResponse> responseList = resultList.map(UserInfoResponse::from);
         return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
     }
 

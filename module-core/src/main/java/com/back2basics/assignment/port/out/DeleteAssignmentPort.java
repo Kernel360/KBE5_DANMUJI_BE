@@ -4,5 +4,5 @@ import com.back2basics.assignment.model.Assignment;
 import java.util.List;
 
 public interface DeleteAssignmentPort {
-    void DeleteAllInBatch(List<Assignment> assignments);
+    void deleteAll(List<Assignment> assignments);
 }

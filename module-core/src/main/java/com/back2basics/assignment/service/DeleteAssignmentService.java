@@ -4,6 +4,8 @@ import com.back2basics.assignment.model.Assignment;
 import com.back2basics.assignment.port.in.DeleteAssignmentUseCase;
 import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import com.back2basics.assignment.port.out.DeleteAssignmentPort;
+import com.back2basics.infra.validation.validator.CompanyValidator;
+import com.back2basics.infra.validation.validator.ProjectValidator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,16 @@ public class DeleteAssignmentService implements DeleteAssignmentUseCase {
 
     private final AssignmentQueryPort assignmentQueryPort;
     private final DeleteAssignmentPort deleteAssignmentPort;
+    private final ProjectValidator projectValidator;
+    private final CompanyValidator companyValidator;
 
     @Override
-    public void deleteCompany(Long projectId, Long companyId) {
-        List<Assignment> assignments = assignmentQueryPort.findByProjectIdAndCompanyId(projectId, companyId);
-        deleteAssignmentPort.DeleteAllInBatch(assignments);
+    public void deleteCompanies(Long projectId, Long companyId) {
+        projectValidator.findById(projectId);
+        companyValidator.validateCompanyExists(companyId);
+
+        List<Assignment> assignments = assignmentQueryPort.findAllByProjectIdAndCompanyId(projectId,
+            companyId);
+        deleteAssignmentPort.deleteAll(assignments);
     }
 }
