@@ -1,10 +1,11 @@
 package com.back2basics.checklist.port.out;
 
 import com.back2basics.checklist.model.CheckList;
+import java.util.List;
 
 public interface CheckListQueryPort {
 
     CheckList findById(Long id);
 
-    CheckList findByUserId(Long checkListId);
+    List<CheckList> findByUserId(Long checkListId);
 }

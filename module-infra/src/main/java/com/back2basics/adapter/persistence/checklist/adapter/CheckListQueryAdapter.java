@@ -8,6 +8,7 @@ import com.back2basics.adapter.persistence.checklist.repository.CheckListEntityR
 import com.back2basics.checklist.model.CheckList;
 import com.back2basics.checklist.port.out.CheckListQueryPort;
 import com.back2basics.infra.exception.checklist.CheckListException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +28,9 @@ public class CheckListQueryAdapter implements CheckListQueryPort {
         return mapper.toDomain(checkListEntity);
     }
 
-
     @Override
-    public CheckList findByUserId(Long userId) {
-        CheckListEntity checkListEntity = checkListEntityRepository.findByUserId(userId);
-        return mapper.toDomain(checkListEntity);
+    public List<CheckList> findByUserId(Long userId) {
+        return checkListEntityRepository.findAllByUserId(userId).stream()
+            .map(mapper::toDomain).toList();
     }
 }
