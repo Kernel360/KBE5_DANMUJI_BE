@@ -24,4 +24,9 @@ public class CheckListQueryAdapter implements CheckListQueryPort {
             () -> new CheckListException(CHECK_LIST_NOT_FOUND));
         return mapper.toDomain(checkListEntity);
     }
+
+    @Override
+    public void delete(Long checkListId) {
+        checkListEntityRepository.deleteById(checkListId);
+    }
 }

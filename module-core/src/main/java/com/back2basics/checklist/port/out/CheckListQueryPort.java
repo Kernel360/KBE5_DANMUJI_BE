@@ -5,4 +5,6 @@ import com.back2basics.checklist.model.CheckList;
 public interface CheckListQueryPort {
 
     CheckList findById(Long id);
+
+    void delete(Long checkListId);
 }

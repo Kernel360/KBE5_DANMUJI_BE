@@ -11,6 +11,7 @@ import com.back2basics.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +27,7 @@ public class CheckListController {
 
     private final CreateCheckListUseCase createCheckListUseCase;
     private final UpdateCheckListUseCase updateCheckListUseCase;
+    private final DeleteCheckListUseCase deleteCheckListUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> create(@RequestParam("postId") Long postId,
@@ -40,6 +42,11 @@ public class CheckListController {
         @RequestBody CreateCheckListRequest request) {
         updateCheckListUseCase.update(checkListId, request.toCommand());
         return ApiResponse.success(CHECK_LIST_UPDATE_SUCCESS);
+    }
+
+    @DeleteMapping("/{checkListId}")
+    public ResponseEntity<ApiResponse<Void>> delte(@PathVariable Long checkListId) {
+
     }
 
 }
