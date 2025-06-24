@@ -1,6 +1,7 @@
 package com.back2basics.project.service;
 
 import com.back2basics.assignment.model.Assignment;
+import com.back2basics.assignment.service.notification.AssignmentNotificationSender;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
@@ -25,6 +26,7 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final SaveProjectStepPort saveProjectStepPort;
     private final SaveProjectUserPort saveProjectUserPort;
     private final UserQueryPort userQueryPort;
+    private final AssignmentNotificationSender assignmentNotificationSender;
 
     private static final List<String> DEFAULT_STEPS =
         List.of("요구사항 정의", "화면설계", "디자인", "퍼블리싱", "개발", "검수");
@@ -47,7 +49,8 @@ public class CreateProjectService implements CreateProjectUseCase {
     private void createDefaultSteps(Long projectId) {
         List<String> defaultSteps = DEFAULT_STEPS;
         for (int i = 0; i < defaultSteps.size(); i++) {
-            ProjectStepStatus projectStepStatus = (i == 0) ? ProjectStepStatus.IN_PROGRESS : ProjectStepStatus.PENDING;
+            ProjectStepStatus projectStepStatus =
+                (i == 0) ? ProjectStepStatus.IN_PROGRESS : ProjectStepStatus.PENDING;
             ProjectStep step = ProjectStep.create(
                 projectId,
                 defaultSteps.get(i),
@@ -58,6 +61,7 @@ public class CreateProjectService implements CreateProjectUseCase {
         }
     }
 
+    // todo: 알림
     private void assignUsers(Project project, ProjectCreateCommand command) {
         List<User> devManagers = command.getDevManagerId().stream().map(userQueryPort::findById)
             .toList();
@@ -70,5 +74,10 @@ public class CreateProjectService implements CreateProjectUseCase {
         List<Assignment> assignments = Assignment.createProjectUser(project, devManagers,
             clientManagers, devUsers, clientUsers);
         saveProjectUserPort.saveAll(assignments);
+
+        // 알림을 위한 assignments id 리스트
+        List<Long> assignmentIds = assignments.stream()
+            .map(assignment -> assignment.getUser().getId()).toList();
+        assignmentNotificationSender.sendNotification(assignmentIds, project.getId());
     }
 }
