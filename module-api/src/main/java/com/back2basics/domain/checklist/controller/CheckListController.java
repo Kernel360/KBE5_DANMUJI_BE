@@ -1,9 +1,11 @@
 package com.back2basics.domain.checklist.controller;
 
 import static com.back2basics.domain.checklist.controller.code.CheckListResponseCode.CHECK_LIST_CREATE_SUCCESS;
+import static com.back2basics.domain.checklist.controller.code.CheckListResponseCode.CHECK_LIST_DELETE_SUCCESS;
 import static com.back2basics.domain.checklist.controller.code.CheckListResponseCode.CHECK_LIST_UPDATE_SUCCESS;
 
 import com.back2basics.checklist.port.in.CreateCheckListUseCase;
+import com.back2basics.checklist.port.in.DeleteCheckListUseCase;
 import com.back2basics.checklist.port.in.UpdateCheckListUseCase;
 import com.back2basics.domain.checklist.dto.request.CreateCheckListRequest;
 import com.back2basics.global.response.result.ApiResponse;
@@ -45,8 +47,9 @@ public class CheckListController {
     }
 
     @DeleteMapping("/{checkListId}")
-    public ResponseEntity<ApiResponse<Void>> delte(@PathVariable Long checkListId) {
-
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long checkListId) {
+        deleteCheckListUseCase.delete(checkListId);
+        return ApiResponse.success(CHECK_LIST_DELETE_SUCCESS);
     }
 
 }
