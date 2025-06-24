@@ -1,7 +1,7 @@
 package com.back2basics.checklist.service;
 
 import com.back2basics.checklist.port.in.DeleteCheckListUseCase;
-import com.back2basics.checklist.port.out.CheckListQueryPort;
+import com.back2basics.checklist.port.out.CheckListCommandPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeleteCheckListService implements DeleteCheckListUseCase {
 
-    private final CheckListQueryPort checkListQueryPort;
+    private final CheckListCommandPort checkListCommandPort;
 
     @Override
     public void delete(Long checkListId) {
-        checkListQueryPort.delete(checkListId);
+        checkListCommandPort.delete(checkListId);
     }
 }

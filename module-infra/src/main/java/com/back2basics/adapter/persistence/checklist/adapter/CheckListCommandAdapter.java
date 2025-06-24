@@ -33,4 +33,9 @@ public class CheckListCommandAdapter implements CheckListCommandPort {
         CheckListEntity checkListEntity = mapper.toEntity(checkList, user, post);
         checkListEntityRepository.save(checkListEntity);
     }
+
+    @Override
+    public void delete(Long checkListId) {
+        checkListEntityRepository.deleteById(checkListId);
+    }
 }
