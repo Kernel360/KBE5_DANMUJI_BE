@@ -19,7 +19,7 @@ public interface ReadProjectUseCase {
     Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable);
 
     // 상세 조회
-    ProjectDetailResult getProjectDetails(Long projectId);
+    ProjectDetailResult getProjectDetails(Long projectId, Long userId);
 
     List<ProjectRecentGetResult> getRecentProjects();
 
