@@ -4,6 +4,8 @@ import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.command.CreateCompanyCommand;
 import com.back2basics.company.port.out.CreateCompanyPort;
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.CompanyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,10 @@ public class CreateCompanyService implements CreateCompanyUseCase {
 
     private final CreateCompanyPort createCompanyPort;
     private final CompanyValidator companyValidator;
+    private final HistoryLogService historyLogService;
 
     @Override
-    public Long createCompany(CreateCompanyCommand createCompanyCommand) {
+    public Long createCompany(CreateCompanyCommand createCompanyCommand, Long loggedInUserId) {
 
         companyValidator.validateDuplicate(createCompanyCommand);
 
@@ -29,6 +32,9 @@ public class CreateCompanyService implements CreateCompanyUseCase {
             .email(createCompanyCommand.getEmail())
             .tel(createCompanyCommand.getTel())
             .build();
+
+        historyLogService.logCreated(DomainType.COMPANY, loggedInUserId, company, "회사 신규 등록");
+
         return createCompanyPort.save(company);
     }
 }

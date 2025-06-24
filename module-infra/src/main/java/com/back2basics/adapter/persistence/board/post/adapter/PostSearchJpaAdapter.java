@@ -41,6 +41,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 postEntity.projectStepId,
                 postEntity.authorId,
                 userEntity.name.as("authorName"),
+                userEntity.role.as("authorRole"),
                 postEntity.title,
                 postEntity.type,
                 postEntity.priority,
@@ -49,12 +50,13 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
-                postEntity.projectStepId.eq(command.getProjectStepId()),
+                //postEntity.projectStepId.eq(command.getProjectStepId()),
                 activePosts(),
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
-                matchesType(command.getType())
+                matchesType(command.getType()),
+                matchesStep(command.getProjectStepId())
             )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
@@ -69,12 +71,13 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .select(postEntity.count())
             .from(postEntity)
             .where(
-                postEntity.projectStepId.eq(command.getProjectStepId()),
+                //postEntity.projectStepId.eq(command.getProjectStepId()),
                 activePosts(),
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
-                matchesType(command.getType())
+                matchesType(command.getType()),
+                matchesStep(command.getProjectStepId())
             );
 
         return PageableExecutionUtils.getPage(
@@ -102,5 +105,9 @@ public class PostSearchJpaAdapter implements PostSearchPort {
 
     private BooleanExpression matchesType(PostType type) {
         return (type == null) ? null : postEntity.type.eq(type);
+    }
+
+    private BooleanExpression matchesStep(Long stepId) {
+        return (stepId == null) ? null : postEntity.projectStepId.eq(stepId);
     }
 }

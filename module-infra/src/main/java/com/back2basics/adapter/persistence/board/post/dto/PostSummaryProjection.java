@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.board.post.dto;
 
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
+import com.back2basics.user.model.Role;
 import java.time.LocalDateTime;
 
 public record PostSummaryProjection(
@@ -11,6 +12,7 @@ public record PostSummaryProjection(
     Long projectStepId,
     Long authorId,
     String authorName,
+    Role authorRole,
     String title,
     PostType type,
     PostPriority priority,

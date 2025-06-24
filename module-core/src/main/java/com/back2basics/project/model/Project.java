@@ -1,6 +1,7 @@
 package com.back2basics.project.model;
 
 import com.back2basics.assignment.model.Assignment;
+import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.projectstep.model.ProjectStep;
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Project {
+public class Project implements TargetDomain {
 
     private final Long id;
 
@@ -93,9 +94,26 @@ public class Project {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
     }
-
+    
     public void calculateProgress(int totalStep, int completedStep) {
         double result = ((double) completedStep / totalStep) * 100;
         this.progress = (int) result;
+    }
+
+    public static Project copyOf(Project project) {
+        return Project.builder()
+            .id(project.getId())
+            .name(project.getName())
+            .description(project.getDescription())
+            .startDate(project.getStartDate())
+            .endDate(project.getEndDate())
+            .createdAt(project.getCreatedAt())
+            .updatedAt(project.getUpdatedAt())
+            .deletedAt(project.getDeletedAt())
+            .isDeleted(project.isDeleted())
+            .status(project.getStatus())
+            .steps(project.getSteps())
+            .assignments(project.getAssignments())
+            .build();
     }
 }

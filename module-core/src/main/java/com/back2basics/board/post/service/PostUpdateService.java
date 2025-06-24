@@ -9,6 +9,8 @@ import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
@@ -28,17 +30,23 @@ public class PostUpdateService implements PostUpdateUseCase {
     private final FileDeletePort fileDeletePort;
     private final FileReadPort fileReadPort;
     private final MentionNotificationSender mentionNotificationSender;
+    private final HistoryLogService historyLogService;
 
     @Override
     public void updatePost(Long userId, String userIp, Long postId,
         PostUpdateCommand command, List<MultipartFile> files) throws IOException {
         Post post = postValidator.findPost(postId);
+        Post beforePost = Post.copyOf(post);
+
         post.update(command, userIp);
 
         Post updatedPost = postUpdatePort.update(post);
+
         mentionNotificationSender.notifyMentionedUsers(userId, postId, post.getContent());
 
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
+
+        historyLogService.logUpdated(DomainType.POST, userId, beforePost, updatedPost, "게시글 정보 수정");
     }
 
     private void replaceFiles(List<MultipartFile> files, List<Long> fileIdsToDelete, Long postId)

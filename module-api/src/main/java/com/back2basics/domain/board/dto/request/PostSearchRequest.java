@@ -15,7 +15,7 @@ public class PostSearchRequest {
     @NotNull(message = "프로젝트를 입력하세요.")
     private Long projectId;
 
-    @NotNull(message = "프로젝트 단계를 입력하세요.")
+    @Nullable
     private Long stepId;
 
     @Nullable

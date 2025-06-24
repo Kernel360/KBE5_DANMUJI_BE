@@ -3,12 +3,14 @@ package com.back2basics.board.post.model;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
+import com.back2basics.history.strategy.TargetDomain;
+import com.back2basics.user.model.Role;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class Post {
+public class Post implements TargetDomain {
 
     private final Long id;
     private final Long parentId;
@@ -17,6 +19,7 @@ public class Post {
     private String authorIp;
     private Long authorId;
     private String authorName;
+    private Role authorRole;
     private String title;
     private String content;
     private PostType type;
@@ -36,6 +39,7 @@ public class Post {
             userIp,
             userId,
             null,
+            null,
             command.getTitle(),
             command.getContent(),
             command.getType(),
@@ -47,24 +51,28 @@ public class Post {
 
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
-        String authorIp, Long authorId, String authorName, String title, String content,
+        String authorIp, Long authorId, String authorName, Role authorRole, String title,
+        String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
+            authorRole,
             title, content, type, priority, createdAt, updatedAt, deletedAt, null);
     }
 
     // files 포함한 팩토리 메서드
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
-        String authorIp, Long authorId, String authorName, String title, String content,
+        String authorIp, Long authorId, String authorName, Role authorRole, String title,
+        String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, List<File> files
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
+            authorRole,
             title, content, type, priority, createdAt, updatedAt, deletedAt, files);
     }
 
@@ -84,7 +92,7 @@ public class Post {
     }
 
     private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
-        Long authorId, String authorName, String title, String content,
+        Long authorId, String authorName, Role authorRole, String title, String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, List<File> files) {
@@ -95,6 +103,7 @@ public class Post {
         this.authorIp = authorIp;
         this.authorId = authorId;
         this.authorName = authorName;
+        this.authorRole = authorRole;
         this.title = title;
         this.content = content;
         this.type = type;
@@ -106,5 +115,31 @@ public class Post {
         this.files = files;
     }
 
+    public static Post copyOf(Post post) {
+        return Post.create(
+            post.getId(),
+            post.getParentId(),
+            post.getProjectId(),
+            post.getProjectStepId(),
+            post.getAuthorIp(),
+            post.getAuthorId(),
+            post.getAuthorName(),
+            post.getAuthorRole(),
+            post.getTitle(),
+            post.getContent(),
+            post.getType(),
+            post.getPriority(),
+            post.getCreatedAt(),
+            post.getUpdatedAt(),
+            post.getDeletedAt(),
+            post.getFiles()
+        );
+    }
+
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 
 }
