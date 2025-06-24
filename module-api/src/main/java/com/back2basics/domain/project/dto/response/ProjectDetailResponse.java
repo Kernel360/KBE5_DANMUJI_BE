@@ -11,7 +11,8 @@ import java.util.List;
 
 public record ProjectDetailResponse(Long id, String name, String description, LocalDate startDate,
                                     LocalDate endDate, ProjectStatus projectStatus,
-                                    int progress, UserType userType,  CompanyType myProjectRole,
+                                    int progress, String projectCost, UserType userType,
+                                    CompanyType myProjectRole,
                                     List<AssignProjectListResponse> clients,
                                     List<AssignProjectListResponse> developers,
                                     List<ProjectStepResponse> steps) {
@@ -25,6 +26,7 @@ public record ProjectDetailResponse(Long id, String name, String description, Lo
             result.endDate(),
             result.projectStatus(),
             result.progress(),
+            result.projectCost(),
             result.userType(),
             result.myProjectRole(),
             result.clients().stream()
