@@ -10,8 +10,10 @@ import com.back2basics.checklist.port.out.CheckListQueryPort;
 import com.back2basics.infra.exception.checklist.CheckListException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CheckListQueryAdapter implements CheckListQueryPort {
 
@@ -25,8 +27,10 @@ public class CheckListQueryAdapter implements CheckListQueryPort {
         return mapper.toDomain(checkListEntity);
     }
 
+
     @Override
-    public void delete(Long checkListId) {
-        checkListEntityRepository.deleteById(checkListId);
+    public CheckList findByUserId(Long userId) {
+        CheckListEntity checkListEntity = checkListEntityRepository.findByUserId(userId);
+        return mapper.toDomain(checkListEntity);
     }
 }

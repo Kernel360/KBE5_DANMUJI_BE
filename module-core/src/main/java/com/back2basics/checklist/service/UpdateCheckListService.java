@@ -21,4 +21,17 @@ public class UpdateCheckListService implements UpdateCheckListUseCase {
         checkList.update(command.content());
         checkListCommandPort.save(checkList);
     }
+
+    @Override
+    public void check(Long checkListId) {
+        CheckList checkList = checkListQueryPort.findById(checkListId);
+
+        if (checkList.getIsChecked()) {
+            checkList.unCheck();
+        } else {
+            checkList.check();
+        }
+
+        checkListCommandPort.save(checkList);
+    }
 }

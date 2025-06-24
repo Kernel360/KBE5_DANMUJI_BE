@@ -46,10 +46,22 @@ public class CheckListController {
         return ApiResponse.success(CHECK_LIST_UPDATE_SUCCESS);
     }
 
+    @PutMapping("/{checkListId}/check")
+    public ResponseEntity<ApiResponse<Void>> check(@PathVariable Long checkListId) {
+        updateCheckListUseCase.check(checkListId);
+        return ApiResponse.success(CHECK_LIST_UPDATE_SUCCESS);
+    }
+
     @DeleteMapping("/{checkListId}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long checkListId) {
         deleteCheckListUseCase.delete(checkListId);
         return ApiResponse.success(CHECK_LIST_DELETE_SUCCESS);
     }
+
+    // 전체
+
+    // 게시글 별
+
+    // 오늘 자
 
 }

@@ -6,5 +6,5 @@ public interface CheckListQueryPort {
 
     CheckList findById(Long id);
 
-    void delete(Long checkListId);
+    CheckList findByUserId(Long checkListId);
 }
