@@ -47,7 +47,7 @@ public class Project implements TargetDomain {
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
         boolean isDeleted, ProjectStatus status, String projectCost, List<ProjectStep> steps,
-        List<Assignment> assignments, int progress) {
+        List<Assignment> assignments, Integer progress) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -62,7 +62,7 @@ public class Project implements TargetDomain {
         this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
         this.assignments =
             assignments != null ? new ArrayList<>(assignments) : new ArrayList<>();
-        this.progress = progress;
+        this.progress = (progress != null) ? progress : 0;
     }
 
     // todo: 조회 시 steps 세팅해주는데 먼가 맘에 안듦. 위에서 값 초기화를 해주는거 같은데 안먹혀서 일단 해놓음
@@ -94,7 +94,7 @@ public class Project implements TargetDomain {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
     }
-    
+
     public void calculateProgress(int totalStep, int completedStep) {
         double result = ((double) completedStep / totalStep) * 100;
         this.progress = (int) result;
@@ -114,6 +114,7 @@ public class Project implements TargetDomain {
             .status(project.getStatus())
             .steps(project.getSteps())
             .assignments(project.getAssignments())
+            .progress(project.getProgress())
             .build();
     }
 }

@@ -33,8 +33,9 @@ public class CreateCompanyService implements CreateCompanyUseCase {
             .tel(createCompanyCommand.getTel())
             .build();
 
-        historyLogService.logCreated(DomainType.COMPANY, loggedInUserId, company, "회사 신규 등록");
+        Company savedCompany = createCompanyPort.save(company);
+        historyLogService.logCreated(DomainType.COMPANY, loggedInUserId, savedCompany, "회사 신규 등록");
 
-        return createCompanyPort.save(company);
+        return savedCompany.getId();
     }
 }
