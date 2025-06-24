@@ -45,6 +45,18 @@ public class HistorySearchAdapter implements HistorySearchPort {
         addIfPresent(filters, "changedBy", command.changedBy());
         addIfPresent(filters, "userRole", command.userRole());
 
+        if (command.changedFrom() != null || command.changedTo() != null) {
+            Criteria dateCriteria = Criteria.where("changedAt");
+            if (command.changedFrom() != null && command.changedTo() != null) {
+                dateCriteria.gte(command.changedFrom()).lte(command.changedTo());
+            } else if (command.changedFrom() != null) {
+                dateCriteria.gte(command.changedFrom());
+            } else {
+                dateCriteria.lte(command.changedTo());
+            }
+            filters.add(dateCriteria);
+        }
+
         return filters.isEmpty() ? new Criteria()
             : new Criteria().andOperator(filters.toArray(new Criteria[0]));
     }
