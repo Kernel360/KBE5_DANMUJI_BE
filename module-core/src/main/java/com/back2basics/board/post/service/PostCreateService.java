@@ -37,7 +37,7 @@ public class PostCreateService implements PostCreateUseCase {
         String userIp, PostCreateCommand command, List<MultipartFile> files) throws IOException {
 
         userValidator.validateNotFoundUserId(userId);
-        projectValidator.findProjectById(projectId);
+        projectValidator.findById(projectId);
         postValidator.findParentPost(command.getParentId());
 
         Post post = Post.create(command, userId, userIp);

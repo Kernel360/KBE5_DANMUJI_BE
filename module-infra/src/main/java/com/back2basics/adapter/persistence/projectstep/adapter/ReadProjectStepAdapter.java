@@ -31,7 +31,7 @@ public class ReadProjectStepAdapter implements ReadProjectStepPort {
 
     @Override
     public List<ProjectStep> findAllByProjectId(Long projectId) {
-        Project project = projectValidator.findProjectById(projectId);
+        Project project = projectValidator.findById(projectId);
 
         List<ProjectStepEntity> stepEntities = projectStepEntityRepository.findAllByProjectIdAndDeletedAtIsNull(
             project.getId());

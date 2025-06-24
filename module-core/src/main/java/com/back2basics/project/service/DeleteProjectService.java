@@ -17,7 +17,7 @@ public class DeleteProjectService implements DeleteProjectUseCase {
     // todo : softDelete 의견 공유
     @Override
     public void deleteProject(Long id) {
-        Project project = projectValidator.findProjectById(id);
+        Project project = projectValidator.findById(id);
         project.softDeleted();
         port.update(project);
     }
