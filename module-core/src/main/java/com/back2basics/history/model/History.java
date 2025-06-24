@@ -15,7 +15,10 @@ public class History {
     private final Map<String, Object> before;
     private final Map<String, Object> after;
     private final LocalDateTime createdAt;
-
+    // todo : 필드 추가
+    //    private final String changerName;
+    //    private final String changerRole;
+    //    private final String changerIp;
 
     public History(HistoryType historyType, DomainType domainType, Long domainId,
         LocalDateTime changedAt,

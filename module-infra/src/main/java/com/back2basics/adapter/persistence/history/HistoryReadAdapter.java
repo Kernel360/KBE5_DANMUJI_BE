@@ -12,6 +12,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,10 @@ public class HistoryReadAdapter implements HistoryReadPort {
 
     @Override
     public Page<HistorySimpleResult> getHistories(Pageable pageable) {
-        Query query = new Query().with(pageable);
+        Query query = new Query()
+            .with(pageable)
+            .with(Sort.by(Sort.Direction.DESC, "history_created_at"));
+
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
         long total = mongoTemplate.count(new Query(), HistoryDocument.class);
 
