@@ -1,14 +1,13 @@
-package com.back2basics.history.port.in;
+package com.back2basics.history.port.out;
 
 import com.back2basics.history.service.result.HistoryDetailResult;
 import com.back2basics.history.service.result.HistorySimpleResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface HistoryReadUseCase {
+public interface HistoryReadPort {
 
-    HistoryDetailResult getHistoryById(Long userId, Long historyId);
+    HistoryDetailResult getHistory(String id);
 
-    Page<HistorySimpleResult> getAllHistories(Long userId, Pageable pageable);
-
+    Page<HistorySimpleResult> getHistories(Pageable pageable);
 }
