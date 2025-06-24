@@ -14,7 +14,7 @@ public record HistorySimpleResponse(
     String changedBy
 ) {
 
-    public static HistorySimpleResponse from(HistorySimpleResult result) {
+    public static HistorySimpleResponse toResponse(HistorySimpleResult result) {
         return new HistorySimpleResponse(
             result.id(),
             result.historyType(),

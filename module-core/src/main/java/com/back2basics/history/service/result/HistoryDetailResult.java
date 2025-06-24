@@ -11,7 +11,7 @@ public record HistoryDetailResult(
     DomainType domainType,
     Long domainId,
     LocalDateTime changedAt,
-    String changedBy,
+    Long changedBy,
     Map<String, Object> before,
     Map<String, Object> after,
     LocalDateTime createdAt

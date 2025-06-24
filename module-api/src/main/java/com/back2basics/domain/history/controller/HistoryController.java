@@ -1,10 +1,12 @@
 package com.back2basics.domain.history.controller;
 
 import com.back2basics.domain.history.controller.code.HistoryResponseCode;
+import com.back2basics.domain.history.dto.request.HistorySearchRequest;
 import com.back2basics.domain.history.dto.response.HistoryDetailResponse;
 import com.back2basics.domain.history.dto.response.HistorySimpleResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.history.port.in.HistoryReadUseCase;
+import com.back2basics.history.port.in.HistorySearchUseCase;
 import com.back2basics.history.service.result.HistoryDetailResult;
 import com.back2basics.history.service.result.HistorySimpleResult;
 import com.back2basics.security.model.CustomUserDetails;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HistoryController {
 
     private final HistoryReadUseCase historyReadUseCase;
+    private final HistorySearchUseCase historySearchUseCase;
 
     @GetMapping()
     public ResponseEntity<ApiResponse<Page<HistorySimpleResponse>>> getAllHistories(
@@ -47,7 +50,7 @@ public class HistoryController {
     @GetMapping("/{historyId}")
     public ResponseEntity<ApiResponse<HistoryDetailResponse>> getHistoryById(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long historyId) {
+        @PathVariable String historyId) {
         Long userId = customUserDetails.getId();
         HistoryDetailResult result = historyReadUseCase.getHistoryById(userId, historyId);
         HistoryDetailResponse response = HistoryDetailResponse.toResponse(result);
@@ -63,7 +66,7 @@ public class HistoryController {
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HistorySimpleResult> resultPage = historyReadUseCase.searchHistories(
+        Page<HistorySimpleResult> resultPage = historySearchUseCase.searchHistories(
             customUserDetails.getId(), request.toCommand(), pageable);
         Page<HistorySimpleResponse> responsePage = resultPage.map(
             HistorySimpleResponse::toResponse);

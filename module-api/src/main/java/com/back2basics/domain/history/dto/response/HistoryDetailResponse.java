@@ -12,13 +12,13 @@ public record HistoryDetailResponse(
     DomainType domainType,
     Long domainId,
     LocalDateTime changedAt,
-    String changedBy,
+    Long changedBy,
     Map<String, Object> before,
     Map<String, Object> after,
     LocalDateTime createdAt
 ) {
 
-    public static HistoryDetailResponse from(HistoryDetailResult result) {
+    public static HistoryDetailResponse toResponse(HistoryDetailResult result) {
         return new HistoryDetailResponse(
             result.id(),
             result.historyType(),

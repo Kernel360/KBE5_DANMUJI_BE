@@ -16,12 +16,12 @@ public class HistoryReadService implements HistoryReadUseCase {
     private final HistoryReadPort historyReadPort;
 
     @Override
-    public HistoryDetailResult getHistoryById(Long userId, Long historyId) {
-        return null;
+    public HistoryDetailResult getHistoryById(Long userId, String historyId) {
+        return historyReadPort.getHistory(historyId);
     }
 
     @Override
     public Page<HistorySimpleResult> getAllHistories(Long userId, Pageable pageable) {
-        return null;
+        return historyReadPort.getHistories(pageable);
     }
 }

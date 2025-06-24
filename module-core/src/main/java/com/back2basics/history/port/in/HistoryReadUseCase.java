@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface HistoryReadUseCase {
 
-    HistoryDetailResult getHistoryById(Long userId, Long historyId);
+    HistoryDetailResult getHistoryById(Long userId, String historyId);
 
     Page<HistorySimpleResult> getAllHistories(Long userId, Pageable pageable);
 

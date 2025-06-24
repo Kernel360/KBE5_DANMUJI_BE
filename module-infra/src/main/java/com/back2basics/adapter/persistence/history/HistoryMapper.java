@@ -41,7 +41,7 @@ public class HistoryMapper {
             doc.getDomainType(),
             Long.valueOf(doc.getDomainId()),
             doc.getChangedAt(),
-            doc.getChangedBy(),
+            Long.valueOf(doc.getChangedBy()),
             doc.getBefore(),
             doc.getAfter(),
             doc.getCreatedAt()
