@@ -1,12 +1,13 @@
 package com.back2basics.company.model;
 
 import com.back2basics.company.port.in.command.UpdateCompanyCommand;
+import com.back2basics.history.strategy.TargetDomain;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Company {
+public class Company implements TargetDomain {
 
     private final Long id;
     private String name;
@@ -53,4 +54,24 @@ public class Company {
         this.isDelete = true;
     }
 
+    public static Company copyOf(Company company) {
+        return Company.builder()
+            .id(company.getId())
+            .name(company.getName())
+            .ceoName(company.getCeoName())
+            .bio(company.getBio())
+            .bizNo(company.getBizNo())
+            .address(company.getAddress())
+            .email(company.getEmail())
+            .tel(company.getTel())
+            .createdAt(company.getCreatedAt())
+            .updatedAt(company.getUpdatedAt())
+            .deletedAt(company.getDeletedAt())
+            .build();
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

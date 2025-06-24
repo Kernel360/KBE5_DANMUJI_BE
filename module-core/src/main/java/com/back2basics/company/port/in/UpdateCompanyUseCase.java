@@ -4,5 +4,5 @@ import com.back2basics.company.port.in.command.UpdateCompanyCommand;
 
 public interface UpdateCompanyUseCase {
 
-    void updateCompany(Long id, UpdateCompanyCommand command);
+    void updateCompany(Long id, UpdateCompanyCommand command, Long loggedInUserId);
 }

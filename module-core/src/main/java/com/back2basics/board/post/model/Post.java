@@ -142,9 +142,4 @@ public class Post implements TargetDomain {
         return this.id;
     }
 
-    @Override
-    public Long getChangerId() {
-        return this.authorId;
-    }
-
 }

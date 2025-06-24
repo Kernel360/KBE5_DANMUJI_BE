@@ -115,9 +115,5 @@ public class User implements TargetDomain {
     public Long getId() {
         return this.id;
     }
-
-    @Override
-    public Long getChangerId() {
-        return this.id;
-    }
+    
 }
