@@ -18,8 +18,8 @@ public class HistoryRequestFactory {
             after.getId(),
             after.getChangerId(),
             user.getName(),
+            user.getUsername(),
             user.getRole(),
-            after.getChangerIp(),
             "empty",
             after
         );
@@ -35,8 +35,8 @@ public class HistoryRequestFactory {
             after.getId(),
             after.getChangerId(),
             user.getName(),
+            user.getUsername(),
             user.getRole(),
-            after.getChangerIp(),
             before,
             after
         );
@@ -52,8 +52,8 @@ public class HistoryRequestFactory {
             after.getId(),
             changedBy,
             user.getName(),
+            user.getUsername(),
             user.getRole(),
-            after.getChangerIp(),
             before,
             after
         );

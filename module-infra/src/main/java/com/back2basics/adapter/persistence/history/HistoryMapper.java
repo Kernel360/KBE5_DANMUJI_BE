@@ -18,8 +18,8 @@ public class HistoryMapper {
             history.getChangedAt(),
             history.getChangerId(),
             history.getChangerName(),
+            history.getChangerUsername(),
             history.getChangerRole(),
-            history.getChangerIp(),
             history.getBefore(),
             history.getAfter(),
             history.getCreatedAt()
@@ -36,7 +36,7 @@ public class HistoryMapper {
             doc.getChangerId(),
             doc.getChangerName(),
             doc.getChangerRole(),
-            doc.getChangerIp()
+            doc.getChangerUsername()
         );
     }
 
@@ -49,8 +49,8 @@ public class HistoryMapper {
             doc.getChangedAt(),
             doc.getChangerId(),
             doc.getChangerName(),
+            doc.getChangerUsername(),
             doc.getChangerRole(),
-            doc.getChangerIp(),
             doc.getBefore(),
             doc.getAfter(),
             doc.getCreatedAt()

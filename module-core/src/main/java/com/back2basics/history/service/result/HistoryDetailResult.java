@@ -14,8 +14,8 @@ public record HistoryDetailResult(
     LocalDateTime changedAt,
     String changerId,
     String changerName,
+    String changerUsername,
     Role changerRole,
-    String changerIp,
     Map<String, Object> before,
     Map<String, Object> after,
     LocalDateTime createdAt

@@ -22,9 +22,9 @@ public class HistoryCreateService {
             command.domainType(),
             command.domainId(),
             String.valueOf(command.changerId()),
-            String.valueOf(command.changerName()),
+            command.changerName(),
+            command.changerUsername(),
             command.changerRole(),
-            String.valueOf(command.changerIp()),
             Map.of("before", command.before()),
             Map.of("after", command.after()),
             LocalDateTime.now()
@@ -40,51 +40,12 @@ public class HistoryCreateService {
             command.domainId(),
             String.valueOf(command.changerId()),
             String.valueOf(command.changerName()),
+            command.changerUsername(),
             command.changerRole(),
-            String.valueOf(command.changerIp()),
             Map.of("before", command.before()),
             Map.of("isDeleted", isDeleted),
             LocalDateTime.now()
         );
         historyCreatePort.save(history);
     }
-
-//    public void createHistory(
-//        HistoryType historyType,
-//        DomainType domainType, // "post", "user", "company", "project", "step" 등
-//        Long domainId,
-//        Long changedBy,
-//        Object before,
-//        Object after
-//    ) {
-//        History history = History.create(
-//            historyType,
-//            domainType,
-//            domainId,
-//            String.valueOf(changedBy),
-//            Map.of("before", before),
-//            Map.of("after", after),
-//            LocalDateTime.now()
-//        );
-//        historyCreatePort.save(history);
-//    }
-//
-//    public void createHistory(
-//        HistoryType historyType,
-//        DomainType domainType,
-//        Long domainId,
-//        Long changedBy,
-//        Object before
-//    ) {
-//        History history = History.create(
-//            historyType,
-//            domainType,
-//            domainId,
-//            String.valueOf(changedBy),
-//            Map.of("before", before),
-//            Map.of("isDeleted", true),
-//            LocalDateTime.now()
-//        );
-//        historyCreatePort.save(history);
-//    }
 }

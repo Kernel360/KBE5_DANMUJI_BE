@@ -146,10 +146,5 @@ public class Post implements TargetDomain {
     public Long getChangerId() {
         return this.authorId;
     }
-    
-    @Override
-    public String getChangerIp() {
-        return this.authorIp;
-    }
 
 }

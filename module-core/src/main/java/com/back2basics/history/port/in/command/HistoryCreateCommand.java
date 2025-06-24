@@ -10,8 +10,8 @@ public record HistoryCreateCommand(
     Long domainId,
     Long changerId,
     String changerName,
+    String changerUsername,
     Role changerRole,
-    String changerIp,
     Object before,
     Object after
 ) {

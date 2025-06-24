@@ -37,11 +37,12 @@ public class HistoryDocument {
     @Field("changer_name")
     private String changerName;
 
+    @Field("changer_username")
+    private String changerUsername;
+
+
     @Field("changer_role")
     private Role changerRole;
-
-    @Field("changer_ip")
-    private String changerIp;
 
     @Field("before")
     private Map<String, Object> before;
@@ -60,8 +61,8 @@ public class HistoryDocument {
         LocalDateTime changedAt,
         String changerId,
         String changerName,
+        String changerUsername,
         Role changerRole,
-        String changerIp,
         Map<String, Object> before,
         Map<String, Object> after, LocalDateTime createdAt) {
         this.id = id;
@@ -71,8 +72,8 @@ public class HistoryDocument {
         this.changedAt = changedAt;
         this.changerId = changerId;
         this.changerName = changerName;
+        this.changerUsername = changerUsername;
         this.changerRole = changerRole;
-        this.changerIp = changerIp;
         this.before = before;
         this.after = after;
         this.createdAt = createdAt;
@@ -84,8 +85,8 @@ public class HistoryDocument {
         LocalDateTime changedAt,
         String changerId,
         String changerName,
+        String changerUsername,
         Role changerRole,
-        String changerIp,
         Map<String, Object> before,
         Map<String, Object> after) {
         return new HistoryDocument(
@@ -96,8 +97,8 @@ public class HistoryDocument {
             changedAt,
             changerId,
             changerName,
+            changerUsername,
             changerRole,
-            changerIp,
             before,
             after,
             null

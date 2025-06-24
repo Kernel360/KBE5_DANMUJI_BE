@@ -5,6 +5,4 @@ public interface TargetDomain {
     Long getId();
 
     Long getChangerId();
-
-    String getChangerIp();
 }

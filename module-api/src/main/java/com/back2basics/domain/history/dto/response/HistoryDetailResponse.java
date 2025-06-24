@@ -16,7 +16,6 @@ public record HistoryDetailResponse(
     String changerId,
     String changerName,
     Role changerRole,
-    String changerIp,
     Map<String, Object> before,
     Map<String, Object> after,
     LocalDateTime createdAt
@@ -32,7 +31,6 @@ public record HistoryDetailResponse(
             result.changerId(),
             result.changerName(),
             result.changerRole(),
-            result.changerIp(),
             result.before(),
             result.after(),
             result.createdAt()

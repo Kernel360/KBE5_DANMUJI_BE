@@ -14,7 +14,7 @@ public record HistorySimpleResult(
     String changerId,
     String changerName,
     Role changerRole,
-    String changerIp
+    String changerUsername
 ) {
 
 }

@@ -14,15 +14,15 @@ public class History {
     private final LocalDateTime changedAt;
     private final String changerId;
     private final String changerName;
+    private final String changerUsername;
     private final Role changerRole;
-    private final String changerIp;
     private final Map<String, Object> before;
     private final Map<String, Object> after;
     private final LocalDateTime createdAt;
 
     public History(HistoryType historyType, DomainType domainType, Long domainId,
-        LocalDateTime changedAt, String changerId, String changerName, Role changerRole,
-        String changerIp,
+        LocalDateTime changedAt, String changerId, String changerName, String changerUsername,
+        Role changerRole,
         Map<String, Object> before, Map<String, Object> after,
         LocalDateTime createdAt) {
 
@@ -32,15 +32,15 @@ public class History {
         this.changedAt = changedAt;
         this.changerId = changerId;
         this.changerName = changerName;
+        this.changerUsername = changerUsername;
         this.changerRole = changerRole;
-        this.changerIp = changerIp;
         this.before = before;
         this.after = after;
         this.createdAt = createdAt;
     }
 
     public static History create(HistoryType historyType, DomainType domainType, Long domainId,
-        String changerId, String changerName, Role changerRole, String changerIp,
+        String changerId, String changerName, String changerUsername, Role changerRole,
         Map<String, Object> before, Map<String, Object> after, LocalDateTime createdAt) {
         return new History(
             historyType,
@@ -49,8 +49,8 @@ public class History {
             LocalDateTime.now(),
             changerId,
             changerName,
+            changerUsername,
             changerRole,
-            changerIp,
             before,
             after,
             createdAt);
