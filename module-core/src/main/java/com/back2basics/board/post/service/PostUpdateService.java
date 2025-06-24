@@ -10,12 +10,9 @@ import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
 import com.back2basics.history.model.DomainType;
-import com.back2basics.history.model.HistoryRequestFactory;
-import com.back2basics.history.service.HistoryCreateService;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.mention.MentionNotificationSender;
-import com.back2basics.user.model.User;
-import com.back2basics.user.port.out.UserQueryPort;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +30,7 @@ public class PostUpdateService implements PostUpdateUseCase {
     private final FileDeletePort fileDeletePort;
     private final FileReadPort fileReadPort;
     private final MentionNotificationSender mentionNotificationSender;
-    private final HistoryCreateService historyCreateService;
-    private final UserQueryPort userQueryPort;
+    private final HistoryLogService historyLogService;
 
     @Override
     public void updatePost(Long userId, String userIp, Long postId,
@@ -50,10 +46,7 @@ public class PostUpdateService implements PostUpdateUseCase {
 
         replaceFiles(files, command.getFileIdsToDelete(), updatedPost.getId());
 
-        User user = userQueryPort.findById(userId);
-        historyCreateService.create(
-            HistoryRequestFactory.updated(DomainType.POST, user, beforePost, updatedPost,
-                "게시글 수정"));
+        historyLogService.logUpdated(DomainType.POST, userId, beforePost, updatedPost, "게시글 정보 수정");
     }
 
     private void replaceFiles(List<MultipartFile> files, List<Long> fileIdsToDelete, Long postId)

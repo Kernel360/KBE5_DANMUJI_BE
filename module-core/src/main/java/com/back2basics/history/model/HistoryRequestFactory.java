@@ -46,7 +46,6 @@ public class HistoryRequestFactory {
 
     public static <T extends TargetDomain> HistoryCreateCommand deleted(DomainType domainType,
         User user,
-        T before,
         T after, String message) {
         return new HistoryCreateCommand(
             HistoryType.DELETED,
@@ -56,7 +55,7 @@ public class HistoryRequestFactory {
             user.getName(),
             user.getUsername(),
             user.getRole(),
-            before,
+            "before",
             after,
             message
         );

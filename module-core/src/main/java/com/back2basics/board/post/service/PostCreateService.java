@@ -10,14 +10,11 @@ import com.back2basics.board.post.port.out.PostCreatePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
 import com.back2basics.history.model.DomainType;
-import com.back2basics.history.model.HistoryRequestFactory;
-import com.back2basics.history.service.HistoryCreateService;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.mention.MentionNotificationSender;
-import com.back2basics.user.model.User;
-import com.back2basics.user.port.out.UserQueryPort;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +33,7 @@ public class PostCreateService implements PostCreateUseCase {
     private final FileSavePort fileSavePort;
     private final PostNotificationSender postNotificationSender;
     private final MentionNotificationSender mentionNotificationSender;
-    private final HistoryCreateService historyCreateService;
-    private final UserQueryPort userQueryPort;
+    private final HistoryLogService historyLogService;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -55,10 +51,7 @@ public class PostCreateService implements PostCreateUseCase {
         mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
             post.getContent());
 
-        User user = userQueryPort.findById(userId);
-        historyCreateService.create(
-            HistoryRequestFactory.created(DomainType.POST, user, savedPost, "게시글 생성"));
-
+        historyLogService.logCreated(DomainType.POST, userId, savedPost, "게시글 생성");
         return PostCreateResult.toResult(savedPost);
     }
 
