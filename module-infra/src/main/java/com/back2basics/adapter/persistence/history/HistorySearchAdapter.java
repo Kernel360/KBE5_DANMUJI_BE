@@ -44,7 +44,6 @@ public class HistorySearchAdapter implements HistorySearchPort {
         addIfPresent(filters, "historyType", command.historyType());
         addIfPresent(filters, "domainType", command.domainType());
         addIfPresent(filters, "changedBy", command.changedBy());
-        addIfPresent(filters, "userRole", command.userRole());
 
         if (command.changedFrom() != null && command.changedTo() != null) {
             filters.add(Criteria.where("changed_at")
