@@ -1,8 +1,12 @@
-package com.back2basics.domain.history;
+package com.back2basics.domain.history.controller;
 
 import com.back2basics.domain.board.controller.code.PostResponseCode;
+import com.back2basics.domain.history.dto.response.HistoryDetailResponse;
+import com.back2basics.domain.history.dto.response.HistorySimpleResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.history.port.in.HistoryReadUseCase;
+import com.back2basics.history.service.result.HistoryDetailResult;
+import com.back2basics.history.service.result.HistorySimpleResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.back2basics.history.service;
 
 import com.back2basics.history.model.History;
-import com.back2basics.history.port.in.command.HistoryRequestCommand;
+import com.back2basics.history.port.in.command.HistorySearchCommand;
 import com.back2basics.history.port.out.HistoryCreatePort;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -14,7 +14,7 @@ public class HistoryCreateService {
 
     private final HistoryCreatePort historyCreatePort;
 
-    public void create(HistoryRequestCommand command) {
+    public void create(HistorySearchCommand command) {
         History history = History.create(
             command.historyType(),
             command.domainType(),
@@ -27,7 +27,7 @@ public class HistoryCreateService {
         historyCreatePort.save(history);
     }
 
-    public void create(HistoryRequestCommand command, Boolean isDeleted) {
+    public void create(HistorySearchCommand command, Boolean isDeleted) {
         History history = History.create(
             command.historyType(),
             command.domainType(),
