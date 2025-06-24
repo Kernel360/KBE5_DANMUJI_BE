@@ -57,7 +57,8 @@ public class ProjectEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ProjectStatus status;
-  
+
+    // todo: 현재 잘못된 설계로 EAGER로 하지 않으면 에러 발생. 추후 리팩토링 하겠음
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectStepEntity> steps = new ArrayList<>();
 

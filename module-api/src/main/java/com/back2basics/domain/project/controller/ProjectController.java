@@ -48,7 +48,6 @@ public class ProjectController {
     private final UpdateProjectUseCase updateProjectUseCase;
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
-    // todo: 변수명 통일, response 세분화
 
     // 생성
     @PostMapping
@@ -87,6 +86,7 @@ public class ProjectController {
     }
 
     // 검색 프로젝트 조회
+    // todo: 필터링 조건 추가
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
         @RequestParam(required = false) String keyword,
