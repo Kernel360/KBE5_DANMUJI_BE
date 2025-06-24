@@ -28,9 +28,9 @@ public class ReadProjectService implements ReadProjectUseCase {
     private final AssignmentQueryPort assignmentQueryPort;
 
     @Override
-    public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
+    public Page<ProjectListResult> getAllProjects(Pageable pageable) {
         Page<Project> projects = readProjectPort.findAll(pageable);
-        return projects.map(ProjectGetResult::toResult);
+        return projects.map(ProjectListResult::toResult);
     }
 
     @Override
