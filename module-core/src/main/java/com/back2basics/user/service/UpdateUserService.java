@@ -1,8 +1,7 @@
 package com.back2basics.user.service;
 
 import com.back2basics.history.model.DomainType;
-import com.back2basics.history.model.HistoryRequestFactory;
-import com.back2basics.history.service.HistoryCreateService;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UpdateUserUseCase;
@@ -18,7 +17,7 @@ public class UpdateUserService implements UpdateUserUseCase {
 
     private final UserQueryPort userQueryPort;
     private final UserCommandPort userCommandPort;
-    private final HistoryCreateService historyCreateService;
+    private final HistoryLogService historyLogService;
 
     @Override
     public void update(Long userId, UserUpdateCommand command, Long loggedInUserId) {
@@ -29,10 +28,8 @@ public class UpdateUserService implements UpdateUserUseCase {
 
         userCommandPort.save(user);
 
-        User loggedInUser = userQueryPort.findById(loggedInUserId);
-        historyCreateService.create(
-            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user,
-                "사용자 정보 번경"));
+        historyLogService.logUpdated(DomainType.USER, loggedInUserId, beforeUser, user,
+            "회원 정보 수정");
     }
 
     @Override
@@ -43,10 +40,8 @@ public class UpdateUserService implements UpdateUserUseCase {
 
         userCommandPort.save(user);
 
-        User loggedInUser = userQueryPort.findById(loggedInUserId);
-        historyCreateService.create(
-            HistoryRequestFactory.updated(DomainType.USER, loggedInUser, beforeUser, user,
-                "사용자 권한 변경"));
+        historyLogService.logUpdated(DomainType.USER, loggedInUserId, beforeUser, user,
+            "회원 권한 변경");
     }
 
     @Override

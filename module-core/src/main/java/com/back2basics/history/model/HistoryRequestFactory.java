@@ -55,7 +55,7 @@ public class HistoryRequestFactory {
             user.getName(),
             user.getUsername(),
             user.getRole(),
-            "before",
+            "before: 어차피 소프트딜리트니까 복구할때 before 없어도 얼마든지 복구 가능함..",
             after,
             message
         );

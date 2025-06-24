@@ -6,7 +6,7 @@ public interface UserCommandPort {
 
     User save(User user);
 
-    void deleteById(Long userId);
+    User deleteById(Long userId);
 
     void softDeleteByCompanyId(Long companyId);
 

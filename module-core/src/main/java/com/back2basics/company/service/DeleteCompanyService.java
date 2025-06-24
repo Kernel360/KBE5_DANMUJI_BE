@@ -27,7 +27,6 @@ public class DeleteCompanyService implements DeleteCompanyUseCase {
     @Override
     public void deleteCompany(Long id, Long loggedInUserId) {
         Company company = companyValidator.findCompany(id);
-        Company before = Company.copyOf(company);
 
         List<User> users = userQueryPort.findAllByCompanyIdAndDeletedAtIsNull(id);
         userCommandPort.softDeleteByCompanyId(id);
@@ -37,7 +36,7 @@ public class DeleteCompanyService implements DeleteCompanyUseCase {
 
         User user = userQueryPort.findById(loggedInUserId);
         historyCreateService.create(
-            HistoryRequestFactory.deleted(DomainType.COMPANY, user, before, company, "회사 비활성화"));
+            HistoryRequestFactory.deleted(DomainType.COMPANY, user, company, "회사 비활성화"));
     }
 
 }

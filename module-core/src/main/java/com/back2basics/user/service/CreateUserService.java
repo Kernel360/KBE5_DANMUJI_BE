@@ -1,14 +1,12 @@
 package com.back2basics.user.service;
 
 import com.back2basics.history.model.DomainType;
-import com.back2basics.history.model.HistoryRequestFactory;
-import com.back2basics.history.service.HistoryCreateService;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.command.UserCreateCommand;
 import com.back2basics.user.port.out.UserCommandPort;
-import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +21,7 @@ public class CreateUserService implements CreateUserUseCase {
     private final UserValidator userValidator;
     private final PasswordGenerator passwordGenerator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder; // 수정
-    private final HistoryCreateService historyCreateService;
-    private final UserQueryPort userQueryPort;
+    private final HistoryLogService historyLogService;
 
     @Override
     public UserCreateResult create(UserCreateCommand command, Long loggedInUserId) {
@@ -35,10 +32,8 @@ public class CreateUserService implements CreateUserUseCase {
         User user = User.create(command, encodedPassword);
 
         User saved = userCommandPort.save(user);
-
-        User loggedInUser = userQueryPort.findById(loggedInUserId);
-        historyCreateService.create(
-            HistoryRequestFactory.created(DomainType.USER, loggedInUser, saved, "사용자 추가"));
+        
+        historyLogService.logCreated(DomainType.USER, loggedInUserId, saved, "회원 등록");
 
         return new UserCreateResult(saved.getId(), saved.getUsername(), generatedPassword);
     }
