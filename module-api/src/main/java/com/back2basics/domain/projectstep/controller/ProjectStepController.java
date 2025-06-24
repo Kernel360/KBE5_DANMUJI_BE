@@ -18,9 +18,11 @@ import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.projectstep.service.result.ProjectStepResult;
+import com.back2basics.security.model.CustomUserDetails;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,16 +46,22 @@ public class ProjectStepController {
     // /api/projects/steps?projectId={projectId}
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createStep(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody CreateProjectStepRequest request, @RequestParam Long projectId) {
+
         CreateProjectStepCommand command = request.toCommand();
-        createProjectStepUseCase.createStep(command, projectId);
+        createProjectStepUseCase.createStep(command, projectId, customUserDetails.getId());
         return ApiResponse.success(STEP_CREATE_SUCCESS);
     }
 
     @PutMapping("/{projectId}/reorder")
-    public ResponseEntity<ApiResponse<Void>> reorderSteps(@PathVariable Long projectId,
+    public ResponseEntity<ApiResponse<Void>> reorderSteps(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId,
         @RequestBody List<Long> stepIdsInNewOrder) {
-        updateProjectStepUseCase.reorderSteps(projectId, stepIdsInNewOrder);
+
+        updateProjectStepUseCase.reorderSteps(projectId, stepIdsInNewOrder,
+            customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
@@ -78,26 +86,33 @@ public class ProjectStepController {
 
     // 수정
     @PutMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<Void>> updateStepName(@PathVariable Long stepId, @RequestBody
-    UpdateProjectStepRequest request) {
+    public ResponseEntity<ApiResponse<Void>> updateStepName(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long stepId, @RequestBody
+        UpdateProjectStepRequest request) {
         UpdateProjectStepCommand command = request.toCommand();
-        updateProjectStepUseCase.updateStepName(command, stepId);
+        updateProjectStepUseCase.updateStepName(command, stepId, customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
     // todo: 승인, 거절 버튼마다 url - projectStepStatus 다르게
     @PutMapping("/{stepId}/approval")
-    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId,
+    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long stepId,
         @RequestParam
         ProjectStepStatus projectStepStatus) {
-        updateProjectStepUseCase.updateApprovalStatus(projectStepStatus, stepId);
+        updateProjectStepUseCase.updateApprovalStatus(projectStepStatus, stepId,
+            customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
     // 삭제
     @DeleteMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<Void>> deleteStep(@PathVariable Long stepId) {
-        deleteProjectStepUseCase.softDelete(stepId);
+    public ResponseEntity<ApiResponse<Void>> deleteStep(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long stepId) {
+        deleteProjectStepUseCase.softDelete(stepId, customUserDetails.getId());
         return ApiResponse.success(STEP_DELETE_SUCCESS);
     }
 }

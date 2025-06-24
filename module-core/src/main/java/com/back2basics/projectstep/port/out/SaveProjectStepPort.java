@@ -7,7 +7,7 @@ public interface SaveProjectStepPort {
 
     void defaultSave(ProjectStep projectStep);
 
-    void save(ProjectStep projectStep);
+    ProjectStep save(ProjectStep projectStep);
 
     void saveAll(List<ProjectStep> projectStepList);
 }

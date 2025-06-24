@@ -60,4 +60,16 @@ public class ProjectStep implements TargetDomain {
     public Long getId() {
         return this.stepId;
     }
+
+    public static ProjectStep copyOf(ProjectStep original) {
+        return ProjectStep.builder()
+            .stepId(original.stepId)
+            .projectId(original.projectId)
+            .name(original.name)
+            .stepOrder(original.stepOrder)
+            .projectStepStatus(original.projectStepStatus)
+            .isDeleted(original.isDeleted)
+            .deletedAt(original.deletedAt)
+            .build();
+    }
 }

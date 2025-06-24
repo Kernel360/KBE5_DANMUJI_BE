@@ -2,6 +2,8 @@ package com.back2basics.projectstep.service;
 
 import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.STEP_NOT_FOUND;
 
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
@@ -23,24 +25,35 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
 
     private final ReadProjectStepPort readPort;
     private final SaveProjectStepPort savePort;
+    private final HistoryLogService historyLogService;
 
     @Override
-    public void updateStepName(UpdateProjectStepCommand command, Long stepId) {
+    public void updateStepName(UpdateProjectStepCommand command, Long stepId, Long loggedInUserId) {
         ProjectStep step = readPort.findById(stepId);
+        ProjectStep before = ProjectStep.copyOf(step);
         step.updateName(command.getName());
-        savePort.save(step);
+        ProjectStep updatedStep = savePort.save(step);
+
+        historyLogService.logUpdated(DomainType.STEP, loggedInUserId, before, updatedStep,
+            "프로젝트 단계 수정");
     }
 
     @Override
     public void updateApprovalStatus(ProjectStepStatus projectStepStatus,
-        Long stepId) {
+        Long stepId, Long loggedInUserId) {
         ProjectStep step = readPort.findById(stepId);
+        ProjectStep before = ProjectStep.copyOf(step);
         step.updateStatus(projectStepStatus);
-        savePort.save(step);
+        ProjectStep updatedStep = savePort.save(step);
+
+        historyLogService.logUpdated(DomainType.STEP, loggedInUserId, before, updatedStep,
+            "프로젝트 단계 승인요청 변경");
     }
 
+    // todo
+    //  swlee : 이력 생성 보류 -> 어떤 작업 해주는 기능인가요??
     @Override
-    public void reorderSteps(Long projectId, List<Long> stepIdsInNewOrder) {
+    public void reorderSteps(Long projectId, List<Long> stepIdsInNewOrder, Long loggedInUserId) {
         List<ProjectStep> steps = readPort.findAllById(stepIdsInNewOrder);
 
         Map<Long, ProjectStep> stepMap = steps.stream()
