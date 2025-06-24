@@ -1,8 +1,11 @@
 package com.back2basics.adapter.persistence.history;
 
+import static com.back2basics.infra.exception.history.HistoryErrorCode.HISTORY_NOT_FOUND;
+
 import com.back2basics.history.port.out.HistoryReadPort;
 import com.back2basics.history.service.result.HistoryDetailResult;
 import com.back2basics.history.service.result.HistorySimpleResult;
+import com.back2basics.infra.exception.history.HistoryException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -28,7 +31,7 @@ public class HistoryReadAdapter implements HistoryReadPort {
         );
 
         if (document == null) {
-            throw new HistoryException(HistoryErrorCode.HISTORY_NOT_FOUND);
+            throw new HistoryException(HISTORY_NOT_FOUND);
         }
 
         return HistoryMapper.toDetailResult(document);

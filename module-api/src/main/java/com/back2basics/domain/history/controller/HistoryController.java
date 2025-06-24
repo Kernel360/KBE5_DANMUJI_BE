@@ -1,6 +1,6 @@
 package com.back2basics.domain.history.controller;
 
-import com.back2basics.domain.board.controller.code.PostResponseCode;
+import com.back2basics.domain.history.controller.code.HistoryResponseCode;
 import com.back2basics.domain.history.dto.response.HistoryDetailResponse;
 import com.back2basics.domain.history.dto.response.HistorySimpleResponse;
 import com.back2basics.global.response.result.ApiResponse;
@@ -41,7 +41,7 @@ public class HistoryController {
         Page<HistorySimpleResponse> responsePage = resultPage.map(
             HistorySimpleResponse::toResponse);
 
-        return ApiResponse.success(PostResponseCode.HISTORY_READ_ALL_SUCCESS, responsePage);
+        return ApiResponse.success(HistoryResponseCode.HISTORY_READ_ALL_SUCCESS, responsePage);
     }
 
     @GetMapping("/{historyId}")
@@ -52,7 +52,7 @@ public class HistoryController {
         HistoryDetailResult result = historyReadUseCase.getHistoryById(userId, historyId);
         HistoryDetailResponse response = HistoryDetailResponse.toResponse(result);
 
-        return ApiResponse.success(PostResponseCode.HISTORY_READ_SUCCESS, response);
+        return ApiResponse.success(HistoryResponseCode.HISTORY_READ_SUCCESS, response);
     }
 
     @GetMapping("/search")
@@ -68,7 +68,7 @@ public class HistoryController {
         Page<HistorySimpleResponse> responsePage = resultPage.map(
             HistorySimpleResponse::toResponse);
 
-        return ApiResponse.success(PostResponseCode.HISTORY_SEARCH_SUCCESS, responsePage);
+        return ApiResponse.success(HistoryResponseCode.HISTORY_SEARCH_SUCCESS, responsePage);
     }
 
 }
