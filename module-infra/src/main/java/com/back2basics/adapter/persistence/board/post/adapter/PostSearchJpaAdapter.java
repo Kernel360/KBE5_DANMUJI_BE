@@ -75,7 +75,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
-                matchesType(command.getType())
+                matchesType(command.getType()),
                 matchesStep(command.getProjectStepId())
             );
 
