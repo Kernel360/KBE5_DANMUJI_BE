@@ -33,4 +33,10 @@ public class CheckListQueryAdapter implements CheckListQueryPort {
         return checkListEntityRepository.findAllByUserId(userId).stream()
             .map(mapper::toDomain).toList();
     }
+
+    @Override
+    public List<CheckList> findByPostId(Long postId, Long userId) {
+        return checkListEntityRepository.findAllByPostIdAndUserId(postId, userId).stream()
+            .map(mapper::toDomain).toList();
+    }
 }

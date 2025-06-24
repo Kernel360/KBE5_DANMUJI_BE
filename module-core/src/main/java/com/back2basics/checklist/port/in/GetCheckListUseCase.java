@@ -6,4 +6,6 @@ import java.util.List;
 public interface GetCheckListUseCase {
 
     List<CheckListResult> findByUserId(Long userId);
+
+    List<CheckListResult> findByPostId(Long postId, Long userId);
 }

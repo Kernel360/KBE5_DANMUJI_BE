@@ -76,4 +76,12 @@ public class CheckListController {
     }
 
     // 게시글 별
+    @GetMapping("/{postId}")
+    public ResponseEntity<ApiResponse<List<CheckListResponse>>> getByPostId(
+        @PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<CheckListResult> results = getCheckListUseCase.findByPostId(postId,
+            userDetails.getId());
+        List<CheckListResponse> responses = results.stream().map(CheckListResponse::from).toList();
+        return ApiResponse.success(CHECK_LIST_READ_ALL_SUCCESS, responses);
+    }
 }

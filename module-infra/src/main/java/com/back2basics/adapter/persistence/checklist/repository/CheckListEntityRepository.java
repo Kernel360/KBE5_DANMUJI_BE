@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface CheckListEntityRepository extends JpaRepository<CheckListEntity, Long> {
 
     List<CheckListEntity> findAllByUserId(Long userId);
+
+    List<CheckListEntity> findAllByPostIdAndUserId(Long postId, Long userId);
 }

@@ -7,5 +7,7 @@ public interface CheckListQueryPort {
 
     CheckList findById(Long id);
 
-    List<CheckList> findByUserId(Long checkListId);
+    List<CheckList> findByUserId(Long userId);
+
+    List<CheckList> findByPostId(Long postId, Long userId);
 }

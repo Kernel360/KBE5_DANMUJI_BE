@@ -16,7 +16,18 @@ public class GetCheckListService implements GetCheckListUseCase {
 
     @Override
     public List<CheckListResult> findByUserId(Long userId) {
-        List<CheckList> checkLists = findByUserId(userId);
-        return List.of();
+        List<CheckList> checkLists = checkListQueryPort.findByUserId(userId);
+
+        return checkLists.stream()
+            .map(CheckListResult::from)
+            .toList();
+    }
+
+    @Override
+    public List<CheckListResult> findByPostId(Long postId, Long userId) {
+        List<CheckList> checkLists = checkListQueryPort.findByPostId(postId, userId);
+        return checkLists.stream()
+            .map(CheckListResult::from)
+            .toList();
     }
 }
