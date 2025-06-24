@@ -56,7 +56,6 @@ public class UpdateProjectService implements UpdateProjectUseCase {
             .stream().filter(assignment -> assignment.getCompanyType() == CompanyType.CLIENT)
             .toList();
 
-        // request 로 받아온 변경된 users ( 변경 + 미변경 user 모두 포함 )
         // 담당자 리스트
         List<User> devManagers = command.getDevManagerId().stream()
             .map(userQueryPort::findById)
@@ -89,7 +88,6 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
     private void updateAssignments(List<Assignment> oldAssignments, List<User> updatedUsers,
         List<User> updatedManagers) {
-        // Set 으로 했어야하는구만
         // 변경된 userId 집합
         Set<Long> updatedUserIds = updatedUsers.stream().map(User::getId)
             .collect(Collectors.toSet());
@@ -105,6 +103,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
                         : UserType.MEMBER;
                 assignment.updateUserType(newUserType);
             });
+        saveProjectUserPort.saveAll(oldAssignments);
 
         List<Assignment> deleteUsers = oldAssignments.stream()
             .filter(assignment -> !updatedUserIds.contains(assignment.getUser().getId()))
