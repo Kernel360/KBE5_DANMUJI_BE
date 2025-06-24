@@ -49,7 +49,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
-                postEntity.projectStepId.eq(command.getProjectStepId()),
+                //postEntity.projectStepId.eq(command.getProjectStepId()),
                 activePosts(),
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
@@ -70,7 +70,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             .select(postEntity.count())
             .from(postEntity)
             .where(
-                postEntity.projectStepId.eq(command.getProjectStepId()),
+                //postEntity.projectStepId.eq(command.getProjectStepId()),
                 activePosts(),
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
