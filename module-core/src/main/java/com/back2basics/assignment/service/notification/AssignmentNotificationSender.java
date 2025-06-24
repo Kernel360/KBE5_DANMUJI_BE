@@ -16,7 +16,7 @@ public class AssignmentNotificationSender {
     private final ProjectValidator projectValidator;
 
     public void sendNotification(List<Long> senderIds, Long projectId) {
-        projectValidator.findProjectById(projectId);
+        projectValidator.findById(projectId);
         senderIds.forEach(senderId -> notifyUseCase.notify(new SendNotificationCommand(
             senderId,
             projectId,

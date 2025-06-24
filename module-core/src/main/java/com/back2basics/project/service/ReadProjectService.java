@@ -46,7 +46,7 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     @Override
     public ProjectDetailResult getProjectDetails(Long projectId) {
-        Project project = projectValidator.findProjectById(projectId);
+        Project project = projectValidator.findById(projectId);
         return ProjectDetailResult.of(project);
     }
 

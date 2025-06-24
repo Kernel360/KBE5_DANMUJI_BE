@@ -46,7 +46,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     @Transactional
     public void updateProject(Long projectId,
         ProjectUpdateCommand command) {
-        Project project = projectValidator.findProjectById(projectId);
+        Project project = projectValidator.findById(projectId);
         project.update(command);
         updateProjectPort.update(project);
 
