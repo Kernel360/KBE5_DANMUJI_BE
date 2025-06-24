@@ -54,7 +54,8 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 matchesTitle(command.getTitle()),
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
-                matchesType(command.getType())
+                matchesType(command.getType()),
+                matchesStep(command.getProjectStepId())
             )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
@@ -75,6 +76,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 matchesAuthor(command.getAuthor()),
                 matchesPriority(command.getPriority()),
                 matchesType(command.getType())
+                matchesStep(command.getProjectStepId())
             );
 
         return PageableExecutionUtils.getPage(
@@ -102,5 +104,9 @@ public class PostSearchJpaAdapter implements PostSearchPort {
 
     private BooleanExpression matchesType(PostType type) {
         return (type == null) ? null : postEntity.type.eq(type);
+    }
+
+    private BooleanExpression matchesStep(Long stepId) {
+        return (stepId == null) ? null : postEntity.projectStepId.eq(stepId);
     }
 }
