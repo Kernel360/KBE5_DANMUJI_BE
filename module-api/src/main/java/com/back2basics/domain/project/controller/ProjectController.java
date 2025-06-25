@@ -10,8 +10,8 @@ import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
 import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
-import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
 import com.back2basics.domain.project.dto.response.ProjectListResponse;
+import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
@@ -20,8 +20,8 @@ import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
-import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
+import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
@@ -60,8 +60,10 @@ public class ProjectController {
     // 생성
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid ProjectCreateRequest request) {
-        createProjectUseCase.createProject(request.toCommand());
+
+        createProjectUseCase.createProject(request.toCommand(), customUserDetails.getId());
         return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
 
@@ -79,6 +81,7 @@ public class ProjectController {
         } else if (user.getRole() == Role.ADMIN) {
             result = readProjectUseCase.getAllProjects(pageable);
         }
+        
         Page<ProjectListResponse> response = Objects.requireNonNull(result)
             .map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
@@ -124,25 +127,32 @@ public class ProjectController {
     // 수정
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId,
         @RequestBody @Valid ProjectUpdateRequest request) {
+
         ProjectUpdateCommand command = request.toCommand();
-        updateProjectUseCase.updateProject(projectId, command);
+        updateProjectUseCase.updateProject(projectId, command, customUserDetails.getId());
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
     // 삭제, todo: 프로젝트 softDelete -> 단계, 할당멤버도 softDelete
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
-        deleteProjectUseCase.deleteProject(projectId);
+    public ResponseEntity<ApiResponse<Void>> deleteProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId) {
+
+        deleteProjectUseCase.deleteProject(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_DELETE_SUCCESS);
     }
 
     // 프로젝트 상태 변경
     @PutMapping("/{projectId}/status")
     public ResponseEntity<ApiResponse<Void>> updateProjectStatus(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-        updateProjectUseCase.changedStatus(projectId);
+
+        updateProjectUseCase.changedStatus(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 

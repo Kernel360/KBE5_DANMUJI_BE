@@ -1,11 +1,12 @@
 package com.back2basics.projectstep.model;
 
+import com.back2basics.history.strategy.TargetDomain;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProjectStep {
+public class ProjectStep implements TargetDomain {
 
     private final Long stepId;
 
@@ -54,7 +55,7 @@ public class ProjectStep {
     public void updateStepOrder(int stepOrder) {
         this.stepOrder = stepOrder;
     }
-
+    
     public void updateStepStatus(ProjectStep projectStep) {
         if (projectStep.getProjectStepStatus() == ProjectStepStatus.IN_PROGRESS) {
             this.projectStepStatus = ProjectStepStatus.COMPLETED;
@@ -65,5 +66,23 @@ public class ProjectStep {
 
     public void revertStepStatus() {
         this.projectStepStatus = ProjectStepStatus.PENDING;
+    }
+
+    @Override
+    public Long getId() {
+        return this.stepId;
+    }
+
+    public static ProjectStep copyOf(ProjectStep original) {
+        return ProjectStep.builder()
+            .stepId(original.stepId)
+            .projectId(original.projectId)
+            .name(original.name)
+            .stepOrder(original.stepOrder)
+            .projectStepStatus(original.projectStepStatus)
+            .isDeleted(original.isDeleted)
+            .deletedAt(original.deletedAt)
+            .build();
+
     }
 }

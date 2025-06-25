@@ -4,6 +4,6 @@ import com.back2basics.company.model.Company;
 
 public interface DeleteCompanyPort {
 
-    void softDelete(Company company);
+    Company softDelete(Company company);
 
 }

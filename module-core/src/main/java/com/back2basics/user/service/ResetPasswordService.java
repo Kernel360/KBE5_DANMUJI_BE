@@ -29,7 +29,7 @@ public class ResetPasswordService implements ResetPasswordUseCase {
     }
 
     @Override
-    public String resetByAdmin(Long userId) {
+    public String resetByAdmin(Long userId, Long loggedInUserId) {
         User user = userQueryPort.findById(userId);
         String generatedPassword = passwordGenerator.generate();
 

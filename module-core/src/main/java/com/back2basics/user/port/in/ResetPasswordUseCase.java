@@ -6,5 +6,5 @@ public interface ResetPasswordUseCase {
 
     void reset(Long userId, ResetPasswordCommand command);
 
-    String resetByAdmin(Long userId);
+    String resetByAdmin(Long userId, Long loggedInUserId);
 }

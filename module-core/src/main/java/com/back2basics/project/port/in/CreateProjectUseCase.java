@@ -4,5 +4,5 @@ import com.back2basics.project.port.in.command.ProjectCreateCommand;
 
 public interface CreateProjectUseCase {
 
-    void createProject(ProjectCreateCommand projectCreateCommand);
+    void createProject(ProjectCreateCommand projectCreateCommand, Long loggedInUserId);
 }

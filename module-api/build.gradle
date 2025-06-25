@@ -38,6 +38,8 @@ dependencies {
     testAnnotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
     testImplementation("org.springframework.security:spring-security-test")
 
+    // mongodb atlas
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
 
 bootJar {

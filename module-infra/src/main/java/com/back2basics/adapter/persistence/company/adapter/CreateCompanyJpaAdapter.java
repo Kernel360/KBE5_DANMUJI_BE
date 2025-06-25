@@ -16,16 +16,17 @@ public class CreateCompanyJpaAdapter implements CreateCompanyPort {
     private final CompanyMapper mapper;
 
     @Override
-    public Long save(Company company) {
+    public Company save(Company company) {
         CompanyEntity entity = mapper.toEntity(company);
-        return companyEntityRepository.save(entity).getId();
+        CompanyEntity saved = companyEntityRepository.save(entity);
+        return mapper.toDomain(saved);
     }
 
     @Override
     public boolean existsByName(String name) {
         return companyEntityRepository.existsByName(name);
     }
-    
+
     @Override
     public boolean existsByBizNo(Long bizNo) {
         return companyEntityRepository.existsByBizNo(bizNo);

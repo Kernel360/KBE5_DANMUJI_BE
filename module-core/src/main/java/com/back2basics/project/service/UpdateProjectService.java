@@ -1,10 +1,12 @@
 package com.back2basics.project.service;
 
 import com.back2basics.assignment.model.Assignment;
-import com.back2basics.assignment.port.out.DeleteAssignmentPort;
 import com.back2basics.assignment.port.out.AssignmentQueryPort;
+import com.back2basics.assignment.port.out.DeleteAssignmentPort;
 import com.back2basics.assignment.service.notification.AssignmentNotificationSender;
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
@@ -35,6 +37,8 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     private final UserQueryPort userQueryPort;
     private final DeleteAssignmentPort deleteAssignmentPort;
     private final AssignmentNotificationSender assignmentNotificationSender;
+    private final HistoryLogService historyLogService;
+
 
     private final ReadProjectPort readProjectPort;
     private final ReadProjectStepPort readProjectStepPort;
@@ -44,8 +48,9 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     @Override
     @Transactional
     public void updateProject(Long projectId,
-        ProjectUpdateCommand command) {
+        ProjectUpdateCommand command, Long loggedInUserId) {
         Project project = projectValidator.findById(projectId);
+        Project before = Project.copyOf(project);
         project.update(command);
         updateProjectPort.update(project);
 
@@ -73,18 +78,25 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         updateAssignments(oldClients, clientUsers, clientManagers);
         newAssignUsers(project, oldDevs, oldClients, devManagers, devUsers,
             clientManagers, clientUsers);
+
+        historyLogService.logUpdated(DomainType.PROJECT, loggedInUserId, before, project,
+            "프로젝트 정보 수정");
     }
 
     @Override
-    public void changedStatus(Long projectId) {
+    public void changedStatus(Long projectId, Long loggedInUserId) {
         Project project = readProjectPort.findProjectById(projectId);
+        Project before = Project.copyOf(project);
 
         if (project.getStatus() == ProjectStatus.IN_PROGRESS) {
             project.statusCompleted();
         } else {
             project.statusInProgress();
         }
+
         updateProjectPort.update(project);
+        historyLogService.logUpdated(DomainType.PROJECT, loggedInUserId, before, project,
+            "프로젝트 상태 수정");
     }
 
     private void updateAssignments(List<Assignment> oldAssignments, List<User> updatedUsers,
