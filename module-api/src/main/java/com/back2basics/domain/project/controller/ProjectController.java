@@ -28,6 +28,7 @@ import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -80,6 +81,7 @@ public class ProjectController {
         } else if (user.getRole() == Role.ADMIN) {
             result = readProjectUseCase.getAllProjects(pageable);
         }
+        
         Page<ProjectListResponse> response = Objects.requireNonNull(result)
             .map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
