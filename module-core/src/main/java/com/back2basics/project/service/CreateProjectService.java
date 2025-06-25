@@ -39,6 +39,7 @@ public class CreateProjectService implements CreateProjectUseCase {
         Project project = Project.builder()
             .name(command.getName())
             .description(command.getDescription())
+            .projectCost(command.getProjectCost())
             .startDate(command.getStartDate())
             .endDate(command.getEndDate())
             .status(ProjectStatus.IN_PROGRESS)

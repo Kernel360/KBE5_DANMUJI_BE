@@ -15,6 +15,8 @@ public class ProjectUpdateCommand {
 
     String description;
 
+    String projectCost;
+
     LocalDate startDate;
 
     LocalDate endDate;

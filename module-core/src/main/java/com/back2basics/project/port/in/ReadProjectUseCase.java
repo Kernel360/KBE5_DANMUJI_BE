@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 public interface ReadProjectUseCase {
 
     // 관리자용 전체 리스트
-    Page<ProjectGetResult> getAllProjects(Pageable pageable);
+    Page<ProjectListResult> getAllProjects(Pageable pageable);
 
     List<ProjectGetResult> getAllProjects();
 
@@ -19,7 +19,7 @@ public interface ReadProjectUseCase {
     Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable);
 
     // 상세 조회
-    ProjectDetailResult getProjectDetails(Long projectId);
+    ProjectDetailResult getProjectDetails(Long projectId, Long userId);
 
     List<ProjectRecentGetResult> getRecentProjects();
 

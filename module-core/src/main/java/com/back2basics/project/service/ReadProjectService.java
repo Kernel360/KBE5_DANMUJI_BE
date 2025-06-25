@@ -1,6 +1,7 @@
 package com.back2basics.project.service;
 
-import com.back2basics.assignment.model.Assignment;
+import com.back2basics.assignment.port.out.AssignmentQueryPort;
+import com.back2basics.company.model.CompanyType;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.project.model.Project;
@@ -10,6 +11,7 @@ import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
+import com.back2basics.user.model.UserType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,11 +25,12 @@ public class ReadProjectService implements ReadProjectUseCase {
     private final ReadProjectPort readProjectPort;
     private final ProjectValidator projectValidator;
     private final UserValidator userValidator;
+    private final AssignmentQueryPort assignmentQueryPort;
 
     @Override
-    public Page<ProjectGetResult> getAllProjects(Pageable pageable) {
+    public Page<ProjectListResult> getAllProjects(Pageable pageable) {
         Page<Project> projects = readProjectPort.findAll(pageable);
-        return projects.map(ProjectGetResult::toResult);
+        return projects.map(ProjectListResult::toResult);
     }
 
     @Override
@@ -44,9 +47,11 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
-    public ProjectDetailResult getProjectDetails(Long projectId) {
+    public ProjectDetailResult getProjectDetails(Long projectId, Long userId) {
         Project project = projectValidator.findById(projectId);
-        return ProjectDetailResult.of(project);
+        UserType userType = assignmentQueryPort.findUserTypeByProjectIdAndUserId(projectId, userId);
+        CompanyType companyType = assignmentQueryPort.findCompanyTypeByProjectIdAndUserId(projectId, userId);
+        return ProjectDetailResult.of(project, userType, companyType);
     }
 
     @Override

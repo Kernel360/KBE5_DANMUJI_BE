@@ -22,13 +22,20 @@ import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
+import com.back2basics.security.model.CustomUserDetails;
+import com.back2basics.user.model.Role;
+import com.back2basics.user.model.User;
+import com.back2basics.user.port.out.UserQueryPort;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +55,7 @@ public class ProjectController {
     private final UpdateProjectUseCase updateProjectUseCase;
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
+    private final UserQueryPort userQueryPort;
 
     // 생성
     @PostMapping
@@ -57,31 +65,20 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
 
-    // 회원별 프로젝트 목록, 양방향 연관관계
-    @GetMapping("/{userId}/user")
-    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getUserProjects(
-        @PathVariable Long userId,
-        @PageableDefault(
-            page = 0,
-            size = 10
-        )
-        Pageable pageable) {
-
-        Page<ProjectListResult> result = readProjectUseCase.getUserProjects(userId, pageable);
-        Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
-        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
-    }
-
-    // 전체 프로젝트 목록, todo: projectListResponse 로 변경
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getProjects(
-        @PageableDefault(
-            page = 0,
-            size = 10
-        )
-        Pageable pageable) {
-        Page<ProjectGetResult> result = readProjectUseCase.getAllProjects(pageable);
-        Page<ProjectGetResponse> response = result.map(ProjectGetResponse::toResponse);
+    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getProjects(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        User user = userQueryPort.findById(customUserDetails.getId());
+        Page<ProjectListResult> result = null;
+
+        if (user.getRole() == Role.USER) {
+            result = readProjectUseCase.getUserProjects(user.getId(),
+                pageable);
+        } else if (user.getRole() == Role.ADMIN) {
+            result = readProjectUseCase.getAllProjects(pageable);
+        }
+        Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
@@ -104,8 +101,10 @@ public class ProjectController {
     // 상세 정보 조회
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-        ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId);
+        ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId,
+            customUserDetails.getId());
         ProjectDetailResponse response = ProjectDetailResponse.toResponse(result);
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
@@ -173,10 +172,6 @@ public class ProjectController {
 //
 //        Page<TestResult> result = readProjectUseCase.getAllByUserIdOne(userId, pageable);
 //        Page<TestResponse> response = result.map(TestResponse::toResponse);
-//        System.out.println("=== 단방향 === ");
-//        System.out.println("유저아이디: " + userId);
-//        System.out.println("페이저블: " + pageable);
-//        System.out.println("response 개수: " + response.stream().count());
 //        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
 //    }
 }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record ProjectCreateRequest(@NotBlank(message = "프로젝트명은 필수입니다.") String name,
-                                   String description, LocalDate startDate, LocalDate endDate,
+                                   String description, String projectCost, LocalDate startDate, LocalDate endDate,
                                    List<Long> devManagerId, List<Long> clientManagerId,
                                    List<Long> devUserId,
                                    List<Long> clientUserId
@@ -16,6 +16,7 @@ public record ProjectCreateRequest(@NotBlank(message = "프로젝트명은 필�
         return ProjectCreateCommand.builder()
             .name(name)
             .description(description)
+            .projectCost(projectCost)
             .startDate(startDate)
             .endDate(endDate)
             .devManagerId(devManagerId)

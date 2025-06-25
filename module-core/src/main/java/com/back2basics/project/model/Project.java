@@ -34,16 +34,18 @@ public class Project {
     // todo: 변수명 바꾸기 projectStatus
     private ProjectStatus status;
 
+    private int progress;
+
+    private String projectCost;
+
     private List<ProjectStep> steps; // = new ArrayList<>;
 
     private List<Assignment> assignments;
 
-    private int progress; // 프로젝트 단계 진행률
-
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-        boolean isDeleted, ProjectStatus status, List<ProjectStep> steps,
+        boolean isDeleted, ProjectStatus status, String projectCost, List<ProjectStep> steps,
         List<Assignment> assignments, int progress) {
         this.id = id;
         this.name = name;
@@ -55,6 +57,7 @@ public class Project {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status != null ? status : ProjectStatus.IN_PROGRESS;
+        this.projectCost = projectCost;
         this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
         this.assignments =
             assignments != null ? new ArrayList<>(assignments) : new ArrayList<>();
@@ -73,6 +76,7 @@ public class Project {
     public void update(ProjectUpdateCommand command) {
         this.name = command.getName();
         this.description = command.getDescription();
+        this.projectCost = command.getProjectCost();
         this.startDate = command.getStartDate();
         this.endDate = command.getEndDate();
     }
@@ -91,7 +95,6 @@ public class Project {
     }
 
     public void calculateProgress(int totalStep, int completedStep) {
-        System.out.println("진행률 계산");
         double result = ((double) completedStep / totalStep) * 100;
         this.progress = (int) result;
     }

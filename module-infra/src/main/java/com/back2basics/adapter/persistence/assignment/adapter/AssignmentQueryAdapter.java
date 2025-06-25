@@ -4,6 +4,8 @@ import com.back2basics.adapter.persistence.assignment.AssignmentEntityRepository
 import com.back2basics.adapter.persistence.assignment.AssignmentMapper;
 import com.back2basics.assignment.model.Assignment;
 import com.back2basics.assignment.port.out.AssignmentQueryPort;
+import com.back2basics.company.model.CompanyType;
+import com.back2basics.user.model.UserType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -31,5 +33,15 @@ public class AssignmentQueryAdapter implements AssignmentQueryPort {
             .stream()
             .map(assignmentMapper::toDomain)
             .toList();
+    }
+
+    @Override
+    public CompanyType findCompanyTypeByProjectIdAndUserId(Long projectId, Long userId) {
+        return assignmentEntityRepository.findCompanyTypeByProject_IdAndUser_Id(projectId, userId);
+    }
+
+    @Override
+    public UserType findUserTypeByProjectIdAndUserId(Long projectId, Long userId) {
+        return assignmentEntityRepository.findUserTypeByProject_IdAndUser_Id(projectId, userId);
     }
 }
