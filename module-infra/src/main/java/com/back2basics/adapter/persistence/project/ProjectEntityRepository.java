@@ -17,32 +17,29 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
     Page<ProjectEntity> findAllByIsDeletedFalse(Pageable pageable);
 
     @Query("""
-            SELECT pu.project
-            FROM AssignmentEntity pu
-            WHERE pu.user.id = :userId
-              AND pu.project.isDeleted = false
-        """)
-    Page<ProjectEntity> findProjectsByUserIdAndIsDeletedFalse(Long userId,
-        Pageable pageable);
+        SELECT p
+        FROM ProjectEntity p JOIN AssignmentEntity a ON a.project = p
+        WHERE a.user.id = :userId
+        AND p.isDeleted = false
+        AND p.name LIKE %:keyword%
+       """)
+    Page<ProjectEntity> findByNameContainingAndUserIdIsDeletedFalse(
+        @Param("keyword") String keyword,
+        @Param("userId") Long userId, Pageable pageable);
 
-    Page<ProjectEntity> findAllByAssignmentsUserIdAndIsDeletedFalse(
-        Long userId,
-        Pageable pageable
-    );
+    Page<ProjectEntity> findAllByNameContainingAndIsDeletedFalse(Pageable pageable, String keyword);
 
     @Query("""
           SELECT p
-            FROM ProjectEntity p
-            JOIN p.assignments pu
-           WHERE pu.user.id = :userId
-             AND p.isDeleted = false
+          FROM ProjectEntity p
+          JOIN p.assignments pu
+          WHERE pu.user.id = :userId
+          AND p.isDeleted = false
         """)
     Page<ProjectEntity> findAllByUserId(
         @Param("userId") Long userId,
         Pageable pageable
     );
-
-    Page<ProjectEntity> findAllByNameContainingAndIsDeletedFalse(Pageable pageable, String keyword);
 
     List<ProjectEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 
