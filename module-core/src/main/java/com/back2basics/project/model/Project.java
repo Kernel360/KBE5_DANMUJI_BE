@@ -1,6 +1,7 @@
 package com.back2basics.project.model;
 
 import com.back2basics.assignment.model.Assignment;
+import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.projectstep.model.ProjectStep;
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Project {
+public class Project implements TargetDomain {
 
     private final Long id;
 
@@ -34,17 +35,19 @@ public class Project {
     // todo: 변수명 바꾸기 projectStatus
     private ProjectStatus status;
 
+    private int progress;
+
+    private String projectCost;
+
     private List<ProjectStep> steps; // = new ArrayList<>;
 
     private List<Assignment> assignments;
 
-    private int progress; // 프로젝트 단계 진행률
-
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-        boolean isDeleted, ProjectStatus status, List<ProjectStep> steps,
-        List<Assignment> assignments, int progress) {
+        boolean isDeleted, ProjectStatus status, String projectCost, List<ProjectStep> steps,
+        List<Assignment> assignments, Integer progress) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -55,10 +58,11 @@ public class Project {
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
         this.status = status != null ? status : ProjectStatus.IN_PROGRESS;
+        this.projectCost = projectCost;
         this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
         this.assignments =
             assignments != null ? new ArrayList<>(assignments) : new ArrayList<>();
-        this.progress = progress;
+        this.progress = (progress != null) ? progress : 0;
     }
 
     // todo: 조회 시 steps 세팅해주는데 먼가 맘에 안듦. 위에서 값 초기화를 해주는거 같은데 안먹혀서 일단 해놓음
@@ -73,6 +77,7 @@ public class Project {
     public void update(ProjectUpdateCommand command) {
         this.name = command.getName();
         this.description = command.getDescription();
+        this.projectCost = command.getProjectCost();
         this.startDate = command.getStartDate();
         this.endDate = command.getEndDate();
     }
@@ -91,8 +96,25 @@ public class Project {
     }
 
     public void calculateProgress(int totalStep, int completedStep) {
-        System.out.println("진행률 계산");
         double result = ((double) completedStep / totalStep) * 100;
         this.progress = (int) result;
+    }
+
+    public static Project copyOf(Project project) {
+        return Project.builder()
+            .id(project.getId())
+            .name(project.getName())
+            .description(project.getDescription())
+            .startDate(project.getStartDate())
+            .endDate(project.getEndDate())
+            .createdAt(project.getCreatedAt())
+            .updatedAt(project.getUpdatedAt())
+            .deletedAt(project.getDeletedAt())
+            .isDeleted(project.isDeleted())
+            .status(project.getStatus())
+            .steps(project.getSteps())
+            .assignments(project.getAssignments())
+            .progress(project.getProgress())
+            .build();
     }
 }

@@ -4,5 +4,5 @@ import com.back2basics.company.port.in.command.CreateCompanyCommand;
 
 public interface CreateCompanyUseCase {
 
-    Long createCompany(CreateCompanyCommand createCompanyCommand);
+    Long createCompany(CreateCompanyCommand createCompanyCommand, Long loggedInUserId);
 }

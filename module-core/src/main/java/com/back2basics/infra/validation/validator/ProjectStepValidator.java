@@ -19,5 +19,4 @@ public class ProjectStepValidator {
             throw new ProjectStepException(STEP_NOT_FOUND);
         }
     }
-
 }

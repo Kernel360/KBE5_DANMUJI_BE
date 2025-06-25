@@ -16,6 +16,8 @@ public class ProjectCreateCommand {
 
     String description;
 
+    String projectCost;
+
     LocalDate startDate;
 
     LocalDate endDate;

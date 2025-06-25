@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.company.adapter;
 
 import com.back2basics.adapter.persistence.company.CompanyEntity;
 import com.back2basics.adapter.persistence.company.CompanyEntityRepository;
+import com.back2basics.adapter.persistence.company.CompanyMapper;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.out.DeleteCompanyPort;
 import com.back2basics.infra.exception.company.CompanyErrorCode;
@@ -14,13 +15,14 @@ import org.springframework.stereotype.Component;
 public class DeleteCompanyJpaAdapter implements DeleteCompanyPort {
 
     private final CompanyEntityRepository companyEntityRepository;
+    private final CompanyMapper mapper;
 
-    public void softDelete(Company company) {
+    public Company softDelete(Company company) {
         CompanyEntity companyEntity = companyEntityRepository.findById(company.getId())
             .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));
 
         companyEntity.markDeleted();
-        companyEntityRepository.save(companyEntity);
+        return mapper.toDomain(companyEntityRepository.save(companyEntity));
     }
 
 }

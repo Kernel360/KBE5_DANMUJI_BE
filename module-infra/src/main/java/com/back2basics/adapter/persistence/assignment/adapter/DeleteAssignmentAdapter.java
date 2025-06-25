@@ -17,9 +17,9 @@ public class DeleteAssignmentAdapter implements DeleteAssignmentPort {
     private final AssignmentMapper assignmentMapper;
 
     @Override
-    public void DeleteAllInBatch(List<Assignment> assignments) {
+    public void deleteAll(List<Assignment> assignments) {
         List<AssignmentEntity> entities = assignments.stream()
-            .map(assignmentMapper::toEntityTest)
+            .map(assignmentMapper::toEntity)
             .toList();
         assignmentEntityRepository.deleteAllInBatch(entities);
     }

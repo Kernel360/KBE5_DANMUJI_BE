@@ -18,7 +18,7 @@ public record UserUpdateRequest(@NotEmpty
                                 @Email(message = "유효한 이메일 형식이 아닙니다.") String email,
                                 @NotEmpty(message = "전화번호는 필수입니다.")
                                 @Pattern(
-                                    regexp = "^\\d{10,11}$",
+                                    regexp = "^\\d{9,11}$",
                                     message = "전화번호는 숫자만 포함하여 10~11자리여야 합니다."
                                 ) String phone,
                                 @Size(max = 50, message = "직책은 최대 50자까지 가능합니다.") String position,

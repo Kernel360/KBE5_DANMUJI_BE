@@ -2,6 +2,7 @@ package com.back2basics.assignment.model;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.project.model.Project;
 import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
@@ -11,7 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Assignment {
+public class Assignment implements TargetDomain {
 
     private final Long id;
     private final Project project;

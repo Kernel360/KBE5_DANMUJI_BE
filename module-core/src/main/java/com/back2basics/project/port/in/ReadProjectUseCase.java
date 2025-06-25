@@ -10,22 +10,22 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReadProjectUseCase {
 
-    // 관리자용 전체 리스트
-    Page<ProjectGetResult> getAllProjects(Pageable pageable);
+    // 전체 프로젝트 목록
+    Page<ProjectListResult> getAllProjects(Pageable pageable);
+
+    // 회원별 프로젝트 목록
+    Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable);
+
+    // 전체 검색 리스트
+    Page<ProjectListResult> searchProjects(String keyword, Pageable pageable);
+
+    // 회원별 검색 리스트
+    Page<ProjectListResult> searchUserProjects(Long userId, String keyword, Pageable pageable);
+
+    // 상세 조회
+    ProjectDetailResult getProjectDetails(Long projectId, Long userId);
 
     List<ProjectGetResult> getAllProjects();
 
-    // 검색 리스트
-    Page<ProjectGetResult> searchProjects(String keyword, Pageable pageable);
-
-    // 상세 조회
-    ProjectDetailResult getProjectDetails(Long projectId);
-
     List<ProjectRecentGetResult> getRecentProjects();
-
-    // 양방향
-    Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable);
-
-    // 단방향
-    Page<ProjectListResult> getAllByUserIdOne(Long userId, Pageable pageable);
 }

@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface AssignmentQueryPort {
 
-    List<Assignment> findUsersByProjectId(Long projectId);
+    List<Assignment> findAllByProjectId(Long projectId);
 
-    Assignment findByProjectIdAndUserTypeAndCompanyType(Long projectId, UserType userType, CompanyType companyType);
+    List<Assignment> findAllByProjectIdAndCompanyId(Long projectId, Long companyId);
 
-    // 할당 멤버 조회
-    List<Assignment> findByProjectIdAndUserId(Long projectId, Long userId);
+    CompanyType findCompanyTypeByProjectIdAndUserId(Long projectId, Long userId);
 
-    // 할당된 회사 삭제를 위한 assignment 리스트 조회
-    List<Assignment> findByProjectIdAndCompanyId(Long projectId, Long companyId);
+    UserType findUserTypeByProjectIdAndUserId(Long projectId, Long userId);
 }

@@ -10,8 +10,8 @@ import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
 import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
-import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
 import com.back2basics.domain.project.dto.response.ProjectListResponse;
+import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
@@ -20,15 +20,22 @@ import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
-import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
+import com.back2basics.project.service.result.ProjectRecentGetResult;
+import com.back2basics.security.model.CustomUserDetails;
+import com.back2basics.user.model.Role;
+import com.back2basics.user.model.User;
+import com.back2basics.user.port.out.UserQueryPort;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,90 +55,104 @@ public class ProjectController {
     private final UpdateProjectUseCase updateProjectUseCase;
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
-    // todo: 변수명 통일, response 세분화
+    private final UserQueryPort userQueryPort;
 
     // 생성
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid ProjectCreateRequest request) {
-        createProjectUseCase.createProject(request.toCommand());
+
+        createProjectUseCase.createProject(request.toCommand(), customUserDetails.getId());
         return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
 
-    // 회원별 프로젝트 목록, 양방향 연관관계
-    @GetMapping("/{userId}/user")
-    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getUserProjects(
-        @PathVariable Long userId,
-        @PageableDefault(
-            page = 0,
-            size = 10
-        )
-        Pageable pageable) {
-
-        Page<ProjectListResult> result = readProjectUseCase.getUserProjects(userId, pageable);
-        Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
-        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
-    }
-
-    // 전체 프로젝트 목록
+    // 프로젝트 목록 조회
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> getProjects(
-        @PageableDefault(
-            page = 0,
-            size = 10
-        )
-        Pageable pageable) {
-        Page<ProjectGetResult> result = readProjectUseCase.getAllProjects(pageable);
-        Page<ProjectGetResponse> response = result.map(ProjectGetResponse::toResponse);
+    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getProjects(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
+        User user = userQueryPort.findById(customUserDetails.getId());
+        Page<ProjectListResult> result = null;
+
+        if (user.getRole() == Role.USER) {
+            result = readProjectUseCase.getUserProjects(user.getId(),
+                pageable);
+        } else if (user.getRole() == Role.ADMIN) {
+            result = readProjectUseCase.getAllProjects(pageable);
+        }
+        
+        Page<ProjectListResponse> response = Objects.requireNonNull(result)
+            .map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
     // 검색 프로젝트 조회
+    // todo: 필터링 조건 추가
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
+    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> searchProjects(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestParam(required = false) String keyword,
         @PageableDefault(
-            page = 0,
-            size = 10
+            page = 0, size = 10, sort = "createdAt", direction = Direction.DESC
         )
         Pageable pageable) {
-        Page<ProjectGetResult> result = readProjectUseCase.searchProjects(keyword, pageable);
-        Page<ProjectGetResponse> response = result.map(ProjectGetResponse::toResponse);
+        User user = userQueryPort.findById(customUserDetails.getId());
+        Page<ProjectListResult> result = null;
+
+        if (user.getRole() == Role.USER) {
+            result = readProjectUseCase.searchUserProjects(user.getId(), keyword,
+                pageable);
+        } else if (user.getRole() == Role.ADMIN) {
+            result = readProjectUseCase.searchProjects(keyword, pageable);
+        }
+        Page<ProjectListResponse> response = Objects.requireNonNull(result)
+            .map(ProjectListResponse::toResponse);
 
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
     // 상세 정보 조회
+    // todo: api 2개로 분할
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-        ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId);
+        ProjectDetailResult result = readProjectUseCase.getProjectDetails(projectId,
+            customUserDetails.getId());
         ProjectDetailResponse response = ProjectDetailResponse.toResponse(result);
         return ApiResponse.success(PROJECT_READ_SUCCESS, response);
     }
 
-    // 수정 todo: member 제거
+    // 수정
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId,
         @RequestBody @Valid ProjectUpdateRequest request) {
+
         ProjectUpdateCommand command = request.toCommand();
-        updateProjectUseCase.updateProject(projectId, command);
+        updateProjectUseCase.updateProject(projectId, command, customUserDetails.getId());
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
-    // 삭제
+    // 삭제, todo: 프로젝트 softDelete -> 단계, 할당멤버도 softDelete
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
-        deleteProjectUseCase.deleteProject(projectId);
+    public ResponseEntity<ApiResponse<Void>> deleteProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId) {
+
+        deleteProjectUseCase.deleteProject(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_DELETE_SUCCESS);
     }
 
     // 프로젝트 상태 변경
     @PutMapping("/{projectId}/status")
     public ResponseEntity<ApiResponse<Void>> updateProjectStatus(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-        updateProjectUseCase.changedStatus(projectId);
+
+        updateProjectUseCase.changedStatus(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
@@ -157,26 +178,4 @@ public class ProjectController {
 
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
-
-    // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민.. -> 5순위
-
-    /* todo: 회원 별 프로젝트 목록 - 단반향 연관관계
-        현재 양방향으로 해놓았으나 단방향도 가능할 것으로 생각됨. 추후 테스트 해보고 단방향으로 변경 */
-//    @GetMapping("/{userId}/test")
-//    public ResponseEntity<ApiResponse<Page<TestResponse>>> getAllByUserIdOne(
-//        @PathVariable Long userId,
-//        @PageableDefault(
-//            page = 0,
-//            size = 10
-//        )
-//        Pageable pageable) {
-//
-//        Page<TestResult> result = readProjectUseCase.getAllByUserIdOne(userId, pageable);
-//        Page<TestResponse> response = result.map(TestResponse::toResponse);
-//        System.out.println("=== 단방향 === ");
-//        System.out.println("유저아이디: " + userId);
-//        System.out.println("페이저블: " + pageable);
-//        System.out.println("response 개수: " + response.stream().count());
-//        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
-//    }
 }

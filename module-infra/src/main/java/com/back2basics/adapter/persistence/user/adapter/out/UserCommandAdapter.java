@@ -38,10 +38,12 @@ public class UserCommandAdapter implements UserCommandPort {
     }
 
     @Override
-    public void deleteById(Long userId) {
+    public User deleteById(Long userId) {
         UserEntity userEntity = userEntityRepository.findById(userId)
             .orElseThrow(() -> new UserException(USER_NOT_FOUND));
         userEntity.markDeleted();
+
+        return userMapper.toDomain(userEntityRepository.save(userEntity));
     }
 
     @Override

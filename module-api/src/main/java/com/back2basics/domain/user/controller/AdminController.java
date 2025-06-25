@@ -14,6 +14,7 @@ import com.back2basics.domain.user.dto.response.UserCreateResponse;
 import com.back2basics.domain.user.dto.response.UserInfoResponse;
 import com.back2basics.domain.user.dto.response.UserSimpleResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.DeleteUserUseCase;
 import com.back2basics.user.port.in.ResetPasswordUseCase;
@@ -28,6 +29,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,8 +52,11 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserCreateResponse>> createUser(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid UserCreateRequest request) {
-        UserCreateResult result = createUserUseCase.create(request.toCommand());
+
+        UserCreateResult result = createUserUseCase.create(request.toCommand(),
+            customUserDetails.getId());
         return ApiResponse.success(USER_CREATE_SUCCESS,
             UserCreateResponse.from(result));
     }
@@ -64,14 +69,18 @@ public class AdminController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> updateUser(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid UserUpdateRequest request, @PathVariable Long userId) {
-        updateUserUseCase.update(userId, request.toCommand());
+
+        updateUserUseCase.update(userId, request.toCommand(), customUserDetails.getId());
         return ApiResponse.success(USER_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
-        deleteUserUseCase.delete(userId);
+    public ResponseEntity<ApiResponse<Void>> deleteUser(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long userId) {
+
+        deleteUserUseCase.delete(userId, customUserDetails.getId());
         return ApiResponse.success(USER_DELETE_SUCCESS);
     }
 
@@ -82,8 +91,11 @@ public class AdminController {
     }
 
     @PutMapping("/password/reset/{userId}")
-    public ResponseEntity<ApiResponse<String>> resetPassword(@PathVariable Long userId) {
-        String generatedPassword = resetPasswordUseCase.resetByAdmin(userId);
+    public ResponseEntity<ApiResponse<String>> resetPassword(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long userId) {
+
+        String generatedPassword = resetPasswordUseCase.resetByAdmin(userId,
+            customUserDetails.getId());
         return ApiResponse.success(USER_CREATE_SUCCESS, generatedPassword);
     }
 
@@ -96,17 +108,19 @@ public class AdminController {
     }
 
     @GetMapping("/allUsers")
-    public ResponseEntity<ApiResponse<Page<UserSimpleResponse>>> getAllUsers(
+    public ResponseEntity<ApiResponse<Page<UserInfoResponse>>> getAllUsers(
         @PageableDefault Pageable pageable) {
-        Page<UserSimpleResult> resultList = userQueryUseCase.getAllUsers(pageable);
-        Page<UserSimpleResponse> responseList = resultList.map(UserSimpleResponse::from);
+        Page<UserInfoResult> resultList = userQueryUseCase.getAllUsers(pageable);
+        Page<UserInfoResponse> responseList = resultList.map(UserInfoResponse::from);
         return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
     }
 
     @PutMapping("/{userId}/role/{role}")
     public ResponseEntity<ApiResponse<Void>> updateUserRole(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long userId, @PathVariable String role) {
-        updateUserUseCase.updateUserRole(userId, role);
+
+        updateUserUseCase.updateUserRole(userId, role, customUserDetails.getId());
         return ApiResponse.success(USER_UPDATE_ROLE_SUCCESS);
     }
 }

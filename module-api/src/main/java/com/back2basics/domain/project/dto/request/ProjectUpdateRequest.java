@@ -7,7 +7,7 @@ import java.util.List;
 
 // todo: request 해서 그대로 엎어치기 하고 싶음...
 public record ProjectUpdateRequest(@NotBlank(message = "프로젝트명은 필수입니다.") String name,
-                                   String description, LocalDate startDate, LocalDate endDate,
+                                   String description, String projectCost, LocalDate startDate, LocalDate endDate,
                                    List<Long> devManagerId, List<Long> clientManagerId,
                                    List<Long> devUserId,
                                    List<Long> clientUserId) {
@@ -16,6 +16,7 @@ public record ProjectUpdateRequest(@NotBlank(message = "프로젝트명은 필�
         return ProjectUpdateCommand.builder()
             .name(name)
             .description(description)
+            .projectCost(projectCost)
             .startDate(startDate)
             .endDate(endDate)
             .devManagerId(devManagerId)

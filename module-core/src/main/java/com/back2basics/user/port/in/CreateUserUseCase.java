@@ -5,5 +5,5 @@ import com.back2basics.user.service.result.UserCreateResult;
 
 public interface CreateUserUseCase {
 
-    UserCreateResult create(UserCreateCommand command);
+    UserCreateResult create(UserCreateCommand command, Long loggedInUserId);
 }

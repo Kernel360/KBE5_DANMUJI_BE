@@ -2,7 +2,10 @@ package com.back2basics.projectstep.service;
 
 import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.STEP_NOT_FOUND;
 
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
+import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
@@ -21,26 +24,42 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UpdateProjectStepService implements UpdateProjectStepUseCase {
 
+
     private final ReadProjectStepPort readProjectStepPort;
     private final SaveProjectStepPort saveProjectStepPort;
+    private final ProjectValidator projectValidator;
+    private final HistoryLogService historyLogService;
 
     @Override
-    public void updateStepName(UpdateProjectStepCommand command, Long stepId) {
+    public void updateStepName(UpdateProjectStepCommand command, Long stepId, Long loggedInUserId) {
         ProjectStep step = readProjectStepPort.findById(stepId);
+        ProjectStep before = ProjectStep.copyOf(step);
         step.updateName(command.getName());
-        saveProjectStepPort.save(step);
+        ProjectStep updatedStep = saveProjectStepPort.save(step);
+
+        historyLogService.logUpdated(DomainType.STEP, loggedInUserId, before, updatedStep,
+            "프로젝트 단계 수정");
+
     }
 
     @Override
-    public void updateApprovalStatus(ProjectStepStatus projectStepStatus,
-        Long stepId) {
+    public void updateApprovalStatus(ProjectStepStatus projectStepStatus, Long stepId,
+        Long loggedInUserId) {
         ProjectStep step = readProjectStepPort.findById(stepId);
+        ProjectStep before = ProjectStep.copyOf(step);
         step.updateStatus(projectStepStatus);
-        saveProjectStepPort.save(step);
+        ProjectStep updatedStep = saveProjectStepPort.save(step);
+
+        historyLogService.logUpdated(DomainType.STEP, loggedInUserId, before, updatedStep,
+            "프로젝트 단계 승인요청 변경");
     }
 
+
+    // todo
+    //  swlee : 이력 생성 보류 -> 어떤 작업 해주는 기능인가요??
     @Override
     public void reorderSteps(Long projectId, List<Long> stepIdsInNewOrder) {
+        projectValidator.findById(projectId);
         List<ProjectStep> steps = readProjectStepPort.findAllById(stepIdsInNewOrder);
 
         Map<Long, ProjectStep> stepMap = steps.stream()
@@ -58,6 +77,7 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
 
         saveProjectStepPort.saveAll(steps);
     }
+
     @Override
     public void updateStepStatus(Long stepId) {
         ProjectStep projectStep = readProjectStepPort.findById(stepId);

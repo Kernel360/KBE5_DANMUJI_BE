@@ -21,9 +21,11 @@ import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.CreateProjectStepCommand;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.projectstep.service.result.ProjectStepResult;
+import com.back2basics.security.model.CustomUserDetails;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,26 +51,32 @@ public class ProjectStepController {
     //todo: projectId 를 pathVariable - RequestParam ?
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createStep(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody CreateProjectStepRequest request, @RequestParam Long projectId) {
+
         CreateProjectStepCommand command = request.toCommand();
-        createProjectStepUseCase.createStep(command, projectId);
+        createProjectStepUseCase.createStep(command, projectId, customUserDetails.getId());
         updateProjectUseCase.calculateProgressRate(projectId);
+
         return ApiResponse.success(STEP_CREATE_SUCCESS);
     }
 
     // 단계 순서 변경
     @PutMapping("/{projectId}/reorder")
-    public ResponseEntity<ApiResponse<Void>> reorderSteps(@PathVariable Long projectId,
+    public ResponseEntity<ApiResponse<Void>> reorderSteps(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId,
         @RequestBody List<Long> stepIdsInNewOrder) {
+
         updateProjectStepUseCase.reorderSteps(projectId, stepIdsInNewOrder);
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
     // 프로젝트 별 단계 목록
     @GetMapping("/{projectId}")
-    public ResponseEntity<ApiResponse<List<ProjectStepResponse>>> getStepsProjectId(
+    public ResponseEntity<ApiResponse<List<ProjectStepResponse>>> getStepsByProjectId(
         @PathVariable Long projectId) {
-        List<ProjectStepResult> result = readProjectStepUseCase.findByProjectId(
+        List<ProjectStepResult> result = readProjectStepUseCase.findAllByProjectId(
             projectId);
         List<ProjectStepResponse> response = result.stream()
             .map(ProjectStepResponse::toResponse).toList();
@@ -86,35 +94,43 @@ public class ProjectStepController {
 
     // 수정
     @PutMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<Void>> updateStepName(@PathVariable Long stepId, @RequestBody
-    UpdateProjectStepRequest request) {
+    public ResponseEntity<ApiResponse<Void>> updateStepName(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long stepId, @RequestBody
+        UpdateProjectStepRequest request) {
         UpdateProjectStepCommand command = request.toCommand();
-        updateProjectStepUseCase.updateStepName(command, stepId);
+        updateProjectStepUseCase.updateStepName(command, stepId, customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
     // todo: 유진님이 승인하시면 필요없을 듯 나중에 삭제
     @PutMapping("/{stepId}/approval")
-    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(@PathVariable Long stepId,
+    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long stepId,
         @RequestParam
         ProjectStepStatus projectStepStatus) {
-        updateProjectStepUseCase.updateApprovalStatus(projectStepStatus, stepId);
+        updateProjectStepUseCase.updateApprovalStatus(projectStepStatus, stepId,
+            customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 
     // 삭제
     @DeleteMapping("/{stepId}")
-    public ResponseEntity<ApiResponse<Void>> deleteStep(@PathVariable Long stepId) {
-        deleteProjectStepUseCase.softDelete(stepId);
+    public ResponseEntity<ApiResponse<Void>> deleteStep(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long stepId) {
+        deleteProjectStepUseCase.softDelete(stepId, customUserDetails.getId());
         return ApiResponse.success(STEP_DELETE_SUCCESS);
     }
 
     // todo: 단계 상태 변경, 진행중 -> 완료 / (취소: 완료 -> 진행중) api 따로?
     @PutMapping("/{stepId}/status")
-    public ResponseEntity<ApiResponse<Void>> updateProjectStepStatus(@PathVariable Long stepId, @RequestParam Long projectId) {
-       updateProjectStepUseCase.updateStepStatus(stepId);
-       updateProjectUseCase.calculateProgressRate(projectId);
-       return ApiResponse.success(STEP_STATUS_UPDATE_SUCCESS);
+    public ResponseEntity<ApiResponse<Void>> updateStepStatus(@PathVariable Long stepId,
+        @RequestParam Long projectId) {
+        updateProjectStepUseCase.updateStepStatus(stepId);
+        updateProjectUseCase.calculateProgressRate(projectId);
+        return ApiResponse.success(STEP_STATUS_UPDATE_SUCCESS);
     }
 
     // ProjectStepStatus PENDING 으로 초기화

@@ -11,7 +11,7 @@ public interface UserQueryUseCase {
 
     UserInfoResult getUserInfo(Long userId);
 
-    Page<UserSimpleResult> getAllUsers(Pageable pageable);
+    Page<UserInfoResult> getAllUsers(Pageable pageable);
 
     boolean existsByUsername(String username);
 

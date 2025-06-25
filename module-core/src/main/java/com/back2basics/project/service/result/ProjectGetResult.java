@@ -26,6 +26,7 @@ public class ProjectGetResult {
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
     private final boolean isDeleted;
+    private final int progress;
     private final ProjectStatus status;
     private final String clientCompany;
     private final String developerCompany;
@@ -54,6 +55,7 @@ public class ProjectGetResult {
             .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
             .status(project.getStatus())
+            .progress(project.getProgress())
             .clientCompany(clientCompany)
             .developerCompany(developerCompany)
             .steps(project.getSteps().stream()

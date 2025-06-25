@@ -14,7 +14,7 @@ public class ProjectValidator {
 
     private final ReadProjectPort port;
 
-    public Project findProjectById(Long id) {
+    public Project findById(Long id) {
         return port.findById(id)
             .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
     }

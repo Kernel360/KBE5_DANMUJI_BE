@@ -33,13 +33,13 @@ public class UserQueryService implements UserQueryUseCase {
     }
 
     @Override
-    public Page<UserSimpleResult> getAllUsers(Pageable pageable) {
+    public Page<UserInfoResult> getAllUsers(Pageable pageable) {
         return userQueryPort.findAllByDeletedAtIsNull(pageable)
             .map(user -> {
                 Company company = user.getCompanyId() != null
                     ? companyValidator.findCompany(user.getCompanyId())
                     : null;
-                return UserSimpleResult.of(user, company);
+                return UserInfoResult.of(user, company);
             });
     }
 
