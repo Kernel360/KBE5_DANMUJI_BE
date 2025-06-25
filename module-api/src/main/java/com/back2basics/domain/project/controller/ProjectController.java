@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,10 +65,11 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
 
+    // 프로젝트 목록 조회
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getProjects(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
         User user = userQueryPort.findById(customUserDetails.getId());
         Page<ProjectListResult> result = null;
 
@@ -78,27 +79,38 @@ public class ProjectController {
         } else if (user.getRole() == Role.ADMIN) {
             result = readProjectUseCase.getAllProjects(pageable);
         }
-        Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
+        Page<ProjectListResponse> response = Objects.requireNonNull(result)
+            .map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
     // 검색 프로젝트 조회
     // todo: 필터링 조건 추가
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<ProjectGetResponse>>> searchProjects(
+    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> searchProjects(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestParam(required = false) String keyword,
         @PageableDefault(
-            page = 0,
-            size = 10
+            page = 0, size = 10, sort = "createdAt", direction = Direction.DESC
         )
         Pageable pageable) {
-        Page<ProjectGetResult> result = readProjectUseCase.searchProjects(keyword, pageable);
-        Page<ProjectGetResponse> response = result.map(ProjectGetResponse::toResponse);
+        User user = userQueryPort.findById(customUserDetails.getId());
+        Page<ProjectListResult> result = null;
+
+        if (user.getRole() == Role.USER) {
+            result = readProjectUseCase.searchUserProjects(user.getId(), keyword,
+                pageable);
+        } else if (user.getRole() == Role.ADMIN) {
+            result = readProjectUseCase.searchProjects(keyword, pageable);
+        }
+        Page<ProjectListResponse> response = Objects.requireNonNull(result)
+            .map(ProjectListResponse::toResponse);
 
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 
     // 상세 정보 조회
+    // todo: api 2개로 분할
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -156,22 +168,4 @@ public class ProjectController {
 
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
-
-    // todo: log 조회 - 삭제프로젝트 / 수정프로젝트는 어떠케 ..? - 수정이 너무 다양한데.. 고민.. -> 5순위
-
-    /* todo: 회원 별 프로젝트 목록 - 단반향 연관관계
-        현재 양방향으로 해놓았으나 단방향도 가능할 것으로 생각됨. 추후 테스트 해보고 단방향으로 변경 */
-//    @GetMapping("/{userId}/test")
-//    public ResponseEntity<ApiResponse<Page<TestResponse>>> getAllByUserIdOne(
-//        @PathVariable Long userId,
-//        @PageableDefault(
-//            page = 0,
-//            size = 10
-//        )
-//        Pageable pageable) {
-//
-//        Page<TestResult> result = readProjectUseCase.getAllByUserIdOne(userId, pageable);
-//        Page<TestResponse> response = result.map(TestResponse::toResponse);
-//        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
-//    }
 }

@@ -41,17 +41,23 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
+    public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
+        Page<ProjectEntity> projectEntities = projectEntityRepository.findAllByUserId(userId,
+            pageable);
+        return projectEntities.map(projectMapper::toDomain);
+    }
+
+    @Override
     public List<Project> getAllProjects() {
         return projectEntityRepository.findAllByIsDeletedFalse().stream()
             .map(projectMapper::toDomain).toList();
     }
 
-//    @Override
-//    public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
-//        return projectEntityRepository.findAllByAssignmentsUserIdAndIsDeletedFalse(userId,
-//                pageable)
-//            .map(projectMapper::toDomain);
-//    }
+    @Override
+    public Page<Project> searchByKeywordAndUserId(Long userId, String keyword, Pageable pageable) {
+        return projectEntityRepository.findByNameContainingAndUserIdIsDeletedFalse(keyword, userId, pageable)
+            .map(projectMapper::toDomain);
+    }
 
     @Override
     public Page<Project> searchByKeyword(String keyword, Pageable pageable) {
@@ -63,20 +69,6 @@ public class ReadProjectAdapter implements ReadProjectPort {
     public List<Project> getRecentProjects() {
         return projectEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
             .stream().map(projectMapper::toDomain).toList();
-    }
-
-    @Override
-    public Page<Project> findAllByUserId(Long userId, Pageable pageable) {
-        Page<ProjectEntity> projectEntities = projectEntityRepository.findAllByUserId(userId,
-            pageable);
-        return projectEntities.map(projectMapper::toDomain);
-    }
-
-    @Override
-    public Page<Project> findAllByUserIdOne(Long userId, Pageable pageable) {
-        Page<ProjectEntity> projectEntities = projectEntityRepository.findProjectsByUserIdAndIsDeletedFalse(
-            userId, pageable);
-        return projectEntities.map(projectMapper::toDomain);
     }
 
     @Override
