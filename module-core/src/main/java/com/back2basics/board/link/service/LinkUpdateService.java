@@ -19,18 +19,17 @@ public class LinkUpdateService {
     private final LinkSavePort linkSavePort;
 
     public void updateLinks(List<String> newLinks, List<Long> linkIdsToDelete, Long postId) {
-        List<Link> existingLinks = linkReadPort.getLinksByPostId(postId);
-
-        // 선택된 링크만 삭제
+// 삭제
         if (linkIdsToDelete != null && !linkIdsToDelete.isEmpty()) {
-            List<Link> toDelete = existingLinks.stream()
-                .filter(link -> linkIdsToDelete.contains(link.getId()))
-                .toList();
-
-            linkDeletePort.deleteLinks(toDelete);
+            linkDeletePort.deleteByIds(linkIdsToDelete);
         }
 
-        // 새로 추가
+        // 추가
+        if (newLinks == null || newLinks.isEmpty()) {
+            return;
+        }
+
+        List<Link> existingLinks = linkReadPort.getLinksByPostId(postId);
         Set<String> existingUrls = existingLinks.stream()
             .map(Link::getUrl)
             .collect(Collectors.toSet());

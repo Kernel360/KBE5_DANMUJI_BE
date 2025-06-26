@@ -6,4 +6,6 @@ import java.util.List;
 public interface LinkDeletePort {
 
     void deleteLinks(List<Link> links);
+
+    void deleteByIds(List<Long> linkIds);
 }
