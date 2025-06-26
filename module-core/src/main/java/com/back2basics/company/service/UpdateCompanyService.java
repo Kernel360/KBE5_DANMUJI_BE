@@ -27,7 +27,7 @@ public class UpdateCompanyService implements UpdateCompanyUseCase {
         updateCompanyPort.update(company);
 
         historyLogService.logUpdated(DomainType.COMPANY, loggedInUserId, before, company,
-            "회사 정보 수정");
+            "업체 정보 수정");
     }
 
 }

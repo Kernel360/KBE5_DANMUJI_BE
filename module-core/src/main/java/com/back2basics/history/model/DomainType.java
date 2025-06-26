@@ -7,7 +7,7 @@ public enum DomainType {
     POST("게시글"),
     USER("회원"),
     PROJECT("프로젝트"),
-    COMPANY("회사"),
+    COMPANY("업체"),
     STEP("단계");
 
     private final String message;
