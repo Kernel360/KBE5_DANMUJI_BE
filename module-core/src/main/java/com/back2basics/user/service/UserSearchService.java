@@ -16,8 +16,8 @@ public class UserSearchService implements UserSearchUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserSummaryResult> searchByUsername(String username) {
-        return userSearchPort.searchByUsername(username).stream()
+    public List<UserSummaryResult> searchByUsernameAndProjectId(String username, Long projectId) {
+        return userSearchPort.searchByUsernameAndProjectId(username, projectId).stream()
             .map(user -> new UserSummaryResult(
                 user.getId(),
                 user.getUsername(),
