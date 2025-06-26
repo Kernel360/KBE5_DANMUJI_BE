@@ -9,25 +9,23 @@ public class TodoList {
     private final Long id;
     private String content;
     private final Long userId;
-    private final Long postId;
     private final LocalDateTime createdAt;
     private LocalDateTime checkedAt;
     private Boolean isChecked;
 
-    public TodoList(Long id, String content, Long userId, Long postId, LocalDateTime createdAt,
+    public TodoList(Long id, String content, Long userId, LocalDateTime createdAt,
         LocalDateTime checkedAt,
         Boolean isChecked) {
         this.id = id;
         this.content = content;
         this.userId = userId;
-        this.postId = postId;
         this.createdAt = createdAt;
         this.checkedAt = checkedAt;
         this.isChecked = isChecked;
     }
 
-    public static TodoList create(String content, Long userId, Long postId) {
-        return new TodoList(null, content, userId, postId, LocalDateTime.now(), null, false);
+    public static TodoList create(String content, Long userId) {
+        return new TodoList(null, content, userId, LocalDateTime.now(), null, false);
     }
 
     public void update(String newContent) {

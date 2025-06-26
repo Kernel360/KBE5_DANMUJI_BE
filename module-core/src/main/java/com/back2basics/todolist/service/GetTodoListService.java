@@ -24,14 +24,6 @@ public class GetTodoListService implements GetTodoListUseCase {
     }
 
     @Override
-    public List<TodoListResult> findByPostId(Long postId, Long userId) {
-        List<TodoList> todoLists = todoListQueryPort.findByPostId(postId, userId);
-        return todoLists.stream()
-            .map(TodoListResult::from)
-            .toList();
-    }
-
-    @Override
     public List<TodoListResult> findByToday(Long userId) {
         List<TodoList> todoLists = todoListQueryPort.findByToday(userId);
         return todoLists.stream()

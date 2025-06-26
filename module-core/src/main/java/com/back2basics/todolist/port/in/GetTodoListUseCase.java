@@ -7,7 +7,5 @@ public interface GetTodoListUseCase {
 
     List<TodoListResult> findByUserId(Long userId);
 
-    List<TodoListResult> findByPostId(Long postId, Long userId);
-
     List<TodoListResult> findByToday(Long userId);
 }

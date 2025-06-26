@@ -5,9 +5,9 @@ import static com.back2basics.infra.exception.todolist.TodoListErrorCode.CHECK_L
 import com.back2basics.adapter.persistence.todolist.entity.TodoListEntity;
 import com.back2basics.adapter.persistence.todolist.mapper.TodoListMapper;
 import com.back2basics.adapter.persistence.todolist.repository.TodoListEntityRepository;
+import com.back2basics.infra.exception.todolist.TodoListException;
 import com.back2basics.todolist.model.TodoList;
 import com.back2basics.todolist.port.out.TodoListQueryPort;
-import com.back2basics.infra.exception.todolist.TodoListException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,12 +33,6 @@ public class TodoListQueryAdapter implements TodoListQueryPort {
     @Override
     public List<TodoList> findByUserId(Long userId) {
         return todoListEntityRepository.findAllByUserId(userId).stream()
-            .map(mapper::toDomain).toList();
-    }
-
-    @Override
-    public List<TodoList> findByPostId(Long postId, Long userId) {
-        return todoListEntityRepository.findAllByPostIdAndUserId(postId, userId).stream()
             .map(mapper::toDomain).toList();
     }
 

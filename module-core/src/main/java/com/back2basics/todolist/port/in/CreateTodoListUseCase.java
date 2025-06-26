@@ -4,5 +4,5 @@ import com.back2basics.todolist.port.in.command.CreateTodoListCommand;
 
 public interface CreateTodoListUseCase {
 
-    void create(Long userId, Long postId, CreateTodoListCommand command);
+    void create(Long userId, CreateTodoListCommand command);
 }

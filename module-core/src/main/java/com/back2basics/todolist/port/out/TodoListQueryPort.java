@@ -9,7 +9,5 @@ public interface TodoListQueryPort {
 
     List<TodoList> findByUserId(Long userId);
 
-    List<TodoList> findByPostId(Long postId, Long userId);
-
     List<TodoList> findByToday(Long userId);
 }

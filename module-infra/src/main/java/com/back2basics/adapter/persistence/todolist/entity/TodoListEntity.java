@@ -1,6 +1,5 @@
 package com.back2basics.adapter.persistence.todolist.entity;
 
-import com.back2basics.adapter.persistence.board.post.PostEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,10 +32,6 @@ public class TodoListEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private PostEntity post;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -46,12 +41,11 @@ public class TodoListEntity {
     @Column(name = "is_checked", nullable = false)
     private Boolean isChecked;
 
-    public TodoListEntity(Long id, String content, UserEntity user, PostEntity post,
+    public TodoListEntity(Long id, String content, UserEntity user,
         LocalDateTime createdAt, LocalDateTime checkedAt, Boolean isChecked) {
         this.id = id;
         this.content = content;
         this.user = user;
-        this.post = post;
         this.createdAt = createdAt;
         this.checkedAt = checkedAt;
         this.isChecked = isChecked;

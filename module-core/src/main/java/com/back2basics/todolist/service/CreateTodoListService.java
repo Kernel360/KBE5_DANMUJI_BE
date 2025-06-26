@@ -14,8 +14,8 @@ public class CreateTodoListService implements CreateTodoListUseCase {
     private final TodoListCommandPort todoListCommandPort;
 
     @Override
-    public void create(Long userId, Long postId, CreateTodoListCommand command) {
-        TodoList todoList = TodoList.create(command.content(), userId, postId);
+    public void create(Long userId, CreateTodoListCommand command) {
+        TodoList todoList = TodoList.create(command.content(), userId);
         todoListCommandPort.save(todoList);
     }
 }

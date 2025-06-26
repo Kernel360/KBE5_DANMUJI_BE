@@ -5,15 +5,15 @@ import static com.back2basics.domain.todolist.controller.code.TodoListResponseCo
 import static com.back2basics.domain.todolist.controller.code.TodoListResponseCode.TODO_LIST_READ_ALL_SUCCESS;
 import static com.back2basics.domain.todolist.controller.code.TodoListResponseCode.TODO_LIST_UPDATE_SUCCESS;
 
+import com.back2basics.domain.todolist.dto.request.CreateTodoListRequest;
+import com.back2basics.domain.todolist.dto.response.TodoListResponse;
+import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.todolist.port.in.CreateTodoListUseCase;
 import com.back2basics.todolist.port.in.DeleteTodoListUseCase;
 import com.back2basics.todolist.port.in.GetTodoListUseCase;
 import com.back2basics.todolist.port.in.UpdateTodoListUseCase;
 import com.back2basics.todolist.service.result.TodoListResult;
-import com.back2basics.domain.todolist.dto.request.CreateTodoListRequest;
-import com.back2basics.domain.todolist.dto.response.TodoListResponse;
-import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.security.model.CustomUserDetails;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,10 +38,10 @@ public class TodoListController {
     private final GetTodoListUseCase getTodoListUseCase;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> create(@RequestParam("postId") Long postId,
+    public ResponseEntity<ApiResponse<Void>> create(
         @AuthenticationPrincipal
         CustomUserDetails userDetails, @RequestBody CreateTodoListRequest request) {
-        createTodoListUseCase.create(userDetails.getId(), postId, request.toCommand());
+        createTodoListUseCase.create(userDetails.getId(), request.toCommand());
         return ApiResponse.success(TODO_LIST_CREATE_SUCCESS);
     }
 
@@ -71,16 +70,6 @@ public class TodoListController {
         @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         List<TodoListResult> results = getTodoListUseCase.findByUserId(userDetails.getId());
-        List<TodoListResponse> responses = results.stream().map(TodoListResponse::from).toList();
-        return ApiResponse.success(TODO_LIST_READ_ALL_SUCCESS, responses);
-    }
-
-    // 게시글 별
-    @GetMapping("/{postId}")
-    public ResponseEntity<ApiResponse<List<TodoListResponse>>> getByPostId(
-        @PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<TodoListResult> results = getTodoListUseCase.findByPostId(postId,
-            userDetails.getId());
         List<TodoListResponse> responses = results.stream().map(TodoListResponse::from).toList();
         return ApiResponse.success(TODO_LIST_READ_ALL_SUCCESS, responses);
     }

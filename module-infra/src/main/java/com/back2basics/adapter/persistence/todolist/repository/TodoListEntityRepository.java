@@ -13,8 +13,6 @@ public interface TodoListEntityRepository extends JpaRepository<TodoListEntity, 
 
     List<TodoListEntity> findAllByUserId(Long userId);
 
-    List<TodoListEntity> findAllByPostIdAndUserId(Long postId, Long userId);
-
     @Query("SELECT t FROM TodoListEntity t WHERE t.user.id = :userId AND t.createdAt >= :start AND t.createdAt < :end")
     List<TodoListEntity> findByToday(@Param("userId") Long userId,
         @Param("start") LocalDateTime start,
