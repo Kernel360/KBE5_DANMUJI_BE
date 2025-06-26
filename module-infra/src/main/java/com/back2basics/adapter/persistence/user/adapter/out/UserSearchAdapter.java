@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.user.adapter.out;
 
+import static com.back2basics.adapter.persistence.assignment.QAssignmentEntity.assignmentEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
@@ -17,12 +18,22 @@ public class UserSearchAdapter implements UserSearchPort {
     private final JPAQueryFactory queryFactory;
     private final UserMapper userMapper;
 
+
     @Override
-    public List<User> searchByUsername(String username) {
+    public List<User> searchByUsernameAndProjectId(String username, Long projectId) {
         return queryFactory
-            .select(userEntity)
-            .from(userEntity)
-            .where(userEntity.username.startsWithIgnoreCase(username))
+            .selectFrom(userEntity)
+            .where(
+                userEntity.username.eq(username),
+                queryFactory
+                    .selectOne()
+                    .from(assignmentEntity)
+                    .where(
+                        assignmentEntity.user.id.eq(userEntity.id),
+                        assignmentEntity.project.id.eq(projectId)
+                    )
+                    .exists()
+            )
             .stream()
             .map(userMapper::toDomain)
             .toList();

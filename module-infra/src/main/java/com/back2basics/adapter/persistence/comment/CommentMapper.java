@@ -18,6 +18,7 @@ public class CommentMapper {
             entity.getAuthorIp(),
             entity.getAuthorId(),
             null,
+            null,
             entity.getContent(),
             entity.getCreatedAt(),
             entity.getUpdatedAt()
@@ -32,6 +33,7 @@ public class CommentMapper {
             result.authorIp(),
             result.authorId(),
             result.authorName(),
+            result.authorUsername(),
             result.content(),
             result.createdAt(),
             result.updatedAt()

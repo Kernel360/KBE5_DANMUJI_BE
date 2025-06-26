@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface UserSearchPort {
 
-    List<User> searchByUsername(String username);
+    List<User> searchByUsernameAndProjectId(String username, Long projectId);
 }

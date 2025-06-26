@@ -3,6 +3,7 @@ package com.back2basics.board.post.service;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.file.port.out.FileSavePort;
 import com.back2basics.board.file.service.FileUploadService;
+import com.back2basics.board.link.service.LinkCreateService;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostCreateUseCase;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
@@ -34,6 +35,7 @@ public class PostCreateService implements PostCreateUseCase {
     private final PostNotificationSender postNotificationSender;
     private final MentionNotificationSender mentionNotificationSender;
     private final HistoryLogService historyLogService;
+    private final LinkCreateService linkCreateService;
 
     @Override
     public PostCreateResult createPost(Long userId, Long projectId, Long projectStepId,
@@ -47,6 +49,8 @@ public class PostCreateService implements PostCreateUseCase {
         Post savedPost = postCreatePort.save(post);
 
         uploadAndSaveFiles(files, savedPost.getId());
+        linkCreateService.createLinks(command.getNewLinks(), savedPost.getId());
+        
         postNotificationSender.sendNotification(userId, savedPost.getId(), command);
         mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
             post.getContent());

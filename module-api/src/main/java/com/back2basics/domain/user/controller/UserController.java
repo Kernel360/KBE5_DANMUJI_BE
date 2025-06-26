@@ -91,8 +91,10 @@ public class UserController {
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<UserSummaryResponse>>> searchUsernames(
+        @RequestParam Long projectId,
         @RequestParam String username) {
-        List<UserSummaryResponse> responses = userSearchUseCase.searchByUsername(username).stream()
+        List<UserSummaryResponse> responses = userSearchUseCase.searchByUsernameAndProjectId(
+                username, projectId).stream()
             .map(UserSummaryResponse::from)
             .toList();
         return ApiResponse.success(USER_READ_SUCCESS, responses);

@@ -32,8 +32,21 @@ public class CreateUserService implements CreateUserUseCase {
         User user = User.create(command, encodedPassword);
 
         User saved = userCommandPort.save(user);
-        
+
         historyLogService.logCreated(DomainType.USER, loggedInUserId, saved, "회원 등록");
+
+        return new UserCreateResult(saved.getId(), saved.getUsername(), generatedPassword);
+    }
+
+    @Override
+    public UserCreateResult create(UserCreateCommand command) {
+        userValidator.validateDuplicateUsername(command.getUsername());
+        String generatedPassword = passwordGenerator.generate();
+        String encodedPassword = bCryptPasswordEncoder.encode(generatedPassword);
+
+        User user = User.create(command, encodedPassword);
+
+        User saved = userCommandPort.save(user);
 
         return new UserCreateResult(saved.getId(), saved.getUsername(), generatedPassword);
     }

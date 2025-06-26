@@ -29,8 +29,10 @@ public class PostUpdateRequest {
     @NotNull(message = "단계가 입력되지 않았습니다.")
     private Long stepId;
 
-    // 삭제할 파일의 id
     private List<Long> fileIdsToDelete;
+
+    private List<Long> linkIdsToDelete;
+    private List<String> newLinks;
 
     public PostUpdateCommand toCommand() {
         return PostUpdateCommand.builder()
@@ -40,6 +42,8 @@ public class PostUpdateRequest {
             .priority(priority)
             .fileIdsToDelete(fileIdsToDelete)
             .stepId(stepId)
+            .linkIdsToDelete(linkIdsToDelete)
+            .newLinks(newLinks)
             .build();
     }
 }

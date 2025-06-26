@@ -17,6 +17,7 @@ public class PostSummaryReadResponse {
     private final Long projectStepId;
     private final Long authorId;
     private final String authorName;
+    private final String authorUsername;
     private final String title;
     private final PostType type;
     private final PostPriority priority;
@@ -30,6 +31,7 @@ public class PostSummaryReadResponse {
             .projectStepId(result.getProjectStepId())
             .authorId(result.getAuthorId())
             .authorName(result.getAuthorName())
+            .authorUsername(result.getAuthorUsername())
             .title(result.getTitle())
             .type(result.getType())
             .priority(result.getPriority())

@@ -9,6 +9,7 @@ public record CommentWithPostAndAuthorResult(
     Long authorId,
     String authorIp,
     String authorName,
+    String authorUsername,
     String content,
     LocalDateTime createdAt,
     LocalDateTime updatedAt
