@@ -5,6 +5,7 @@ import com.back2basics.board.file.port.out.FileDeletePort;
 import com.back2basics.board.file.port.out.FileReadPort;
 import com.back2basics.board.file.port.out.FileSavePort;
 import com.back2basics.board.file.service.FileUploadService;
+import com.back2basics.board.link.service.LinkUpdateService;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
@@ -31,6 +32,7 @@ public class PostUpdateService implements PostUpdateUseCase {
     private final FileReadPort fileReadPort;
     private final MentionNotificationSender mentionNotificationSender;
     private final HistoryLogService historyLogService;
+    private final LinkUpdateService linkUpdateService;
 
     @Override
     public void updatePost(Long userId, String userIp, Long postId,
@@ -41,6 +43,11 @@ public class PostUpdateService implements PostUpdateUseCase {
         post.update(command, userIp);
 
         Post updatedPost = postUpdatePort.update(post);
+        linkUpdateService.updateLinks(
+            command.getNewLinks(),
+            command.getLinkIdsToDelete(),
+            updatedPost.getId()
+        );
 
         mentionNotificationSender.notifyMentionedUsers(userId, postId, post.getContent());
 

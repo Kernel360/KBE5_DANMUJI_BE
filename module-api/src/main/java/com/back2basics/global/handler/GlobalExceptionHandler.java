@@ -4,7 +4,6 @@ import static com.back2basics.global.response.code.CommonErrorCode.BAD_CREDENTIA
 import static com.back2basics.global.response.code.CommonErrorCode.INTERNAL_SERVER_ERROR;
 import static com.back2basics.infra.exception.file.FileErrorCode.FILE_DOWNLOAD_FAIL;
 import static com.back2basics.infra.exception.user.UserErrorCode.MAIL_SEND_FAILED;
-import static com.back2basics.security.code.AuthErrorCode.ACCESS_DENIED;
 
 import com.back2basics.global.response.code.CommonErrorCode;
 import com.back2basics.global.response.code.ErrorCode;
@@ -44,7 +43,7 @@ public class GlobalExceptionHandler {
         log.error("MaxUploadSizeExceededException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
-    
+
 
     @ExceptionHandler(org.springframework.dao.InvalidDataAccessApiUsageException.class)
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleInvalidDataAccessApiUsageException(
@@ -61,16 +60,9 @@ public class GlobalExceptionHandler {
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
 
-    // NullPointerException 대응 추가 (customUserDetails == null 일 떄)
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleNullPointerException(
         NullPointerException ex) {
-        String msg = ex.getMessage();
-        if (msg != null && msg.contains("CustomUserDetails")) {
-            ErrorCode errorCode = ACCESS_DENIED;
-            log.warn("인증되지 않은 사용자 요청 (CustomUserDetails is null): {}", msg);
-            return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
-        }
         ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
         log.error("NullPointerException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));

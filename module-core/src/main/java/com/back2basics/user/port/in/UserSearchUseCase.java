@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface UserSearchUseCase {
 
-    List<UserSummaryResult> searchByUsername(String username);
+    List<UserSummaryResult> searchByUsernameAndProjectId(String username, Long projectId);
 
 }

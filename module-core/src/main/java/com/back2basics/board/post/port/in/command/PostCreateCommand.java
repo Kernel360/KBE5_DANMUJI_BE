@@ -2,6 +2,7 @@ package com.back2basics.board.post.port.in.command;
 
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,4 +17,5 @@ public class PostCreateCommand {
     private PostPriority priority;
     private Long stepId;
     private Long projectId;
+    private List<String> newLinks;
 }

@@ -31,7 +31,8 @@ public class CommentReadJpaAdapter implements CommentReadPort {
                 commentEntity.postId,
                 commentEntity.authorId,
                 commentEntity.authorIp,
-                userEntity.name,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
                 commentEntity.content,
                 commentEntity.createdAt,
                 commentEntity.updatedAt
@@ -57,7 +58,8 @@ public class CommentReadJpaAdapter implements CommentReadPort {
                 commentEntity.postId,
                 commentEntity.authorId,
                 commentEntity.authorIp,
-                userEntity.name,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
                 commentEntity.content,
                 commentEntity.createdAt,
                 commentEntity.updatedAt

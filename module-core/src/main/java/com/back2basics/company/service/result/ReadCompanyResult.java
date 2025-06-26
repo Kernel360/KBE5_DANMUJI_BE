@@ -1,6 +1,7 @@
 package com.back2basics.company.service.result;
 
 import com.back2basics.company.model.Company;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,10 +16,11 @@ public class ReadCompanyResult {
     private final String address;
     private final String email;
     private final String tel;
+    private final LocalDateTime createdAt;
 
     @Builder
     public ReadCompanyResult(Long id, String name, String ceoName, String bio,
-        Long bizNo, String address, String email, String tel) {
+        Long bizNo, String address, String email, String tel, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
@@ -27,6 +29,7 @@ public class ReadCompanyResult {
         this.address = address;
         this.email = email;
         this.tel = tel;
+        this.createdAt = createdAt;
     }
 
     public static ReadCompanyResult toResult(Company company) {
@@ -39,6 +42,7 @@ public class ReadCompanyResult {
             .address(company.getAddress())
             .email(company.getEmail())
             .tel(company.getTel())
+            .createdAt(company.getCreatedAt())
             .build();
     }
 }

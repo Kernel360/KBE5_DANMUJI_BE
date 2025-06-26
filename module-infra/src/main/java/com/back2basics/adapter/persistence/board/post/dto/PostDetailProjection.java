@@ -13,6 +13,7 @@ public record PostDetailProjection(
     String authorIp,
     Long authorId,
     String authorName,
+    String authorUsername,
     Role authorRole,
     String title,
     String content,

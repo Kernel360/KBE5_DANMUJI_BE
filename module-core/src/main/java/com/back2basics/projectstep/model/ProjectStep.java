@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class ProjectStep implements TargetDomain {
 
-    private final Long stepId;
+    private final Long id;
 
     private final Long projectId;
 
@@ -23,9 +23,9 @@ public class ProjectStep implements TargetDomain {
     private LocalDateTime deletedAt;
 
     @Builder
-    public ProjectStep(Long stepId, Long projectId, String name, int stepOrder,
+    public ProjectStep(Long id, Long projectId, String name, int stepOrder,
         ProjectStepStatus projectStepStatus, boolean isDeleted, LocalDateTime deletedAt) {
-        this.stepId = stepId;
+        this.id = id;
         this.projectId = projectId;
         this.name = name;
         this.stepOrder = stepOrder;
@@ -55,7 +55,7 @@ public class ProjectStep implements TargetDomain {
     public void updateStepOrder(int stepOrder) {
         this.stepOrder = stepOrder;
     }
-    
+
     public void updateStepStatus(ProjectStep projectStep) {
         if (projectStep.getProjectStepStatus() == ProjectStepStatus.IN_PROGRESS) {
             this.projectStepStatus = ProjectStepStatus.COMPLETED;
@@ -70,12 +70,12 @@ public class ProjectStep implements TargetDomain {
 
     @Override
     public Long getId() {
-        return this.stepId;
+        return this.id;
     }
 
     public static ProjectStep copyOf(ProjectStep original) {
         return ProjectStep.builder()
-            .stepId(original.stepId)
+            .id(original.id)
             .projectId(original.projectId)
             .name(original.name)
             .stepOrder(original.stepOrder)

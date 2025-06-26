@@ -17,7 +17,6 @@ import com.back2basics.projectstep.port.out.SaveProjectStepPort;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,6 @@ public class CreateProjectService implements CreateProjectUseCase {
 
     private void createDefaultSteps(Long projectId) {
         List<String> defaultSteps = DEFAULT_STEPS;
-        List<ProjectStep> steps = new ArrayList<>();
 
         for (int i = 0; i < defaultSteps.size(); i++) {
             ProjectStepStatus projectStepStatus =
@@ -70,9 +68,7 @@ public class CreateProjectService implements CreateProjectUseCase {
                 i + 1,
                 projectStepStatus
             );
-            steps.add(step);
-            //saveProjectStepPort.save(step);
-            saveProjectStepPort.saveAll(steps);
+            saveProjectStepPort.save(step);
         }
 
         // todo : 주석 이유 : saveProjectStepPort.saveAll(steps); 이후 리턴 값으로 saved객체를 리턴으로 받아야

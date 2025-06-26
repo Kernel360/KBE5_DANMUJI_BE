@@ -50,6 +50,15 @@ public class AdminController {
     private final UserQueryUseCase userQueryUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
 
+    @PostMapping("/init")
+    public ResponseEntity<ApiResponse<UserCreateResponse>> createUser(
+        @RequestBody @Valid UserCreateRequest request) {
+
+        UserCreateResult result = createUserUseCase.create(request.toCommand());
+        return ApiResponse.success(USER_CREATE_SUCCESS,
+            UserCreateResponse.from(result));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<UserCreateResponse>> createUser(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,

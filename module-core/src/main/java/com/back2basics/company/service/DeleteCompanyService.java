@@ -33,7 +33,7 @@ public class DeleteCompanyService implements DeleteCompanyUseCase {
         company.markDeleted();
         Company deletedCompany = deleteCompanyPort.softDelete(company);
 
-        historyLogService.logDeleted(DomainType.COMPANY, loggedInUserId, deletedCompany, "회사 비활성화");
+        historyLogService.logDeleted(DomainType.COMPANY, loggedInUserId, deletedCompany, "업체 비활성화");
     }
 
 }

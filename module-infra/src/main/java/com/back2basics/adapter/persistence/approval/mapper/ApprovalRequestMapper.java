@@ -17,7 +17,7 @@ public class ApprovalRequestMapper {
         List<Long> approverIds = entity.getResponses().stream()
             .map(response -> response.getApprover().getId())
             .toList();
-        return new ApprovalRequest(entity.getId(), entity.getProjectStep().getStepId(),
+        return new ApprovalRequest(entity.getId(), entity.getProjectStep().getId(),
             entity.getRequester().getId(), entity.getApprovalRequestStatus(),
             entity.getRequestedAt(), entity.getCompletedAt(), approverIds);
     }
