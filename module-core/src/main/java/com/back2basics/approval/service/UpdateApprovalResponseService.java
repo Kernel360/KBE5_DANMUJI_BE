@@ -10,6 +10,8 @@ import com.back2basics.approval.port.out.ApprovalRequestCommandPort;
 import com.back2basics.approval.port.out.ApprovalRequestQueryPort;
 import com.back2basics.approval.port.out.ApprovalResponseCommandPort;
 import com.back2basics.approval.port.out.ApprovalResponseQueryPort;
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.ApprovalValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.notify.model.NotificationType;
@@ -32,6 +34,7 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
     private final ApprovalResponseQueryPort approvalResponseQueryPort;
     private final ApprovalResponseCommandPort approvalResponseCommandPort;
     private final NotifyUseCase notifyUseCase;
+    private final HistoryLogService historyLogService;
 
     @Override
     public void change(Long responseId, Long userId, UpdateApprovalCommand command) {
@@ -43,6 +46,7 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
 
         ApprovalRequest approvalRequest = approvalRequestQueryPort.findById(
             approvalResponse.getApprovalRequestId());
+        ApprovalRequest before = ApprovalRequest.copyOf(approvalRequest);
 
         SendNotificationCommand notifyCommand = getSendNotificationCommand(
             command, approvalRequest, approvalResponse);
@@ -51,6 +55,9 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
         if (command.status().equals(ApprovalResponseStatus.REJECTED)) {
             approvalRequest.reject();
             approvalRequestCommandPort.save(approvalRequest);
+
+            historyLogService.logUpdated(DomainType.APPROVAL_REQUEST, userId, before,
+                approvalRequest, "승인 요청 거부");
         } else {
             List<ApprovalResponse> responseList = approvalResponseQueryPort.findResponsesByRequestId(
                 approvalRequest.getId());
@@ -60,6 +67,9 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
             if (allResponded) {
                 approvalRequest.approve();
                 approvalRequestCommandPort.save(approvalRequest);
+
+                historyLogService.logUpdated(DomainType.APPROVAL_REQUEST, userId, before,
+                    approvalRequest, "승인 요청 수락");
             }
         }
 

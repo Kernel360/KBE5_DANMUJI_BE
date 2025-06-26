@@ -1,12 +1,13 @@
 package com.back2basics.approval.model;
 
+import com.back2basics.history.strategy.TargetDomain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class ApprovalRequest {
+public class ApprovalRequest implements TargetDomain {
 
     private final Long id;
 
@@ -54,5 +55,22 @@ public class ApprovalRequest {
         if (!this.responseIds.contains(approverId)) {
             this.responseIds.add(approverId);
         }
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    public static ApprovalRequest copyOf(ApprovalRequest original) {
+        return new ApprovalRequest(
+            original.id,
+            original.projectStepId,
+            original.requesterId,
+            original.approvalRequestStatus,
+            original.requestedAt,
+            original.completedAt,
+            new ArrayList<>(original.responseIds)
+        );
     }
 }
