@@ -16,4 +16,6 @@ public class PostUpdateCommand {
     private PostPriority priority;
     private Long stepId;
     private List<Long> fileIdsToDelete;
+    private List<Long> linkIdsToDelete;
+    private List<String> newLinks;
 }

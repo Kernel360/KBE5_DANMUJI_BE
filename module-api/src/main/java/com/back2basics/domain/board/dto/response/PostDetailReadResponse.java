@@ -1,6 +1,7 @@
 package com.back2basics.domain.board.dto.response;
 
 import com.back2basics.board.file.model.File;
+import com.back2basics.board.link.model.Link;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.service.result.PostDetailReadResult;
@@ -28,7 +29,7 @@ public class PostDetailReadResponse {
     private final LocalDateTime updatedAt;
     private final boolean isDelete;
     private final List<File> files;
-
+    private final List<Link> links;
 
     public static PostDetailReadResponse toResponse(PostDetailReadResult postDetails) {
         return PostDetailReadResponse.builder()
@@ -47,6 +48,7 @@ public class PostDetailReadResponse {
             .updatedAt(postDetails.getUpdatedAt())
             .isDelete(postDetails.isDeleted())
             .files(postDetails.getFiles())
+            .links(postDetails.getLinks())
             .build();
     }
 

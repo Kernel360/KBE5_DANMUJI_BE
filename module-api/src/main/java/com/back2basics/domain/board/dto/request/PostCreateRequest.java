@@ -1,12 +1,13 @@
 package com.back2basics.domain.board.dto.request;
 
-import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
+import com.back2basics.infra.validation.custom.CustomEnumCheck;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -35,6 +36,8 @@ public class PostCreateRequest {
     @NotNull(message = "프로젝트 단계를 입력하세요.")
     private Long stepId;
 
+    private List<String> newLinks;
+
     public PostCreateCommand toCommand() {
         return PostCreateCommand.builder()
             .parentId(parentId)
@@ -44,6 +47,7 @@ public class PostCreateRequest {
             .projectId(projectId)
             .stepId(stepId)
             .type(type)
+            .newLinks(newLinks)
             .build();
     }
 }

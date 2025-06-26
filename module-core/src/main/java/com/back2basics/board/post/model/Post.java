@@ -1,6 +1,7 @@
 package com.back2basics.board.post.model;
 
 import com.back2basics.board.file.model.File;
+import com.back2basics.board.link.model.Link;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.history.strategy.TargetDomain;
@@ -29,6 +30,7 @@ public class Post implements TargetDomain {
     private LocalDateTime deletedAt;
     private boolean isDelete;
     private List<File> files;
+    private List<Link> links;
 
     public static Post create(PostCreateCommand command, Long userId, String userIp) {
         return new Post(
@@ -45,7 +47,8 @@ public class Post implements TargetDomain {
             command.getType(),
             command.getPriority(),
             null, null, null,
-            null // ← files
+            null, // ← files
+            null // ← links
         );
     }
 
@@ -59,7 +62,7 @@ public class Post implements TargetDomain {
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
             authorRole,
-            title, content, type, priority, createdAt, updatedAt, deletedAt, null);
+            title, content, type, priority, createdAt, updatedAt, deletedAt, null, null);
     }
 
     // files 포함한 팩토리 메서드
@@ -69,11 +72,11 @@ public class Post implements TargetDomain {
         String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, List<File> files
+        LocalDateTime deletedAt, List<File> files, List<Link> links
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
             authorRole,
-            title, content, type, priority, createdAt, updatedAt, deletedAt, files);
+            title, content, type, priority, createdAt, updatedAt, deletedAt, files, links);
     }
 
 
@@ -95,7 +98,7 @@ public class Post implements TargetDomain {
         Long authorId, String authorName, Role authorRole, String title, String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, List<File> files) {
+        LocalDateTime deletedAt, List<File> files, List<Link> links) {
         this.id = id;
         this.parentId = parentId;
         this.projectId = projectId;
@@ -113,6 +116,7 @@ public class Post implements TargetDomain {
         this.deletedAt = deletedAt;
         this.isDelete = false;
         this.files = files;
+        this.links = links;
     }
 
     public static Post copyOf(Post post) {
@@ -132,7 +136,8 @@ public class Post implements TargetDomain {
             post.getCreatedAt(),
             post.getUpdatedAt(),
             post.getDeletedAt(),
-            post.getFiles()
+            post.getFiles(),
+            post.getLinks()
         );
     }
 
