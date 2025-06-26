@@ -17,11 +17,6 @@ public class SaveProjectStepAdapter implements SaveProjectStepPort {
     private final ProjectStepEntityRepository stepRepository;
 
     @Override
-    public void defaultSave(ProjectStep projectStep) {
-
-    }
-
-    @Override
     public ProjectStep save(ProjectStep projectStep) {
         ProjectStepEntity step = projectStepMapper.toEntity(projectStep);
         ProjectStepEntity savedStepEntity = stepRepository.save(step);
