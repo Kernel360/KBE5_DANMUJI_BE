@@ -15,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor // Request 두번 써있는거 오타인가요?
-public class CreateApprovalRequestRequestService implements CreateApprovalRequestUseCase {
+@RequiredArgsConstructor
+public class CreateApprovalRequestService implements CreateApprovalRequestUseCase {
 
     private final UserValidator userValidator; // validation 처리는 service에서 처리해야 함
     private final ProjectStepValidator projectStepValidator;
