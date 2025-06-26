@@ -37,7 +37,7 @@ public class LinkEntity {
     public static LinkEntity of(Link link) {
         return new LinkEntity(
             link.getId(),
-            link.getId(),
+            link.getPostId(),
             link.getUrl()
         );
     }
