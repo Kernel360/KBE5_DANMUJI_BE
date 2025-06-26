@@ -98,8 +98,8 @@ public class PostReadJpaAdapter implements PostReadPort {
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.projectId.eq(projectId),
-                postEntity.projectStepId.eq(projectStepId)
+                postEntity.projectId.eq(projectId)
+                //postEntity.projectStepId.eq(projectStepId)
             )
             .orderBy(postEntity.createdAt.desc())
             .offset(pageable.getOffset())
@@ -115,8 +115,8 @@ public class PostReadJpaAdapter implements PostReadPort {
             .from(postEntity)
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.projectId.eq(projectId),
-                postEntity.projectStepId.eq(projectStepId)
+                postEntity.projectId.eq(projectId)
+                //postEntity.projectStepId.eq(projectStepId)
             );
 
         return PageableExecutionUtils.getPage(
