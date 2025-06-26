@@ -46,21 +46,27 @@ public class TodoListController {
     }
 
     @PutMapping("/{todoListId}")
-    public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long todoListId,
+    public ResponseEntity<ApiResponse<Void>> update(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PathVariable Long todoListId,
         @RequestBody CreateTodoListRequest request) {
-        updateTodoListUseCase.update(todoListId, request.toCommand());
+        updateTodoListUseCase.update(todoListId, request.toCommand(), userDetails.getId());
         return ApiResponse.success(TODO_LIST_UPDATE_SUCCESS);
     }
 
     @PutMapping("/{todoListId}/check")
-    public ResponseEntity<ApiResponse<Void>> check(@PathVariable Long todoListId) {
-        updateTodoListUseCase.check(todoListId);
+    public ResponseEntity<ApiResponse<Void>> check(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PathVariable Long todoListId) {
+        updateTodoListUseCase.check(todoListId, userDetails.getId());
         return ApiResponse.success(TODO_LIST_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{todoListId}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long todoListId) {
-        deleteTodoListUseCase.delete(todoListId);
+    public ResponseEntity<ApiResponse<Void>> delete(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PathVariable Long todoListId) {
+        deleteTodoListUseCase.delete(todoListId, userDetails.getId());
         return ApiResponse.success(TODO_LIST_DELETE_SUCCESS);
     }
 

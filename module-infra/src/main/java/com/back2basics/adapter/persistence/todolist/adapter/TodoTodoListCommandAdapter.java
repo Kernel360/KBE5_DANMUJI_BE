@@ -23,10 +23,10 @@ public class TodoTodoListCommandAdapter implements TodoListCommandPort {
     private final PostEntityRepository postEntityRepository;
 
     @Override
-    public void save(TodoList todoList) {
+    public TodoList save(TodoList todoList) {
         UserEntity user = userEntityRepository.getReferenceById(todoList.getUserId());
         TodoListEntity todoListEntity = mapper.toEntity(todoList, user);
-        todoListEntityRepository.save(todoListEntity);
+        return mapper.toDomain(todoListEntityRepository.save(todoListEntity));
     }
 
     @Override
