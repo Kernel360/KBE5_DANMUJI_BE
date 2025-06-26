@@ -13,7 +13,6 @@ import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.response.ProjectStepResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
-import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.DeleteProjectStepUseCase;
 import com.back2basics.projectstep.port.in.ReadProjectStepUseCase;
@@ -100,18 +99,6 @@ public class ProjectStepController {
         UpdateProjectStepRequest request) {
         UpdateProjectStepCommand command = request.toCommand();
         updateProjectStepUseCase.updateStepName(command, stepId, customUserDetails.getId());
-        return ApiResponse.success(STEP_UPDATE_SUCCESS);
-    }
-
-    // todo: 유진님이 승인하시면 필요없을 듯 나중에 삭제
-    @PutMapping("/{stepId}/approval")
-    public ResponseEntity<ApiResponse<Void>> updateApprovalStatus(
-        @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long stepId,
-        @RequestParam
-        ProjectStepStatus projectStepStatus) {
-        updateProjectStepUseCase.updateApprovalStatus(projectStepStatus, stepId,
-            customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
 

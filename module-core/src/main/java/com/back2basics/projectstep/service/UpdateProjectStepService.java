@@ -7,7 +7,6 @@ import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.projectstep.model.ProjectStep;
-import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
@@ -41,19 +40,6 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
             "프로젝트 단계 수정");
 
     }
-
-    @Override
-    public void updateApprovalStatus(ProjectStepStatus projectStepStatus, Long stepId,
-        Long loggedInUserId) {
-        ProjectStep step = readProjectStepPort.findById(stepId);
-        ProjectStep before = ProjectStep.copyOf(step);
-        step.updateStatus(projectStepStatus);
-        ProjectStep updatedStep = saveProjectStepPort.save(step);
-
-        historyLogService.logUpdated(DomainType.STEP, loggedInUserId, before, updatedStep,
-            "프로젝트 단계 승인요청 변경");
-    }
-
 
     // todo
     //  swlee : 이력 생성 보류 -> 어떤 작업 해주는 기능인가요??
