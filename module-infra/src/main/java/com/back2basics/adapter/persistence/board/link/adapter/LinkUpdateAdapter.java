@@ -14,11 +14,6 @@ public class LinkUpdateAdapter implements LinkDeletePort {
     private final LinkEntityRepository linkRepository;
 
     @Override
-    public void deleteAllByPostId(Long postId) {
-        linkRepository.deleteAllByPostId(postId);
-    }
-
-    @Override
     public void deleteLinks(List<Link> links) {
         List<Long> ids = links.stream()
             .map(Link::getId)

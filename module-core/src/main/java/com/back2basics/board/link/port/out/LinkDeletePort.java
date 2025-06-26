@@ -6,5 +6,4 @@ import java.util.List;
 public interface LinkDeletePort {
 
     void deleteLinks(List<Link> links);
-
 }

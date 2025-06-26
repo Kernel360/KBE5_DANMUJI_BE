@@ -3,6 +3,7 @@ package com.back2basics.adapter.persistence.board.post;
 import com.back2basics.adapter.persistence.board.post.dto.PostDetailProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostSummaryProjection;
 import com.back2basics.board.file.model.File;
+import com.back2basics.board.link.model.Link;
 import com.back2basics.board.post.model.Post;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,7 @@ public class PostMapper {
             result.createdAt(),
             result.updatedAt(),
             null
-            , null
+            , null, null
         );
     }
 
@@ -83,7 +84,7 @@ public class PostMapper {
         );
     }
 
-    public Post toDomain(PostDetailProjection result, List<File> files) {
+    public Post toDomain(PostDetailProjection result, List<File> files, List<Link> links) {
         return Post.create(
             result.postId(),
             result.parentId(),
@@ -100,7 +101,8 @@ public class PostMapper {
             result.createdAt(),
             result.updatedAt(),
             null,
-            files
+            files,
+            links
         );
     }
 

@@ -9,6 +9,8 @@ import com.back2basics.adapter.persistence.board.post.dto.PostDetailProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostSummaryProjection;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.file.port.out.FileReadPort;
+import com.back2basics.board.link.model.Link;
+import com.back2basics.board.link.port.out.LinkReadPort;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.out.PostReadPort;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
@@ -32,6 +34,7 @@ public class PostReadJpaAdapter implements PostReadPort {
     private final JPAQueryFactory queryFactory;
     private final PostMapper mapper;
     private final FileReadPort fileReadPort;
+    private final LinkReadPort linkReadPort;
 
     @Override
     public Optional<Post> findById(Long id) {
@@ -68,7 +71,8 @@ public class PostReadJpaAdapter implements PostReadPort {
         }
 
         List<File> files = fileReadPort.getFilesByPostId(id);
-        return Optional.of(mapper.toDomain(result, files));
+        List<Link> links = linkReadPort.getLinksByPostId(id);
+        return Optional.of(mapper.toDomain(result, files, links));
     }
 
     @Override
