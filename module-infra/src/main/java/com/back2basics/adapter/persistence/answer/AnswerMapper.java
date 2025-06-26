@@ -21,6 +21,7 @@ public class AnswerMapper {
 
     public AnswerEntity toEntity(Answer domain) {
         AnswerEntity entity = AnswerEntity.builder()
+            .id(domain.getId())
             .inquiryId(domain.getInquiryId())
             .authorId(domain.getAuthorId())
             .content(domain.getContent())
