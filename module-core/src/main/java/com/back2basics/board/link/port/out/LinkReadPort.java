@@ -6,6 +6,4 @@ import java.util.List;
 public interface LinkReadPort {
 
     List<Link> getLinksByPostId(Long postId);
-
-    Link getLinkById(Long linkId);
 }
