@@ -6,7 +6,6 @@ import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.infra.exception.project.ProjectException;
-import com.back2basics.project.model.Project;
 import com.back2basics.projectstep.model.ProjectStep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -24,7 +23,7 @@ public class ProjectStepMapper {
 
     public ProjectStep toDomain(ProjectStepEntity entity) {
         return ProjectStep.builder()
-            .stepId(entity.getStepId())
+            .id(entity.getId())
             .projectId(entity.getProject().getId())
             .name(entity.getName())
             .stepOrder(entity.getStepOrder())
@@ -38,7 +37,7 @@ public class ProjectStepMapper {
         ProjectEntity projectEntity = projectEntityRepository.findById(projectStep.getProjectId())
             .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
         return ProjectStepEntity.builder()
-            .stepId(projectStep.getStepId())
+            .id(projectStep.getId())
             .project(projectEntity)
             .name(projectStep.getName())
             .stepOrder(projectStep.getStepOrder())

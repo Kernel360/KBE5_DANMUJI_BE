@@ -26,9 +26,9 @@ import lombok.NoArgsConstructor;
 public class ProjectStepEntity {
 
     @Id
-    @Column(name = "step_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stepId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
@@ -51,10 +51,10 @@ public class ProjectStepEntity {
     private LocalDateTime deletedAt;
 
     @Builder
-    public ProjectStepEntity(Long stepId, ProjectEntity project, String name,
+    public ProjectStepEntity(Long id, ProjectEntity project, String name,
         int stepOrder, ProjectStepStatus projectStepStatus, boolean isDeleted,
         LocalDateTime deletedAt) {
-        this.stepId = stepId;
+        this.id = id;
         this.project = project;
         this.name = name;
         this.stepOrder = stepOrder;
