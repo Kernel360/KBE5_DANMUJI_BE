@@ -9,7 +9,8 @@ public enum DomainType {
     PROJECT("프로젝트"),
     COMPANY("업체"),
     STEP("단계"),
-    APPROVAL_REQUEST("승인 요청");
+    APPROVAL_REQUEST("승인 요청"),
+    INQUIRY("관리자 문의");
 
     private final String message;
 

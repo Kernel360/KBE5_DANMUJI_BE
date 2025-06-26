@@ -4,6 +4,6 @@ import com.back2basics.inquiry.model.Inquiry;
 
 public interface UpdateInquiryPort {
 
-    void update(Inquiry inquiry);
+    Inquiry update(Inquiry inquiry);
 
 }

@@ -15,8 +15,10 @@ public class UpdateInquiryJpaAdapter implements UpdateInquiryPort {
     private final InquiryMapper inquiryMapper;
 
     @Override
-    public void update(Inquiry inquiry) {
-        inquiryEntityRepository.save(inquiryMapper.toEntity(inquiry));
+    public Inquiry update(Inquiry inquiry) {
+
+        return inquiryMapper.toDomain(
+            inquiryEntityRepository.save(inquiryMapper.toEntity(inquiry)));
     }
 
 }

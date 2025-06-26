@@ -1,5 +1,6 @@
 package com.back2basics.inquiry.model;
 
+import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.inquiry.port.in.command.UpdateInquiryCommand;
 import com.back2basics.inquiry.port.in.command.UpdateInquiryStatusCommand;
 import java.time.LocalDateTime;
@@ -7,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Inquiry {
+public class Inquiry implements TargetDomain {
 
     private final Long id;
     private Long authorId;
@@ -53,6 +54,24 @@ public class Inquiry {
 
     public void markDeleted() {
         this.isDelete = true;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public static Inquiry copyOf(Inquiry original) {
+        return Inquiry.builder()
+            .id(original.getId())
+            .authorId(original.getAuthorId())
+            .title(original.getTitle())
+            .content(original.getContent())
+            .inquiryStatus(original.getInquiryStatus())
+            .createdAt(original.getCreatedAt())
+            .updatedAt(original.getUpdatedAt())
+            .deletedAt(original.getDeletedAt())
+            .build();
     }
 
 }
