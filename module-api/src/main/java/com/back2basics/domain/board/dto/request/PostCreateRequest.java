@@ -36,7 +36,7 @@ public class PostCreateRequest {
     @NotNull(message = "프로젝트 단계를 입력하세요.")
     private Long stepId;
 
-    private List<String> newLinks;
+    private List<String> newLinks = List.of();
 
     public PostCreateCommand toCommand() {
         return PostCreateCommand.builder()
