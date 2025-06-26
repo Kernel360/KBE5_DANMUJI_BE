@@ -20,6 +20,7 @@ public class Post implements TargetDomain {
     private String authorIp;
     private Long authorId;
     private String authorName;
+    private String authorUsername;
     private Role authorRole;
     private String title;
     private String content;
@@ -42,6 +43,7 @@ public class Post implements TargetDomain {
             userId,
             null,
             null,
+            null,
             command.getTitle(),
             command.getContent(),
             command.getType(),
@@ -54,13 +56,15 @@ public class Post implements TargetDomain {
 
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
-        String authorIp, Long authorId, String authorName, Role authorRole, String title,
+        String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
+        String title,
         String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
+            authorUsername,
             authorRole,
             title, content, type, priority, createdAt, updatedAt, deletedAt, null, null);
     }
@@ -68,13 +72,15 @@ public class Post implements TargetDomain {
     // files 포함한 팩토리 메서드
     public static Post create(
         Long id, Long parentId, Long projectId, Long projectStepId,
-        String authorIp, Long authorId, String authorName, Role authorRole, String title,
+        String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
+        String title,
         String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, List<File> files, List<Link> links
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
+            authorUsername,
             authorRole,
             title, content, type, priority, createdAt, updatedAt, deletedAt, files, links);
     }
@@ -95,7 +101,8 @@ public class Post implements TargetDomain {
     }
 
     private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
-        Long authorId, String authorName, Role authorRole, String title, String content,
+        Long authorId, String authorName, String authorUsername, Role authorRole, String title,
+        String content,
         PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, List<File> files, List<Link> links) {
@@ -106,6 +113,7 @@ public class Post implements TargetDomain {
         this.authorIp = authorIp;
         this.authorId = authorId;
         this.authorName = authorName;
+        this.authorUsername = authorUsername;
         this.authorRole = authorRole;
         this.title = title;
         this.content = content;
@@ -128,6 +136,7 @@ public class Post implements TargetDomain {
             post.getAuthorIp(),
             post.getAuthorId(),
             post.getAuthorName(),
+            post.getAuthorUsername(),
             post.getAuthorRole(),
             post.getTitle(),
             post.getContent(),

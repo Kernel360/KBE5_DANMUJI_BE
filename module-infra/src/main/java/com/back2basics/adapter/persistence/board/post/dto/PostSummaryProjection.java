@@ -12,6 +12,7 @@ public record PostSummaryProjection(
     Long projectStepId,
     Long authorId,
     String authorName,
+    String authorUsername,
     Role authorRole,
     String title,
     PostType type,

@@ -21,6 +21,7 @@ public class PostDetailReadResponse {
     private final String authorIp;
     private final Long authorId;
     private final String authorName;
+    private final String authorUsername;
     private final String title;
     private final String content;
     private final PostType type;
@@ -38,6 +39,7 @@ public class PostDetailReadResponse {
             .authorIp(postDetails.getAuthorIp())
             .authorId(postDetails.getAuthorId())
             .authorName(postDetails.getAuthorName())
+            .authorUsername(postDetails.getAuthorUsername())
             .projectId(postDetails.getProjectId())
             .projectStepId(postDetails.getProjectStepId())
             .title(postDetails.getTitle())

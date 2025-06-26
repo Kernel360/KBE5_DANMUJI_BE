@@ -23,6 +23,7 @@ public class PostMapper {
             entity.getAuthorId(),
             null,
             null,
+            null,
             entity.getTitle(),
             entity.getContent(),
             entity.getType(),
@@ -53,6 +54,7 @@ public class PostMapper {
             result.authorIp(),
             result.authorId(),
             result.authorName(),
+            result.authorUsername(),
             result.authorRole(),
             result.title(),
             result.content(),
@@ -74,6 +76,7 @@ public class PostMapper {
             null, // ip 없음
             result.authorId(),
             result.authorName(),
+            result.authorUsername(),
             result.authorRole(),
             result.title(),
             null, // content 없음
@@ -93,6 +96,7 @@ public class PostMapper {
             result.authorIp(),
             result.authorId(),
             result.authorName(),
+            result.authorUsername(),
             result.authorRole(),
             result.title(),
             result.content(),
