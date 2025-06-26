@@ -1,6 +1,7 @@
 package com.back2basics.domain.company.dto.response;
 
 import com.back2basics.company.service.result.ReadCompanyResult;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class ReadCompanyResponse {
     private String address;
     private String email;
     private String tel;
+    private LocalDateTime createdAt;
 
     public static ReadCompanyResponse toResponse(ReadCompanyResult result) {
         return ReadCompanyResponse.builder()
@@ -29,6 +31,7 @@ public class ReadCompanyResponse {
             .address(result.getAddress())
             .email(result.getEmail())
             .tel(result.getTel())
+            .createdAt(result.getCreatedAt())
             .build();
     }
 
