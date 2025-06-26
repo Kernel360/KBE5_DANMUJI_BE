@@ -63,7 +63,7 @@ public class UpdateProjectStepService implements UpdateProjectStepUseCase {
         List<ProjectStep> steps = readProjectStepPort.findAllById(stepIdsInNewOrder);
 
         Map<Long, ProjectStep> stepMap = steps.stream()
-            .collect(Collectors.toMap(ProjectStep::getStepId, s -> s));
+            .collect(Collectors.toMap(ProjectStep::getId, s -> s));
         for (int i = 0; i < stepIdsInNewOrder.size(); i++) {
             Long stepId = stepIdsInNewOrder.get(i);
             ProjectStep step = stepMap.get(stepId);
