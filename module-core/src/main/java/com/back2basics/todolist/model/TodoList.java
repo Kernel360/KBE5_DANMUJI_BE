@@ -1,10 +1,11 @@
 package com.back2basics.todolist.model;
 
+import com.back2basics.history.strategy.TargetDomain;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class TodoList {
+public class TodoList implements TargetDomain {
 
     private final Long id;
     private String content;
@@ -40,6 +41,22 @@ public class TodoList {
     public void unCheck() {
         this.isChecked = false;
         this.checkedAt = null;
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    public static TodoList copyOf(TodoList original) {
+        return new TodoList(
+            original.getId(),
+            original.getContent(),
+            original.getUserId(),
+            original.getCreatedAt(),
+            original.getCheckedAt(),
+            original.getIsChecked()
+        );
     }
 
 }

@@ -1,5 +1,7 @@
 package com.back2basics.inquiry.service;
 
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.inquiry.model.Inquiry;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
 import com.back2basics.inquiry.port.in.command.CreateInquiryCommand;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class CreateInquiryService implements CreateInquiryUseCase {
 
     private final CreateInquiryPort createInquiryPort;
+    private final HistoryLogService historyLogService;
 
     @Override
     public Long createInquiry(CreateInquiryCommand command, Long id) {
@@ -21,7 +24,11 @@ public class CreateInquiryService implements CreateInquiryUseCase {
             .content(command.getContent())
             .build();
 
-        return createInquiryPort.save(inquiry);
+        Inquiry savedInquiry = createInquiryPort.save(inquiry);
+
+        historyLogService.logCreated(DomainType.INQUIRY, id, savedInquiry, "관리자 문의 생성");
+
+        return savedInquiry.getId();
     }
 
 }

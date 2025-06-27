@@ -4,6 +4,6 @@ import com.back2basics.inquiry.model.Inquiry;
 
 public interface CreateInquiryPort {
 
-    Long save(Inquiry inquiry);
+    Inquiry save(Inquiry inquiry);
 
 }

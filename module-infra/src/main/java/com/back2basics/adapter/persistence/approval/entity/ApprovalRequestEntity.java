@@ -75,6 +75,10 @@ public class ApprovalRequestEntity {
     }
 
     public void addResponses(List<ApprovalResponseEntity> newApprovers) {
+        if (this.responses == null) {
+            this.responses = new ArrayList<>();
+        }
+
         List<Long> existingApproverIds = this.responses.stream()
             .map(response -> response.getApprover().getId())
             .toList();
