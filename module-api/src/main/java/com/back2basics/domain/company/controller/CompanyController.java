@@ -18,6 +18,7 @@ import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
 import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
 import com.back2basics.domain.company.dto.response.ReadRecentCompanyResponse;
+import com.back2basics.domain.user.dto.response.UserListResponse;
 import com.back2basics.domain.user.dto.response.UserSummaryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
@@ -54,7 +55,7 @@ public class CompanyController /*implements CompanyApiDocs*/ {
     public ResponseEntity<ApiResponse<Long>> createCompany(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid CreateCompanyRequest request) {
-        
+
         Long id = createCompanyUseCase.createCompany(request.toCommand(),
             customUserDetails.getId());
         return ApiResponse.success(COMPANY_CREATE_SUCCESS, id);
@@ -128,6 +129,16 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         List<UserSummaryResponse> responseList = readCompanyUseCase.getUsersByCompanyId(companyId)
             .stream()
             .map(UserSummaryResponse::from)
+            .toList();
+        return ApiResponse.success(COMPANY_USER_LIST_SUCCESS, responseList);
+    }
+
+    @GetMapping("/{companyId}/userLists")
+    public ResponseEntity<ApiResponse<List<UserListResponse>>> getUsersInfoByCompanyId(
+        @PathVariable Long companyId) {
+        List<UserListResponse> responseList = readCompanyUseCase.getUsersInfoByCompanyId(companyId)
+            .stream()
+            .map(UserListResponse::from)
             .toList();
         return ApiResponse.success(COMPANY_USER_LIST_SUCCESS, responseList);
     }
