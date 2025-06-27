@@ -7,6 +7,7 @@ import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.company.service.result.ReadRecentCompanyResult;
 import com.back2basics.infra.validation.validator.CompanyValidator;
 import com.back2basics.user.port.out.UserQueryPort;
+import com.back2basics.user.service.result.UserListResult;
 import com.back2basics.user.service.result.UserSummaryResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,13 @@ public class ReadCompanyService implements ReadCompanyUseCase {
         companyValidator.validateCompanyExists(companyId);
         return userQueryPort.findAllByCompanyId(companyId).stream()
             .map(UserSummaryResult::from).toList();
+    }
+
+    @Override
+    public List<UserListResult> getUsersInfoByCompanyId(Long companyId) {
+        companyValidator.validateCompanyExists(companyId);
+        return userQueryPort.findAllByCompanyId(companyId).stream()
+            .map(UserListResult::from).toList();
     }
 
     @Override
