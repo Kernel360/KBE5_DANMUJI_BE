@@ -70,8 +70,8 @@ public class PostMapper {
     public Post toDomain(PostSummaryProjection result) {
         return Post.create(
             result.postId(),
-            result.projectId(),
             result.parentId(),
+            result.projectId(),
             result.projectStepId(),
             null, // ip 없음
             result.authorId(),
