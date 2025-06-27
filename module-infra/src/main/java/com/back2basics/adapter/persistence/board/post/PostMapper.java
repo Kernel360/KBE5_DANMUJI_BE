@@ -83,7 +83,7 @@ public class PostMapper {
             result.type(),
             result.priority(),
             result.createdAt(),
-            null, null
+            null, null, result.commentCount()
         );
     }
 

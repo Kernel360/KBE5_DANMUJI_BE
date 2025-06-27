@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.board.post.adapter;
 
 import static com.back2basics.adapter.persistence.board.post.QPostEntity.postEntity;
+import static com.back2basics.adapter.persistence.comment.QCommentEntity.commentEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.board.post.PostMapper;
@@ -12,6 +13,7 @@ import com.back2basics.board.post.port.in.command.PostSearchCommand;
 import com.back2basics.board.post.port.out.PostSearchPort;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -46,7 +48,14 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 postEntity.title,
                 postEntity.type,
                 postEntity.priority,
-                postEntity.createdAt
+                postEntity.createdAt,
+                JPAExpressions
+                    .select(commentEntity.count())
+                    .from(commentEntity)
+                    .where(
+                        commentEntity.postId.eq(postEntity.id),
+                        commentEntity.deletedAt.isNull()
+                    )
             ))
             .from(postEntity)
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
