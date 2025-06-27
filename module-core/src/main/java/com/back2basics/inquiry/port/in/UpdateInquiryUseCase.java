@@ -7,6 +7,6 @@ public interface UpdateInquiryUseCase {
 
     void updateByUser(Long inquiryId, Long authorId, UpdateInquiryCommand command);
 
-    void updateByAdmin(Long inquiryId, UpdateInquiryStatusCommand command);
+    void updateByAdmin(Long inquiryId, UpdateInquiryStatusCommand command, Long loggedInUserId);
 
 }
