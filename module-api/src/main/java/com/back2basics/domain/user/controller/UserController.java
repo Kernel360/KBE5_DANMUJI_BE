@@ -1,6 +1,7 @@
 package com.back2basics.domain.user.controller;
 
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CHANGE_PASSWORD_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_ALL_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_RESET_PASSWORD_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_SEND_MAIL_SUCCESS;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,15 +91,22 @@ public class UserController {
         return ApiResponse.success(USER_RESET_PASSWORD_SUCCESS);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<UserSummaryResponse>>> searchUsernames(
-        @RequestParam Long projectId,
-        @RequestParam String username) {
-        List<UserSummaryResponse> responses = userSearchUseCase.searchByUsernameAndProjectId(
-                username, projectId).stream()
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<ApiResponse<List<UserSummaryResponse>>> getUsersByProject(
+        @PathVariable Long projectId) {
+        List<UserSummaryResponse> responses = userSearchUseCase.searchUsersByProjectId(projectId)
+            .stream()
             .map(UserSummaryResponse::from)
             .toList();
-        return ApiResponse.success(USER_READ_SUCCESS, responses);
+        return ApiResponse.success(USER_READ_ALL_SUCCESS, responses);
+    }
+
+    @GetMapping("/username")
+    public ResponseEntity<ApiResponse<UserSummaryResponse>> getUserByUsername(
+        @RequestParam String username) {
+        UserSummaryResponse response = UserSummaryResponse.from(
+            userSearchUseCase.searchUserByUsername(username));
+        return ApiResponse.success(USER_READ_SUCCESS, response);
     }
 
 }
