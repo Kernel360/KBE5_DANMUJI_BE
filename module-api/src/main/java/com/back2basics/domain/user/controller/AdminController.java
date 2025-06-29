@@ -24,6 +24,7 @@ import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -121,6 +122,14 @@ public class AdminController {
         @PageableDefault Pageable pageable) {
         Page<UserInfoResult> resultList = userQueryUseCase.getAllUsers(pageable);
         Page<UserInfoResponse> responseList = resultList.map(UserInfoResponse::from);
+        return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<UserInfoResponse>>> getAllUsersWithoutPagenation() {
+        List<UserInfoResult> resultList = userQueryUseCase.getAll();
+        List<UserInfoResponse> responseList = resultList.stream().map(UserInfoResponse::from)
+            .toList();
         return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
     }
 
