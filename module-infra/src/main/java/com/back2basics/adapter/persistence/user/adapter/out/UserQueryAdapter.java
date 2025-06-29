@@ -52,6 +52,12 @@ public class UserQueryAdapter implements UserQueryPort {
     }
 
     @Override
+    public List<User> findAllByDeletedAtIsNull() {
+        return userEntityRepository.findAllByDeletedAtIsNull().stream().map(userMapper::toDomain)
+            .toList();
+    }
+
+    @Override
     public Page<User> findAllByDeletedAtIsNull(Pageable pageable) {
         return userEntityRepository.findAllByDeletedAtIsNull(pageable)
             .map(userMapper::toDomain);

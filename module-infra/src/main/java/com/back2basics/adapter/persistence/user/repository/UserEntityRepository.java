@@ -20,6 +20,8 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     Page<UserEntity> findAllByDeletedAtIsNull(Pageable pageable);
 
+    List<UserEntity> findAllByDeletedAtIsNull();
+
     Page<UserEntity> findAllByDeletedAtIsNotNull(Pageable pageable);
 
     @Query("SELECT u FROM UserEntity u WHERE u.username IN :usernames")
