@@ -48,10 +48,10 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
-    public List<ProjectGetResult> getAllProjects() {
-        List<Project> projects = readProjectPort.getAllProjects();
-        return projects.stream()
-            .map(ProjectGetResult::toResult).toList();
+    public Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable) {
+        userValidator.validateNotFoundUserId(userId);
+        Page<Project> projects = readProjectPort.findAllByUserId(userId, pageable);
+        return projects.map(ProjectListResult::toResult);
     }
 
     @Override
@@ -64,15 +64,21 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
+    public Page<ProjectListResult> getDeletedProjects(Pageable pageable) {
+        Page<Project> projects = readProjectPort.findAllDeletedProjects(pageable);
+        return projects.map(ProjectListResult::toResult);
+    }
+
+    @Override
     public List<ProjectRecentGetResult> getRecentProjects() {
         return readProjectPort.getRecentProjects().stream().map(ProjectRecentGetResult::toResult)
             .toList();
     }
 
     @Override
-    public Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable) {
-        userValidator.validateNotFoundUserId(userId);
-        Page<Project> projects = readProjectPort.findAllByUserId(userId, pageable);
-        return projects.map(ProjectListResult::toResult);
+    public List<ProjectGetResult> getAllProjects() {
+        List<Project> projects = readProjectPort.getAllProjects();
+        return projects.stream()
+            .map(ProjectGetResult::toResult).toList();
     }
 }

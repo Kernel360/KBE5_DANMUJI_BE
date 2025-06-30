@@ -65,7 +65,6 @@ public class Project implements TargetDomain {
         this.progress = (progress != null) ? progress : 0;
     }
 
-    // todo: 조회 시 steps 세팅해주는데 먼가 맘에 안듦. 위에서 값 초기화를 해주는거 같은데 안먹혀서 일단 해놓음
     public void setSteps(List<ProjectStep> steps) {
         this.steps = steps;
     }
@@ -91,8 +90,14 @@ public class Project implements TargetDomain {
     }
 
     public void softDeleted() {
-        this.isDeleted = true;
-        this.deletedAt = LocalDateTime.now();
+        if (this.isDeleted) {
+            this.isDeleted = false;
+            this.deletedAt = null;
+        } else {
+            this.isDeleted = true;
+            this.deletedAt = LocalDateTime.now();
+        }
+
     }
 
     public void calculateProgress(int totalStep, int completedStep) {

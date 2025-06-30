@@ -1,5 +1,6 @@
 package com.back2basics.domain.project.controller;
 
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.DELETED_PROJECT_READ_ALL_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_CREATE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_DELETE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_ALL_SUCCESS;
@@ -81,7 +82,7 @@ public class ProjectController {
         } else if (user.getRole() == Role.ADMIN) {
             result = readProjectUseCase.getAllProjects(pageable);
         }
-        
+
         Page<ProjectListResponse> response = Objects.requireNonNull(result)
             .map(ProjectListResponse::toResponse);
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
@@ -136,12 +137,11 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
 
-    // 삭제, todo: 프로젝트 softDelete -> 단계, 할당멤버도 softDelete
+    // 삭제
     @DeleteMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> deleteProject(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-
         deleteProjectUseCase.deleteProject(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_DELETE_SUCCESS);
     }
@@ -177,5 +177,17 @@ public class ProjectController {
             .toList();
 
         return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
+    }
+
+    // 삭제된 목록 조회
+    @GetMapping("/deleted")
+    public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getDeletedProjects(
+        @PageableDefault(
+            page = 0, size = 10, sort = "deletedAt", direction = Direction.DESC
+        )
+        Pageable pageable) {
+        Page<ProjectListResult> result = readProjectUseCase.getDeletedProjects(pageable);
+        Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
+        return ApiResponse.success(DELETED_PROJECT_READ_ALL_SUCCESS, response);
     }
 }

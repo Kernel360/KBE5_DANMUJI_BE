@@ -5,6 +5,7 @@ import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
+import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.port.out.UpdateProjectPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,13 @@ import org.springframework.stereotype.Service;
 public class DeleteProjectService implements DeleteProjectUseCase {
 
     private final UpdateProjectPort port;
-    private final ProjectValidator projectValidator;
+    private final ReadProjectPort readProjectPort;
     private final HistoryLogService historyLogService;
 
-    // todo : softDelete 의견 공유
     @Override
     public void deleteProject(Long id, Long loggedInUserId) {
-        Project project = projectValidator.findById(id);
+
+        Project project = readProjectPort.findProjectById(id);
         project.softDeleted();
         port.update(project);
 

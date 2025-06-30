@@ -16,13 +16,15 @@ public interface ReadProjectPort {
 
     Page<Project> findAllByUserId(Long userId, Pageable pageable);
 
-    List<Project> getAllProjects();
+    Page<Project> findAllDeletedProjects(Pageable pageable);
 
     Page<Project> searchByKeywordAndUserId(Long userId, String keyword, Pageable pageable);
 
     Page<Project> searchByKeyword(String keyword, Pageable pageable);
 
     List<Project> getRecentProjects();
+
+    List<Project> getAllProjects();
 
     boolean existsById(Long id);
 }
