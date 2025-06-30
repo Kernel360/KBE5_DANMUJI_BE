@@ -48,9 +48,9 @@ public class HistorySearchAdapter implements HistorySearchPort {
 
         addIfPresent(filters, "historyType", command.historyType());
         addIfPresent(filters, "domainType", command.domainType());
-        addIfPresent(filters, "changedBy", command.changedBy());
         addIfPresent(filters, "changerRole", command.changerRole());
 
+        // 날짜 조건(언제부터 언제까지 발생한 이력인지)
         if (command.changedFrom() != null && command.changedTo() != null) {
             filters.add(Criteria.where("changed_at")
                 .gte(command.changedFrom())
@@ -59,7 +59,10 @@ public class HistorySearchAdapter implements HistorySearchPort {
             filters.add(Criteria.where("changed_at").gte(command.changedFrom()));
         } else if (command.changedTo() != null) {
             filters.add(Criteria.where("changed_at").lte(command.changedTo()));
-        } else if (command.changedBy() != null ){
+        }
+
+        // 변경자 검색 조건 -> username, name 둘 다 모두 검색 가능하게끔
+        if (command.changedBy() != null) {
             filters.add(new Criteria().orOperator(
                 Criteria.where("changer_username").is(command.changedBy()),
                 Criteria.where("changer_name").is(command.changedBy())
