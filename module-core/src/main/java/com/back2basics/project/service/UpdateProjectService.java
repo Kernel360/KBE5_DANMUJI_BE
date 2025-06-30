@@ -88,7 +88,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         Project project = readProjectPort.findProjectById(projectId);
         Project before = Project.copyOf(project);
 
-        if (project.getStatus() == ProjectStatus.IN_PROGRESS) {
+        if (project.getProjectStatus() == ProjectStatus.IN_PROGRESS) {
             project.statusCompleted();
         } else {
             project.statusInProgress();

@@ -16,15 +16,15 @@ public class UserSearchService implements UserSearchUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserSummaryResult> searchByUsernameAndProjectId(String username, Long projectId) {
-        return userSearchPort.searchByUsernameAndProjectId(username, projectId).stream()
-            .map(user -> new UserSummaryResult(
-                user.getId(),
-                user.getUsername(),
-                user.getName(),
-                user.getRole(),
-                user.getPosition()
-            ))
+    public List<UserSummaryResult> searchUsersByProjectId(Long projectId) {
+        return userSearchPort.searchUsersByProjectId(projectId).stream()
+            .map(UserSummaryResult::from) // ← 간결하게 변환
             .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserSummaryResult searchUserByUsername(String username) {
+        return UserSummaryResult.from(userSearchPort.searchUserByUsername(username));
     }
 }

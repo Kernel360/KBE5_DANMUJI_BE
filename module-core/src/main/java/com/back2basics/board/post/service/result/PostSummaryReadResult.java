@@ -22,6 +22,7 @@ public class PostSummaryReadResult {
     private final PostType type;
     private final PostPriority priority;
     private final LocalDateTime createdAt;
+    private final Long commentCount;
 
     public static PostSummaryReadResult toResult(Post post) {
         return PostSummaryReadResult.builder()
@@ -36,6 +37,7 @@ public class PostSummaryReadResult {
             .type(post.getType())
             .priority(post.getPriority())
             .createdAt(post.getCreatedAt())
+            .commentCount(post.getCommentCount())
             .build();
     }
 }

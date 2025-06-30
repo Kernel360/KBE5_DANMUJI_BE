@@ -4,7 +4,7 @@ import static com.back2basics.adapter.persistence.comment.QCommentEntity.comment
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 
 import com.back2basics.adapter.persistence.comment.CommentMapper;
-import com.back2basics.adapter.persistence.comment.projection.CommentWithPostAndAuthorResult;
+import com.back2basics.adapter.persistence.comment.projection.CommentReadProjection;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentReadPort;
 import com.querydsl.core.types.Projections;
@@ -23,9 +23,9 @@ public class CommentReadJpaAdapter implements CommentReadPort {
 
     @Override
     public Optional<Comment> findById(Long id) {
-        CommentWithPostAndAuthorResult result = queryFactory
+        CommentReadProjection result = queryFactory
             .select(Projections.constructor(
-                CommentWithPostAndAuthorResult.class,
+                CommentReadProjection.class,
                 commentEntity.id,
                 commentEntity.parentId,
                 commentEntity.postId,
@@ -33,6 +33,7 @@ public class CommentReadJpaAdapter implements CommentReadPort {
                 commentEntity.authorIp,
                 userEntity.name.as("authorName"),
                 userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole"),
                 commentEntity.content,
                 commentEntity.createdAt,
                 commentEntity.updatedAt
@@ -50,9 +51,9 @@ public class CommentReadJpaAdapter implements CommentReadPort {
 
     @Override
     public List<Comment> findAllCommentsByPostId(Long postId) {
-        List<CommentWithPostAndAuthorResult> results = queryFactory
+        List<CommentReadProjection> results = queryFactory
             .select(Projections.constructor(
-                CommentWithPostAndAuthorResult.class,
+                CommentReadProjection.class,
                 commentEntity.id,
                 commentEntity.parentId,
                 commentEntity.postId,
@@ -60,6 +61,7 @@ public class CommentReadJpaAdapter implements CommentReadPort {
                 commentEntity.authorIp,
                 userEntity.name.as("authorName"),
                 userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole"),
                 commentEntity.content,
                 commentEntity.createdAt,
                 commentEntity.updatedAt

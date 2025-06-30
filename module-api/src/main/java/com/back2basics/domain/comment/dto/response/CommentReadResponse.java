@@ -1,6 +1,7 @@
 package com.back2basics.domain.comment.dto.response;
 
 import com.back2basics.comment.service.result.CommentReadResult;
+import com.back2basics.user.model.Role;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class CommentReadResponse {
     private final Long authorId;
     private final String authorName;
     private final String authorUsername;
+    private final Role role;
     private final String content;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -29,6 +31,7 @@ public class CommentReadResponse {
             .authorId(result.getAuthorId())
             .authorName(result.getAuthorName())
             .authorUsername(result.getAuthorUsername())
+            .role(result.getRole())
             .content(result.getContent())
             .createdAt(result.getCreatedAt())
             .updatedAt(result.getUpdatedAt())
