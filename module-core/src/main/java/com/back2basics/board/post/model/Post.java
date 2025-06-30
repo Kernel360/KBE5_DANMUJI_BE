@@ -32,6 +32,7 @@ public class Post implements TargetDomain {
     private boolean isDelete;
     private List<File> files;
     private List<Link> links;
+    private Long commentCount;
 
     public static Post create(PostCreateCommand command, Long userId, String userIp) {
         return new Post(
@@ -83,6 +84,21 @@ public class Post implements TargetDomain {
             authorUsername,
             authorRole,
             title, content, type, priority, createdAt, updatedAt, deletedAt, files, links);
+    }
+
+    // summary용 팩토리 메서드
+    public static Post create(
+        Long id, Long parentId, Long projectId, Long projectStepId,
+        String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
+        String title, String content, PostType type, PostPriority priority,
+        LocalDateTime createdAt, LocalDateTime updatedAt,
+        LocalDateTime deletedAt, Long commentCount
+    ) {
+        Post post = new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
+            authorUsername, authorRole, title, content, type, priority,
+            createdAt, updatedAt, deletedAt, null, null);
+        post.commentCount = commentCount;
+        return post;
     }
 
 

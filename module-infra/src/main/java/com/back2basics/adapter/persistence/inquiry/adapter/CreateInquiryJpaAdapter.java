@@ -16,9 +16,9 @@ public class CreateInquiryJpaAdapter implements CreateInquiryPort {
     private final InquiryMapper inquiryMapper;
 
     @Override
-    public Long save(Inquiry inquiry) {
+    public Inquiry save(Inquiry inquiry) {
         InquiryEntity entity = inquiryMapper.toEntity(inquiry);
-        return inquiryEntityRepository.save(entity).getId();
+        return inquiryMapper.toDomain(inquiryEntityRepository.save(entity));
     }
 
 }

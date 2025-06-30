@@ -17,6 +17,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -56,7 +57,7 @@ public class ProjectEntity extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private ProjectStatus status;
+    private ProjectStatus projectStatus;
 
     @Column(name = "progress", nullable = false)
     private int progress;
@@ -73,7 +74,7 @@ public class ProjectEntity extends BaseTimeEntity {
 
     @Builder
     public ProjectEntity(Long id, String name, String description, LocalDate startDate,
-        LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus status,
+        LocalDate endDate, LocalDateTime deletedAt, boolean isDeleted, ProjectStatus projectStatus,
         int progress, String projectCost, List<ProjectStepEntity> steps,
         List<AssignmentEntity> assignments) {
 
@@ -84,38 +85,30 @@ public class ProjectEntity extends BaseTimeEntity {
         this.endDate = endDate;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
-        this.status = status;
+        this.projectStatus = projectStatus;
         this.progress = progress;
         this.projectCost = projectCost;
         this.steps = steps;
         this.assignments = assignments;
     }
 
-    public ProjectStatus getStatus() {
-        updateStatusIfDelayed();
-        updateStatusIN_PROGERSS();
-        return this.status;
-    }
-
-    private void updateStatusIfDelayed() {
+    public ProjectStatus getProjectStatus() {
         LocalDate today = LocalDate.now();
 
-        if (this.status == ProjectStatus.IN_PROGRESS
-            && this.endDate != null
-            && this.endDate.isBefore(today)) {
+        if (this.endDate != null) {
+            long due = ChronoUnit.DAYS.between(today, this.endDate);
 
-            this.status = ProjectStatus.DELAY;
+            if (due < 0) {
+                this.projectStatus = ProjectStatus.DELAY;
+            } else if (due <= 7) {
+                this.projectStatus = ProjectStatus.DUE_SOON;
+            } else {
+                this.projectStatus = ProjectStatus.IN_PROGRESS;
+            }
         }
+
+        return this.projectStatus;
     }
 
-    private void updateStatusIN_PROGERSS() {
-        LocalDate today = LocalDate.now();
 
-        if (this.status == ProjectStatus.DELAY
-            && this.endDate != null
-            && this.endDate.isAfter(today)) {
-
-            this.status = ProjectStatus.IN_PROGRESS;
-        }
-    }
 }

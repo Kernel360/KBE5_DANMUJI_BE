@@ -33,7 +33,7 @@ public class Project implements TargetDomain {
     private boolean isDeleted;
 
     // todo: 변수명 바꾸기 projectStatus
-    private ProjectStatus status;
+    private ProjectStatus projectStatus;
 
     private int progress;
 
@@ -46,7 +46,7 @@ public class Project implements TargetDomain {
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-        boolean isDeleted, ProjectStatus status, String projectCost, List<ProjectStep> steps,
+        boolean isDeleted, ProjectStatus projectStatus, String projectCost, List<ProjectStep> steps,
         List<Assignment> assignments, Integer progress) {
         this.id = id;
         this.name = name;
@@ -57,7 +57,7 @@ public class Project implements TargetDomain {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
-        this.status = status != null ? status : ProjectStatus.IN_PROGRESS;
+        this.projectStatus = projectStatus != null ? projectStatus : ProjectStatus.IN_PROGRESS;
         this.projectCost = projectCost;
         this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
         this.assignments =
@@ -82,11 +82,11 @@ public class Project implements TargetDomain {
     }
 
     public void statusCompleted() {
-        this.status = ProjectStatus.COMPLETED;
+        this.projectStatus = ProjectStatus.COMPLETED;
     }
 
     public void statusInProgress() {
-        this.status = ProjectStatus.IN_PROGRESS;
+        this.projectStatus = ProjectStatus.IN_PROGRESS;
     }
 
     public void softDeleted() {
@@ -116,7 +116,7 @@ public class Project implements TargetDomain {
             .updatedAt(project.getUpdatedAt())
             .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
-            .status(project.getStatus())
+            .projectStatus(project.getProjectStatus())
             .steps(project.getSteps())
             .assignments(project.getAssignments())
             .progress(project.getProgress())

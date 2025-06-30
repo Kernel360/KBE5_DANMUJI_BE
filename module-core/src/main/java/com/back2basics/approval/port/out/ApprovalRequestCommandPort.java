@@ -4,7 +4,7 @@ import com.back2basics.approval.model.ApprovalRequest;
 
 public interface ApprovalRequestCommandPort {
 
-    Long create(ApprovalRequest approvalRequest);
+    ApprovalRequest create(ApprovalRequest approvalRequest);
 
     void update(ApprovalRequest approvalRequest);
 

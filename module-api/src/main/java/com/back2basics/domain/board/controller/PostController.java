@@ -1,17 +1,7 @@
 package com.back2basics.domain.board.controller;
 
-import com.back2basics.domain.board.controller.code.PostResponseCode;
-import com.back2basics.domain.board.dto.request.PostCreateRequest;
-import com.back2basics.domain.board.dto.request.PostSearchRequest;
-import com.back2basics.domain.board.dto.request.PostUpdateRequest;
-import com.back2basics.domain.board.dto.response.PostCreateResponse;
-import com.back2basics.domain.board.dto.response.PostDetailReadResponse;
-import com.back2basics.domain.board.dto.response.PostSummaryReadResponse;
-import com.back2basics.domain.board.dto.response.ReadRecentPostResponse;
-import com.back2basics.domain.board.swagger.PostApiDocs;
-import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.board.file.service.FileDownloadResult;
 import com.back2basics.board.file.port.in.FileDownloadUseCase;
+import com.back2basics.board.file.service.FileDownloadResult;
 import com.back2basics.board.post.port.in.PostCreateUseCase;
 import com.back2basics.board.post.port.in.PostDeleteUseCase;
 import com.back2basics.board.post.port.in.PostReadUseCase;
@@ -21,6 +11,15 @@ import com.back2basics.board.post.service.result.PostCreateResult;
 import com.back2basics.board.post.service.result.PostDetailReadResult;
 import com.back2basics.board.post.service.result.PostSummaryReadResult;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
+import com.back2basics.domain.board.controller.code.PostResponseCode;
+import com.back2basics.domain.board.dto.request.PostCreateRequest;
+import com.back2basics.domain.board.dto.request.PostSearchRequest;
+import com.back2basics.domain.board.dto.request.PostUpdateRequest;
+import com.back2basics.domain.board.dto.response.PostCreateResponse;
+import com.back2basics.domain.board.dto.response.PostDetailReadResponse;
+import com.back2basics.domain.board.dto.response.PostSummaryReadResponse;
+import com.back2basics.domain.board.dto.response.ReadRecentPostResponse;
+import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -51,7 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController implements PostApiDocs {
+public class PostController /*implements PostApiDocs*/ {
 
     private final PostCreateUseCase createPostUseCase;
     private final PostReadUseCase postReadUseCase;
@@ -139,17 +138,17 @@ public class PostController implements PostApiDocs {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<PostDetailReadResponse>>> searchPosts(
+    public ResponseEntity<ApiResponse<Page<PostSummaryReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @Valid @ModelAttribute PostSearchRequest request,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PostDetailReadResult> resultPage = postSearchUseCase.searchPost(
+        Page<PostSummaryReadResult> resultPage = postSearchUseCase.searchPost(
             customUserDetails.getId(), request.toCommand(), pageable);
-        Page<PostDetailReadResponse> responsePage = resultPage.map(
-            PostDetailReadResponse::toResponse);
+        Page<PostSummaryReadResponse> responsePage = resultPage.map(
+            PostSummaryReadResponse::toResponse);
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
@@ -178,7 +177,7 @@ public class PostController implements PostApiDocs {
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + result.fileName() + "\"")
-            .header(HttpHeaders.CONTENT_TYPE, result.fileType())
+            .header(HttpHeaders.CONTENT_TYPE, result.mimeType())
             .body(result.bytes());
     }
 

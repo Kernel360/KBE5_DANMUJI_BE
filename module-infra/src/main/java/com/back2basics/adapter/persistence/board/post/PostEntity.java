@@ -41,10 +41,10 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "project_step_id", nullable = false)
     private Long projectStepId;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 50)
     private String title;
 
-    @Column(name = "content", nullable = false, length = 10000)
+    @Column(name = "content", nullable = false, length = 3000)
     private String content;
 
     @Enumerated(EnumType.STRING)

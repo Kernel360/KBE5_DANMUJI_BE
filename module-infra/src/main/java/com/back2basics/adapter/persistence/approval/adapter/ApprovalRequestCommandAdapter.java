@@ -29,7 +29,7 @@ public class ApprovalRequestCommandAdapter implements ApprovalRequestCommandPort
     private final ApprovalResponseEntityRepository approvalResponseEntityRepository;
 
     @Override
-    public Long create(ApprovalRequest approvalRequest) {
+    public ApprovalRequest create(ApprovalRequest approvalRequest) {
 
         // 실제 쿼리를 즉시 실행하지 않고, 해당 ID에 대한 지연 프록시 객체 반환
         // 실제 값이 필요할 때까지 DB에 접근하지 않음
@@ -51,7 +51,7 @@ public class ApprovalRequestCommandAdapter implements ApprovalRequestCommandPort
 
         entity.addResponses(responses);
         approvalRequestEntityRepository.save(entity);
-        return entity.getId();
+        return mapper.toDomain(entity);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ApprovalRequestCommandAdapter implements ApprovalRequestCommandPort
             approvalRequest.getRequesterId());
         List<ApprovalResponseEntity> approvalResponseEntities = approvalResponseEntityRepository.findAllByApprovalRequestId(
             approvalRequest.getId());
-        
+
         approvalRequestEntityRepository.save(
             mapper.toEntity(approvalRequest, projectStepEntity, requester,
                 approvalResponseEntities));

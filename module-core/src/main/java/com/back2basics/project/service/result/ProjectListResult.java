@@ -38,7 +38,7 @@ public record ProjectListResult(
             assignDevCompanies,
             project.getStartDate(),
             project.getEndDate(),
-            project.getStatus()
+            project.getProjectStatus()
         );
     }
 }
