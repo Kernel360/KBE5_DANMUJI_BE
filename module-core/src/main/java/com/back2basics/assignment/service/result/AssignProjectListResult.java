@@ -15,7 +15,6 @@ public record AssignProjectListResult(Long id, String companyName,
             .toList();
 
         return new AssignProjectListResult(assignment.getCompany().getId(),
-            assignment.getCompany().getName(),
-            assignUsers);
+            assignment.getCompany().getName(), assignUsers);
     }
 }
