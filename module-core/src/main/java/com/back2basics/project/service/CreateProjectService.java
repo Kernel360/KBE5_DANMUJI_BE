@@ -45,7 +45,7 @@ public class CreateProjectService implements CreateProjectUseCase {
             .projectCost(command.getProjectCost())
             .startDate(command.getStartDate())
             .endDate(command.getEndDate())
-            .status(ProjectStatus.IN_PROGRESS)
+            .projectStatus(ProjectStatus.IN_PROGRESS)
             .build();
         Project savedProject = saveProjectPort.createSave(project);
         historyLogService.logCreated(DomainType.PROJECT, loggedInUserId, savedProject,
