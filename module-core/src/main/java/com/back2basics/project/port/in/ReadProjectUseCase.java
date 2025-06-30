@@ -25,6 +25,8 @@ public interface ReadProjectUseCase {
     // 상세 조회
     ProjectDetailResult getProjectDetails(Long projectId, Long userId);
 
+    Page<ProjectListResult> getDeletedProjects(Pageable pageable);
+
     List<ProjectGetResult> getAllProjects();
 
     List<ProjectRecentGetResult> getRecentProjects();
