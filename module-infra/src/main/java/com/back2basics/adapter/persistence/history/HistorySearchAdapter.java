@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,13 +29,16 @@ public class HistorySearchAdapter implements HistorySearchPort {
         query.with(pageable).with(Sort.by(Sort.Direction.DESC, "history_created_at"));
 
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
-        long total = mongoTemplate.count(new Query(criteria), HistoryDocument.class);
 
         List<HistorySimpleResult> results = documents.stream()
             .map(HistoryMapper::toSimpleResult)
             .toList();
 
-        return new PageImpl<>(results, pageable, total);
+        return PageableExecutionUtils.getPage(
+            results,
+            pageable,
+            () -> mongoTemplate.count(new Query(criteria), HistoryDocument.class)
+        );
     }
 
 
