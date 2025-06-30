@@ -19,6 +19,7 @@ public class MimeTypeUtils {
         EXT_TO_MIME.put("bmp", "image/bmp");
         EXT_TO_MIME.put("svg", "image/svg+xml");
         EXT_TO_MIME.put("webp", "image/webp");
+        EXT_TO_MIME.put("ico", "image/x-icon");
 
         // 문서
         EXT_TO_MIME.put("pdf", "application/pdf");

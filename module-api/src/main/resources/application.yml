@@ -1,4 +1,9 @@
 spring:
+  #  servlet:
+  #    multipart:
+  #      max-file-size: 50MB
+  #      max-request-size: 50MB
+
   config:
     import: optional:file:.env[.properties]
   profiles:
@@ -61,8 +66,8 @@ cloudflare:
 
   servlet:
     multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
+      max-file-size: 50MB
+      max-request-size: 50MB
 ---
 spring:
   config:
@@ -98,7 +103,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
-
+  config: classpath:logback-spring.xml
 
 ---
 
@@ -133,3 +138,4 @@ spring:
 logging:
   level:
     org.hibernate.SQL: info
+  config: classpath:logback-spring.xml

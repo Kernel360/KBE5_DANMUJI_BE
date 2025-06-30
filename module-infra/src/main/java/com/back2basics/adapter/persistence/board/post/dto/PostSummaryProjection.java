@@ -17,7 +17,8 @@ public record PostSummaryProjection(
     String title,
     PostType type,
     PostPriority priority,
-    LocalDateTime createdAt
+    LocalDateTime createdAt,
+    Long commentCount
 ) {
 
 }

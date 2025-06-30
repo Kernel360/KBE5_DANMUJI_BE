@@ -14,6 +14,9 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     boolean existsByUsername(String username);
 
+    // 영속계층에 내려오기 전 서비스레이어에서 validator에 의한 옵셔널 체크를 하면 되니 여기서 옵셔널을 쓰지 않아도 될것같습니다
+    // 추가로 이렇게 하면 멘토님 말씀대로 서비스레이어에서 비즈니스 로직에 의한 예외처리가 가능해집니다.
+    // (repository.find 의 결과가 Optional이면 port쪽에서 찾아줄때 예외를 잡아줘야함)
     Optional<UserEntity> findByUsername(String username);
 
     List<UserEntity> findAllByCompany_IdAndDeletedAtIsNull(Long companyId);

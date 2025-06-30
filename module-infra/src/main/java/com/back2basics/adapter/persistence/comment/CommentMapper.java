@@ -1,6 +1,6 @@
 package com.back2basics.adapter.persistence.comment;
 
-import com.back2basics.adapter.persistence.comment.projection.CommentWithPostAndAuthorResult;
+import com.back2basics.adapter.persistence.comment.projection.CommentReadProjection;
 import com.back2basics.comment.model.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,13 +19,14 @@ public class CommentMapper {
             entity.getAuthorId(),
             null,
             null,
+            null,
             entity.getContent(),
             entity.getCreatedAt(),
             entity.getUpdatedAt()
         );
     }
 
-    public Comment toDomain(CommentWithPostAndAuthorResult result) {
+    public Comment toDomain(CommentReadProjection result) {
         return Comment.create(
             result.commentId(),
             result.parentId(),
@@ -34,6 +35,7 @@ public class CommentMapper {
             result.authorId(),
             result.authorName(),
             result.authorUsername(),
+            result.authorRole(),
             result.content(),
             result.createdAt(),
             result.updatedAt()
