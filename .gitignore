@@ -7,6 +7,13 @@ build/
 ### .env ###
 .env
 
+### k6 ###
+!node_modules/
+!node_modules/**
+!package-lock.json
+!/k6/
+!/k6/**
+
 ### query dsl Q class ###
 **/generated/
 
