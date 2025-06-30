@@ -13,8 +13,13 @@
       </encoder>
     </appender>
 
-    <root level="INFO">
+    <!-- ✅ 비동기 Appender 추가 -->
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
       <appender-ref ref="CONSOLE"/>
+    </appender>
+
+    <root level="INFO">
+      <appender-ref ref="ASYNC_CONSOLE"/>
     </root>
   </springProfile>
 
@@ -33,8 +38,13 @@
       </encoder>
     </appender>
 
-    <root level="ERROR">
+    <!-- ✅ 비동기 Appender 추가 -->
+    <appender name="ASYNC_RELEASE" class="ch.qos.logback.classic.AsyncAppender">
       <appender-ref ref="RELEASE_ERROR_FILE"/>
+    </appender>
+
+    <root level="ERROR">
+      <appender-ref ref="ASYNC_RELEASE_ERROR_FILE"/>
     </root>
   </springProfile>
 
