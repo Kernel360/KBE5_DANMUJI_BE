@@ -25,7 +25,8 @@ public class HistorySearchAdapter implements HistorySearchPort {
     public Page<HistorySimpleResult> searchHistories(HistorySearchCommand command,
         Pageable pageable) {
         Criteria criteria = createCriteria(command);
-        Query query = (criteria == null) ? new Query() : new Query(criteria);
+        Query query = new Query(criteria);
+
         query.with(pageable).with(Sort.by(Sort.Direction.DESC, "history_created_at"));
 
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
@@ -48,6 +49,7 @@ public class HistorySearchAdapter implements HistorySearchPort {
         addIfPresent(filters, "historyType", command.historyType());
         addIfPresent(filters, "domainType", command.domainType());
         addIfPresent(filters, "changedBy", command.changedBy());
+        addIfPresent(filters, "changerRole", command.changerRole());
 
         if (command.changedFrom() != null && command.changedTo() != null) {
             filters.add(Criteria.where("changed_at")
@@ -57,6 +59,11 @@ public class HistorySearchAdapter implements HistorySearchPort {
             filters.add(Criteria.where("changed_at").gte(command.changedFrom()));
         } else if (command.changedTo() != null) {
             filters.add(Criteria.where("changed_at").lte(command.changedTo()));
+        } else if (command.changedBy() != null ){
+            filters.add(new Criteria().orOperator(
+                Criteria.where("changer_username").is(command.changedBy()),
+                Criteria.where("changer_name").is(command.changedBy())
+            ));
         }
 
         return filters.isEmpty() ? new Criteria()

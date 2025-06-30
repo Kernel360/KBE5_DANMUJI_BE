@@ -26,7 +26,7 @@ public class HistoryDocument {
     private DomainType domainType; // user, project, step, post ...
 
     @Field("domain_id")
-    private String domainId;   // 얘는 어케해야되냐 string <-> long
+    private String domainId;
 
     @Field("changed_at")
     private LocalDateTime changedAt;
