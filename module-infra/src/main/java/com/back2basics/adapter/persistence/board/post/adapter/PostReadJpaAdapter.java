@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.board.post.adapter;
 
+import static com.back2basics.adapter.persistence.assignment.QAssignmentEntity.assignmentEntity;
 import static com.back2basics.adapter.persistence.board.post.QPostEntity.postEntity;
 import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 import static com.back2basics.adapter.persistence.projectstep.QProjectStepEntity.projectStepEntity;
@@ -15,11 +16,13 @@ import com.back2basics.board.file.port.out.FileReadPort;
 import com.back2basics.board.link.model.Link;
 import com.back2basics.board.link.port.out.LinkReadPort;
 import com.back2basics.board.post.model.Post;
+import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.port.out.PostReadPort;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
 import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.project.model.ProjectStatus;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -170,6 +173,43 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.deletedAt.isNull(),
                 postEntity.projectId.eq(projectId),
                 projectEntity.projectStatus.eq(ProjectStatus.DUE_SOON)
+            )
+            .orderBy(postEntity.createdAt.desc())
+            .limit(5)
+            .fetch();
+
+        return projections.stream()
+            .map(mapper::toDomain)
+            .toList();
+    }
+
+    @Override
+    public List<Post> getHighPriorityPostsByUserId(Long userId) {
+        List<PostDashboardProjection> projections = queryFactory
+            .select(Projections.constructor(
+                PostDashboardProjection.class,
+                postEntity.id,
+                projectEntity.name.as("projectName"),
+                projectStepEntity.name.as("projectStepName"),
+                postEntity.createdAt,
+                postEntity.title,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole")
+            ))
+            .from(postEntity)
+            .join(projectEntity).on(postEntity.projectId.eq(projectEntity.id))
+            .join(projectStepEntity).on(postEntity.projectStepId.eq(projectStepEntity.id))
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
+            .where(
+                postEntity.deletedAt.isNull(),
+                postEntity.priority.eq(PostPriority.HIGH),
+                projectEntity.id.in(
+                    JPAExpressions
+                        .select(assignmentEntity.project.id)
+                        .from(assignmentEntity)
+                        .where(assignmentEntity.user.id.eq(userId))
+                )
             )
             .orderBy(postEntity.createdAt.desc())
             .limit(5)

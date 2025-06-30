@@ -48,4 +48,11 @@ public class PostReadService implements PostReadUseCase {
             .map(PostDashboardReadResult::toResult)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<PostDashboardReadResult> getHighPriorityPostsByUserId(Long userId) {
+        return postReadPort.getHighPriorityPostsByUserId(userId).stream()
+            .map(PostDashboardReadResult::toResult)
+            .toList();
+    }
 }

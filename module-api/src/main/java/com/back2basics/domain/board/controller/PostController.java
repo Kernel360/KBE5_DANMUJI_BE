@@ -194,7 +194,21 @@ public class PostController /*implements PostApiDocs*/ {
             .map(PostDashboardReadResponse::toResponse)
             .collect(Collectors.toList());
 
-        return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responseList);
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_DASHBOARD_SUCCESS, responseList);
     }
 
+    @GetMapping("/priority/high")
+    public ResponseEntity<ApiResponse<List<PostDashboardReadResponse>>> getHighPriorityPosts(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        Long userId = customUserDetails.getId();
+        List<PostDashboardReadResult> results = postReadUseCase.getHighPriorityPostsByUserId(
+            userId);
+        List<PostDashboardReadResponse> responseList = results.stream()
+            .map(PostDashboardReadResponse::toResponse)
+            .collect(Collectors.toList());
+
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_DASHBOARD_SUCCESS, responseList);
+
+    }
 }

@@ -21,4 +21,6 @@ public interface PostReadUseCase {
     List<ReadRecentPostResult> getRecentPosts();
 
     List<PostDashboardReadResult> getPostsWithProjectIdAndDueSoon(Long projectId);
+
+    List<PostDashboardReadResult> getHighPriorityPostsByUserId(Long userId);
 }
