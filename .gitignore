@@ -13,6 +13,9 @@ build/
 !package-lock.json
 !/k6/
 !/k6/**
+/k6/
+/node_modules/
+/package-lock.json
 
 ### query dsl Q class ###
 **/generated/
