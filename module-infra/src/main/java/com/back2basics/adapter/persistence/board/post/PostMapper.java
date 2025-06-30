@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.board.post;
 
+import com.back2basics.adapter.persistence.board.post.dto.PostDashboardProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostDetailProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostSummaryProjection;
 import com.back2basics.board.file.model.File;
@@ -107,6 +108,19 @@ public class PostMapper {
             null,
             files,
             links
+        );
+    }
+
+    public Post toDomain(PostDashboardProjection projection) {
+        return Post.createDashboardPost(
+            projection.postId(),
+            projection.title(),
+            projection.createdAt(),
+            projection.projectName(),
+            projection.projectStepName(),
+            projection.authorName(),
+            projection.authorUsername(),
+            projection.authorRole()
         );
     }
 

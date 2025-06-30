@@ -15,4 +15,6 @@ public interface PostReadPort {
         Pageable pageable);
 
     List<ReadRecentPostResult> getRecentPosts();
+
+    List<Post> getPostsWithProjectIdAndDueSoon(Long projectId);
 }

@@ -14,8 +14,8 @@ import lombok.Getter;
 public class Post implements TargetDomain {
 
     private final Long id;
-    private final Long parentId;
-    private final Long projectId;
+    private Long parentId;
+    private Long projectId;
     private Long projectStepId;
     private String authorIp;
     private Long authorId;
@@ -34,6 +34,10 @@ public class Post implements TargetDomain {
     private List<Link> links;
     private Long commentCount;
 
+    private String projectName;
+    private String projectStepName;
+
+    // postservice.create() 용 메소드
     public static Post create(PostCreateCommand command, Long userId, String userIp) {
         return new Post(
             null,
@@ -142,6 +146,26 @@ public class Post implements TargetDomain {
         this.files = files;
         this.links = links;
     }
+
+    private Post(Long id, String title, LocalDateTime createdAt,
+        String projectName, String projectStepName,
+        String authorName, String authorUsername, Role authorRole) {
+        this.id = id;
+        this.title = title;
+        this.createdAt = createdAt;
+        this.projectName = projectName;
+        this.projectStepName = projectStepName;
+        this.authorName = authorName;
+        this.authorUsername = authorUsername;
+        this.authorRole = authorRole;
+    }
+
+    public static Post createDashboardPost(Long id, String title, LocalDateTime createdAt,
+        String projectName, String projectStepName,
+        String authorName, String authorUsername, Role authorRole) {
+        return new Post(id, title, createdAt, projectName, projectStepName, authorName, authorUsername, authorRole);
+    }
+
 
     public static Post copyOf(Post post) {
         return Post.create(
