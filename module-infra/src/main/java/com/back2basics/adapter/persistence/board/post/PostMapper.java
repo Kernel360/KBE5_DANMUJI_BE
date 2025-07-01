@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class PostMapper {
 
     public Post toDomain(PostEntity entity) {
-        return Post.create(
+        return Post.createWithoutFilesAndLinks(
             entity.getId(),
             entity.getParentId(),
             entity.getProjectId(),
@@ -47,7 +47,7 @@ public class PostMapper {
     }
 
     public Post toDomain(PostDetailProjection result) {
-        return Post.create(
+        return Post.createWithoutFilesAndLinks(
             result.postId(),
             result.parentId(),
             result.projectId(),
@@ -64,12 +64,11 @@ public class PostMapper {
             result.createdAt(),
             result.updatedAt(),
             null
-            , null, null
         );
     }
 
     public Post toDomain(PostSummaryProjection result) {
-        return Post.create(
+        return Post.createSummaryPost(
             result.postId(),
             result.parentId(),
             result.projectId(),
@@ -84,12 +83,14 @@ public class PostMapper {
             result.type(),
             result.priority(),
             result.createdAt(),
-            null, null, result.commentCount()
+            null,
+            null,
+            result.commentCount()
         );
     }
 
     public Post toDomain(PostDetailProjection result, List<File> files, List<Link> links) {
-        return Post.create(
+        return Post.createWithFilesAndLinks(
             result.postId(),
             result.parentId(),
             result.projectId(),

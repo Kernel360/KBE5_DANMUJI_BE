@@ -40,7 +40,7 @@ public class Post implements TargetDomain {
     private String projectStepName;
 
     // postservice.create() 용 메소드
-    public static Post create(PostCreateCommand command, Long userId, String userIp) {
+    public static Post createFromCommand(PostCreateCommand command, Long userId, String userIp) {
         return new Post(
             null,
             command.getParentId(),
@@ -56,12 +56,12 @@ public class Post implements TargetDomain {
             command.getType(),
             command.getPriority(),
             null, null, null,
-            null, // ← files
-            null // ← links
+            null,
+            null
         );
     }
 
-    public static Post create(
+    public static Post createWithoutFilesAndLinks(
         Long id, Long parentId, Long projectId, Long projectStepId,
         String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
         String title,
@@ -71,13 +71,12 @@ public class Post implements TargetDomain {
         LocalDateTime deletedAt
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
-            authorUsername,
-            authorRole,
-            title, content, type, priority, createdAt, updatedAt, deletedAt, null, null);
+            authorUsername, authorRole, title, content, type, priority,
+            createdAt, updatedAt, deletedAt, null, null);
     }
 
     // files 포함한 팩토리 메서드
-    public static Post create(
+    public static Post createWithFilesAndLinks(
         Long id, Long parentId, Long projectId, Long projectStepId,
         String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
         String title,
@@ -87,47 +86,55 @@ public class Post implements TargetDomain {
         LocalDateTime deletedAt, List<File> files, List<Link> links
     ) {
         return new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
-            authorUsername,
-            authorRole,
-            title, content, type, priority, createdAt, updatedAt, deletedAt, files, links);
+            authorUsername, authorRole, title, content, type, priority,
+            createdAt, updatedAt, deletedAt, files, links);
     }
 
+
     // summary용 팩토리 메서드
-    public static Post create(
+    public static Post createSummaryPost(
         Long id, Long parentId, Long projectId, Long projectStepId,
         String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
         String title, String content, PostType type, PostPriority priority,
         LocalDateTime createdAt, LocalDateTime updatedAt,
         LocalDateTime deletedAt, Long commentCount
     ) {
-        Post post = new Post(id, parentId, projectId, projectStepId, authorIp, authorId, authorName,
-            authorUsername, authorRole, title, content, type, priority,
-            createdAt, updatedAt, deletedAt, null, null);
-        post.commentCount = commentCount;
-        return post;
+        return new Post(
+            id, parentId, projectId, projectStepId, authorIp, authorId, authorName, authorUsername, authorRole,
+            title, content, type, priority, createdAt, updatedAt, deletedAt, commentCount
+        );
     }
 
-
-    public void update(PostUpdateCommand command, String userIp) {
-        this.title = command.getTitle();
-        this.content = command.getContent();
-        this.type = command.getType();
-        this.priority = command.getPriority();
-        this.authorIp = userIp;
-        this.projectStepId = command.getStepId();
-    }
-
-    public void markDeleted() {
-        this.isDelete = true;
-        this.deletedAt = LocalDateTime.now();
+    // createSummaryPost 전용 생성자
+    private Post(Long id, Long parentId, Long projectId, Long projectStepId,
+                 String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
+                 String title, String content, PostType type, PostPriority priority,
+                 LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Long commentCount) {
+        this.id = id;
+        this.parentId = parentId;
+        this.projectId = projectId;
+        this.projectStepId = projectStepId;
+        this.authorIp = authorIp;
+        this.authorId = authorId;
+        this.authorName = authorName;
+        this.authorUsername = authorUsername;
+        this.authorRole = authorRole;
+        this.title = title;
+        this.content = content;
+        this.type = type;
+        this.priority = priority;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.commentCount = commentCount;
+        this.isDelete = false;
     }
 
     private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
-        Long authorId, String authorName, String authorUsername, Role authorRole, String title,
-        String content,
-        PostType type, PostPriority priority,
-        LocalDateTime createdAt, LocalDateTime updatedAt,
-        LocalDateTime deletedAt, List<File> files, List<Link> links) {
+                 Long authorId, String authorName, String authorUsername, Role authorRole, String title,
+                 String content, PostType type, PostPriority priority,
+                 LocalDateTime createdAt, LocalDateTime updatedAt,
+                 LocalDateTime deletedAt, List<File> files, List<Link> links) {
         this.id = id;
         this.parentId = parentId;
         this.projectId = projectId;
@@ -149,9 +156,11 @@ public class Post implements TargetDomain {
         this.links = links;
     }
 
+    // createDashboardPost() 용 생성자
     private Post(Long id, String title, LocalDateTime createdAt,
-        String projectName, String projectStepName,
-        String authorName, String authorUsername, Role authorRole, PostPriority priority, PostType type) {
+                 String projectName, String projectStepName,
+                 String authorName, String authorUsername, Role authorRole,
+                 PostPriority priority, PostType type) {
         this.id = id;
         this.title = title;
         this.createdAt = createdAt;
@@ -165,14 +174,32 @@ public class Post implements TargetDomain {
     }
 
     public static Post createDashboardPost(Long id, String title, LocalDateTime createdAt,
-        String projectName, String projectStepName,
-        String authorName, String authorUsername, Role authorRole, PostPriority priority, PostType type) {
-        return new Post(id, title, createdAt, projectName, projectStepName, authorName, authorUsername, authorRole, priority, type);
+                                           String projectName, String projectStepName,
+                                           String authorName, String authorUsername, Role authorRole,
+                                           PostPriority priority, PostType type) {
+        return new Post(
+            id, title, createdAt,
+            projectName, projectStepName, authorName,
+            authorUsername, authorRole, priority, type
+        );
     }
 
+    public void update(PostUpdateCommand command, String userIp) {
+        this.title = command.getTitle();
+        this.content = command.getContent();
+        this.type = command.getType();
+        this.priority = command.getPriority();
+        this.authorIp = userIp;
+        this.projectStepId = command.getStepId();
+    }
+
+    public void markDeleted() {
+        this.isDelete = true;
+        this.deletedAt = LocalDateTime.now();
+    }
 
     public static Post copyOf(Post post) {
-        return Post.create(
+        return Post.createWithFilesAndLinks(
             post.getId(),
             post.getParentId(),
             post.getProjectId(),
