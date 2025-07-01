@@ -9,11 +9,13 @@ import com.back2basics.user.model.Role;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Post implements TargetDomain {
 
-    private final Long id;
+    private Long id;
     private Long parentId;
     private Long projectId;
     private Long projectStepId;
@@ -26,7 +28,7 @@ public class Post implements TargetDomain {
     private String content;
     private PostType type;
     private PostPriority priority;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private boolean isDelete;
