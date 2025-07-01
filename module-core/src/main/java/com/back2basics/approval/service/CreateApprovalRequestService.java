@@ -8,9 +8,7 @@ import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.ProjectStepValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
-import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
-import com.back2basics.notify.port.in.command.SendNotificationCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,15 +32,16 @@ public class CreateApprovalRequestService implements CreateApprovalRequestUseCas
             command.responseIds());
         ApprovalRequest savedApprovalRequest = approvalRequestCommandPort.create(approvalRequest);
 
-        for (Long clientId : command.responseIds()) {
-            SendNotificationCommand notifyCommand = new SendNotificationCommand(
-                clientId,
-                savedApprovalRequest.getId(),
-                NotificationType.STEP_APPROVAL_REQUEST.getDescription(),
-                NotificationType.STEP_APPROVAL_REQUEST
-            );
-            notifyUseCase.notify(notifyCommand);
-        }
+        // todo
+//        for (Long clientId : command.responseIds()) {
+//            SendNotificationCommand notifyCommand = new SendNotificationCommand(
+//                clientId,
+//                savedApprovalRequest.getId(),
+//                NotificationType.STEP_APPROVAL_REQUEST.getDescription(),
+//                NotificationType.STEP_APPROVAL_REQUEST
+//            );
+//            notifyUseCase.notify(notifyCommand);
+//        }
 
         historyLogService.logCreated(DomainType.APPROVAL_REQUEST, requesterId, savedApprovalRequest,
             "승인 요청 생성");
