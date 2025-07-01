@@ -87,8 +87,8 @@ public class ReadProjectAdapter implements ReadProjectPort {
 
     @Override
     public List<Project> findByStatusAndUserId(Long userId, ProjectStatus status) {
-        return projectEntityRepository.findProjectsByUserIdAndStatus(userId, status).stream()
-            .map(projectMapper::toDomain).toList();
+        return projectEntityRepository.findProjectsByUserIdAndStatus(userId, status)
+            .stream().map(projectMapper::toDomain).toList();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ReadProjectAdapter implements ReadProjectPort {
 
     @Override
     public List<Project> findByStatus(ProjectStatus status) {
-        return projectEntityRepository.findAllByProjectStatusAndDeletedAtIsNull(status).stream()
-            .map(projectMapper::toDomain).toList();
+        return projectEntityRepository.findAllByProjectStatusAndDeletedAtIsNullOrderByIdDesc(status)
+            .stream().map(projectMapper::toDomain).toList();
     }
 }
