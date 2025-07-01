@@ -1,11 +1,11 @@
 package com.back2basics.board.post.service.notification;
 
+import com.back2basics.board.post.model.Post;
+import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
-import com.back2basics.board.post.model.Post;
-import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.project.port.out.ProjectMemberQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class PostNotificationSender {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
                     postId,
-                    "내 게시글에 답글이 달렸습니다.",
+                    NotificationType.POST_REPLY_CREATED.getDescription(),
                     NotificationType.POST_REPLY_CREATED
                 ));
             }
@@ -46,7 +46,7 @@ public class PostNotificationSender {
                     notifyUseCase.notify(new SendNotificationCommand(
                         receiverId,
                         postId,
-                        "프로젝트에 새로운 게시글이 등록되었습니다.",
+                        NotificationType.PROJECT_POST_CREATED.getDescription(),
                         NotificationType.PROJECT_POST_CREATED
                     ));
                 }

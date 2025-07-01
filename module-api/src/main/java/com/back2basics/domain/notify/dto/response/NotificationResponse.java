@@ -1,13 +1,11 @@
 package com.back2basics.domain.notify.dto.response;
 
-import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.service.result.NotificationResult;
 import java.time.LocalDateTime;
 
 public record NotificationResponse(Long id, Long clientId, Long referenceId, String message,
-                                   NotificationType type,
-                                   Boolean isRead, LocalDateTime createdAt, LocalDateTime updatedAt,
-                                   LocalDateTime deletedAt) {
+                                   String type, Boolean isRead, LocalDateTime createdAt,
+                                   LocalDateTime updatedAt, LocalDateTime deletedAt) {
 
     public static NotificationResponse from(NotificationResult result) {
         return new NotificationResponse(
@@ -16,7 +14,7 @@ public record NotificationResponse(Long id, Long clientId, Long referenceId, Str
             result.referenceId(),
             result.message(),
             result.type(),
-            result.isRead() != null ? result.isRead() : false,
+            result.isRead(),
             result.createdAt(),
             result.updatedAt(),
             result.deletedAt()

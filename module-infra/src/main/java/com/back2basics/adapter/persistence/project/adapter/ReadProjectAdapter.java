@@ -5,8 +5,10 @@ import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_N
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.adapter.persistence.project.ProjectMapper;
+import com.back2basics.project.model.StatusCountProjection;
 import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.project.model.Project;
+import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.out.ReadProjectPort;
 import java.util.List;
 import java.util.Optional;
@@ -83,4 +85,14 @@ public class ReadProjectAdapter implements ReadProjectPort {
         return projectEntityRepository.existsById(id);
     }
 
+    @Override
+    public List<Project> findByStatus(Long userId, ProjectStatus status) {
+        return projectEntityRepository.findProjectsByUserIdAndStatus(userId, status).stream()
+            .map(projectMapper::toDomain).toList();
+    }
+
+    @Override
+    public List<StatusCountProjection> countProjectsByProjectStatus() {
+        return projectEntityRepository.countProjectsByStatus();
+    }
 }

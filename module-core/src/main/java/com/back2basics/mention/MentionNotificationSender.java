@@ -35,7 +35,7 @@ public class MentionNotificationSender {
             notifyUseCase.notify(new SendNotificationCommand(
                 receiverId,
                 postId,
-                "멘션으로 언급되었습니다.",
+                NotificationType.MENTIONED.getDescription(),
                 NotificationType.MENTIONED
             ));
         }

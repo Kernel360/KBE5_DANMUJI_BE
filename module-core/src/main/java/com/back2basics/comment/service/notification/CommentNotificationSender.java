@@ -1,5 +1,6 @@
 package com.back2basics.comment.service.notification;
 
+import com.back2basics.board.post.model.Post;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.infra.validation.validator.CommentValidator;
@@ -7,7 +8,6 @@ import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
-import com.back2basics.board.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +29,7 @@ public class CommentNotificationSender {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
                     commentId,
-                    "내 댓글에 대댓글이 달렸습니다.",
+                    NotificationType.COMMENT_REPLY_CREATED.getDescription(),
                     NotificationType.COMMENT_REPLY_CREATED
                 ));
             }
@@ -41,7 +41,7 @@ public class CommentNotificationSender {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
                     commentId,
-                    "내 게시글에 댓글이 달렸습니다.",
+                    NotificationType.COMMENT_POST_CREATED.getDescription(),
                     NotificationType.COMMENT_POST_CREATED
                 ));
             }

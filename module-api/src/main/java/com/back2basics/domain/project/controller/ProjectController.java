@@ -1,28 +1,35 @@
 package com.back2basics.domain.project.controller;
 
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.DELETED_PROJECT_READ_ALL_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_COUNT_BY_STATUS_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_CREATE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_DELETE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_ALL_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_BY_STATUS_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_UPDATE_SUCCESS;
 
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
+import com.back2basics.domain.project.dto.response.ProjectCountResponse;
 import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
 import com.back2basics.domain.project.dto.response.ProjectListResponse;
 import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
+import com.back2basics.domain.project.dto.response.ProjectStatusResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
+import com.back2basics.project.service.result.ProjectCountResult;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
 import com.back2basics.project.service.result.ProjectRecentGetResult;
+import com.back2basics.project.service.result.ProjectStatusResult;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
@@ -189,5 +196,25 @@ public class ProjectController {
         Page<ProjectListResult> result = readProjectUseCase.getDeletedProjects(pageable);
         Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
         return ApiResponse.success(DELETED_PROJECT_READ_ALL_SUCCESS, response);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<ApiResponse<List<ProjectStatusResponse>>> getProjectByStatus(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam ProjectStatus status) {
+        List<ProjectStatusResult> results = readProjectUseCase.findProjectByStatus(
+            userDetails.getId(), status);
+        List<ProjectStatusResponse> responses = results.stream().map(ProjectStatusResponse::from)
+            .toList();
+        return ApiResponse.success(PROJECT_READ_BY_STATUS_SUCCESS, responses);
+    }
+
+    // 상태별 개수
+    @GetMapping("/status-count")
+    public ResponseEntity<ApiResponse<List<ProjectCountResponse>>> getCountByProjectStatus() {
+        List<ProjectCountResult> result = readProjectUseCase.getCountByProjectStatus();
+        List<ProjectCountResponse> response = result.stream().map(ProjectCountResponse::toResponse)
+            .toList();
+        return ApiResponse.success(PROJECT_COUNT_BY_STATUS_SUCCESS, response);
     }
 }

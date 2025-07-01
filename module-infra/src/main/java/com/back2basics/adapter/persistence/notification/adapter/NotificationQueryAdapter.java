@@ -10,6 +10,8 @@ import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.port.out.NotificationQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,11 +29,10 @@ public class NotificationQueryAdapter implements NotificationQueryPort {
     }
 
     @Override
-    public List<Notification> findByClientId(Long clientId) {
+    public Page<Notification> findByClientId(Long clientId, Pageable pageable) {
         userValidator.validateNotFoundUserId(clientId);
-        return notificationEntityRepository.findByClientIdAndDeletedAtIsNull(clientId).stream()
-            .map(notificationMapper::toDomain)
-            .toList();
+        return notificationEntityRepository.findByClientIdAndDeletedAtIsNull(clientId, pageable)
+            .map(notificationMapper::toDomain);
     }
 
     @Override

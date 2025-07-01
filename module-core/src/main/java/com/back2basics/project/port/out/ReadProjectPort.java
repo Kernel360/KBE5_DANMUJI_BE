@@ -1,6 +1,8 @@
 package com.back2basics.project.port.out;
 
 import com.back2basics.project.model.Project;
+import com.back2basics.project.model.ProjectStatus;
+import com.back2basics.project.model.StatusCountProjection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -27,4 +29,8 @@ public interface ReadProjectPort {
     List<Project> getAllProjects();
 
     boolean existsById(Long id);
+
+    List<Project> findByStatus(Long userId, ProjectStatus status);
+
+    List<StatusCountProjection> countProjectsByProjectStatus();
 }
