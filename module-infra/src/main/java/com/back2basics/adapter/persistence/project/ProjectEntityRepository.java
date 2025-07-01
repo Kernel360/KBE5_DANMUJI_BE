@@ -50,7 +50,7 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
     List<ProjectEntity> findAllByIsDeletedFalse();
 
     @Query("SELECT p FROM ProjectEntity p JOIN p.assignments pu " +
-        "WHERE pu.user.id = :userId AND p.projectStatus = :status AND p.deletedAt IS NULL")
+        "WHERE pu.user.id = :userId AND p.projectStatus = :status AND p.deletedAt IS NULL ORDER BY p.id DESC")
     List<ProjectEntity> findProjectsByUserIdAndStatus(@Param("userId") Long userId,
         @Param("status") ProjectStatus status);
 
@@ -62,5 +62,5 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
         """)
     List<StatusCountProjection> countProjectsByStatus();
 
-    List<ProjectEntity> findAllByProjectStatusAndDeletedAtIsNull(ProjectStatus status);
+    List<ProjectEntity> findAllByProjectStatusAndDeletedAtIsNullOrderByIdDesc(ProjectStatus status);
 }
