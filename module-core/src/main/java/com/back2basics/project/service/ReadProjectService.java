@@ -15,6 +15,7 @@ import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
 import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectStatusResult;
+import com.back2basics.user.model.Role;
 import com.back2basics.user.model.UserType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -80,8 +81,14 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
-    public List<ProjectStatusResult> findProjectByStatus(Long userId, ProjectStatus status) {
-        List<Project> projects = readProjectPort.findByStatus(userId, status);
+    public List<ProjectStatusResult> findProjectByStatus(Long userId, Role role,
+        ProjectStatus status) {
+        List<Project> projects;
+        if (role.equals(Role.USER)) {
+            projects = readProjectPort.findByStatusAndUserId(userId, status);
+        } else {
+            projects = readProjectPort.findByStatus(status);
+        }
 
         return projects.stream()
             .map(project -> new ProjectStatusResult(

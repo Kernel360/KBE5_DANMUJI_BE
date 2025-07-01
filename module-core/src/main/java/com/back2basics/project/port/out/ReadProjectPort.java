@@ -30,7 +30,9 @@ public interface ReadProjectPort {
 
     boolean existsById(Long id);
 
-    List<Project> findByStatus(Long userId, ProjectStatus status);
+    List<Project> findByStatusAndUserId(Long userId, ProjectStatus status);
 
     List<StatusCountProjection> countProjectsByProjectStatus();
+
+    List<Project> findByStatus(ProjectStatus status);
 }
