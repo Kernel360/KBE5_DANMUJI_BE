@@ -4,6 +4,7 @@ import static com.back2basics.domain.project.controller.code.ProjectResponseCode
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_CREATE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_DELETE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_ALL_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_BY_STATUS_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_UPDATE_SUCCESS;
 
@@ -13,7 +14,9 @@ import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
 import com.back2basics.domain.project.dto.response.ProjectListResponse;
 import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
+import com.back2basics.domain.project.dto.response.ProjectStatusResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
@@ -23,6 +26,7 @@ import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
 import com.back2basics.project.service.result.ProjectRecentGetResult;
+import com.back2basics.project.service.result.ProjectStatusResult;
 import com.back2basics.security.model.CustomUserDetails;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
@@ -189,5 +193,16 @@ public class ProjectController {
         Page<ProjectListResult> result = readProjectUseCase.getDeletedProjects(pageable);
         Page<ProjectListResponse> response = result.map(ProjectListResponse::toResponse);
         return ApiResponse.success(DELETED_PROJECT_READ_ALL_SUCCESS, response);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<ApiResponse<List<ProjectStatusResponse>>> getProjectByStatus(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam ProjectStatus status) {
+        List<ProjectStatusResult> results = readProjectUseCase.findProjectByStatus(
+            userDetails.getId(), status);
+        List<ProjectStatusResponse> responses = results.stream().map(ProjectStatusResponse::from)
+            .toList();
+        return ApiResponse.success(PROJECT_READ_BY_STATUS_SUCCESS, responses);
     }
 }
