@@ -5,6 +5,7 @@ import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_N
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.adapter.persistence.project.ProjectMapper;
+import com.back2basics.project.model.StatusCountProjection;
 import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
@@ -90,4 +91,8 @@ public class ReadProjectAdapter implements ReadProjectPort {
             .map(projectMapper::toDomain).toList();
     }
 
+    @Override
+    public List<StatusCountProjection> countProjectsByProjectStatus() {
+        return projectEntityRepository.countProjectsByStatus();
+    }
 }

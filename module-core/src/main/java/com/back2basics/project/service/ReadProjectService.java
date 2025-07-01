@@ -6,8 +6,10 @@ import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
+import com.back2basics.project.model.StatusCountProjection;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.out.ReadProjectPort;
+import com.back2basics.project.service.result.ProjectCountResult;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
@@ -98,5 +100,11 @@ public class ReadProjectService implements ReadProjectUseCase {
         List<Project> projects = readProjectPort.getAllProjects();
         return projects.stream()
             .map(ProjectGetResult::toResult).toList();
+    }
+
+    @Override
+    public List<ProjectCountResult> getCountByProjectStatus() {
+        List<StatusCountProjection> projections = readProjectPort.countProjectsByProjectStatus();
+        return projections.stream().map(ProjectCountResult::toResult).toList();
     }
 }
