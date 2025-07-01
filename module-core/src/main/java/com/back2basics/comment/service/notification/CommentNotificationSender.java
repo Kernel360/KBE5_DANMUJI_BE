@@ -25,10 +25,12 @@ public class CommentNotificationSender {
             // 대댓글 -> 부모 댓글 작성자에게
             Comment parent = commentValidator.findComment(command.getParentId());
             Long receiverId = parent.getAuthorId();
+            Post post = postValidator.findPost(parent.getPostId());
             if (!receiverId.equals(senderId)) {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
-                    commentId,
+                    post.getProjectId(),
+                    post.getId(),
                     NotificationType.COMMENT_REPLY_CREATED.getDescription(),
                     NotificationType.COMMENT_REPLY_CREATED
                 ));
@@ -40,7 +42,8 @@ public class CommentNotificationSender {
             if (!receiverId.equals(senderId)) {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
-                    commentId,
+                    post.getProjectId(),
+                    post.getId(),
                     NotificationType.COMMENT_POST_CREATED.getDescription(),
                     NotificationType.COMMENT_POST_CREATED
                 ));

@@ -50,9 +50,9 @@ public class PostCreateService implements PostCreateUseCase {
 
         uploadAndSaveFiles(files, savedPost.getId());
         linkCreateService.createLinks(command.getNewLinks(), savedPost.getId());
-        
+
         postNotificationSender.sendNotification(userId, savedPost.getId(), command);
-        mentionNotificationSender.notifyMentionedUsers(userId, savedPost.getId(),
+        mentionNotificationSender.notifyMentionedUsers(userId, projectId, savedPost.getId(),
             post.getContent());
 
         historyLogService.logCreated(DomainType.POST, userId, savedPost, "게시글 생성");

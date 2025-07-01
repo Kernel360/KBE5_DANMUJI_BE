@@ -26,7 +26,7 @@ public class MentionReadAdapter implements ReadMentionPort {
                 MyMentionProjection.class,
                 notificationEntity.id,
                 notificationEntity.clientId,
-                notificationEntity.referenceId,
+                notificationEntity.postId,
                 notificationEntity.message.as("content"),
                 notificationEntity.type,
                 notificationEntity.isRead,

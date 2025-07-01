@@ -1,5 +1,6 @@
 package com.back2basics.comment.service;
 
+import com.back2basics.board.post.model.Post;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.in.CommentCreateUseCase;
 import com.back2basics.comment.port.in.command.CommentCreateCommand;
@@ -23,7 +24,7 @@ public class CommentCreateService implements CommentCreateUseCase {
 
     @Override
     public Long createComment(Long userId, String userIp, CommentCreateCommand command) {
-        postValidator.findPost(command.getPostId());
+        Post post = postValidator.findPost(command.getPostId());
         commentValidator.validateParentComment(command.getParentId(), command.getPostId());
 
         Comment comment = Comment.create(command, userIp, userId);
@@ -33,7 +34,8 @@ public class CommentCreateService implements CommentCreateUseCase {
 
         mentionNotificationSender.notifyMentionedUsers(
             userId,
-            command.getPostId(),
+            post.getProjectId(),
+            post.getId(),
             command.getContent()
         );
 

@@ -83,6 +83,7 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
         return new SendNotificationCommand(
             approvalRequest.getRequesterId(),
             approvalResponse.getApprovalRequestId(),
+            null, // todo
             type.getDescription(),
             type
         );
@@ -101,6 +102,7 @@ public class UpdateApprovalResponseService implements UpdateApprovalResponseUseC
             SendNotificationCommand notifyCommand = new SendNotificationCommand(
                 clientId,
                 requestId,
+                null, // todo
                 NotificationType.STEP_APPROVAL_REQUEST.getDescription(),
                 NotificationType.STEP_APPROVAL_REQUEST
             );
