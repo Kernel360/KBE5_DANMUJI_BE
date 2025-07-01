@@ -3,6 +3,22 @@
 
   <property name="LOG_PATH" value="logs"/>
 
+<!--  &lt;!&ndash; ✅ dev 프로파일: 콘솔 출력 전용 (비동기 제거됨) &ndash;&gt;-->
+<!--  <springProfile name="dev"> -->
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--      <encoder>-->
+<!--        <pattern>-->
+<!--          %yellow(%d{HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n-->
+<!--        </pattern>-->
+<!--      </encoder>-->
+<!--    </appender>-->
+
+<!--    <root level="INFO">-->
+<!--      <appender-ref ref="CONSOLE"/>-->
+<!--    </root>-->
+
+<!--  </springProfile> -->
+
   <!-- ✅ dev 프로파일: 콘솔 출력 전용 -->
   <springProfile name="dev">
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -26,6 +42,7 @@
       <appender-ref ref="ASYNC_CONSOLE"/> <!-- 루트 로그는 비동기로 출력 -->
     </root>
   </springProfile>
+
 
   <!-- ✅ release 프로파일: 파일 저장 -->
   <springProfile name="release">
@@ -53,6 +70,40 @@
     <root level="ERROR">
       <appender-ref ref="ASYNC_RELEASE"/> <!-- 루트 로그는 비동기로 파일에 저장 -->
     </root>
+
+    <!-- ✅ SQL 쿼리 로그 전용 appender -->
+    <appender name="SQL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_PATH}/release/sql.log</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_PATH}/release/sql.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <maxFileSize>10MB</maxFileSize>
+        <maxHistory>30</maxHistory>
+        <totalSizeCap>1GB</totalSizeCap>
+      </rollingPolicy>
+      <encoder>
+        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+      </encoder>
+    </appender>
+
+    <!-- ✅ SQL 로그를 위한 비동기 Appender -->
+    <appender name="ASYNC_SQL_FILE" class="ch.qos.logback.classic.AsyncAppender">
+      <appender-ref ref="SQL_FILE"/>
+      <queueSize>512</queueSize>
+      <discardingThreshold>0</discardingThreshold>
+      <includeCallerData>false</includeCallerData>
+      <maxFlushTime>2000</maxFlushTime>
+      <neverBlock>true</neverBlock>
+    </appender>
+
+    <!-- ✅ Hibernate SQL, JDBC 쿼리 로깅 -->
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+      <appender-ref ref="ASYNC_SQL_FILE"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+      <appender-ref ref="ASYNC_SQL_FILE"/>
+    </logger>
+
   </springProfile>
 
 </configuration>
