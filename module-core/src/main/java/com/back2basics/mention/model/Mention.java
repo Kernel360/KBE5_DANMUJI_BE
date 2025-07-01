@@ -9,18 +9,20 @@ import lombok.Getter;
 @Builder
 public class Mention {
 
-    private final Long id;                // 알림 ID
-    private final Long clientId;          // 멘션된 사용자 ID
-    private final Long referenceId;       // 게시글 or 댓글 ID
-    private final String content;         // 멘션 내용
-    private final NotificationType type;  // MENTION_POST / COMMENT / REPLY
-    private final Boolean isRead;         // 읽음 여부
+    private final Long id;
+    private final Long clientId;
+    private final Long projectId;
+    private final Long postId;
+    private final String content;
+    private final NotificationType type;
+    private final Boolean isRead;
     private final LocalDateTime createdAt;
 
     public static Mention createMyMention(
         Long id,
         Long clientId,
-        Long referenceId,
+        Long projectId,
+        Long postId,
         String content,
         NotificationType type,
         Boolean isRead,
@@ -31,7 +33,8 @@ public class Mention {
             .clientId(clientId)
             .type(type)
             .content(content)
-            .referenceId(referenceId)
+            .projectId(projectId)
+            .postId(postId)
             .isRead(isRead)
             .createdAt(createdAt)
             .build();

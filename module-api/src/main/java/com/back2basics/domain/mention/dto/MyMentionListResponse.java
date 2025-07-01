@@ -12,7 +12,8 @@ public class MyMentionListResponse {
 
     private final Long notificationId;
     private final Long clientId;
-    private final Long referenceId;
+    private final Long projectId;
+    private final Long postId;
     private final String content;
     private final NotificationType type;
     private final Boolean isRead;
@@ -23,7 +24,8 @@ public class MyMentionListResponse {
             .notificationId(result.getNotificationId())
             .type(result.getType())
             .content(result.getContent())
-            .referenceId(result.getReferenceId())
+            .projectId(result.getProjectId())
+            .postId(result.getPostId())
             .isRead(result.getIsRead())
             .createdAt(result.getCreatedAt())
             .clientId(result.getClientId())

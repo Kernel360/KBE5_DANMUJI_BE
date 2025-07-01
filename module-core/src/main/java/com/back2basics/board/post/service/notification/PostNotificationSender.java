@@ -29,6 +29,7 @@ public class PostNotificationSender {
             if (!receiverId.equals(senderId)) {
                 notifyUseCase.notify(new SendNotificationCommand(
                     receiverId,
+                    parentPost.getProjectId(),
                     postId,
                     NotificationType.POST_REPLY_CREATED.getDescription(),
                     NotificationType.POST_REPLY_CREATED
@@ -45,6 +46,7 @@ public class PostNotificationSender {
                 if (!receiverId.equals(senderId)) {
                     notifyUseCase.notify(new SendNotificationCommand(
                         receiverId,
+                        command.getProjectId(),
                         postId,
                         NotificationType.PROJECT_POST_CREATED.getDescription(),
                         NotificationType.PROJECT_POST_CREATED

@@ -20,6 +20,7 @@ public class AssignmentNotificationSender {
         senderIds.forEach(senderId -> notifyUseCase.notify(new SendNotificationCommand(
             senderId,
             projectId,
+            null,
             NotificationType.PROJECT_CREATE_ASSIGNMENT.getDescription(),
             NotificationType.PROJECT_CREATE_ASSIGNMENT
         )));
