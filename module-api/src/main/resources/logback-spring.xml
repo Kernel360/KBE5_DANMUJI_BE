@@ -13,38 +13,45 @@
       </encoder>
     </appender>
 
-    <!-- ✅ 비동기 Appender 추가 -->
-    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
-      <appender-ref ref="CONSOLE"/>
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender"> <!-- 비동기 콘솔 -->
+      <appender-ref ref="CONSOLE"/> <!-- 콘솔 로그를 비동기로 감쌈 -->
+      <queueSize>512</queueSize> <!-- 큐 용량 (기본 256) -->
+      <discardingThreshold>0</discardingThreshold> <!-- INFO 이하 로그도 삭제 안 함 -->
+      <includeCallerData>true</includeCallerData> <!-- 호출자 정보 포함 -->
+      <maxFlushTime>2000</maxFlushTime> <!-- 종료 시 버퍼 비우기 최대 대기 시간 -->
+      <neverBlock>true</neverBlock> <!-- 큐가 가득 차도 앱이 멈추지 않게 -->
     </appender>
 
     <root level="INFO">
-      <appender-ref ref="ASYNC_CONSOLE"/>
+      <appender-ref ref="ASYNC_CONSOLE"/> <!-- 루트 로그는 비동기로 출력 -->
     </root>
   </springProfile>
 
   <!-- ✅ release 프로파일: 파일 저장 -->
   <springProfile name="release">
-    <appender name="RELEASE_ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-      <!--      <file>${LOG_PATH}/release/release.log</file>-->
+    <appender name="RELEASE_ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> <!-- 롤링 파일 로그 -->
       <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-        <fileNamePattern>${LOG_PATH}/release/release.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-        <maxFileSize>10MB</maxFileSize>
-        <maxHistory>30</maxHistory>
-        <totalSizeCap>1GB</totalSizeCap>
+        <fileNamePattern>${LOG_PATH}/release/release.%d{yyyy-MM-dd}.%i.log</fileNamePattern> <!-- 날짜+index 패턴 -->
+        <maxFileSize>10MB</maxFileSize> <!-- 파일 당 최대 10MB -->
+        <maxHistory>30</maxHistory> <!-- 최대 30일 보관 -->
+        <totalSizeCap>1GB</totalSizeCap> <!-- 전체 용량 제한 -->
       </rollingPolicy>
       <encoder>
         <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %logger{36} - %cyan(%msg%n%ex)</pattern>
       </encoder>
     </appender>
 
-    <!-- ✅ 비동기 Appender 추가 -->
-    <appender name="ASYNC_RELEASE" class="ch.qos.logback.classic.AsyncAppender">
-      <appender-ref ref="RELEASE_ERROR_FILE"/>
+    <appender name="ASYNC_RELEASE" class="ch.qos.logback.classic.AsyncAppender"> <!-- 비동기 파일 로그 -->
+      <appender-ref ref="RELEASE_ERROR_FILE"/> <!-- 파일 로그를 비동기로 감쌈 -->
+      <queueSize>512</queueSize> <!-- 큐 용량 (기본 256) -->
+      <discardingThreshold>0</discardingThreshold> <!-- INFO 이하 로그도 삭제 안 함 -->
+      <includeCallerData>true</includeCallerData> <!-- 호출자 정보 포함 -->
+      <maxFlushTime>2000</maxFlushTime> <!-- 종료 시 버퍼 비우기 최대 대기 시간 -->
+      <neverBlock>true</neverBlock> <!-- 큐가 가득 차도 앱이 멈추지 않게 -->
     </appender>
 
     <root level="ERROR">
-      <appender-ref ref="ASYNC_RELEASE_ERROR_FILE"/>
+      <appender-ref ref="ASYNC_RELEASE"/> <!-- 루트 로그는 비동기로 파일에 저장 -->
     </root>
   </springProfile>
 
