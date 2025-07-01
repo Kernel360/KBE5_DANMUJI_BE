@@ -20,7 +20,6 @@ import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.port.out.PostReadPort;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
 import com.back2basics.infra.exception.post.PostException;
-import com.back2basics.project.model.ProjectStatus;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -173,8 +172,8 @@ public class PostReadJpaAdapter implements PostReadPort {
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
                 postEntity.deletedAt.isNull(),
-                projectEntity.projectStatus.eq(ProjectStatus.DUE_SOON),
-                postEntity.projectId.in(
+//                projectEntity.projectStatus.eq(ProjectStatus.IN_PROGRESS),
+                projectEntity.id.in(
                     JPAExpressions
                         .select(assignmentEntity.project.id)
                         .from(assignmentEntity)
