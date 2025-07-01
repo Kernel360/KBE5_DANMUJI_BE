@@ -3,6 +3,7 @@ package com.back2basics.notify.service;
 import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.port.in.SubscribeNotificationUseCase;
 import com.back2basics.notify.port.out.NotificationQueryPort;
+import com.back2basics.notify.service.result.NotificationResult;
 import com.back2basics.notify.util.SseEmitterUtil;
 import java.io.IOException;
 import java.util.List;
@@ -41,7 +42,7 @@ public class SubscribeNotificationService implements SubscribeNotificationUseCas
             try {
                 emitter.send(SseEmitter.event()
                     .name("ALERT")
-                    .data(notification));
+                    .data(NotificationResult.from(notification)));
             } catch (IOException e) {
                 emitter.completeWithError(e);
                 sseEmitterUtil.remove(clientId);

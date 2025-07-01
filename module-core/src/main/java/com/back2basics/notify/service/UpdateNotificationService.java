@@ -18,9 +18,9 @@ public class UpdateNotificationService implements UpdateNotificationUseCase {
     private final NotificationDeletePort notificationDeletePort;
 
     @Override
-    public void markAsRead(Long notificationId) {
+    public void toggleRead(Long notificationId) {
         Notification notification = notificationQueryPort.findById(notificationId);
-        notification.markAsRead();
+        notification.toggleRead();
         notificationSavePort.save(notification);
     }
 

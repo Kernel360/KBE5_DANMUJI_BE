@@ -1,7 +1,7 @@
 package com.back2basics.assignment.service.notification;
 
-import com.back2basics.notify.model.NotificationType;
 import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
 import java.util.List;
@@ -20,7 +20,7 @@ public class AssignmentNotificationSender {
         senderIds.forEach(senderId -> notifyUseCase.notify(new SendNotificationCommand(
             senderId,
             projectId,
-            "새 프로젝트에 배정되었습니다.",
+            NotificationType.PROJECT_CREATE_ASSIGNMENT.getDescription(),
             NotificationType.PROJECT_CREATE_ASSIGNMENT
         )));
     }
