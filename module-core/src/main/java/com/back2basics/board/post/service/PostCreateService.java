@@ -45,7 +45,7 @@ public class PostCreateService implements PostCreateUseCase {
         projectValidator.findById(projectId);
         postValidator.findParentPost(command.getParentId());
 
-        Post post = Post.create(command, userId, userIp);
+        Post post = Post.createFromCommand(command, userId, userIp);
         Post savedPost = postCreatePort.save(post);
 
         uploadAndSaveFiles(files, savedPost.getId());
