@@ -11,7 +11,7 @@ public class CreateCompanyCommand {
     private String ceoName;
     private String bio;
     private Long bizNo;
-    private String zondCode;
+    private String zondcode;
     private String address;
     private String email;
     private String tel;

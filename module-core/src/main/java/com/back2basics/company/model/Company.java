@@ -14,7 +14,7 @@ public class Company implements TargetDomain {
     private String ceoName;
     private String bio;
     private Long bizNo;
-    private String zoneCode;
+    private String zonecode;
     private String address;
     private String email;
     private String tel;
@@ -25,14 +25,14 @@ public class Company implements TargetDomain {
 
     @Builder
     public Company(Long id, String name, String ceoName, String bio,
-        Long bizNo, String zoneCode, String address, String email, String tel,
+        Long bizNo, String zonecode, String address, String email, String tel,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
         this.bizNo = bizNo;
-        this.zoneCode = zoneCode;
+        this.zonecode = zonecode;
         this.address = address;
         this.email = email;
         this.tel = tel;
@@ -47,7 +47,7 @@ public class Company implements TargetDomain {
         this.ceoName = command.getCeoName();
         this.bio = command.getBio();
         this.bizNo = command.getBizNo();
-        this.zoneCode = command.getZoneCode();
+        this.zonecode = command.getZonecode();
         this.address = command.getAddress();
         this.email = command.getEmail();
         this.tel = command.getTel();
@@ -64,7 +64,7 @@ public class Company implements TargetDomain {
             .ceoName(company.getCeoName())
             .bio(company.getBio())
             .bizNo(company.getBizNo())
-            .zoneCode(company.getZoneCode())
+            .zonecode(company.getZonecode())
             .address(company.getAddress())
             .email(company.getEmail())
             .tel(company.getTel())

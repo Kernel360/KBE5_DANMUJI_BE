@@ -35,7 +35,7 @@ public class CompanyEntity extends BaseTimeEntity {
     private Long bizNo;
 
     @Column(name = "zonecode", nullable = false)
-    private String zoneCode;
+    private String zonecode;
 
     @Column(name = "address", nullable = false, unique = true)
     private String address;
@@ -47,13 +47,13 @@ public class CompanyEntity extends BaseTimeEntity {
 
     @Builder
     public CompanyEntity(Long id, String name, String ceoName, String bio,
-        Long bizNo, String zoneCode, String address, String email, String tel) {
+        Long bizNo, String zonecode, String address, String email, String tel) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
         this.bizNo = bizNo;
-        this.zoneCode = zoneCode;
+        this.zonecode = zonecode;
         this.address = address;
         this.email = email;
         this.tel = tel;

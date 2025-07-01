@@ -11,7 +11,7 @@ public class UpdateCompanyCommand {
     private String ceoName;
     private String bio;
     private Long bizNo;
-    private String zoneCode;
+    private String zonecode;
     private String address;
     private String email;
     private String tel;

@@ -42,7 +42,7 @@ public class ReadCompanyResult {
             .ceoName(company.getCeoName())
             .bio(company.getBio())
             .bizNo(company.getBizNo())
-            .zonecode(company.getZoneCode())
+            .zonecode(company.getZonecode())
             .address(company.getAddress())
             .email(company.getEmail())
             .tel(company.getTel())
