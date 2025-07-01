@@ -5,12 +5,14 @@ import com.back2basics.company.model.CompanyType;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.project.model.Project;
+import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
-import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
+import com.back2basics.project.service.result.ProjectRecentGetResult;
+import com.back2basics.project.service.result.ProjectStatusResult;
 import com.back2basics.user.model.UserType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +74,22 @@ public class ReadProjectService implements ReadProjectUseCase {
     @Override
     public List<ProjectRecentGetResult> getRecentProjects() {
         return readProjectPort.getRecentProjects().stream().map(ProjectRecentGetResult::toResult)
+            .toList();
+    }
+
+    @Override
+    public List<ProjectStatusResult> findProjectByStatus(Long userId, ProjectStatus status) {
+        List<Project> projects = readProjectPort.findByStatus(userId, status);
+
+        return projects.stream()
+            .map(project -> new ProjectStatusResult(
+                project.getId(),
+                project.getName(),
+                project.getDescription(),
+                project.getStartDate(),
+                project.getEndDate(),
+                project.getProgress()
+            ))
             .toList();
     }
 

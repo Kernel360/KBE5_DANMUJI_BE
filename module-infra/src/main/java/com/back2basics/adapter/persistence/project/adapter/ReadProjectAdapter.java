@@ -7,6 +7,7 @@ import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
 import com.back2basics.adapter.persistence.project.ProjectMapper;
 import com.back2basics.infra.exception.project.ProjectException;
 import com.back2basics.project.model.Project;
+import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.out.ReadProjectPort;
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +82,12 @@ public class ReadProjectAdapter implements ReadProjectPort {
     @Override
     public boolean existsById(Long id) {
         return projectEntityRepository.existsById(id);
+    }
+
+    @Override
+    public List<Project> findByStatus(Long userId, ProjectStatus status) {
+        return projectEntityRepository.findProjectsByUserIdAndStatus(userId, status).stream()
+            .map(projectMapper::toDomain).toList();
     }
 
 }
