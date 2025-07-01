@@ -61,6 +61,8 @@ public class ProjectStep implements TargetDomain {
             this.projectStepStatus = ProjectStepStatus.COMPLETED;
         } else if (projectStep.getProjectStepStatus() == ProjectStepStatus.COMPLETED) {
             this.projectStepStatus = ProjectStepStatus.IN_PROGRESS;
+        } else if (projectStep.getProjectStepStatus() == ProjectStepStatus.PENDING) {
+            this.projectStepStatus = ProjectStepStatus.IN_PROGRESS;
         }
     }
 
