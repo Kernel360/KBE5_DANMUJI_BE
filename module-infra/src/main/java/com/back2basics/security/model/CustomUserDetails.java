@@ -1,5 +1,6 @@
 package com.back2basics.security.model;
 
+import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import java.util.Collection;
 import java.util.List;
@@ -14,19 +15,20 @@ public class CustomUserDetails implements UserDetails {
     private final Long id;
     private final String username;
     private final String password;
-    private final String role;
+    @Getter
+    private final Role role;
     private String ip;
 
     public CustomUserDetails(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.role = user.getRole().getKey();
+        this.role = user.getRole();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        return List.of(new SimpleGrantedAuthority(role.getKey()));
     }
 
     @Override
