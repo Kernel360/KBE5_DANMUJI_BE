@@ -13,6 +13,7 @@ public class ReadCompanyResult {
     private final String ceoName;
     private final String bio;
     private final Long bizNo;
+    private final String zonecode;
     private final String address;
     private final String email;
     private final String tel;
@@ -20,12 +21,14 @@ public class ReadCompanyResult {
 
     @Builder
     public ReadCompanyResult(Long id, String name, String ceoName, String bio,
-        Long bizNo, String address, String email, String tel, LocalDateTime createdAt) {
+        Long bizNo, String zonecode, String address, String email, String tel,
+        LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
         this.bio = bio;
         this.bizNo = bizNo;
+        this.zonecode = zonecode;
         this.address = address;
         this.email = email;
         this.tel = tel;
@@ -39,6 +42,7 @@ public class ReadCompanyResult {
             .ceoName(company.getCeoName())
             .bio(company.getBio())
             .bizNo(company.getBizNo())
+            .zonecode(company.getZonecode())
             .address(company.getAddress())
             .email(company.getEmail())
             .tel(company.getTel())

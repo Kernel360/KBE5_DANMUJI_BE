@@ -16,6 +16,7 @@ public class ReadCompanyResponse {
     private String ceoName;
     private String bio;
     private Long bizNo;
+    private String zonecode;
     private String address;
     private String email;
     private String tel;
@@ -28,6 +29,7 @@ public class ReadCompanyResponse {
             .ceoName(result.getCeoName())
             .bio(result.getBio())
             .bizNo(result.getBizNo())
+            .zonecode(result.getZonecode())
             .address(result.getAddress())
             .email(result.getEmail())
             .tel(result.getTel())

@@ -17,6 +17,8 @@ public class UpdateCompanyRequest {
     private String bio;
     @Pattern(regexp = "\\d{10}", message = "사업자등록번호는 숫자 10자리여야 합니다.")
     private String bizNo;
+    @CustomNotBlank(message = "우편 번호는 공백일 수 없습니다.")
+    private String zonecode;
     @CustomNotBlank(message = "회사 주소는 공백일 수 없습니다.")
     private String address;
     @CustomNotBlank(message = "회사 이메일 주소는 공백일 수 없습니다.")
@@ -35,6 +37,7 @@ public class UpdateCompanyRequest {
             .ceoName(ceoName)
             .bio(bio)
             .bizNo(Long.parseLong(bizNo))
+            .zonecode(zonecode)
             .address(address)
             .email(email)
             .tel(tel)
