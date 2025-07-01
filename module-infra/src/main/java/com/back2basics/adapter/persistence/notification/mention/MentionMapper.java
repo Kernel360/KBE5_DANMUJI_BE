@@ -10,7 +10,8 @@ public class MentionMapper {
         return Mention.createMyMention(
             projection.id(),
             projection.clientId(),
-            projection.referenceId(),
+            projection.projectId(),
+            projection.postId(),
             projection.content(),
             projection.type(),
             projection.isRead(),
