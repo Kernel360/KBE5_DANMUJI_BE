@@ -60,6 +60,7 @@ public class ProjectEntity extends BaseTimeEntity {
     private ProjectStatus projectStatus;
 
     @Column(name = "progress", nullable = false)
+    @ColumnDefault(value = "0")
     private int progress;
 
     @Column(name = "project_cost")
@@ -105,6 +106,9 @@ public class ProjectEntity extends BaseTimeEntity {
             } else {
                 this.projectStatus = ProjectStatus.IN_PROGRESS;
             }
+        }
+        if (this.progress == 100) {
+            this.projectStatus = ProjectStatus.COMPLETED;
         }
 
         return this.projectStatus;
