@@ -207,7 +207,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.priority.eq(PostPriority.HIGH),
+                postEntity.priority.in(PostPriority.HIGH, PostPriority.URGENT),
                 projectEntity.id.in(
                     JPAExpressions
                         .select(assignmentEntity.project.id)
