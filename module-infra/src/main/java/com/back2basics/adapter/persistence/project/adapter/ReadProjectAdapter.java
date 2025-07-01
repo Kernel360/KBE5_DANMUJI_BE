@@ -48,14 +48,15 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
-    public List<Project> getAllProjects() {
-        return projectEntityRepository.findAllByIsDeletedFalse().stream()
-            .map(projectMapper::toDomain).toList();
+    public Page<Project> findAllDeletedProjects(Pageable pageable) {
+        return projectEntityRepository.findAllByIsDeletedTrue(pageable)
+            .map(projectMapper::toDomain);
     }
 
     @Override
     public Page<Project> searchByKeywordAndUserId(Long userId, String keyword, Pageable pageable) {
-        return projectEntityRepository.findByNameContainingAndUserIdIsDeletedFalse(keyword, userId, pageable)
+        return projectEntityRepository.findByNameContainingAndUserIdIsDeletedFalse(keyword, userId,
+                pageable)
             .map(projectMapper::toDomain);
     }
 
@@ -69,6 +70,12 @@ public class ReadProjectAdapter implements ReadProjectPort {
     public List<Project> getRecentProjects() {
         return projectEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
             .stream().map(projectMapper::toDomain).toList();
+    }
+
+    @Override
+    public List<Project> getAllProjects() {
+        return projectEntityRepository.findAllByIsDeletedFalse().stream()
+            .map(projectMapper::toDomain).toList();
     }
 
     @Override
