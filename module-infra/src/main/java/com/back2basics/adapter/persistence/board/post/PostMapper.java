@@ -120,7 +120,9 @@ public class PostMapper {
             projection.projectStepName(),
             projection.authorName(),
             projection.authorUsername(),
-            projection.authorRole()
+            projection.authorRole(),
+            projection.priority(),
+            projection.type()
         );
     }
 

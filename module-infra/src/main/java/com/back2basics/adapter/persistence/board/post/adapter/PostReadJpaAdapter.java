@@ -163,7 +163,9 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.title,
                 userEntity.name.as("authorName"),
                 userEntity.username.as("authorUsername"),
-                userEntity.role.as("authorRole")
+                userEntity.role.as("authorRole"),
+                postEntity.priority,
+                postEntity.type
             ))
             .from(postEntity)
             .join(projectEntity).on(postEntity.projectId.eq(projectEntity.id))
@@ -195,7 +197,9 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.title,
                 userEntity.name.as("authorName"),
                 userEntity.username.as("authorUsername"),
-                userEntity.role.as("authorRole")
+                userEntity.role.as("authorRole"),
+                postEntity.priority,
+                postEntity.type
             ))
             .from(postEntity)
             .join(projectEntity).on(postEntity.projectId.eq(projectEntity.id))

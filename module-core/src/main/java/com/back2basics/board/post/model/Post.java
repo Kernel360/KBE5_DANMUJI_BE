@@ -151,7 +151,7 @@ public class Post implements TargetDomain {
 
     private Post(Long id, String title, LocalDateTime createdAt,
         String projectName, String projectStepName,
-        String authorName, String authorUsername, Role authorRole) {
+        String authorName, String authorUsername, Role authorRole, PostPriority priority, PostType type) {
         this.id = id;
         this.title = title;
         this.createdAt = createdAt;
@@ -160,12 +160,14 @@ public class Post implements TargetDomain {
         this.authorName = authorName;
         this.authorUsername = authorUsername;
         this.authorRole = authorRole;
+        this.priority = priority;
+        this.type = type;
     }
 
     public static Post createDashboardPost(Long id, String title, LocalDateTime createdAt,
         String projectName, String projectStepName,
-        String authorName, String authorUsername, Role authorRole) {
-        return new Post(id, title, createdAt, projectName, projectStepName, authorName, authorUsername, authorRole);
+        String authorName, String authorUsername, Role authorRole, PostPriority priority, PostType type) {
+        return new Post(id, title, createdAt, projectName, projectStepName, authorName, authorUsername, authorRole, priority, type);
     }
 
 
