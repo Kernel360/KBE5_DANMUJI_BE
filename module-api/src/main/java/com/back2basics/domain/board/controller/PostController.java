@@ -8,6 +8,7 @@ import com.back2basics.board.post.port.in.PostReadUseCase;
 import com.back2basics.board.post.port.in.PostSearchUseCase;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.service.result.PostCreateResult;
+import com.back2basics.board.post.service.result.PostDashboardReadResult;
 import com.back2basics.board.post.service.result.PostDetailReadResult;
 import com.back2basics.board.post.service.result.PostSummaryReadResult;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
@@ -16,6 +17,7 @@ import com.back2basics.domain.board.dto.request.PostCreateRequest;
 import com.back2basics.domain.board.dto.request.PostSearchRequest;
 import com.back2basics.domain.board.dto.request.PostUpdateRequest;
 import com.back2basics.domain.board.dto.response.PostCreateResponse;
+import com.back2basics.domain.board.dto.response.PostDashboardReadResponse;
 import com.back2basics.domain.board.dto.response.PostDetailReadResponse;
 import com.back2basics.domain.board.dto.response.PostSummaryReadResponse;
 import com.back2basics.domain.board.dto.response.ReadRecentPostResponse;
@@ -24,6 +26,7 @@ import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -181,5 +184,30 @@ public class PostController /*implements PostApiDocs*/ {
             .body(result.bytes());
     }
 
+    @GetMapping("/projects/due-soon")
+    public ResponseEntity<ApiResponse<List<PostDashboardReadResponse>>> getPostsDueSoon(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        List<PostDashboardReadResult> results = postReadUseCase.getPostsWithProjectIdAndDueSoon(customUserDetails.getId());
+        List<PostDashboardReadResponse> responseList = results.stream()
+            .map(PostDashboardReadResponse::toResponse)
+            .collect(Collectors.toList());
 
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_DASHBOARD_SUCCESS, responseList);
+    }
+
+    @GetMapping("/priority/high")
+    public ResponseEntity<ApiResponse<List<PostDashboardReadResponse>>> getHighPriorityPosts(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        Long userId = customUserDetails.getId();
+        List<PostDashboardReadResult> results = postReadUseCase.getHighPriorityPostsByUserId(
+            userId);
+        List<PostDashboardReadResponse> responseList = results.stream()
+            .map(PostDashboardReadResponse::toResponse)
+            .collect(Collectors.toList());
+
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_DASHBOARD_SUCCESS, responseList);
+
+    }
 }

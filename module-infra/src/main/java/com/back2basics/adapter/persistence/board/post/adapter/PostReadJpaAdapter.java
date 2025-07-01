@@ -1,10 +1,14 @@
 package com.back2basics.adapter.persistence.board.post.adapter;
 
+import static com.back2basics.adapter.persistence.assignment.QAssignmentEntity.assignmentEntity;
 import static com.back2basics.adapter.persistence.board.post.QPostEntity.postEntity;
+import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
+import static com.back2basics.adapter.persistence.projectstep.QProjectStepEntity.projectStepEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
 import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.board.post.PostMapper;
+import com.back2basics.adapter.persistence.board.post.dto.PostDashboardProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostDetailProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostSummaryProjection;
 import com.back2basics.board.file.model.File;
@@ -12,10 +16,12 @@ import com.back2basics.board.file.port.out.FileReadPort;
 import com.back2basics.board.link.model.Link;
 import com.back2basics.board.link.port.out.LinkReadPort;
 import com.back2basics.board.post.model.Post;
+import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.port.out.PostReadPort;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
 import com.back2basics.infra.exception.post.PostException;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -142,6 +148,84 @@ public class PostReadJpaAdapter implements PostReadPort {
             .orderBy(postEntity.createdAt.desc())
             .limit(5)
             .fetch();
+    }
+
+    @Override
+    public List<Post> getPostsWithProjectIdAndDueSoon(Long userId) {
+        List<PostDashboardProjection> projections = queryFactory
+            .select(Projections.constructor(
+                PostDashboardProjection.class,
+                postEntity.id,
+                projectEntity.name.as("projectName"),
+                projectStepEntity.name.as("projectStepName"),
+                postEntity.createdAt,
+                postEntity.title,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole"),
+                postEntity.priority,
+                postEntity.type
+            ))
+            .from(postEntity)
+            .join(projectEntity).on(postEntity.projectId.eq(projectEntity.id))
+            .join(projectStepEntity).on(postEntity.projectStepId.eq(projectStepEntity.id))
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
+            .where(
+                postEntity.deletedAt.isNull(),
+//                projectEntity.projectStatus.eq(ProjectStatus.IN_PROGRESS),
+                projectEntity.id.in(
+                    JPAExpressions
+                        .select(assignmentEntity.project.id)
+                        .from(assignmentEntity)
+                        .where(assignmentEntity.user.id.eq(userId))
+                )
+            )
+            .orderBy(postEntity.createdAt.desc())
+            .limit(5)
+            .fetch();
+
+        return projections.stream()
+            .map(mapper::toDomain)
+            .toList();
+    }
+
+    @Override
+    public List<Post> getHighPriorityPostsByUserId(Long userId) {
+        List<PostDashboardProjection> projections = queryFactory
+            .select(Projections.constructor(
+                PostDashboardProjection.class,
+                postEntity.id,
+                projectEntity.name.as("projectName"),
+                projectStepEntity.name.as("projectStepName"),
+                postEntity.createdAt,
+                postEntity.title,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole"),
+                postEntity.priority,
+                postEntity.type
+            ))
+            .from(postEntity)
+            .join(projectEntity).on(postEntity.projectId.eq(projectEntity.id))
+            .join(projectStepEntity).on(postEntity.projectStepId.eq(projectStepEntity.id))
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
+            .where(
+                postEntity.deletedAt.isNull(),
+                postEntity.priority.in(PostPriority.HIGH, PostPriority.URGENT),
+                projectEntity.id.in(
+                    JPAExpressions
+                        .select(assignmentEntity.project.id)
+                        .from(assignmentEntity)
+                        .where(assignmentEntity.user.id.eq(userId))
+                )
+            )
+            .orderBy(postEntity.createdAt.desc())
+            .limit(5)
+            .fetch();
+
+        return projections.stream()
+            .map(mapper::toDomain)
+            .toList();
     }
 
 }

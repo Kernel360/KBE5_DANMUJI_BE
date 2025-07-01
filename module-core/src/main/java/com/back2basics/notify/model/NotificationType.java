@@ -1,6 +1,5 @@
 package com.back2basics.notify.model;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +28,7 @@ public enum NotificationType {
 
     private final String description;
 
-    @JsonValue
+    // @JsonValue
     public String getDescription() {
         return description;
     }

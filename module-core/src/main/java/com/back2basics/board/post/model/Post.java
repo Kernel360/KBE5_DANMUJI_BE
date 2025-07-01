@@ -9,13 +9,15 @@ import com.back2basics.user.model.Role;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Post implements TargetDomain {
 
-    private final Long id;
-    private final Long parentId;
-    private final Long projectId;
+    private Long id;
+    private Long parentId;
+    private Long projectId;
     private Long projectStepId;
     private String authorIp;
     private Long authorId;
@@ -26,7 +28,7 @@ public class Post implements TargetDomain {
     private String content;
     private PostType type;
     private PostPriority priority;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private boolean isDelete;
@@ -34,6 +36,10 @@ public class Post implements TargetDomain {
     private List<Link> links;
     private Long commentCount;
 
+    private String projectName;
+    private String projectStepName;
+
+    // postservice.create() 용 메소드
     public static Post create(PostCreateCommand command, Long userId, String userIp) {
         return new Post(
             null,
@@ -142,6 +148,28 @@ public class Post implements TargetDomain {
         this.files = files;
         this.links = links;
     }
+
+    private Post(Long id, String title, LocalDateTime createdAt,
+        String projectName, String projectStepName,
+        String authorName, String authorUsername, Role authorRole, PostPriority priority, PostType type) {
+        this.id = id;
+        this.title = title;
+        this.createdAt = createdAt;
+        this.projectName = projectName;
+        this.projectStepName = projectStepName;
+        this.authorName = authorName;
+        this.authorUsername = authorUsername;
+        this.authorRole = authorRole;
+        this.priority = priority;
+        this.type = type;
+    }
+
+    public static Post createDashboardPost(Long id, String title, LocalDateTime createdAt,
+        String projectName, String projectStepName,
+        String authorName, String authorUsername, Role authorRole, PostPriority priority, PostType type) {
+        return new Post(id, title, createdAt, projectName, projectStepName, authorName, authorUsername, authorRole, priority, type);
+    }
+
 
     public static Post copyOf(Post post) {
         return Post.create(

@@ -1,5 +1,6 @@
 package com.back2basics.board.post.port.in;
 
+import com.back2basics.board.post.service.result.PostDashboardReadResult;
 import com.back2basics.board.post.service.result.PostDetailReadResult;
 import com.back2basics.board.post.service.result.PostSummaryReadResult;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
@@ -18,4 +19,8 @@ public interface PostReadUseCase {
         Pageable pageable);
 
     List<ReadRecentPostResult> getRecentPosts();
+
+    List<PostDashboardReadResult> getPostsWithProjectIdAndDueSoon(Long userId);
+
+    List<PostDashboardReadResult> getHighPriorityPostsByUserId(Long userId);
 }

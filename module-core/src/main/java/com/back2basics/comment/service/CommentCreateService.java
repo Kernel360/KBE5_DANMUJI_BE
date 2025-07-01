@@ -29,11 +29,11 @@ public class CommentCreateService implements CommentCreateUseCase {
         Comment comment = Comment.create(command, userIp, userId);
 
         Long commentId = commentCreatePort.save(comment);
-        commentNotificationSender.sendNotification(userId, commentId, command);
+        commentNotificationSender.sendNotification(userId, command.getPostId(), command);
 
         mentionNotificationSender.notifyMentionedUsers(
             userId,
-            commentId,
+            command.getPostId(),
             command.getContent()
         );
 
