@@ -36,7 +36,11 @@ public class MentionReadAdapter implements ReadMentionPort {
             .where(
                 notificationEntity.clientId.eq(userId),
                 notificationEntity.isRead.isFalse(),
-                notificationEntity.type.in(NotificationType.MENTIONED),
+                notificationEntity.type.in(
+                    NotificationType.MENTIONED,
+                    NotificationType.PROJECT_POST_CREATED, NotificationType.COMMENT_POST_CREATED,
+                    NotificationType.COMMENT_REPLY_CREATED, NotificationType.POST_REPLY_CREATED
+                ),
                 notificationEntity.deletedAt.isNull()
             )
             .orderBy(notificationEntity.createdAt.desc())
