@@ -20,7 +20,7 @@ public interface PostReadUseCase {
 
     List<ReadRecentPostResult> getRecentPosts();
 
-    List<PostDashboardReadResult> getPostsWithProjectIdAndDueSoon(Long projectId);
+    List<PostDashboardReadResult> getPostsWithProjectIdAndDueSoon(Long userId);
 
     List<PostDashboardReadResult> getHighPriorityPostsByUserId(Long userId);
 }

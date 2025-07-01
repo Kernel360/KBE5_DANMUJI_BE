@@ -184,12 +184,11 @@ public class PostController /*implements PostApiDocs*/ {
             .body(result.bytes());
     }
 
-    @GetMapping("/projects/{projectId}/due-soon")
+    @GetMapping("/projects/due-soon")
     public ResponseEntity<ApiResponse<List<PostDashboardReadResponse>>> getPostsDueSoon(
-        @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectId
+        @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        List<PostDashboardReadResult> results = postReadUseCase.getPostsWithProjectIdAndDueSoon(projectId);
+        List<PostDashboardReadResult> results = postReadUseCase.getPostsWithProjectIdAndDueSoon(customUserDetails.getId());
         List<PostDashboardReadResponse> responseList = results.stream()
             .map(PostDashboardReadResponse::toResponse)
             .collect(Collectors.toList());

@@ -43,8 +43,8 @@ public class PostReadService implements PostReadUseCase {
     }
 
     @Override
-    public List<PostDashboardReadResult> getPostsWithProjectIdAndDueSoon(Long projectId) {
-        return postReadPort.getPostsWithProjectIdAndDueSoon(projectId).stream()
+    public List<PostDashboardReadResult> getPostsWithProjectIdAndDueSoon(Long userId) {
+        return postReadPort.getPostsWithProjectIdAndDueSoon(userId).stream()
             .map(PostDashboardReadResult::toResult)
             .collect(Collectors.toList());
     }

@@ -16,7 +16,7 @@ public interface PostReadPort {
 
     List<ReadRecentPostResult> getRecentPosts();
 
-    List<Post> getPostsWithProjectIdAndDueSoon(Long projectId);
+    List<Post> getPostsWithProjectIdAndDueSoon(Long userId);
 
     List<Post> getHighPriorityPostsByUserId(Long userId);
 }

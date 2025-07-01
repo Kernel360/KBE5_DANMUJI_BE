@@ -152,7 +152,7 @@ public class PostReadJpaAdapter implements PostReadPort {
     }
 
     @Override
-    public List<Post> getPostsWithProjectIdAndDueSoon(Long projectId) {
+    public List<Post> getPostsWithProjectIdAndDueSoon(Long userId) {
         List<PostDashboardProjection> projections = queryFactory
             .select(Projections.constructor(
                 PostDashboardProjection.class,
@@ -173,8 +173,13 @@ public class PostReadJpaAdapter implements PostReadPort {
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
                 postEntity.deletedAt.isNull(),
-                postEntity.projectId.eq(projectId),
-                projectEntity.projectStatus.eq(ProjectStatus.DUE_SOON)
+                projectEntity.projectStatus.eq(ProjectStatus.DUE_SOON),
+                postEntity.projectId.in(
+                    JPAExpressions
+                        .select(assignmentEntity.project.id)
+                        .from(assignmentEntity)
+                        .where(assignmentEntity.user.id.eq(userId))
+                )
             )
             .orderBy(postEntity.createdAt.desc())
             .limit(5)
