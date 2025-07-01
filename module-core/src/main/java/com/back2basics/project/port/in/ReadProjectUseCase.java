@@ -7,6 +7,7 @@ import com.back2basics.project.service.result.ProjectGetResult;
 import com.back2basics.project.service.result.ProjectListResult;
 import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectStatusResult;
+import com.back2basics.user.model.Role;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public interface ReadProjectUseCase {
 
     List<ProjectRecentGetResult> getRecentProjects();
 
-    List<ProjectStatusResult> findProjectByStatus(Long userId, ProjectStatus status);
+    List<ProjectStatusResult> findProjectByStatus(Long userId, Role role, ProjectStatus status);
 
     List<ProjectCountResult> getCountByProjectStatus();
 }
