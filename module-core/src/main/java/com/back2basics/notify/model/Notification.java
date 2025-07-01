@@ -44,7 +44,12 @@ public class Notification {
     }
 
     public void markAsRead() {
-        this.isRead = true;
+        if (!this.isRead) {
+            this.isRead = true;
+        }
     }
 
+    public void toggleRead() {
+        this.isRead = !isRead;
+    }
 }
