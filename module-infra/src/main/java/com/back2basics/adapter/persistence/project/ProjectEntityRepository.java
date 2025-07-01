@@ -1,7 +1,7 @@
 package com.back2basics.adapter.persistence.project;
 
-import com.back2basics.project.model.StatusCountProjection;
 import com.back2basics.project.model.ProjectStatus;
+import com.back2basics.project.model.StatusCountProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import java.util.List;
 import java.util.Optional;
@@ -55,10 +55,12 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
         @Param("status") ProjectStatus status);
 
     @Query("""
-    SELECT p.projectStatus AS projectStatus, COUNT(p) AS count
-    FROM ProjectEntity p
-    WHERE p.isDeleted = false
-    GROUP BY p.projectStatus
-""")
+            SELECT p.projectStatus AS projectStatus, COUNT(p) AS count
+            FROM ProjectEntity p
+            WHERE p.isDeleted = false
+            GROUP BY p.projectStatus
+        """)
     List<StatusCountProjection> countProjectsByStatus();
+
+    List<ProjectEntity> findAllByProjectStatusAndDeletedAtIsNull(ProjectStatus status);
 }

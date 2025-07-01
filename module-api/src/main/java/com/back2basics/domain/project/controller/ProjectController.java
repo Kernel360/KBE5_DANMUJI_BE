@@ -203,7 +203,7 @@ public class ProjectController {
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestParam ProjectStatus status) {
         List<ProjectStatusResult> results = readProjectUseCase.findProjectByStatus(
-            userDetails.getId(), status);
+            userDetails.getId(), userDetails.getRole(), status);
         List<ProjectStatusResponse> responses = results.stream().map(ProjectStatusResponse::from)
             .toList();
         return ApiResponse.success(PROJECT_READ_BY_STATUS_SUCCESS, responses);
