@@ -26,7 +26,7 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
 
     @Override
     public List<Inquiry> getAllInquiries() {
-        return inquiryEntityRepository.findAllByDeletedAtIsNull()
+        return inquiryEntityRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc()
             .stream().map(inquiryMapper::toDomain).collect(Collectors.toList());
     }
 
