@@ -32,14 +32,13 @@ public class Project implements TargetDomain {
 
     private boolean isDeleted;
 
-    // todo: 변수명 바꾸기 projectStatus
     private ProjectStatus projectStatus;
 
     private int progress;
 
     private String projectCost;
 
-    private List<ProjectStep> steps; // = new ArrayList<>;
+    private List<ProjectStep> steps;
 
     private List<Assignment> assignments;
 
