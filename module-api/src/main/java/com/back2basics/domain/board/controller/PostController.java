@@ -17,6 +17,7 @@ import com.back2basics.domain.board.dto.request.PostCreateRequest;
 import com.back2basics.domain.board.dto.request.PostCreateWithPresignedRequest;
 import com.back2basics.domain.board.dto.request.PostSearchRequest;
 import com.back2basics.domain.board.dto.request.PostUpdateRequest;
+import com.back2basics.domain.board.dto.request.PostUpdateWithPresignedRequest;
 import com.back2basics.domain.board.dto.response.PostCreateResponse;
 import com.back2basics.domain.board.dto.response.PostDashboardReadResponse;
 import com.back2basics.domain.board.dto.response.PostDetailReadResponse;
@@ -230,5 +231,25 @@ public class PostController /*implements PostApiDocs*/ {
         );
         PostCreateResponse response = PostCreateResponse.toResponse(result);
         return ApiResponse.success(PostResponseCode.POST_CREATE_PRESIGNED_SUCCESS, response);
+    }
+
+    @PutMapping("/{postId}/presigned")
+    public ResponseEntity<ApiResponse<Void>> updatePostWithPresigned(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId,
+        @RequestBody @Valid PostUpdateWithPresignedRequest request
+    ) {
+        Long userId = customUserDetails.getId();
+        String userIp = customUserDetails.getIp();
+
+        postUpdateUseCase.updatePostWithPresigned(
+            userId,
+            userIp,
+            postId,
+            request.toCommand(),
+            request.toUploadedFileInfos()
+        );
+
+        return ApiResponse.success(PostResponseCode.POST_UPDATE_PRESIGNED_SUCCESS);
     }
 }
