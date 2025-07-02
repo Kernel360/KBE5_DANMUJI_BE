@@ -20,10 +20,12 @@ import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostCreateService implements PostCreateUseCase {
@@ -73,6 +75,8 @@ public class PostCreateService implements PostCreateUseCase {
         Post post = Post.createFromCommand(command, userId, userIp);
         Post savedPost = postCreatePort.save(post);
 
+        log.info("======================== createPostWithPresigned() 의 url : {}", uploadedFiles.get(0).getUrl());
+
         saveFilesFromPresignedUrls(uploadedFiles, savedPost.getId());
 
         linkCreateService.createLinks(command.getNewLinks(), savedPost.getId());
@@ -87,6 +91,7 @@ public class PostCreateService implements PostCreateUseCase {
     private void saveFilesFromPresignedUrls(List<PresignedUploadCompleteInfo> uploadedFiles, Long postId) {
         if (uploadedFiles == null || uploadedFiles.isEmpty()) return;
 
+        log.info("======================== saveFilesFromPresignedUrls() 의 url : {}", uploadedFiles.get(0).getUrl());
         List<File> fileModels = uploadedFiles.stream()
             .map(info -> File.create(
                 null,
@@ -97,6 +102,7 @@ public class PostCreateService implements PostCreateUseCase {
                 info.getSize()
             )).toList();
         fileSavePort.saveAll(fileModels, postId);
+        log.info("======================== after fileSavePort.saveAll(fileModels, postId)의 url : {}", uploadedFiles.get(0).getUrl());
     }
 
     private void uploadAndSaveFiles(List<MultipartFile> files, Long postId) throws IOException {

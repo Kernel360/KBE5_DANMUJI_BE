@@ -12,7 +12,10 @@ public enum FileErrorCode implements ErrorCode {
 
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "파일을 찾을 수 없습니다."),
     FILE_DOWNLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "F002", "파일 다운로드 실패"),
-    FILE_DOWNLOAD_DENIED(HttpStatus.FORBIDDEN, "F003", "파일 다운로드 권한이 없습니다.");
+    FILE_DOWNLOAD_DENIED(HttpStatus.FORBIDDEN, "F003", "파일 다운로드 권한이 없습니다."),
+    FILE_DELETE_FAILED_URL_EMPTY(HttpStatus.BAD_REQUEST, "F004", "파일 URL이 null이거나 비어 있습니다."),
+    FILE_DELETE_FAILED_WRONG_URL(HttpStatus.BAD_REQUEST, "F004", "파일 URL이 잘못된 형식입니다.");
+
 
     private final HttpStatus status;
     private final String code;

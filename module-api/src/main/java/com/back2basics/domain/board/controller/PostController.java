@@ -222,6 +222,9 @@ public class PostController /*implements PostApiDocs*/ {
     ) {
         Long userId = customUserDetails.getId();
         String userIp = customUserDetails.getIp();
+
+        log.info("========================url : {}", request.getUploadedFiles().get(0).getUrl());
+        log.info("========================url : {}", request.getUploadedFiles().get(0).getUrl());
         PostCreateResult result = createPostUseCase.createPostWithPresigned(
             userId,
             request.getProjectId(),
