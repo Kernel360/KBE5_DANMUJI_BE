@@ -38,4 +38,10 @@ public class File {
     public File withFileType(String newType) {
         return new File(this.id, this.postId, this.fileName, this.fileUrl, newType, this.fileSize);
     }
+
+    public String getFileKey() {
+        String prefix = "https://danmuji." + "[YOUR_R2_SUBDOMAIN]" + ".r2.cloudflarestorage.com/";
+        return fileUrl.replace(prefix, "");
+    }
+
 }

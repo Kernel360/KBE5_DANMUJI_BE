@@ -17,7 +17,8 @@ public enum PostResponseCode implements ResponseCode {
     POST_FILE_DOWNLOAD_SUCCESS(HttpStatus.OK, "PF206", "파일 다운로드 완료"),
     POST_READ_ALL_DASHBOARD_SUCCESS(HttpStatus.OK, "P207", "진행중인 프로젝트에 등록된 게시글 목록 조회 완료"),
     POST_CREATE_PRESIGNED_SUCCESS(HttpStatus.CREATED, "P208", "Presigned URL 기반 게시글 생성 완료"),
-    POST_UPDATE_PRESIGNED_SUCCESS(HttpStatus.CREATED, "P209", "Presigned URL 기반 게시글 수정 완료");
+    POST_UPDATE_PRESIGNED_SUCCESS(HttpStatus.CREATED, "P209", "Presigned URL 기반 게시글 수정 완료"),
+    POST_FILE_PRESIGNED_URL_SUCCESS(HttpStatus.OK,"PF206", "파일 다운로드 URL 발급 완료");
 
     private final HttpStatus status;
     private final String code;

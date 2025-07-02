@@ -2,6 +2,7 @@ package com.back2basics.domain.board.controller;
 
 import com.back2basics.board.file.port.in.FileDownloadUseCase;
 import com.back2basics.board.file.service.FileDownloadResult;
+import com.back2basics.board.file.service.FilePresignedUrlResult;
 import com.back2basics.board.post.port.in.PostCreateUseCase;
 import com.back2basics.board.post.port.in.PostDeleteUseCase;
 import com.back2basics.board.post.port.in.PostReadUseCase;
@@ -251,5 +252,18 @@ public class PostController /*implements PostApiDocs*/ {
         );
 
         return ApiResponse.success(PostResponseCode.POST_UPDATE_PRESIGNED_SUCCESS);
+    }
+
+    @GetMapping("/{postId}/files/{fileId}/presigned")
+    public ResponseEntity<ApiResponse<String>> getFilePresignedDownloadUrl(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId,
+        @PathVariable Long fileId
+    ) {
+        FilePresignedUrlResult result = fileDownloadUseCase.getPresignedDownloadUrl(
+            customUserDetails.getId(), postId, fileId
+        );
+
+        return ApiResponse.success(PostResponseCode.POST_FILE_PRESIGNED_URL_SUCCESS, result.presignedUrl());
     }
 }

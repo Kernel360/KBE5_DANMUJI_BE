@@ -1,13 +1,15 @@
 package com.back2basics.board.file.service;
 
-import com.back2basics.board.file.port.in.FileDownloadUseCase;
 import com.back2basics.board.file.model.File;
+import com.back2basics.board.file.port.in.FileDownloadUseCase;
+import com.back2basics.board.file.port.out.FilePresignedUrlPort;
 import com.back2basics.board.file.port.out.FileReadPort;
 import com.back2basics.infra.s3.MimeTypeUtils;
 import com.back2basics.infra.s3.S3Util;
 import com.back2basics.infra.validation.validator.FileValidator;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,10 @@ public class FileDownloadService implements FileDownloadUseCase {
     private final FileValidator fileValidator;
     private final MimeTypeUtils mimeTypeUtils;
     private final S3Util s3Util;
+    private final FilePresignedUrlPort presignedUrlPort;
+
+    @Value("${cloudflare.r2.public-url}")
+    private String publicUrlPrefix;
 
     @Override
     public FileDownloadResult downloadFile(Long userId, Long postId, Long fileId)
@@ -32,6 +38,16 @@ public class FileDownloadService implements FileDownloadUseCase {
         byte[] bytes = s3Util.downloadFile(key);
 
         return FileDownloadResult.toResult(safeFile, bytes);
+    }
+
+    @Override
+    public FilePresignedUrlResult getPresignedDownloadUrl(Long userId, Long postId, Long fileId) {
+        File file = fileReadPort.getFileById(fileId);
+
+        String fileKey = file.getFileKey();
+        String url = presignedUrlPort.generateDownloadUrl(fileKey);
+
+        return new FilePresignedUrlResult(url);
     }
 
     private String extractKeyFromUrl(String fileUrl) {
