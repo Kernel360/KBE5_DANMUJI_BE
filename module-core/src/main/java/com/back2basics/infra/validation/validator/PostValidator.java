@@ -1,9 +1,9 @@
 package com.back2basics.infra.validation.validator;
 
-import com.back2basics.infra.exception.post.PostErrorCode;
-import com.back2basics.infra.exception.post.PostException;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.out.PostReadPort;
+import com.back2basics.infra.exception.post.PostErrorCode;
+import com.back2basics.infra.exception.post.PostException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,11 @@ import org.springframework.stereotype.Component;
 public class PostValidator {
 
     private final PostReadPort postReadPort;
+
+    public Post isDeleted(Long id) {
+        return postReadPort.findDeletedPostById(id)
+            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_DELETED));
+    }
 
     public Post findPost(Long id) {
         return postReadPort.findById(id)

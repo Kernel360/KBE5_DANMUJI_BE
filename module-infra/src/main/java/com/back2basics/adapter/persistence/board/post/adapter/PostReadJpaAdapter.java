@@ -83,6 +83,44 @@ public class PostReadJpaAdapter implements PostReadPort {
     }
 
     @Override
+    public Optional<Post> findDeletedPostById(Long postId) {
+        PostDetailProjection result = queryFactory
+            .select(Projections.constructor(
+                PostDetailProjection.class,
+                postEntity.id.as("postId"),
+                postEntity.parentId,
+                postEntity.projectId,
+                postEntity.projectStepId,
+                postEntity.authorIp,
+                postEntity.authorId,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole"),
+                postEntity.title,
+                postEntity.content,
+                postEntity.type,
+                postEntity.priority,
+                postEntity.createdAt,
+                postEntity.updatedAt
+            ))
+            .from(postEntity)
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
+            .where(
+                postEntity.id.eq(postId),
+                postEntity.deletedAt.isNotNull()
+            )
+            .fetchOne();
+
+        if (result == null) {
+            throw new PostException(POST_NOT_FOUND);
+        }
+
+        List<File> files = fileReadPort.getFilesByPostId(postId);
+        List<Link> links = linkReadPort.getLinksByPostId(postId);
+        return Optional.of(mapper.toDomain(result, files, links));
+    }
+
+    @Override
     public Page<Post> findAllPostsByProjectIdAndStepId(Long projectId, Long projectStepId,
         Pageable pageable) {
 

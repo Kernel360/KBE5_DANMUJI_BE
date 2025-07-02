@@ -6,6 +6,7 @@ import com.back2basics.board.file.service.FilePresignedUrlResult;
 import com.back2basics.board.post.port.in.PostCreateUseCase;
 import com.back2basics.board.post.port.in.PostDeleteUseCase;
 import com.back2basics.board.post.port.in.PostReadUseCase;
+import com.back2basics.board.post.port.in.PostRestoreUseCase;
 import com.back2basics.board.post.port.in.PostSearchUseCase;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.service.result.PostCreateResult;
@@ -65,6 +66,7 @@ public class PostController /*implements PostApiDocs*/ {
     private final PostDeleteUseCase postDeleteUseCase;
     private final PostSearchUseCase postSearchUseCase;
     private final FileDownloadUseCase fileDownloadUseCase;
+    private final PostRestoreUseCase postRestoreUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -142,6 +144,15 @@ public class PostController /*implements PostApiDocs*/ {
         Long userId = customUserDetails.getId();
         postDeleteUseCase.softDeletePost(userId, postId);
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
+    }
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<ApiResponse<Void>> restorePost(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId) {
+        Long userId = customUserDetails.getId();
+        postRestoreUseCase.restorePost(userId, postId);
+        return ApiResponse.success(PostResponseCode.POST_RESTORE_SUCCESS);
     }
 
     @GetMapping("/search")
