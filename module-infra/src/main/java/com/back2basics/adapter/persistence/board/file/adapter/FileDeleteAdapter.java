@@ -1,9 +1,13 @@
 package com.back2basics.adapter.persistence.board.file.adapter;
 
+import static com.back2basics.infra.exception.file.FileErrorCode.FILE_DELETE_FAILED_URL_EMPTY;
+import static com.back2basics.infra.exception.file.FileErrorCode.FILE_DELETE_FAILED_WRONG_URL;
+
 import com.back2basics.adapter.persistence.board.file.FileEntityRepository;
-import com.back2basics.infra.s3.S3Util;
 import com.back2basics.board.file.model.File;
 import com.back2basics.board.file.port.out.FileDeletePort;
+import com.back2basics.infra.exception.file.FileException;
+import com.back2basics.infra.s3.S3Util;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +48,13 @@ public class FileDeleteAdapter implements FileDeletePort {
     }
 
     private String extractKeyFromUrl(String url) {
-        // 예시: https://domain/uuid_filename.ext → uuid_filename.ext
-        return url.substring(url.lastIndexOf("/") + 1);
+        if (url == null || url.isBlank()) {
+            throw new FileException(FILE_DELETE_FAILED_URL_EMPTY);
+        }
+        int lastSlash = url.lastIndexOf("/");
+        if (lastSlash == -1 || lastSlash == url.length() - 1) {
+            throw new FileException(FILE_DELETE_FAILED_WRONG_URL);
+        }
+        return url.substring(lastSlash + 1);
     }
 }
