@@ -23,7 +23,9 @@ public class PostRestoreService implements PostRestoreUseCase {
     @Override
     public void restorePost(Long requesterId, Long postId) {
         userValidator.isAdmin(requesterId);
+
         Post post = postValidator.isDeleted(postId);
+        postValidator.isAuthor(post, requesterId);
 
         post.restore();
         postRestorePort.restorePost(post);

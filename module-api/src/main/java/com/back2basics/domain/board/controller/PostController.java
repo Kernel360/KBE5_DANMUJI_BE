@@ -146,7 +146,7 @@ public class PostController /*implements PostApiDocs*/ {
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }
 
-    @PutMapping("/{postId}")
+    @PutMapping("/{postId}/restore")
     public ResponseEntity<ApiResponse<Void>> restorePost(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId) {
