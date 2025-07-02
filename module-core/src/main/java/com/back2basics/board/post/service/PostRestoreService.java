@@ -3,6 +3,7 @@ package com.back2basics.board.post.service;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostRestoreUseCase;
 import com.back2basics.board.post.port.out.PostRestorePort;
+import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.PostValidator;
@@ -18,6 +19,7 @@ public class PostRestoreService implements PostRestoreUseCase {
     private final PostValidator postValidator;
     private final HistoryLogService historyLogService;
     private final UserValidator userValidator;
+    private final PostNotificationSender postNotificationSender;
 
 
     @Override
@@ -29,5 +31,6 @@ public class PostRestoreService implements PostRestoreUseCase {
         postRestorePort.restorePost(post);
 
         historyLogService.logRestored(DomainType.POST, requesterId, post, "비활성화 게시글 복구");
+        postNotificationSender.sendNotification(requesterId, post.getId());
     }
 }

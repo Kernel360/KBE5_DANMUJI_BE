@@ -40,7 +40,8 @@ public class MentionReadAdapter implements ReadMentionPort {
                 notificationEntity.type.in(
                     NotificationType.MENTIONED,
                     NotificationType.PROJECT_POST_CREATED, NotificationType.COMMENT_POST_CREATED,
-                    NotificationType.COMMENT_REPLY_CREATED, NotificationType.POST_REPLY_CREATED
+                    NotificationType.COMMENT_REPLY_CREATED, NotificationType.POST_REPLY_CREATED,
+                    NotificationType.POST_RESTORED
                 ),
                 notificationEntity.deletedAt.isNull()
             )

@@ -56,4 +56,16 @@ public class PostNotificationSender {
         }
     }
 
+    public void sendNotification(Long senderId, Long postId) {
+        Post post = postValidator.findPost(postId);
+
+        notifyUseCase.notify(new SendNotificationCommand(
+            post.getAuthorId(),
+            post.getProjectId(),
+            postId,
+            NotificationType.POST_RESTORED.getDescription(),
+            NotificationType.POST_RESTORED
+        ));
+    }
+
 }

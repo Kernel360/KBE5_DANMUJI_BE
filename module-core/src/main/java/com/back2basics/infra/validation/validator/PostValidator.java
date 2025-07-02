@@ -17,7 +17,7 @@ public class PostValidator {
 
     public Post isDeleted(Long id) {
         return postReadPort.findDeletedPostById(id)
-            .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_DELETED));
+            .orElseThrow(() -> new PostException(PostErrorCode.POST_ALREADY_RESTORED));
     }
 
     public Post findPost(Long id) {

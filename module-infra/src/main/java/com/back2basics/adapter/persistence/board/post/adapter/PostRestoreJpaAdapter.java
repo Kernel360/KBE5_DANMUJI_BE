@@ -1,6 +1,6 @@
 package com.back2basics.adapter.persistence.board.post.adapter;
 
-import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
+import static com.back2basics.infra.exception.post.PostErrorCode.POST_ALREADY_RESTORED;
 
 import com.back2basics.adapter.persistence.board.post.PostEntity;
 import com.back2basics.adapter.persistence.board.post.PostEntityRepository;
@@ -22,7 +22,7 @@ public class PostRestoreJpaAdapter implements PostRestorePort {
     @Override
     public void restorePost(Post post) {
         Post deletedPost = postReadJpaAdapter.findDeletedPostById(post.getId())
-            .orElseThrow(() -> new PostException(POST_NOT_FOUND));
+            .orElseThrow(() -> new PostException(POST_ALREADY_RESTORED));
 
         PostEntity entity = mapper.toEntity(deletedPost);
 
