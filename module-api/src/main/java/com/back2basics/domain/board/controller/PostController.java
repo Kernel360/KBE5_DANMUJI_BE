@@ -14,6 +14,7 @@ import com.back2basics.board.post.service.result.PostSummaryReadResult;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
 import com.back2basics.domain.board.controller.code.PostResponseCode;
 import com.back2basics.domain.board.dto.request.PostCreateRequest;
+import com.back2basics.domain.board.dto.request.PostCreateWithPresignedRequest;
 import com.back2basics.domain.board.dto.request.PostSearchRequest;
 import com.back2basics.domain.board.dto.request.PostUpdateRequest;
 import com.back2basics.domain.board.dto.response.PostCreateResponse;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -209,5 +211,24 @@ public class PostController /*implements PostApiDocs*/ {
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_DASHBOARD_SUCCESS, responseList);
 
+    }
+
+    @PostMapping("/presigned")
+    public ResponseEntity<ApiResponse<PostCreateResponse>> createPostWithPresigned(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @RequestBody @Valid PostCreateWithPresignedRequest request
+    ) {
+        Long userId = customUserDetails.getId();
+        String userIp = customUserDetails.getIp();
+        PostCreateResult result = createPostUseCase.createPostWithPresigned(
+            userId,
+            request.getProjectId(),
+            request.getStepId(),
+            userIp,
+            request.toCommand(),
+            request.toUploadedFileInfos()
+        );
+        PostCreateResponse response = PostCreateResponse.toResponse(result);
+        return ApiResponse.success(PostResponseCode.POST_CREATE_PRESIGNED_SUCCESS, response);
     }
 }
