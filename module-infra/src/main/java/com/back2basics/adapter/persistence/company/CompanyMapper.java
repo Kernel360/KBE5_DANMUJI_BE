@@ -21,6 +21,7 @@ public class CompanyMapper {
             .email(entity.getEmail())
             .tel(entity.getTel())
             .createdAt(entity.getCreatedAt())
+            .deletedAt(entity.getDeletedAt())
             .build();
     }
 

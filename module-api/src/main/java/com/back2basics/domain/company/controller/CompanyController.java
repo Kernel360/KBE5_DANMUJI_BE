@@ -4,10 +4,12 @@ import static com.back2basics.domain.company.controller.code.CompanyResponseCode
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_DELETE_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_READ_ALL_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_READ_SUCCESS;
+import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_RECOVER_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_SEARCH_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_UPDATE_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_USER_LIST_SUCCESS;
 
+import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.ReadCompanyUseCase;
@@ -27,7 +29,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -160,8 +161,13 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long companyId) {
 
-        deleteCompanyUseCase.deleteCompany(companyId, customUserDetails.getId());
-        return ApiResponse.success(COMPANY_DELETE_SUCCESS);
+        Company company = deleteCompanyUseCase.deleteCompany(companyId, customUserDetails.getId());
+        if (company.isDelete()) {
+            return ApiResponse.success(COMPANY_DELETE_SUCCESS);
+        } else {
+            return ApiResponse.success(COMPANY_RECOVER_SUCCESS);
+        }
+
     }
 
 }

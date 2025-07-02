@@ -24,16 +24,21 @@ public class DeleteCompanyService implements DeleteCompanyUseCase {
     private final HistoryLogService historyLogService;
 
     @Override
-    public void deleteCompany(Long id, Long loggedInUserId) {
-        Company company = companyValidator.findCompany(id);
+    public Company deleteCompany(Long id, Long loggedInUserId) {
+        Company company = companyValidator.findAllCompany(id);
 
         List<User> users = userQueryPort.findAllByCompanyIdAndDeletedAtIsNull(id);
         userCommandPort.softDeleteByCompanyId(id);
 
-        company.markDeleted();
-        Company deletedCompany = deleteCompanyPort.softDelete(company);
+        Company deletedCompany = company;
+        if (company.isDelete()) {
+            deletedCompany = deleteCompanyPort.softDelete(company);
+        } else if (!company.isDelete()) {
+            deletedCompany = deleteCompanyPort.softDelete(company);
+        }
 
         historyLogService.logDeleted(DomainType.COMPANY, loggedInUserId, deletedCompany, "업체 비활성화");
+        return deletedCompany;
     }
 
 }

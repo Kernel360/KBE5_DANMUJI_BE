@@ -24,6 +24,11 @@ public class CompanyValidator {
     private final UpdateCompanyPort updateCompanyPort;
 
     public Company findCompany(Long id) {
+        return readCompanyPort.findByIdAndDeletedAtIsNull(id)
+            .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));
+    }
+
+    public Company findAllCompany(Long id) {
         return readCompanyPort.findById(id)
             .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));
     }

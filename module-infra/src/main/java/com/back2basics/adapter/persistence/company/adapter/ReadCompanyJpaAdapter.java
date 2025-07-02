@@ -20,6 +20,11 @@ public class ReadCompanyJpaAdapter implements ReadCompanyPort {
 
     @Override
     public Optional<Company> findById(Long id) {
+        return companyEntityRepository.findById(id).map(companyMapper::toDomain);
+    }
+
+    @Override
+    public Optional<Company> findByIdAndDeletedAtIsNull(Long id) {
         return companyEntityRepository.findByIdAndDeletedAtIsNull(id).map(companyMapper::toDomain);
     }
 

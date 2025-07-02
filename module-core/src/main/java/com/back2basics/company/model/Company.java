@@ -21,7 +21,6 @@ public class Company implements TargetDomain {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    private boolean isDelete;
 
     @Builder
     public Company(Long id, String name, String ceoName, String bio,
@@ -39,7 +38,6 @@ public class Company implements TargetDomain {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
-        this.isDelete = false;
     }
 
     public void update(UpdateCompanyCommand command) {
@@ -53,8 +51,8 @@ public class Company implements TargetDomain {
         this.tel = command.getTel();
     }
 
-    public void markDeleted() {
-        this.isDelete = true;
+    public boolean isDelete() {
+        return deletedAt != null;
     }
 
     public static Company copyOf(Company company) {

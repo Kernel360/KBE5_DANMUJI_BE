@@ -10,6 +10,8 @@ public interface ReadCompanyPort {
 
     Optional<Company> findById(Long id);
 
+    Optional<Company> findByIdAndDeletedAtIsNull(Long id);
+
     Page<Company> findByNameContaining(Pageable pageable, String keyword);
 
     List<Company> getAllCompanies();
