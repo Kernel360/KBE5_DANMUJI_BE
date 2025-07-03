@@ -1,11 +1,11 @@
-package com.back2basics.board.file.port.out;
+package com.back2basics.file.port.out;
 
-import com.back2basics.board.file.model.File;
+import com.back2basics.file.model.File;
 import java.util.List;
 
 public interface FileDeletePort {
 
-    void deleteAllByPostId(Long postId);
+    void deleteAllByReferenceId(Long referenceId);
 
     void deleteFiles(List<File> files);
 

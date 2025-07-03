@@ -1,12 +1,12 @@
-package com.back2basics.adapter.persistence.board.file.adapter;
+package com.back2basics.adapter.persistence.file.adapter;
 
 import static com.back2basics.infra.exception.file.FileErrorCode.FILE_NOT_FOUND;
 
-import com.back2basics.adapter.persistence.board.file.FileEntityRepository;
-import com.back2basics.adapter.persistence.board.file.FileMapper;
+import com.back2basics.adapter.persistence.file.FileEntityRepository;
+import com.back2basics.adapter.persistence.file.FileMapper;
+import com.back2basics.file.model.File;
+import com.back2basics.file.port.out.FileReadPort;
 import com.back2basics.infra.exception.file.FileException;
-import com.back2basics.board.file.model.File;
-import com.back2basics.board.file.port.out.FileReadPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,8 @@ public class FileReadAdapter implements FileReadPort {
     private final FileMapper fileMapper;
 
     @Override
-    public List<File> getFilesByPostId(Long postId) {
-        return fileRepository.findAllByPostId(postId).stream()
+    public List<File> getFilesByReferenceId(Long referenceId) {
+        return fileRepository.findAllByReferenceId(referenceId).stream()
             .map(fileMapper::toDomain)
             .toList();
     }
