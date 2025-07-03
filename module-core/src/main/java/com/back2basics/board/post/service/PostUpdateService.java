@@ -74,7 +74,7 @@ public class PostUpdateService implements PostUpdateUseCase {
         fileDeletePort.deleteFromStorage(toDelete);
 
         if (files != null && !files.isEmpty()) {
-            List<File> newFiles = fileUploadService.upload(files, postId);
+            List<File> newFiles = fileUploadService.upload(files, postId, ContentType.POST);
             fileSavePort.saveAll(newFiles, postId);
         }
     }
