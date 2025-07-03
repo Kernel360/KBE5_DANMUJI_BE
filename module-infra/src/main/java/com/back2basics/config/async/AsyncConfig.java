@@ -1,4 +1,4 @@
-package com.back2basics.config;
+package com.back2basics.config.async;
 
 import java.util.concurrent.Executor;
 import org.springframework.context.annotation.Configuration;
