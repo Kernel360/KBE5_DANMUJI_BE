@@ -3,7 +3,7 @@ package com.back2basics.checklist.service;
 import com.back2basics.checklist.model.Approval;
 import com.back2basics.checklist.model.ApprovalStatus;
 import com.back2basics.checklist.model.Checklist;
-import com.back2basics.checklist.port.in.UpdateApprovalResponseUseCase;
+import com.back2basics.checklist.port.in.UpdateApprovalUseCase;
 import com.back2basics.checklist.port.in.command.CreateChecklistCommand;
 import com.back2basics.checklist.port.in.command.UpdateApprovalCommand;
 import com.back2basics.checklist.port.out.ApprovalCommandPort;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UpdateApprovalService implements UpdateApprovalResponseUseCase {
+public class UpdateApprovalService implements UpdateApprovalUseCase {
 
     private final ApprovalValidator approvalValidator;
     private final UserValidator userValidator;
@@ -56,7 +56,7 @@ public class UpdateApprovalService implements UpdateApprovalResponseUseCase {
             checklist.reject();
             checklistCommandPort.save(checklist);
 
-            historyLogService.logUpdated(DomainType.APPROVAL_REQUEST, userId, before,
+            historyLogService.logUpdated(DomainType.CHECKLIST, userId, before,
                 checklist, "승인 요청 거부");
         } else {
             List<Approval> responseList = approvalQueryPort.findResponsesByRequestId(
@@ -68,7 +68,7 @@ public class UpdateApprovalService implements UpdateApprovalResponseUseCase {
                 checklist.approve();
                 checklistCommandPort.save(checklist);
 
-                historyLogService.logUpdated(DomainType.APPROVAL_REQUEST, userId, before,
+                historyLogService.logUpdated(DomainType.CHECKLIST, userId, before,
                     checklist, "승인 요청 수락");
             }
         }

@@ -9,7 +9,7 @@ import static com.back2basics.domain.checklist.controller.code.ChecklistResponse
 
 import com.back2basics.checklist.port.in.CreateChecklistUseCase;
 import com.back2basics.checklist.port.in.ReadApprovalUseCase;
-import com.back2basics.checklist.port.in.UpdateApprovalResponseUseCase;
+import com.back2basics.checklist.port.in.UpdateApprovalUseCase;
 import com.back2basics.checklist.service.result.ApprovalResult;
 import com.back2basics.checklist.service.result.ChecklistInfoResult;
 import com.back2basics.domain.checklist.dto.request.CreateChecklistRequest;
@@ -31,12 +31,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/project-steps/approval")
+@RequestMapping("/api/checklists")
 @RequiredArgsConstructor
 public class ChecklistController {
 
     private final CreateChecklistUseCase createChecklistUseCase;
-    private final UpdateApprovalResponseUseCase updateApprovalResponseUseCase;
+    private final UpdateApprovalUseCase updateApprovalUseCase;
     private final ReadApprovalUseCase readApprovalUseCase;
 
     // 승인 요청 생성
@@ -51,11 +51,11 @@ public class ChecklistController {
     }
 
     // 승인자 추가
-    @PutMapping("/add-responses/{requestId}")
-    public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long requestId,
+    @PutMapping("/approval/add/{checklistId}")
+    public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody CreateChecklistRequest request) {
-        updateApprovalResponseUseCase.addApprover(requestId, userDetails.getId(),
+        updateApprovalUseCase.addApprover(checklistId, userDetails.getId(),
             request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
@@ -65,7 +65,7 @@ public class ChecklistController {
     public ResponseEntity<ApiResponse<Void>> change(@PathVariable Long responseId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody UpdateApprovalRequest request) {
-        updateApprovalResponseUseCase.change(responseId, userDetails.getId(), request.toCommand());
+        updateApprovalUseCase.change(responseId, userDetails.getId(), request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 

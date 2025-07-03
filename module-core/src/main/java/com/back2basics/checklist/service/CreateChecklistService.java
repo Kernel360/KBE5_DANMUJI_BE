@@ -23,12 +23,12 @@ public class CreateChecklistService implements CreateChecklistUseCase {
     private final HistoryLogService historyLogService;
 
     @Override
-    public void create(Long stepId, Long requesterId, CreateChecklistCommand command) {
+    public void create(Long stepId, Long userId, CreateChecklistCommand command) {
         projectStepValidator.validateNotFoundStepId(stepId);
-        userValidator.validateNotFoundUserId(requesterId);
+        userValidator.validateNotFoundUserId(userId);
         userValidator.validateAllUsersExist(command.responseIds());
 
-        Checklist checklist = Checklist.create(stepId, requesterId, command.title(),
+        Checklist checklist = Checklist.create(stepId, userId, command.title(),
             command.content(), command.responseIds());
         Checklist savedChecklist = checklistCommandPort.create(checklist);
 
@@ -43,7 +43,7 @@ public class CreateChecklistService implements CreateChecklistUseCase {
 //            notifyUseCase.notify(notifyCommand);
 //        }
 
-        historyLogService.logCreated(DomainType.APPROVAL_REQUEST, requesterId, savedChecklist,
-            "승인 요청 생성");
+        historyLogService.logCreated(DomainType.CHECKLIST, userId, savedChecklist,
+            "체크리스트 생성");
     }
 }
