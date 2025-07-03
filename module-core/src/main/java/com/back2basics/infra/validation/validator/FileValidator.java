@@ -23,7 +23,7 @@ public class FileValidator {
 
     private final PostReadPort postReadPort;
     private final ProjectMemberQueryPort projectMemberQueryPort;
-    private final UserQueryPort userQueryPort;
+    private final UserQueryPort userQueryPort;ㅋ
 
     public void validateDownloadPermission(Long userId, Long postId) {
 
