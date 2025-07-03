@@ -4,8 +4,8 @@ import com.back2basics.checklist.model.Approval;
 import com.back2basics.checklist.model.ApprovalStatus;
 import com.back2basics.checklist.model.Checklist;
 import com.back2basics.checklist.port.in.UpdateApprovalUseCase;
-import com.back2basics.checklist.port.in.command.CreateChecklistCommand;
 import com.back2basics.checklist.port.in.command.UpdateApprovalCommand;
+import com.back2basics.checklist.port.in.command.UpdateChecklistApprovalCommand;
 import com.back2basics.checklist.port.out.ApprovalCommandPort;
 import com.back2basics.checklist.port.out.ApprovalQueryPort;
 import com.back2basics.checklist.port.out.ChecklistCommandPort;
@@ -17,6 +17,8 @@ import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
+import com.back2basics.projectstep.model.ProjectStep;
+import com.back2basics.projectstep.port.out.ReadProjectStepPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,12 +37,13 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
     private final ApprovalCommandPort approvalCommandPort;
     private final NotifyUseCase notifyUseCase;
     private final HistoryLogService historyLogService;
+    private final ReadProjectStepPort readProjectStepPort;
 
     @Override
-    public void change(Long responseId, Long userId, UpdateApprovalCommand command) {
-        approvalValidator.validateApproval(responseId, userId);
+    public void change(Long approvalId, Long userId, UpdateApprovalCommand command) {
+        approvalValidator.validateApproval(approvalId, userId);
 
-        Approval approval = approvalQueryPort.findById(responseId);
+        Approval approval = approvalQueryPort.findById(approvalId);
         approval.updateStatus(command.message(), command.status());
         approvalCommandPort.update(approval);
 
@@ -48,8 +51,10 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
             approval.getApprovalRequestId());
         Checklist before = Checklist.copyOf(checklist);
 
+        ProjectStep projectStep = readProjectStepPort.findById(checklist.getProjectStepId());
+
         SendNotificationCommand notifyCommand = getSendNotificationCommand(
-            command, checklist, approval);
+            command, checklist, projectStep.getProjectId());
         notifyUseCase.notify(notifyCommand);
 
         if (command.status().equals(ApprovalStatus.REJECTED)) {
@@ -57,7 +62,7 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
             checklistCommandPort.save(checklist);
 
             historyLogService.logUpdated(DomainType.CHECKLIST, userId, before,
-                checklist, "승인 요청 거부");
+                checklist, "체크리스트 승인 요청 거부");
         } else {
             List<Approval> responseList = approvalQueryPort.findResponsesByRequestId(
                 checklist.getId());
@@ -69,40 +74,41 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
                 checklistCommandPort.save(checklist);
 
                 historyLogService.logUpdated(DomainType.CHECKLIST, userId, before,
-                    checklist, "승인 요청 수락");
+                    checklist, "체크리스트 승인 요청 수락");
             }
         }
 
     }
 
     private static SendNotificationCommand getSendNotificationCommand(UpdateApprovalCommand command,
-        Checklist checklist, Approval approval) {
+        Checklist checklist, Long projectId) {
         NotificationType type = command.status().equals(ApprovalStatus.REJECTED)
             ? NotificationType.CHECKLIST_REJECTED : NotificationType.CHECKLIST_ACCEPTED;
 
         return new SendNotificationCommand(
             checklist.getUserId(),
-            approval.getApprovalRequestId(),
-            null, // todo
+            projectId,
+            checklist.getId(),
             type.getDescription(),
             type
         );
     }
 
     @Override
-    public void addApprover(Long requestId, Long userId, CreateChecklistCommand command) {
-        userValidator.validateAllUsersExist(command.responseIds());
+    public void addApproval(Long checklistId, Long userId, UpdateChecklistApprovalCommand command) {
+        userValidator.validateAllUsersExist(command.approvalIds());
         // todo request, userId validation
-        Checklist checklist = checklistQueryPort.findById(requestId);
-        command.responseIds().forEach(checklist::addResponse);
+        Checklist checklist = checklistQueryPort.findById(checklistId);
+        command.approvalIds().forEach(checklist::addResponse);
 
         checklistCommandPort.update(checklist);
+        ProjectStep projectStep = readProjectStepPort.findById(checklist.getProjectStepId());
 
-        for (Long clientId : command.responseIds()) {
+        for (Long clientId : command.approvalIds()) {
             SendNotificationCommand notifyCommand = new SendNotificationCommand(
                 clientId,
-                requestId,
-                null, // todo
+                projectStep.getProjectId(),
+                checklistId,
                 NotificationType.CHECKLIST_REQUEST.getDescription(),
                 NotificationType.CHECKLIST_REQUEST
             );

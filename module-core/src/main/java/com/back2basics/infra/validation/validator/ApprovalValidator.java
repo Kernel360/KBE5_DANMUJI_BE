@@ -13,9 +13,9 @@ public class ApprovalValidator {
 
     private final ApprovalQueryPort approvalQueryPort;
 
-    public void validateApproval(Long responseId, Long userId) {
+    public void validateApproval(Long approvalId, Long userId) {
 
-        boolean exists = approvalQueryPort.existsByIdAndUserId(responseId, userId);
+        boolean exists = approvalQueryPort.existsByIdAndUserId(approvalId, userId);
         if (!exists) {
             throw new ApprovalException(APPROVAL_NOT_FOUND);
         }

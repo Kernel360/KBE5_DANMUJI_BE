@@ -14,6 +14,7 @@ import com.back2basics.checklist.service.result.ApprovalResult;
 import com.back2basics.checklist.service.result.ChecklistInfoResult;
 import com.back2basics.domain.checklist.dto.request.CreateChecklistRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateApprovalRequest;
+import com.back2basics.domain.checklist.dto.request.UpdateChecklistApprovalRequest;
 import com.back2basics.domain.checklist.dto.response.ApprovalInfoResponse;
 import com.back2basics.domain.checklist.dto.response.ApproverResponse;
 import com.back2basics.global.response.result.ApiResponse;
@@ -42,9 +43,8 @@ public class ChecklistController {
     // 승인 요청 생성
     @PostMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> create(@PathVariable Long stepId,
-        @AuthenticationPrincipal
-        CustomUserDetails userDetails, @RequestBody CreateChecklistRequest request) {
-
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestBody CreateChecklistRequest request) {
         createChecklistUseCase.create(stepId, userDetails.getId(),
             request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_CREATE_SUCCESS);
@@ -54,8 +54,8 @@ public class ChecklistController {
     @PutMapping("/approval/add/{checklistId}")
     public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody CreateChecklistRequest request) {
-        updateApprovalUseCase.addApprover(checklistId, userDetails.getId(),
+        @RequestBody UpdateChecklistApprovalRequest request) {
+        updateApprovalUseCase.addApproval(checklistId, userDetails.getId(),
             request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
