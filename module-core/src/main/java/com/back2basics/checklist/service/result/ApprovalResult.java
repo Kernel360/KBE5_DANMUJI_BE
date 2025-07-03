@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public record ApprovalResult(
     Long id,
-    Long approvalRequestId,
+    Long checklistId,
     Long userId,
     String message,
     ApprovalStatus status,

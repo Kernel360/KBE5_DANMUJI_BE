@@ -21,25 +21,23 @@ public class ApprovalQueryAdapter implements ApprovalQueryPort {
     private final ApprovalEntityRepository approvalEntityRepository;
 
     @Override
-    public boolean existsByIdAndUserId(Long responseId, Long userId) {
-        return approvalEntityRepository.existsByIdAndUserId(responseId,
-            userId);
+    public boolean existsByIdAndUserId(Long approvalId, Long userId) {
+        return approvalEntityRepository.existsByIdAndUserId(approvalId, userId);
     }
 
     @Override
     public Approval findById(Long id) {
         return approvalEntityRepository.findById(id)
-            .map(mapper::toDomain)
-            .orElseThrow(() -> new ApprovalException(APPROVAL_NOT_FOUND));
+            .map(mapper::toDomain).orElseThrow(() -> new ApprovalException(APPROVAL_NOT_FOUND));
     }
 
     @Override
-    public List<Long> findApproverIdsByRequestId(Long checklistId) {
+    public List<Long> findApprovalIdsByChecklistId(Long checklistId) {
         return approvalEntityRepository.findIdsByChecklistId(checklistId);
     }
 
     @Override
-    public List<Approval> findResponsesByRequestId(Long checklistId) {
+    public List<Approval> findApprovalsByChecklistId(Long checklistId) {
         return approvalEntityRepository.findAllByChecklistId(checklistId).stream()
             .map(mapper::toDomain)
             .toList();

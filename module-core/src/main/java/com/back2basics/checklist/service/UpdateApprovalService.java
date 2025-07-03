@@ -48,7 +48,7 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
         approvalCommandPort.update(approval);
 
         Checklist checklist = checklistQueryPort.findById(
-            approval.getApprovalRequestId());
+            approval.getChecklistId());
         Checklist before = Checklist.copyOf(checklist);
 
         ProjectStep projectStep = readProjectStepPort.findById(checklist.getProjectStepId());
@@ -64,7 +64,7 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
             historyLogService.logUpdated(DomainType.CHECKLIST, userId, before,
                 checklist, "체크리스트 승인 요청 거부");
         } else {
-            List<Approval> responseList = approvalQueryPort.findResponsesByRequestId(
+            List<Approval> responseList = approvalQueryPort.findApprovalsByChecklistId(
                 checklist.getId());
             boolean allResponded = responseList.stream()
                 .allMatch(r -> r.getStatus() != ApprovalStatus.PENDING);

@@ -5,19 +5,19 @@ import com.back2basics.checklist.service.result.ApprovalResult;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ApproverResponse(
+public record ApprovalResponse(
     Long id,
-    Long approvalRequestId,
+    Long checklistId,
     Long userId,
     String message,
     ApprovalStatus status,
     LocalDateTime respondedAt
 ) {
 
-    public static ApproverResponse from(ApprovalResult result) {
-        return new ApproverResponse(
+    public static ApprovalResponse from(ApprovalResult result) {
+        return new ApprovalResponse(
             result.id(),
-            result.approvalRequestId(),
+            result.checklistId(),
             result.userId(),
             result.message(),
             result.status(),
@@ -25,9 +25,9 @@ public record ApproverResponse(
         );
     }
 
-    public static List<ApproverResponse> from(List<ApprovalResult> results) {
+    public static List<ApprovalResponse> from(List<ApprovalResult> results) {
         return results.stream()
-            .map(ApproverResponse::from)
+            .map(ApprovalResponse::from)
             .toList();
     }
 }

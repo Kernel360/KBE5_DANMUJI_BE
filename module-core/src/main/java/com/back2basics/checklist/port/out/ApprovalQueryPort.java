@@ -9,7 +9,7 @@ public interface ApprovalQueryPort {
 
     Approval findById(Long responseId);
 
-    List<Long> findApproverIdsByRequestId(Long stepId);
+    List<Long> findApprovalIdsByChecklistId(Long stepId);
 
-    List<Approval> findResponsesByRequestId(Long requestId);
+    List<Approval> findApprovalsByChecklistId(Long requestId);
 }
