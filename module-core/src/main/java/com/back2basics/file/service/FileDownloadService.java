@@ -1,9 +1,9 @@
-package com.back2basics.board.file.service;
+package com.back2basics.file.service;
 
-import com.back2basics.board.file.model.File;
-import com.back2basics.board.file.port.in.FileDownloadUseCase;
-import com.back2basics.board.file.port.out.FilePresignedUrlPort;
-import com.back2basics.board.file.port.out.FileReadPort;
+import com.back2basics.file.model.File;
+import com.back2basics.file.port.in.FileDownloadUseCase;
+import com.back2basics.file.port.out.FilePresignedUrlPort;
+import com.back2basics.file.port.out.FileReadPort;
 import com.back2basics.infra.s3.MimeTypeUtils;
 import com.back2basics.infra.s3.S3Util;
 import com.back2basics.infra.validation.validator.FileValidator;
@@ -26,7 +26,7 @@ public class FileDownloadService implements FileDownloadUseCase {
     private String publicUrlPrefix;
 
     @Override
-    public FileDownloadResult downloadFile(Long userId, Long postId, Long fileId)
+    public FileDownloadResult downloadFile(Long userId, Long referenceId, Long fileId)
         throws IOException {
 
         fileValidator.validateDownloadPermission(userId, postId);
@@ -41,7 +41,8 @@ public class FileDownloadService implements FileDownloadUseCase {
     }
 
     @Override
-    public FilePresignedUrlResult getPresignedDownloadUrl(Long userId, Long postId, Long fileId) {
+    public FilePresignedUrlResult getPresignedDownloadUrl(Long userId, Long referenceId,
+        Long fileId) {
         File file = fileReadPort.getFileById(fileId);
 
         String fileKey = file.getFileKey();
@@ -56,7 +57,7 @@ public class FileDownloadService implements FileDownloadUseCase {
 
     private File applySafeMimeType(File file) {
         String safeType = mimeTypeUtils.getMimeType(file.getFileName(), file.getFileType());
-        return file.withFileType(safeType);
+        return file.withContentType(safeType);
     }
 
 }
