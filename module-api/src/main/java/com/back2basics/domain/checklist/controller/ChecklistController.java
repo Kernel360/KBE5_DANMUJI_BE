@@ -40,7 +40,7 @@ public class ChecklistController {
     private final UpdateApprovalUseCase updateApprovalUseCase;
     private final ReadApprovalUseCase readApprovalUseCase;
 
-    // 승인 요청 생성
+    // 체크리스트 생성
     @PostMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> create(@PathVariable Long stepId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -50,7 +50,7 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_CREATE_SUCCESS);
     }
 
-    // 승인자 추가
+    // 체크리스트 승인자 추가
     @PutMapping("/approval/add/{checklistId}")
     public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -60,12 +60,12 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 
-    // 상태 변경
-    @PutMapping("/{responseId}/status")
-    public ResponseEntity<ApiResponse<Void>> change(@PathVariable Long responseId,
+    // 체크리스트 상태 변경
+    @PutMapping("/{checklistId}/status")
+    public ResponseEntity<ApiResponse<Void>> change(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody UpdateApprovalRequest request) {
-        updateApprovalUseCase.change(responseId, userDetails.getId(), request.toCommand());
+        updateApprovalUseCase.change(checklistId, userDetails.getId(), request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 

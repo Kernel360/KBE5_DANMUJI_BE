@@ -63,9 +63,4 @@ public class ApprovalEntity {
         this.respondedAt = approval.getRespondedAt();
     }
 
-    public void updateFromDomain(Approval approval) {
-        this.status = approval.getStatus();
-        this.message = approval.getMessage();
-        this.respondedAt = approval.getRespondedAt();
-    }
 }
