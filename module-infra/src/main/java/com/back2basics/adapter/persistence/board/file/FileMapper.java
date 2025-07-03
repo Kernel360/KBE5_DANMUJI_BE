@@ -2,8 +2,10 @@ package com.back2basics.adapter.persistence.board.file;
 
 
 import com.back2basics.board.file.model.File;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class FileMapper {
 
@@ -19,6 +21,7 @@ public class FileMapper {
     }
 
     public FileEntity toEntity(File file, Long postId) {
+        log.info("===FileMapper의 toEntity() url: {}", file.getFileUrl());
         return new FileEntity(
             file.getId(),
             postId,

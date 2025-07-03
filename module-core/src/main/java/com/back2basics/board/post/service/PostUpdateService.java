@@ -12,6 +12,7 @@ import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
+import com.back2basics.infra.s3.dto.PresignedUploadCompleteInfo;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
@@ -76,4 +77,57 @@ public class PostUpdateService implements PostUpdateUseCase {
             fileSavePort.saveAll(newFiles, postId);
         }
     }
+
+    @Override
+    public void updatePostWithPresigned(Long userId, String userIp, Long postId,
+                                        PostUpdateCommand command,
+                                        List<PresignedUploadCompleteInfo> uploadedFiles)
+    {
+        Post post = postValidator.findPost(postId);
+        Post beforePost = Post.copyOf(post);
+
+        post.update(command, userIp);
+        Post updatedPost = postUpdatePort.update(post);
+
+        linkUpdateService.updateLinks(
+            command.getNewLinks(),
+            command.getLinkIdsToDelete(),
+            updatedPost.getId()
+        );
+
+        mentionNotificationSender.notifyMentionedUsers(userId, post.getProjectId(), postId,
+            post.getContent());
+
+        replacePresignedFiles(uploadedFiles, command.getFileIdsToDelete(), updatedPost.getId());
+
+        historyLogService.logUpdated(DomainType.POST, userId, beforePost, updatedPost, "게시글 정보 수정");
+    }
+
+    private void replacePresignedFiles(List<PresignedUploadCompleteInfo> uploadedFiles, List<Long> fileIdsToDelete, Long postId) {
+        List<Long> finalFileIdsToDelete = (fileIdsToDelete != null) ? fileIdsToDelete : List.of();
+
+        List<File> existingFiles = fileReadPort.getFilesByPostId(postId);
+
+        List<File> toDelete = existingFiles.stream()
+            .filter(f -> finalFileIdsToDelete.contains(f.getId()))
+            .toList();
+
+        fileDeletePort.deleteFiles(toDelete);
+        fileDeletePort.deleteFromStorage(toDelete);
+
+        if (uploadedFiles != null && !uploadedFiles.isEmpty()) {
+            List<File> newFiles = uploadedFiles.stream()
+                .map(info -> File.create(
+                    null,
+                    postId,
+                    info.getOriginalName(),
+                    info.getUrl(),
+                    info.getExtension(),
+                    info.getSize()
+                ))
+                .toList();
+            fileSavePort.saveAll(newFiles, postId);
+        }
+    }
+
 }

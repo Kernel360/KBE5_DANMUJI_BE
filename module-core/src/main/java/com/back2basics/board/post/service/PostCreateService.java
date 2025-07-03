@@ -12,6 +12,7 @@ import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
+import com.back2basics.infra.s3.dto.PresignedUploadCompleteInfo;
 import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.infra.validation.validator.UserValidator;
@@ -19,9 +20,12 @@ import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostCreateService implements PostCreateUseCase {
@@ -59,6 +63,48 @@ public class PostCreateService implements PostCreateUseCase {
         return PostCreateResult.toResult(savedPost);
     }
 
+    @Override
+    @Transactional
+    public PostCreateResult createPostWithPresigned(Long userId, Long projectId, Long stepId,
+        String userIp, PostCreateCommand command, List<PresignedUploadCompleteInfo> uploadedFiles) {
+
+        userValidator.validateNotFoundUserId(userId);
+        projectValidator.findById(projectId);
+        postValidator.findParentPost(command.getParentId());
+
+        Post post = Post.createFromCommand(command, userId, userIp);
+        Post savedPost = postCreatePort.save(post);
+
+        log.info("======================== createPostWithPresigned() 의 url : {}", uploadedFiles.get(0).getUrl());
+
+        saveFilesFromPresignedUrls(uploadedFiles, savedPost.getId());
+
+        linkCreateService.createLinks(command.getNewLinks(), savedPost.getId());
+        postNotificationSender.sendNotification(userId, savedPost.getId(), command);
+        mentionNotificationSender.notifyMentionedUsers(userId, projectId, savedPost.getId(),
+            post.getContent());
+        historyLogService.logCreated(DomainType.POST, userId, savedPost, "게시글 생성");
+
+        return PostCreateResult.toResult(savedPost);
+    }
+
+    private void saveFilesFromPresignedUrls(List<PresignedUploadCompleteInfo> uploadedFiles, Long postId) {
+        if (uploadedFiles == null || uploadedFiles.isEmpty()) return;
+
+        log.info("======================== saveFilesFromPresignedUrls() 의 url : {}", uploadedFiles.get(0).getUrl());
+        List<File> fileModels = uploadedFiles.stream()
+            .map(info -> File.create(
+                null,
+                postId,
+                info.getOriginalName(),
+                info.getUrl(),
+                info.getExtension(),
+                info.getSize()
+            )).toList();
+        fileSavePort.saveAll(fileModels, postId);
+        log.info("======================== after fileSavePort.saveAll(fileModels, postId)의 url : {}", uploadedFiles.get(0).getUrl());
+    }
+
     private void uploadAndSaveFiles(List<MultipartFile> files, Long postId) throws IOException {
         if (files == null || files.isEmpty()) {
             return;
@@ -67,6 +113,8 @@ public class PostCreateService implements PostCreateUseCase {
         List<File> fileModels = fileUploadService.upload(files, postId);
         fileSavePort.saveAll(fileModels, postId);
     }
+
+
 
 
 }

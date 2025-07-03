@@ -11,6 +11,8 @@ public interface PostReadPort {
 
     Optional<Post> findById(Long postId);
 
+    Optional<Post> findDeletedPostById(Long postId);
+
     Page<Post> findAllPostsByProjectIdAndStepId(Long projectId, Long projectStepId,
         Pageable pageable);
 

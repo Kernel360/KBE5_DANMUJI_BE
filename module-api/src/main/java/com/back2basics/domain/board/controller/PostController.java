@@ -2,9 +2,11 @@ package com.back2basics.domain.board.controller;
 
 import com.back2basics.board.file.port.in.FileDownloadUseCase;
 import com.back2basics.board.file.service.FileDownloadResult;
+import com.back2basics.board.file.service.FilePresignedUrlResult;
 import com.back2basics.board.post.port.in.PostCreateUseCase;
 import com.back2basics.board.post.port.in.PostDeleteUseCase;
 import com.back2basics.board.post.port.in.PostReadUseCase;
+import com.back2basics.board.post.port.in.PostRestoreUseCase;
 import com.back2basics.board.post.port.in.PostSearchUseCase;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.service.result.PostCreateResult;
@@ -14,8 +16,10 @@ import com.back2basics.board.post.service.result.PostSummaryReadResult;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
 import com.back2basics.domain.board.controller.code.PostResponseCode;
 import com.back2basics.domain.board.dto.request.PostCreateRequest;
+import com.back2basics.domain.board.dto.request.PostCreateWithPresignedRequest;
 import com.back2basics.domain.board.dto.request.PostSearchRequest;
 import com.back2basics.domain.board.dto.request.PostUpdateRequest;
+import com.back2basics.domain.board.dto.request.PostUpdateWithPresignedRequest;
 import com.back2basics.domain.board.dto.response.PostCreateResponse;
 import com.back2basics.domain.board.dto.response.PostDashboardReadResponse;
 import com.back2basics.domain.board.dto.response.PostDetailReadResponse;
@@ -41,6 +45,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -61,6 +66,7 @@ public class PostController /*implements PostApiDocs*/ {
     private final PostDeleteUseCase postDeleteUseCase;
     private final PostSearchUseCase postSearchUseCase;
     private final FileDownloadUseCase fileDownloadUseCase;
+    private final PostRestoreUseCase postRestoreUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -140,6 +146,15 @@ public class PostController /*implements PostApiDocs*/ {
         return ApiResponse.success(PostResponseCode.POST_DELETE_SUCCESS);
     }
 
+    @PutMapping("/{postId}/restore")
+    public ResponseEntity<ApiResponse<Void>> restorePost(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId) {
+        Long userId = customUserDetails.getId();
+        postRestoreUseCase.restorePost(userId, postId);
+        return ApiResponse.success(PostResponseCode.POST_RESTORE_SUCCESS);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<PostSummaryReadResponse>>> searchPosts(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -209,5 +224,60 @@ public class PostController /*implements PostApiDocs*/ {
 
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_DASHBOARD_SUCCESS, responseList);
 
+    }
+
+    @PostMapping("/presigned")
+    public ResponseEntity<ApiResponse<PostCreateResponse>> createPostWithPresigned(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @RequestBody @Valid PostCreateWithPresignedRequest request
+    ) {
+        Long userId = customUserDetails.getId();
+        String userIp = customUserDetails.getIp();
+
+        log.info("========================url : {}", request.getUploadedFiles().get(0).getUrl());
+        log.info("========================url : {}", request.getUploadedFiles().get(0).getUrl());
+        PostCreateResult result = createPostUseCase.createPostWithPresigned(
+            userId,
+            request.getProjectId(),
+            request.getStepId(),
+            userIp,
+            request.toCommand(),
+            request.toUploadedFileInfos()
+        );
+        PostCreateResponse response = PostCreateResponse.toResponse(result);
+        return ApiResponse.success(PostResponseCode.POST_CREATE_PRESIGNED_SUCCESS, response);
+    }
+
+    @PutMapping("/{postId}/presigned")
+    public ResponseEntity<ApiResponse<Void>> updatePostWithPresigned(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId,
+        @RequestBody @Valid PostUpdateWithPresignedRequest request
+    ) {
+        Long userId = customUserDetails.getId();
+        String userIp = customUserDetails.getIp();
+
+        postUpdateUseCase.updatePostWithPresigned(
+            userId,
+            userIp,
+            postId,
+            request.toCommand(),
+            request.toUploadedFileInfos()
+        );
+
+        return ApiResponse.success(PostResponseCode.POST_UPDATE_PRESIGNED_SUCCESS);
+    }
+
+    @GetMapping("/{postId}/files/{fileId}/presigned")
+    public ResponseEntity<ApiResponse<String>> getFilePresignedDownloadUrl(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long postId,
+        @PathVariable Long fileId
+    ) {
+        FilePresignedUrlResult result = fileDownloadUseCase.getPresignedDownloadUrl(
+            customUserDetails.getId(), postId, fileId
+        );
+
+        return ApiResponse.success(PostResponseCode.POST_FILE_PRESIGNED_URL_SUCCESS, result.presignedUrl());
     }
 }
