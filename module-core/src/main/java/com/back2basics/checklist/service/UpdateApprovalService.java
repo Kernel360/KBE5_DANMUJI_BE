@@ -5,7 +5,6 @@ import com.back2basics.checklist.model.ApprovalStatus;
 import com.back2basics.checklist.model.Checklist;
 import com.back2basics.checklist.port.in.UpdateApprovalUseCase;
 import com.back2basics.checklist.port.in.command.UpdateApprovalCommand;
-import com.back2basics.checklist.port.in.command.UpdateChecklistApprovalCommand;
 import com.back2basics.checklist.port.out.ApprovalCommandPort;
 import com.back2basics.checklist.port.out.ApprovalQueryPort;
 import com.back2basics.checklist.port.out.ChecklistCommandPort;
@@ -13,7 +12,6 @@ import com.back2basics.checklist.port.out.ChecklistQueryPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.ApprovalValidator;
-import com.back2basics.infra.validation.validator.UserValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
@@ -30,7 +28,6 @@ import org.springframework.stereotype.Service;
 public class UpdateApprovalService implements UpdateApprovalUseCase {
 
     private final ApprovalValidator approvalValidator;
-    private final UserValidator userValidator;
     private final ChecklistCommandPort checklistCommandPort;
     private final ChecklistQueryPort checklistQueryPort;
     private final ApprovalQueryPort approvalQueryPort;
@@ -94,25 +91,5 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
         );
     }
 
-    @Override
-    public void addApproval(Long checklistId, Long userId, UpdateChecklistApprovalCommand command) {
-        userValidator.validateAllUsersExist(command.approvalIds());
-        // todo request, userId validation
-        Checklist checklist = checklistQueryPort.findById(checklistId);
-        command.approvalIds().forEach(checklist::addResponse);
 
-        checklistCommandPort.update(checklist);
-        ProjectStep projectStep = readProjectStepPort.findById(checklist.getProjectStepId());
-
-        for (Long clientId : command.approvalIds()) {
-            SendNotificationCommand notifyCommand = new SendNotificationCommand(
-                clientId,
-                projectStep.getProjectId(),
-                checklistId,
-                NotificationType.CHECKLIST_REQUEST.getDescription(),
-                NotificationType.CHECKLIST_REQUEST
-            );
-            notifyUseCase.notify(notifyCommand);
-        }
-    }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ReadApprovalUseCase {
 
-    List<ApprovalResult> findResponsesByRequestId(Long requestId);
+    List<ApprovalResult> findAllByChecklistId(Long checklistId);
 
-    ApprovalResult findByResponseId(Long responseId);
+    ApprovalResult findById(Long id);
 }

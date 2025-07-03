@@ -1,12 +1,12 @@
 package com.back2basics.adapter.persistence.checklist.adapter;
 
-import static com.back2basics.infra.exception.approval.ApprovalErrorCode.APPROVAL_NOT_FOUND;
+import static com.back2basics.infra.exception.checklist.ChecklistErrorCode.CHECKLIST_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.checklist.mapper.ApprovalMapper;
 import com.back2basics.adapter.persistence.checklist.repository.ApprovalEntityRepository;
 import com.back2basics.checklist.model.Approval;
 import com.back2basics.checklist.port.out.ApprovalQueryPort;
-import com.back2basics.infra.exception.approval.ApprovalException;
+import com.back2basics.infra.exception.checklist.ChecklistException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class ApprovalQueryAdapter implements ApprovalQueryPort {
     @Override
     public Approval findById(Long id) {
         return approvalEntityRepository.findById(id)
-            .map(mapper::toDomain).orElseThrow(() -> new ApprovalException(APPROVAL_NOT_FOUND));
+            .map(mapper::toDomain).orElseThrow(() -> new ChecklistException(CHECKLIST_NOT_FOUND));
     }
 
     @Override

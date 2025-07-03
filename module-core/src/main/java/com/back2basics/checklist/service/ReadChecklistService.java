@@ -15,8 +15,8 @@ public class ReadChecklistService implements ReadChecklistUseCase {
     private final ChecklistQueryPort checklistQueryPort;
 
     @Override
-    public ChecklistInfoResult findByRequestId(Long requestId) {
-        Checklist request = checklistQueryPort.findById(requestId);
+    public ChecklistInfoResult findByChecklistId(Long checklistId) {
+        Checklist request = checklistQueryPort.findById(checklistId);
         return new ChecklistInfoResult(request.getId(), request.getProjectStepId(),
             request.getUserId(), request.getTitle(), request.getContent(),
             request.getChecklistStatus(), request.getRequestedAt());

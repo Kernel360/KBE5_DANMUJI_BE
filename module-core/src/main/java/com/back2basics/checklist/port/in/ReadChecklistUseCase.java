@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ReadChecklistUseCase {
 
-    ChecklistInfoResult findByRequestId(Long requestId);
+    ChecklistInfoResult findByChecklistId(Long checklistId);
 
     List<ChecklistInfoResult> findAll();
 

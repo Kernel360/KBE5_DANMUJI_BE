@@ -15,9 +15,9 @@ public class ReadApprovalService implements ReadApprovalUseCase {
     private final ApprovalQueryPort approvalQueryPort;
 
     @Override
-    public List<ApprovalResult> findResponsesByRequestId(Long requestId) {
+    public List<ApprovalResult> findAllByChecklistId(Long checklistId) {
         List<Approval> responses = approvalQueryPort.findApprovalsByChecklistId(
-            requestId);
+            checklistId);
 
         return responses.stream()
             .map(response -> new ApprovalResult(
@@ -32,8 +32,8 @@ public class ReadApprovalService implements ReadApprovalUseCase {
     }
 
     @Override
-    public ApprovalResult findByResponseId(Long responseId) {
-        Approval response = approvalQueryPort.findById(responseId);
+    public ApprovalResult findById(Long id) {
+        Approval response = approvalQueryPort.findById(id);
         return new ApprovalResult(
             response.getId(),
             response.getChecklistId(),

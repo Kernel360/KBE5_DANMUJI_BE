@@ -11,10 +11,12 @@ import com.back2basics.checklist.port.in.CreateChecklistUseCase;
 import com.back2basics.checklist.port.in.ReadApprovalUseCase;
 import com.back2basics.checklist.port.in.ReadChecklistUseCase;
 import com.back2basics.checklist.port.in.UpdateApprovalUseCase;
+import com.back2basics.checklist.port.in.UpdateChecklistUseCase;
 import com.back2basics.checklist.service.result.ApprovalResult;
 import com.back2basics.checklist.service.result.ChecklistInfoResult;
 import com.back2basics.domain.checklist.dto.request.CreateChecklistRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateApprovalRequest;
+import com.back2basics.domain.checklist.dto.request.UpdateChecklistRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateChecklistApprovalRequest;
 import com.back2basics.domain.checklist.dto.response.ApprovalInfoResponse;
 import com.back2basics.domain.checklist.dto.response.ApprovalResponse;
@@ -38,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChecklistController {
 
     private final CreateChecklistUseCase createChecklistUseCase;
+    private final UpdateChecklistUseCase updateChecklistUseCase;
     private final UpdateApprovalUseCase updateApprovalUseCase;
     private final ReadApprovalUseCase readApprovalUseCase;
     private final ReadChecklistUseCase readChecklistUseCase;
@@ -52,12 +55,21 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_CREATE_SUCCESS);
     }
 
+    @PutMapping("/{checklistId}")
+    public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long checklistId,
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestBody UpdateChecklistRequest request) {
+        updateChecklistUseCase.update(checklistId, userDetails.getId(),
+            request.toCommand());
+        return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
+    }
+
     // 체크리스트 승인자 추가
     @PutMapping("/approval/add/{checklistId}")
     public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody UpdateChecklistApprovalRequest request) {
-        updateApprovalUseCase.addApproval(checklistId, userDetails.getId(),
+        updateChecklistUseCase.addApproval(checklistId, userDetails.getId(),
             request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
@@ -71,10 +83,10 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 
-    @GetMapping("/{requestId}")
+    @GetMapping("/{checklistId}")
     public ResponseEntity<ApiResponse<ApprovalInfoResponse>> getRequestDetail(
-        @PathVariable Long requestId) {
-        ChecklistInfoResult result = readChecklistUseCase.findByRequestId(requestId);
+        @PathVariable Long checklistId) {
+        ChecklistInfoResult result = readChecklistUseCase.findByChecklistId(checklistId);
         return ApiResponse.success(CHECKLIST_REQUEST_READ_SUCCESS,
             ApprovalInfoResponse.from(result));
     }
@@ -86,17 +98,17 @@ public class ChecklistController {
             ApprovalInfoResponse.from(results));
     }
 
-    @GetMapping("/{requestId}/info")
-    public ResponseEntity<ApiResponse<List<ApprovalResponse>>> getResponsesByRequestId(
-        @PathVariable Long requestId) {
-        List<ApprovalResult> results = readApprovalUseCase.findResponsesByRequestId(requestId);
+    @GetMapping("/{checklistId}/info")
+    public ResponseEntity<ApiResponse<List<ApprovalResponse>>> getApprovalsByChecklistId(
+        @PathVariable Long checklistId) {
+        List<ApprovalResult> results = readApprovalUseCase.findAllByChecklistId(checklistId);
         return ApiResponse.success(CHECKLIST_RESPONSE_READ_SUCCESS, ApprovalResponse.from(results));
     }
 
-    @GetMapping("/response/{responseId}")
+    @GetMapping("/response/{approvalId}")
     public ResponseEntity<ApiResponse<ApprovalResponse>> getResponse(
-        @PathVariable Long responseId) {
-        ApprovalResult result = readApprovalUseCase.findByResponseId(responseId);
+        @PathVariable Long approvalId) {
+        ApprovalResult result = readApprovalUseCase.findById(approvalId);
         return ApiResponse.success(CHECKLIST_RESPONSE_STATUS_READ_SUCCESS,
             ApprovalResponse.from(result));
     }

@@ -8,4 +8,6 @@ public interface ChecklistQueryPort {
     Checklist findById(Long requestId);
 
     List<Checklist> findAll();
+
+    boolean existsById(Long checklistId);
 }
