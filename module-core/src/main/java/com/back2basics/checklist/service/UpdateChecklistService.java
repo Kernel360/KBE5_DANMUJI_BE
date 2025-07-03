@@ -42,7 +42,7 @@ public class UpdateChecklistService implements UpdateChecklistUseCase {
     @Override
     public void addApproval(Long checklistId, Long userId, UpdateChecklistApprovalCommand command) {
         userValidator.validateAllUsersExist(command.approvalIds());
-        // todo request, userId validation
+        checklistValidator.validateChecklistCreator(checklistId, userId);
         Checklist checklist = checklistQueryPort.findById(checklistId);
         command.approvalIds().forEach(checklist::addResponse);
 
