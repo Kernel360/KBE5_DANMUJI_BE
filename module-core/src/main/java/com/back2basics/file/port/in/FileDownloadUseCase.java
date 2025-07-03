@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public interface FileDownloadUseCase {
 
-    FileDownloadResult downloadFile(Long userId, Long postId, Long fileId) throws IOException;
+    FileDownloadResult downloadFile(Long userId, Long referenceId, Long fileId) throws IOException;
 
-    FilePresignedUrlResult getPresignedDownloadUrl(Long userId, Long postId, Long fileId);
+    FilePresignedUrlResult getPresignedDownloadUrl(Long userId, Long referenceId, Long fileId);
 }

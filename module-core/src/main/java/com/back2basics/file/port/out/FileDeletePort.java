@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface FileDeletePort {
 
-    void deleteAllByPostId(Long postId);
+    void deleteAllByReferenceId(Long referenceId);
 
     void deleteFiles(List<File> files);
 

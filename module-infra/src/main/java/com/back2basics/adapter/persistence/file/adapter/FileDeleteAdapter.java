@@ -22,8 +22,8 @@ public class FileDeleteAdapter implements FileDeletePort {
 
     @Override
     @Transactional
-    public void deleteAllByPostId(Long postId) {
-        fileRepository.deleteByPostId(postId);
+    public void deleteAllByReferenceId(Long referenceId) {
+        fileRepository.deleteByReferenceId(referenceId);
     }
 
     @Override

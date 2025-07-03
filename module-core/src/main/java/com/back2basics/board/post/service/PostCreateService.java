@@ -7,6 +7,7 @@ import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.out.PostCreatePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
+import com.back2basics.file.model.ContentType;
 import com.back2basics.file.model.File;
 import com.back2basics.file.port.out.FileSavePort;
 import com.back2basics.file.service.FileUploadService;
@@ -100,6 +101,7 @@ public class PostCreateService implements PostCreateUseCase {
         List<File> fileModels = uploadedFiles.stream()
             .map(info -> File.create(
                 null,
+                ContentType.POST,
                 postId,
                 info.getOriginalName(),
                 info.getUrl(),

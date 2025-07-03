@@ -5,6 +5,7 @@ import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostUpdateUseCase;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.board.post.port.out.PostUpdatePort;
+import com.back2basics.file.model.ContentType;
 import com.back2basics.file.model.File;
 import com.back2basics.file.port.out.FileDeletePort;
 import com.back2basics.file.port.out.FileReadPort;
@@ -63,7 +64,7 @@ public class PostUpdateService implements PostUpdateUseCase {
 
         List<Long> finalFileIdsToDelete = (fileIdsToDelete != null) ? fileIdsToDelete : List.of();
 
-        List<File> existingFiles = fileReadPort.getFilesByPostId(postId);
+        List<File> existingFiles = fileReadPort.getFilesByReferenceId(postId);
 
         List<File> toDelete = existingFiles.stream()
             .filter(f -> finalFileIdsToDelete.contains(f.getId()))
@@ -106,7 +107,7 @@ public class PostUpdateService implements PostUpdateUseCase {
         List<Long> fileIdsToDelete, Long postId) {
         List<Long> finalFileIdsToDelete = (fileIdsToDelete != null) ? fileIdsToDelete : List.of();
 
-        List<File> existingFiles = fileReadPort.getFilesByPostId(postId);
+        List<File> existingFiles = fileReadPort.getFilesByReferenceId(postId);
 
         List<File> toDelete = existingFiles.stream()
             .filter(f -> finalFileIdsToDelete.contains(f.getId()))
@@ -119,6 +120,7 @@ public class PostUpdateService implements PostUpdateUseCase {
             List<File> newFiles = uploadedFiles.stream()
                 .map(info -> File.create(
                     null,
+                    ContentType.POST,
                     postId,
                     info.getOriginalName(),
                     info.getUrl(),

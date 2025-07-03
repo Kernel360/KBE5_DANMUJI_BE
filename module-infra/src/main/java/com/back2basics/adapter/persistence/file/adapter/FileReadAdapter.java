@@ -19,8 +19,8 @@ public class FileReadAdapter implements FileReadPort {
     private final FileMapper fileMapper;
 
     @Override
-    public List<File> getFilesByPostId(Long postId) {
-        return fileRepository.findAllByPostId(postId).stream()
+    public List<File> getFilesByReferenceId(Long referenceId) {
+        return fileRepository.findAllByReferenceId(referenceId).stream()
             .map(fileMapper::toDomain)
             .toList();
     }

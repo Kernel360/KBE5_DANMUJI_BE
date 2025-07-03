@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FileEntityRepository extends JpaRepository<FileEntity, Long> {
 
-    List<FileEntity> findAllByPostId(Long postId);
+    List<FileEntity> findAllByReferenceId(Long referenceId);
 
-    void deleteByPostId(Long postId);
+    void deleteByReferenceId(Long referenceId);
 }

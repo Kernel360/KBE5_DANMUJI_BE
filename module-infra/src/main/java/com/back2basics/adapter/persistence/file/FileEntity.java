@@ -1,5 +1,6 @@
 package com.back2basics.adapter.persistence.file;
 
+import com.back2basics.file.model.ContentType;
 import com.back2basics.file.model.File;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,8 +22,11 @@ public class FileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "post_id")
-    private Long postId;
+    @Column(name = "Content_type")
+    private ContentType contentType;
+
+    @Column(name = "reference_id")
+    private Long referenceId;
 
     @Column(name = "file_name")
     private String fileName;
@@ -36,10 +40,12 @@ public class FileEntity {
     @Column(name = "file_size") // 파일 사이즈
     private String fileSize;
 
-    public FileEntity(Long id, Long postId, String fileName, String fileUrl, String fileType,
+    public FileEntity(Long id, ContentType contentType, Long referenceId, String fileName,
+        String fileUrl, String fileType,
         String fileSize) {
         this.id = id;
-        this.postId = postId;
+        this.contentType = contentType;
+        this.referenceId = referenceId;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.fileType = fileType;
@@ -50,7 +56,8 @@ public class FileEntity {
     public static FileEntity of(File file) {
         return new FileEntity(
             file.getId(),
-            file.getPostId(),
+            file.getContentType(),
+            file.getReferenceId(),
             file.getFileName(),
             file.getFileUrl(),
             file.getFileType(),

@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface FileReadPort {
 
-    List<File> getFilesByPostId(Long postId);
+    List<File> getFilesByReferenceId(Long referenceId);
 
     File getFileById(Long fileId);
 }

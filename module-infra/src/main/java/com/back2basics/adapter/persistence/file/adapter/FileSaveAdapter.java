@@ -19,10 +19,10 @@ public class FileSaveAdapter implements FileSavePort {
     private final FileMapper fileMapper;
 
     @Override
-    public void saveAll(List<File> files, Long postId) {
+    public void saveAll(List<File> files, Long referenceId) {
         log.info("=== FileSaveAdapter 내부 {}", files.get(0).getFileUrl());
         List<FileEntity> entities = files.stream()
-            .map(file -> fileMapper.toEntity(file, postId))
+            .map(file -> fileMapper.toEntity(file, referenceId))
             .toList();
         fileRepository.saveAll(entities);
     }

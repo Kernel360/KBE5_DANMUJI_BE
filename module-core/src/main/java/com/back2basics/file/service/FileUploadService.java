@@ -1,5 +1,6 @@
 package com.back2basics.file.service;
 
+import com.back2basics.file.model.ContentType;
 import com.back2basics.file.model.File;
 import com.back2basics.infra.s3.S3Util;
 import java.io.IOException;
@@ -15,7 +16,8 @@ public class FileUploadService {
 
     private final S3Util s3Util;
 
-    public List<File> upload(List<MultipartFile> multipartFiles, Long postId) throws IOException {
+    public List<File> upload(List<MultipartFile> multipartFiles, Long referenceId)
+        throws IOException {
         List<File> fileModels = new ArrayList<>();
 
         if (multipartFiles == null || multipartFiles.isEmpty()) {
@@ -29,7 +31,8 @@ public class FileUploadService {
 
             fileModels.add(File.create(
                 null,
-                postId,
+                ContentType.valueOf(multipartFile.getContentType()),
+                referenceId,
                 multipartFile.getOriginalFilename(),
                 fileUrl,
                 extractExtension(multipartFile.getOriginalFilename()),

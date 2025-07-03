@@ -78,7 +78,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             throw new PostException(POST_NOT_FOUND);
         }
 
-        List<File> files = fileReadPort.getFilesByPostId(id);
+        List<File> files = fileReadPort.getFilesByReferenceId(id);
         List<Link> links = linkReadPort.getLinksByPostId(id);
         return Optional.of(mapper.toDomain(result, files, links));
     }
@@ -116,7 +116,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             throw new PostException(POST_ALREADY_RESTORED);
         }
 
-        List<File> files = fileReadPort.getFilesByPostId(postId);
+        List<File> files = fileReadPort.getFilesByReferenceId(postId);
         List<Link> links = linkReadPort.getLinksByPostId(postId);
         return Optional.of(mapper.toDomain(result, files, links));
     }
