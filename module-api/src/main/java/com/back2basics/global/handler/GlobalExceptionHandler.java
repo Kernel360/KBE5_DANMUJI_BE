@@ -12,6 +12,7 @@ import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.infra.exception.ForbiddenAccessException;
 import com.back2basics.infra.exception.company.DuplicateCompanyException;
+import com.back2basics.infra.exception.file.FileErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiResponse<ErrorResponse>> handleMaxUploadSizeExceededException(
         MaxUploadSizeExceededException ex) {
 
-        ErrorCode errorCode = CommonErrorCode.FILE_SIZE_EXCEEDED;
+        ErrorCode errorCode = FileErrorCode.FILE_SIZE_EXCEEDED;
         log.error("MaxUploadSizeExceededException 발생: {}", ex.getMessage(), ex);
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }

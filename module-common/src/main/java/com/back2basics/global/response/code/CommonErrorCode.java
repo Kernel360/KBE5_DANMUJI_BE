@@ -15,8 +15,7 @@ public enum CommonErrorCode implements ErrorCode {
     BAD_CREDENTIALS(HttpStatus.BAD_REQUEST, "C005", "아이디 또는 비밀번호가 일치하지 않습니다."),
     NOT_FOUND(HttpStatus.NOT_FOUND, "C006", "Resource not found"),
     MISSING_PARAMETER(HttpStatus.BAD_REQUEST, "C007", "Missing request parameter"),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "C008", "Bad Request"),
-    FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "C009", "업로드 가능한 파일 크기를 초과했습니다 (20MB까지 가능)");
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "C008", "Bad Request");
 
     private final HttpStatus status;
     private final String code;
