@@ -18,8 +18,8 @@ public class ApprovalMapper {
     }
 
     public ApprovalEntity toEntity(Approval approval,
-        ChecklistEntity approvalRequest, UserEntity user
+        ChecklistEntity checklist, UserEntity user
     ) {
-        return new ApprovalEntity(approval, approvalRequest, user);
+        return new ApprovalEntity(approval, checklist, user);
     }
 }

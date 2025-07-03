@@ -36,7 +36,6 @@ public class CreateChecklistService implements CreateChecklistUseCase {
             command.content(), command.responseIds());
         Checklist savedChecklist = checklistCommandPort.create(checklist);
 
-        // todo
         for (Long clientId : command.responseIds()) {
             SendNotificationCommand notifyCommand = new SendNotificationCommand(
                 clientId,

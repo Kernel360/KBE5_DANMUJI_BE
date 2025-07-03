@@ -10,7 +10,7 @@ public class Approval {
 
     private final Long userId;
 
-    private final Long approvalRequestId;
+    private final Long checklistId;
 
     private String message;
 
@@ -18,18 +18,18 @@ public class Approval {
 
     private LocalDateTime respondedAt;
 
-    public Approval(Long id, Long userId, Long approvalRequestId, String message,
+    public Approval(Long id, Long userId, Long checklistId, String message,
         ApprovalStatus status, LocalDateTime respondedAt) {
         this.id = id;
         this.userId = userId;
-        this.approvalRequestId = approvalRequestId;
+        this.checklistId = checklistId;
         this.message = message;
         this.status = status;
         this.respondedAt = respondedAt;
     }
 
-    public static Approval create(Long userId, Long approvalRequestId) {
-        return new Approval(null, userId, approvalRequestId, null,
+    public static Approval create(Long userId, Long checklistId) {
+        return new Approval(null, userId, checklistId, null,
             ApprovalStatus.PENDING, null);
     }
 
