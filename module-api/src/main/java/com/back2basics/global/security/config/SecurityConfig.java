@@ -33,6 +33,9 @@ public class SecurityConfig {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final IpInjectionFilter ipInjectionFilter;
+    private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
@@ -62,6 +65,10 @@ public class SecurityConfig {
                     .requestMatchers("/api/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
                     .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
 //                    .anyRequest().permitAll() // todo
+            )
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint(customAuthenticationEntryPointHandler)
+                .accessDeniedHandler(customAccessDeniedHandler)
             )
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(ipInjectionFilter, UsernamePasswordAuthenticationFilter.class)
