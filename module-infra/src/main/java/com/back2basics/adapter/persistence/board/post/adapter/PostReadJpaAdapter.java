@@ -12,14 +12,14 @@ import com.back2basics.adapter.persistence.board.post.PostMapper;
 import com.back2basics.adapter.persistence.board.post.dto.PostDashboardProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostDetailProjection;
 import com.back2basics.adapter.persistence.board.post.dto.PostSummaryProjection;
-import com.back2basics.board.file.model.File;
-import com.back2basics.board.file.port.out.FileReadPort;
 import com.back2basics.board.link.model.Link;
 import com.back2basics.board.link.port.out.LinkReadPort;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.port.out.PostReadPort;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
+import com.back2basics.file.model.File;
+import com.back2basics.file.port.out.FileReadPort;
 import com.back2basics.infra.exception.post.PostException;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -78,7 +78,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             throw new PostException(POST_NOT_FOUND);
         }
 
-        List<File> files = fileReadPort.getFilesByPostId(id);
+        List<File> files = fileReadPort.getFilesByReferenceId(id);
         List<Link> links = linkReadPort.getLinksByPostId(id);
         return Optional.of(mapper.toDomain(result, files, links));
     }
@@ -116,7 +116,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             throw new PostException(POST_ALREADY_RESTORED);
         }
 
-        List<File> files = fileReadPort.getFilesByPostId(postId);
+        List<File> files = fileReadPort.getFilesByReferenceId(postId);
         List<Link> links = linkReadPort.getLinksByPostId(postId);
         return Optional.of(mapper.toDomain(result, files, links));
     }

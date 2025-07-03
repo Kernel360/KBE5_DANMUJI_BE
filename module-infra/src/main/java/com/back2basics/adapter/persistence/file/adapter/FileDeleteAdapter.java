@@ -1,11 +1,11 @@
-package com.back2basics.adapter.persistence.board.file.adapter;
+package com.back2basics.adapter.persistence.file.adapter;
 
 import static com.back2basics.infra.exception.file.FileErrorCode.FILE_DELETE_FAILED_URL_EMPTY;
 import static com.back2basics.infra.exception.file.FileErrorCode.FILE_DELETE_FAILED_WRONG_URL;
 
-import com.back2basics.adapter.persistence.board.file.FileEntityRepository;
-import com.back2basics.board.file.model.File;
-import com.back2basics.board.file.port.out.FileDeletePort;
+import com.back2basics.adapter.persistence.file.FileEntityRepository;
+import com.back2basics.file.model.File;
+import com.back2basics.file.port.out.FileDeletePort;
 import com.back2basics.infra.exception.file.FileException;
 import com.back2basics.infra.s3.S3Util;
 import jakarta.transaction.Transactional;
@@ -22,8 +22,8 @@ public class FileDeleteAdapter implements FileDeletePort {
 
     @Override
     @Transactional
-    public void deleteAllByPostId(Long postId) {
-        fileRepository.deleteByPostId(postId);
+    public void deleteAllByReferenceId(Long referenceId) {
+        fileRepository.deleteByReferenceId(referenceId);
     }
 
     @Override
