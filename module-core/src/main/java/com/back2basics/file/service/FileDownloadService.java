@@ -29,7 +29,7 @@ public class FileDownloadService implements FileDownloadUseCase {
     public FileDownloadResult downloadFile(Long userId, Long referenceId, Long fileId)
         throws IOException {
 
-        // fileValidator.validateDownloadPermission(userId, postId);
+        fileValidator.validateDownloadPermission(userId, referenceId);
         File file = fileReadPort.getFileById(fileId);
 
         String key = extractKeyFromUrl(file.getFileUrl());
