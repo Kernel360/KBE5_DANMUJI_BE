@@ -50,8 +50,7 @@ public class NotifyController {
 
     // SSE 연결 및 읽지 않은 알림 전송
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(
-        @CookieValue(value = "accessToken", required = false) String accessToken)
+    public SseEmitter subscribe(@CookieValue(value = "accessToken") String accessToken)
         throws IOException {
         return subscribeNotificationUseCase.subscribe(jwtTokenProvider.getId(accessToken));
     }
