@@ -2,7 +2,7 @@ package com.back2basics.infra.validation.validator;
 
 import static com.back2basics.infra.exception.approval.ApprovalErrorCode.APPROVAL_NOT_FOUND;
 
-import com.back2basics.approval.port.out.ApprovalResponseQueryPort;
+import com.back2basics.checklist.port.out.ApprovalResponseQueryPort;
 import com.back2basics.infra.exception.approval.ApprovalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
