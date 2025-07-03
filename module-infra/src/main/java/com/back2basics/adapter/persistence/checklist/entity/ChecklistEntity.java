@@ -58,12 +58,12 @@ public class ChecklistEntity extends BaseTimeEntity {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @OneToMany(mappedBy = "approvalRequest", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ApprovalResponseEntity> responses = new ArrayList<>();
+    @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ApprovalEntity> approval = new ArrayList<>();
 
     public ChecklistEntity(Long id, ProjectStepEntity projectStep, UserEntity user,
         String title, String content, ChecklistStatus checklistStatus, LocalDateTime requestedAt,
-        LocalDateTime completedAt, List<ApprovalResponseEntity> responses) {
+        LocalDateTime completedAt, List<ApprovalEntity> approval) {
         this.id = id;
         this.projectStep = projectStep;
         this.user = user;
@@ -72,7 +72,7 @@ public class ChecklistEntity extends BaseTimeEntity {
         this.checklistStatus = checklistStatus;
         this.requestedAt = requestedAt;
         this.completedAt = completedAt;
-        this.responses = responses;
+        this.approval = approval;
     }
 
     public ChecklistEntity(ProjectStepEntity projectStep, UserEntity user, String title,
@@ -85,17 +85,17 @@ public class ChecklistEntity extends BaseTimeEntity {
         this.requestedAt = LocalDateTime.now();
     }
 
-    public void addResponses(List<ApprovalResponseEntity> newApprovers) {
-        if (this.responses == null) {
-            this.responses = new ArrayList<>();
+    public void addResponses(List<ApprovalEntity> newApprovals) {
+        if (this.approval == null) {
+            this.approval = new ArrayList<>();
         }
 
-        List<Long> existingApproverIds = this.responses.stream()
-            .map(response -> response.getApprover().getId())
+        List<Long> existingApproveIds = this.approval.stream()
+            .map(response -> response.getUser().getId())
             .toList();
 
-        newApprovers.stream()
-            .filter(approver -> !existingApproverIds.contains(approver.getApprover().getId()))
-            .forEach(this.responses::add);
+        newApprovals.stream()
+            .filter(approver -> !existingApproveIds.contains(approver.getUser().getId()))
+            .forEach(this.approval::add);
     }
 }

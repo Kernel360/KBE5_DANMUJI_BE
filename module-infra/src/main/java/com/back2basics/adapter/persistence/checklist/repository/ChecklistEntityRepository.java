@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ApprovalRequestEntityRepository extends JpaRepository<ChecklistEntity, Long> {
+public interface ChecklistEntityRepository extends JpaRepository<ChecklistEntity, Long> {
 
 }

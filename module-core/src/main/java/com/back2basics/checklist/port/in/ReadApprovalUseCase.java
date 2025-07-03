@@ -1,16 +1,16 @@
 package com.back2basics.checklist.port.in;
 
-import com.back2basics.checklist.service.result.ApprovalInfoResult;
-import com.back2basics.checklist.service.result.ApproverResult;
+import com.back2basics.checklist.service.result.ApprovalResult;
+import com.back2basics.checklist.service.result.ChecklistInfoResult;
 import java.util.List;
 
 public interface ReadApprovalUseCase {
 
-    ApprovalInfoResult findByRequestId(Long requestId);
+    ChecklistInfoResult findByRequestId(Long requestId);
 
-    List<ApprovalInfoResult> findAll();
+    List<ChecklistInfoResult> findAll();
 
-    List<ApproverResult> findResponsesByRequestId(Long requestId);
+    List<ApprovalResult> findResponsesByRequestId(Long requestId);
 
-    ApproverResult findByResponseId(Long responseId);
+    ApprovalResult findByResponseId(Long responseId);
 }

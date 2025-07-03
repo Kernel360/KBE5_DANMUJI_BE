@@ -1,12 +1,12 @@
 package com.back2basics.checklist.service;
 
-import com.back2basics.checklist.model.ApprovalResponse;
+import com.back2basics.checklist.model.Approval;
 import com.back2basics.checklist.model.Checklist;
 import com.back2basics.checklist.port.in.ReadApprovalUseCase;
-import com.back2basics.checklist.port.out.ApprovalRequestQueryPort;
-import com.back2basics.checklist.port.out.ApprovalResponseQueryPort;
-import com.back2basics.checklist.service.result.ApprovalInfoResult;
-import com.back2basics.checklist.service.result.ApproverResult;
+import com.back2basics.checklist.port.out.ApprovalQueryPort;
+import com.back2basics.checklist.port.out.ChecklistQueryPort;
+import com.back2basics.checklist.service.result.ApprovalResult;
+import com.back2basics.checklist.service.result.ChecklistInfoResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,21 +15,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReadApprovalService implements ReadApprovalUseCase {
 
-    private final ApprovalRequestQueryPort approvalRequestQueryPort;
-    private final ApprovalResponseQueryPort approvalResponseQueryPort;
+    private final ChecklistQueryPort checklistQueryPort;
+    private final ApprovalQueryPort approvalQueryPort;
 
     @Override
-    public ApprovalInfoResult findByRequestId(Long requestId) {
-        Checklist request = approvalRequestQueryPort.findById(requestId);
-        return new ApprovalInfoResult(request.getId(), request.getProjectStepId(),
+    public ChecklistInfoResult findByRequestId(Long requestId) {
+        Checklist request = checklistQueryPort.findById(requestId);
+        return new ChecklistInfoResult(request.getId(), request.getProjectStepId(),
             request.getUserId(), request.getTitle(), request.getContent(),
             request.getChecklistStatus(), request.getRequestedAt());
     }
 
     @Override
-    public List<ApprovalInfoResult> findAll() {
-        return approvalRequestQueryPort.findAll().stream()
-            .map(request -> new ApprovalInfoResult(
+    public List<ChecklistInfoResult> findAll() {
+        return checklistQueryPort.findAll().stream()
+            .map(request -> new ChecklistInfoResult(
                 request.getId(),
                 request.getProjectStepId(),
                 request.getUserId(),
@@ -42,12 +42,12 @@ public class ReadApprovalService implements ReadApprovalUseCase {
     }
 
     @Override
-    public List<ApproverResult> findResponsesByRequestId(Long requestId) {
-        List<ApprovalResponse> responses = approvalResponseQueryPort.findResponsesByRequestId(
+    public List<ApprovalResult> findResponsesByRequestId(Long requestId) {
+        List<Approval> responses = approvalQueryPort.findResponsesByRequestId(
             requestId);
 
         return responses.stream()
-            .map(response -> new ApproverResult(
+            .map(response -> new ApprovalResult(
                 response.getId(),
                 response.getApprovalRequestId(),
                 response.getUserId(),
@@ -59,9 +59,9 @@ public class ReadApprovalService implements ReadApprovalUseCase {
     }
 
     @Override
-    public ApproverResult findByResponseId(Long responseId) {
-        ApprovalResponse response = approvalResponseQueryPort.findById(responseId);
-        return new ApproverResult(
+    public ApprovalResult findByResponseId(Long responseId) {
+        Approval response = approvalQueryPort.findById(responseId);
+        return new ApprovalResult(
             response.getId(),
             response.getApprovalRequestId(),
             response.getUserId(),

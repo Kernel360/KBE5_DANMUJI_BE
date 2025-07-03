@@ -1,9 +1,9 @@
 package com.back2basics.checklist.service;
 
 import com.back2basics.checklist.model.Checklist;
-import com.back2basics.checklist.port.in.CreateApprovalRequestUseCase;
-import com.back2basics.checklist.port.in.command.CreateApprovalCommand;
-import com.back2basics.checklist.port.out.ApprovalRequestCommandPort;
+import com.back2basics.checklist.port.in.CreateChecklistUseCase;
+import com.back2basics.checklist.port.in.command.CreateChecklistCommand;
+import com.back2basics.checklist.port.out.ChecklistCommandPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validation.validator.ProjectStepValidator;
@@ -14,23 +14,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreateApprovalRequestService implements CreateApprovalRequestUseCase {
+public class CreateChecklistService implements CreateChecklistUseCase {
 
     private final UserValidator userValidator; // validation 처리는 service에서 처리해야 함
     private final ProjectStepValidator projectStepValidator;
-    private final ApprovalRequestCommandPort approvalRequestCommandPort;
+    private final ChecklistCommandPort checklistCommandPort;
     private final NotifyUseCase notifyUseCase;
     private final HistoryLogService historyLogService;
 
     @Override
-    public void create(Long stepId, Long requesterId, CreateApprovalCommand command) {
+    public void create(Long stepId, Long requesterId, CreateChecklistCommand command) {
         projectStepValidator.validateNotFoundStepId(stepId);
         userValidator.validateNotFoundUserId(requesterId);
         userValidator.validateAllUsersExist(command.responseIds());
 
         Checklist checklist = Checklist.create(stepId, requesterId, command.title(),
             command.content(), command.responseIds());
-        Checklist savedChecklist = approvalRequestCommandPort.create(checklist);
+        Checklist savedChecklist = checklistCommandPort.create(checklist);
 
         // todo
 //        for (Long clientId : command.responseIds()) {
