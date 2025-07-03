@@ -20,10 +20,6 @@ public interface ReadProjectPort {
 
     Page<Project> findAllDeletedProjects(Pageable pageable);
 
-    Page<Project> searchByKeywordAndUserId(Long userId, String keyword, Pageable pageable);
-
-    Page<Project> searchByKeyword(String keyword, Pageable pageable);
-
     List<Project> getRecentProjects();
 
     List<Project> getAllProjects();
