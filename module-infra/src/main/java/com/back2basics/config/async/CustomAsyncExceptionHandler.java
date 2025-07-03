@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component // 비동기 동작 메소드에서 발생하는 예외 잡아줄 핸들러
-public class AsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
+public class CustomAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
 
     @Override
     public void handleUncaughtException(Throwable ex, Method method, Object... params) {
