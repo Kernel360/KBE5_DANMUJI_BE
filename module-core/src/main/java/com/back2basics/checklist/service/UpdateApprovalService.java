@@ -78,7 +78,7 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
     private static SendNotificationCommand getSendNotificationCommand(UpdateApprovalCommand command,
         Checklist checklist, Approval approval) {
         NotificationType type = command.status().equals(ApprovalStatus.REJECTED)
-            ? NotificationType.STEP_APPROVAL_REJECTED : NotificationType.STEP_APPROVAL_ACCEPTED;
+            ? NotificationType.CHECKLIST_REJECTED : NotificationType.CHECKLIST_ACCEPTED;
 
         return new SendNotificationCommand(
             checklist.getUserId(),
@@ -103,8 +103,8 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
                 clientId,
                 requestId,
                 null, // todo
-                NotificationType.STEP_APPROVAL_REQUEST.getDescription(),
-                NotificationType.STEP_APPROVAL_REQUEST
+                NotificationType.CHECKLIST_REQUEST.getDescription(),
+                NotificationType.CHECKLIST_REQUEST
             );
             notifyUseCase.notify(notifyCommand);
         }
