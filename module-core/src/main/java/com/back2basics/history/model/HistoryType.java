@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public enum HistoryType {
     CREATED("생성"),
     UPDATED("수정"),
-    DELETED("삭제");
+    DELETED("삭제"),
+    RESTORED("복구");
 
     private final String message;
 

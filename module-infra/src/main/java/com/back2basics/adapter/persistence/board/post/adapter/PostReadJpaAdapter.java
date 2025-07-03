@@ -5,6 +5,7 @@ import static com.back2basics.adapter.persistence.board.post.QPostEntity.postEnt
 import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 import static com.back2basics.adapter.persistence.projectstep.QProjectStepEntity.projectStepEntity;
 import static com.back2basics.adapter.persistence.user.entity.QUserEntity.userEntity;
+import static com.back2basics.infra.exception.post.PostErrorCode.POST_ALREADY_RESTORED;
 import static com.back2basics.infra.exception.post.PostErrorCode.POST_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.board.post.PostMapper;
@@ -79,6 +80,44 @@ public class PostReadJpaAdapter implements PostReadPort {
 
         List<File> files = fileReadPort.getFilesByPostId(id);
         List<Link> links = linkReadPort.getLinksByPostId(id);
+        return Optional.of(mapper.toDomain(result, files, links));
+    }
+
+    @Override
+    public Optional<Post> findDeletedPostById(Long postId) {
+        PostDetailProjection result = queryFactory
+            .select(Projections.constructor(
+                PostDetailProjection.class,
+                postEntity.id.as("postId"),
+                postEntity.parentId,
+                postEntity.projectId,
+                postEntity.projectStepId,
+                postEntity.authorIp,
+                postEntity.authorId,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole"),
+                postEntity.title,
+                postEntity.content,
+                postEntity.type,
+                postEntity.priority,
+                postEntity.createdAt,
+                postEntity.updatedAt
+            ))
+            .from(postEntity)
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
+            .where(
+                postEntity.id.eq(postId),
+                postEntity.deletedAt.isNotNull()
+            )
+            .fetchOne();
+
+        if (result == null) {
+            throw new PostException(POST_ALREADY_RESTORED);
+        }
+
+        List<File> files = fileReadPort.getFilesByPostId(postId);
+        List<Link> links = linkReadPort.getLinksByPostId(postId);
         return Optional.of(mapper.toDomain(result, files, links));
     }
 

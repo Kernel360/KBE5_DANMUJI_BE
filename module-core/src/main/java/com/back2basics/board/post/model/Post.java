@@ -198,6 +198,11 @@ public class Post implements TargetDomain {
         this.deletedAt = LocalDateTime.now();
     }
 
+    public void restore() {
+        this.isDelete = false;
+        this.deletedAt = null;
+    }
+
     public static Post copyOf(Post post) {
         return Post.createWithFilesAndLinks(
             post.getId(),

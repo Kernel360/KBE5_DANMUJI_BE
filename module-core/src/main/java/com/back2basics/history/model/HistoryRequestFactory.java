@@ -8,6 +8,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class HistoryRequestFactory {
 
+    public static <T extends TargetDomain> HistoryCreateCommand restored(DomainType domainType,
+        User user,
+        T after, String message) {
+        return new HistoryCreateCommand(
+            HistoryType.RESTORED,
+            domainType,
+            after.getId(),
+            user.getId(),
+            user.getName(),
+            user.getUsername(),
+            user.getRole(),
+            "복구 - before 정보 없음",
+            after,
+            message
+        );
+    }
+
+
     // static으로 해줄 필요가 굳이 있나? 처음에는 팩토리메소드 개념 넣는다고 해서 한건데 갑자기 하다보니 굳이? 오버로딩도아니고 메소드이름도 다른데
     public static <T extends TargetDomain> HistoryCreateCommand created(DomainType domainType,
         User user,

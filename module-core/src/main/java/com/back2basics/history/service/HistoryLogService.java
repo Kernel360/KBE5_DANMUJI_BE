@@ -16,6 +16,12 @@ public class HistoryLogService {
     private final UserQueryPort userQueryPort;
     private final HistoryCreateService historyCreateService;
 
+    public <T extends TargetDomain> void logRestored(DomainType domainType, Long userId, T after, String message) {
+        User user = userQueryPort.findById(userId);
+        historyCreateService.create(
+            HistoryRequestFactory.restored(domainType, user, after, message)
+        );
+    }
 
     public <T extends TargetDomain> void logCreated(DomainType domainType, Long userId, T after,
         String message) {

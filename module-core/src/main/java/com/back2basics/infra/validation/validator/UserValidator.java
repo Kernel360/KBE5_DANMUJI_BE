@@ -4,6 +4,7 @@ import static com.back2basics.infra.exception.user.UserErrorCode.DUPLICATE_USERN
 import static com.back2basics.infra.exception.user.UserErrorCode.USER_NOT_FOUND;
 
 import com.back2basics.infra.exception.user.UserException;
+import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
@@ -15,6 +16,11 @@ import org.springframework.stereotype.Component;
 public class UserValidator {
 
     private final UserQueryPort userQueryPort;
+
+    public boolean isAdmin(Long userId){
+        User user = userQueryPort.findById(userId);
+        return user.getRole() == Role.ADMIN;
+    }
 
     public void validateDuplicateUsername(String username) {
         boolean exists = userQueryPort.existsByUsername(username);
