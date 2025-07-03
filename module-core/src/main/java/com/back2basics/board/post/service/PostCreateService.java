@@ -119,7 +119,7 @@ public class PostCreateService implements PostCreateUseCase {
             return;
         }
 
-        List<File> fileModels = fileUploadService.upload(files, postId);
+        List<File> fileModels = fileUploadService.upload(files, postId, ContentType.POST);
         fileSavePort.saveAll(fileModels, postId);
     }
 

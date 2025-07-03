@@ -56,19 +56,6 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
-    public Page<Project> searchByKeywordAndUserId(Long userId, String keyword, Pageable pageable) {
-        return projectEntityRepository.findByNameContainingAndUserIdIsDeletedFalse(keyword, userId,
-                pageable)
-            .map(projectMapper::toDomain);
-    }
-
-    @Override
-    public Page<Project> searchByKeyword(String keyword, Pageable pageable) {
-        return projectEntityRepository.findAllByNameContainingAndIsDeletedFalse(pageable, keyword)
-            .map(projectMapper::toDomain);
-    }
-
-    @Override
     public List<Project> getRecentProjects() {
         return projectEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
             .stream().map(projectMapper::toDomain).toList();
