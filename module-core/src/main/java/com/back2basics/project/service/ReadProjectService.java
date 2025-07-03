@@ -39,20 +39,6 @@ public class ReadProjectService implements ReadProjectUseCase {
     }
 
     @Override
-    public Page<ProjectListResult> searchProjects(String keyword, Pageable pageable) {
-        Page<Project> projects = readProjectPort.searchByKeyword(keyword, pageable);
-        return projects.map(ProjectListResult::toResult);
-    }
-
-    @Override
-    public Page<ProjectListResult> searchUserProjects(Long userId, String keyword,
-        Pageable pageable) {
-        Page<Project> projects = readProjectPort.searchByKeywordAndUserId(userId, keyword,
-            pageable);
-        return projects.map(ProjectListResult::toResult);
-    }
-
-    @Override
     public Page<ProjectListResult> getUserProjects(Long userId, Pageable pageable) {
         userValidator.validateNotFoundUserId(userId);
         Page<Project> projects = readProjectPort.findAllByUserId(userId, pageable);
