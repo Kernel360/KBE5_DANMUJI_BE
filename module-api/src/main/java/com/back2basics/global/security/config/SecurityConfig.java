@@ -1,5 +1,7 @@
 package com.back2basics.global.security.config;
 
+import com.back2basics.global.security.exception.CustomAccessDeniedHandler;
+import com.back2basics.global.security.exception.CustomAuthenticationEntryPointHandler;
 import com.back2basics.global.security.filter.IpInjectionFilter;
 import com.back2basics.global.security.filter.JwtAuthorizationFilter;
 import java.util.List;
