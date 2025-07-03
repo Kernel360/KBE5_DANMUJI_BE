@@ -1,7 +1,7 @@
-package com.back2basics.adapter.persistence.board.file;
+package com.back2basics.adapter.persistence.file;
 
 
-import com.back2basics.board.file.model.File;
+import com.back2basics.file.model.File;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

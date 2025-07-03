@@ -1,6 +1,6 @@
-package com.back2basics.adapter.persistence.board.file;
+package com.back2basics.adapter.persistence.file;
 
-import com.back2basics.board.file.model.File;
+import com.back2basics.file.model.File;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

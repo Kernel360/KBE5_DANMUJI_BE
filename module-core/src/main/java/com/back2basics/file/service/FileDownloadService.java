@@ -1,9 +1,9 @@
-package com.back2basics.board.file.service;
+package com.back2basics.file.service;
 
-import com.back2basics.board.file.model.File;
-import com.back2basics.board.file.port.in.FileDownloadUseCase;
-import com.back2basics.board.file.port.out.FilePresignedUrlPort;
-import com.back2basics.board.file.port.out.FileReadPort;
+import com.back2basics.file.model.File;
+import com.back2basics.file.port.in.FileDownloadUseCase;
+import com.back2basics.file.port.out.FilePresignedUrlPort;
+import com.back2basics.file.port.out.FileReadPort;
 import com.back2basics.infra.s3.MimeTypeUtils;
 import com.back2basics.infra.s3.S3Util;
 import com.back2basics.infra.validation.validator.FileValidator;

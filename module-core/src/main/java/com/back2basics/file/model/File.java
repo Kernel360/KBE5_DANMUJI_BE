@@ -1,4 +1,4 @@
-package com.back2basics.board.file.model;
+package com.back2basics.file.model;
 
 import lombok.Getter;
 

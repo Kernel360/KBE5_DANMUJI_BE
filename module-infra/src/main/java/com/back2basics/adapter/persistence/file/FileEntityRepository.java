@@ -1,4 +1,4 @@
-package com.back2basics.adapter.persistence.board.file;
+package com.back2basics.adapter.persistence.file;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,10 +1,10 @@
-package com.back2basics.adapter.persistence.board.file.adapter;
+package com.back2basics.adapter.persistence.file.adapter;
 
-import com.back2basics.adapter.persistence.board.file.FileEntity;
-import com.back2basics.adapter.persistence.board.file.FileEntityRepository;
-import com.back2basics.adapter.persistence.board.file.FileMapper;
-import com.back2basics.board.file.model.File;
-import com.back2basics.board.file.port.out.FileSavePort;
+import com.back2basics.adapter.persistence.file.FileEntity;
+import com.back2basics.adapter.persistence.file.FileEntityRepository;
+import com.back2basics.adapter.persistence.file.FileMapper;
+import com.back2basics.file.model.File;
+import com.back2basics.file.port.out.FileSavePort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

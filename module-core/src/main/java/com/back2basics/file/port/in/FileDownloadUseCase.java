@@ -1,7 +1,7 @@
-package com.back2basics.board.file.port.in;
+package com.back2basics.file.port.in;
 
-import com.back2basics.board.file.service.FileDownloadResult;
-import com.back2basics.board.file.service.FilePresignedUrlResult;
+import com.back2basics.file.service.FileDownloadResult;
+import com.back2basics.file.service.FilePresignedUrlResult;
 import java.io.IOException;
 
 public interface FileDownloadUseCase {
