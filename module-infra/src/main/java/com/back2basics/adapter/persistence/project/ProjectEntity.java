@@ -17,7 +17,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -92,27 +91,4 @@ public class ProjectEntity extends BaseTimeEntity {
         this.steps = steps;
         this.assignments = assignments;
     }
-
-    public ProjectStatus getProjectStatus() {
-        LocalDate today = LocalDate.now();
-
-        if (this.endDate != null) {
-            long due = ChronoUnit.DAYS.between(today, this.endDate);
-
-            if (due < 0) {
-                this.projectStatus = ProjectStatus.DELAY;
-            } else if (due <= 7) {
-                this.projectStatus = ProjectStatus.DUE_SOON;
-            } else {
-                this.projectStatus = ProjectStatus.IN_PROGRESS;
-            }
-        }
-        if (this.progress == 100) {
-            this.projectStatus = ProjectStatus.COMPLETED;
-        }
-
-        return this.projectStatus;
-    }
-
-
 }
