@@ -4,13 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.back2basics.board.post.service.PostReadService;
-import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.out.PostReadPort;
+import com.back2basics.board.post.service.PostReadService;
 import com.back2basics.board.post.service.result.PostDetailReadResult;
+import com.back2basics.infra.validator.PostValidator;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

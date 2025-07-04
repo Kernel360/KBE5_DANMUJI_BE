@@ -5,7 +5,7 @@ import static org.mockito.Mockito.verify;
 
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentDeletePort;
-import com.back2basics.infra.validation.validator.CommentValidator;
+import com.back2basics.infra.validator.CommentValidator;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

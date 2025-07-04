@@ -4,7 +4,7 @@ import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.in.ReadAnswerUseCase;
 import com.back2basics.answer.port.out.ReadAnswerPort;
 import com.back2basics.answer.service.result.ReadAnswerResult;
-import com.back2basics.infra.validation.validator.InquiryValidator;
+import com.back2basics.infra.validator.InquiryValidator;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import java.util.List;
 import java.util.Map;

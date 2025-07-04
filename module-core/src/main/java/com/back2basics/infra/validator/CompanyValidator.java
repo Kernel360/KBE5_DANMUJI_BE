@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation.validator;
+package com.back2basics.infra.validator;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.command.CreateCompanyCommand;

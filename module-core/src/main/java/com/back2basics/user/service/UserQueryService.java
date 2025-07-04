@@ -1,7 +1,7 @@
 package com.back2basics.user.service;
 
 import com.back2basics.company.model.Company;
-import com.back2basics.infra.validation.validator.CompanyValidator;
+import com.back2basics.infra.validator.CompanyValidator;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.port.out.UserQueryPort;

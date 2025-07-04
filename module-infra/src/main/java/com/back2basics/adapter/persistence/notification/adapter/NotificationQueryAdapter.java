@@ -5,7 +5,7 @@ import static com.back2basics.infra.exception.notification.NotificationErrorCode
 import com.back2basics.adapter.persistence.notification.NotificationEntityRepository;
 import com.back2basics.adapter.persistence.notification.NotificationMapper;
 import com.back2basics.infra.exception.notification.NotificationException;
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.notify.model.Notification;
 import com.back2basics.notify.port.out.NotificationQueryPort;
 import java.util.List;

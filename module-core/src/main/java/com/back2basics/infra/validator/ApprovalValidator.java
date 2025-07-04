@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation.validator;
+package com.back2basics.infra.validator;
 
 import static com.back2basics.infra.exception.approval.ApprovalErrorCode.APPROVAL_NOT_FOUND;
 

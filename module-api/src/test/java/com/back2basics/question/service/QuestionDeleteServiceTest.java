@@ -3,7 +3,7 @@ package com.back2basics.question.service;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.back2basics.infra.validation.validator.QuestionValidator;
+import com.back2basics.infra.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.out.QuestionDeletePort;
 import java.time.LocalDateTime;

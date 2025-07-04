@@ -7,7 +7,7 @@ import com.back2basics.assignment.service.notification.AssignmentNotificationSen
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
