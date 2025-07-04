@@ -7,6 +7,7 @@ import static com.back2basics.domain.project.controller.code.ProjectResponseCode
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_ALL_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_BY_STATUS_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_RESTORE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_UPDATE_SUCCESS;
 
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
@@ -23,6 +24,7 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
+import com.back2basics.project.port.in.RestoreProjectUseCase;
 import com.back2basics.project.port.in.SearchProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
@@ -69,6 +71,7 @@ public class ProjectController {
     private final DeleteProjectUseCase deleteProjectUseCase;
     private final SearchProjectUseCase searchProjectUseCase;
     private final UserQueryPort userQueryPort;
+    private final RestoreProjectUseCase projectRestoreUseCase;
 
     // 생성
     @PostMapping
@@ -218,5 +221,14 @@ public class ProjectController {
         List<ProjectCountResponse> response = result.stream().map(ProjectCountResponse::toResponse)
             .toList();
         return ApiResponse.success(PROJECT_COUNT_BY_STATUS_SUCCESS, response);
+    }
+
+    @PutMapping("/{projectId}/restore")
+    public ResponseEntity<ApiResponse<Void>> restoreProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId) {
+        Long userId = customUserDetails.getId();
+        projectRestoreUseCase.restoreProject(userId, projectId);
+        return ApiResponse.success(PROJECT_RESTORE_SUCCESS);
     }
 }
