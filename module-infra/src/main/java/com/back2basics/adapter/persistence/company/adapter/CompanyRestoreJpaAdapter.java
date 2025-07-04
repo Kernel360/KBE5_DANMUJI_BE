@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CompanyRestoreJpaAdapter implements RestoreCompanyPort {
+    
     private final CompanyEntityRepository companyEntityRepository;
     private final ReadCompanyJpaAdapter readCompanyJpaAdapter;
     private final CompanyMapper mapper;
@@ -28,5 +29,6 @@ public class CompanyRestoreJpaAdapter implements RestoreCompanyPort {
 
         companyEntityRepository.save(entity);
     }
+
 }
 

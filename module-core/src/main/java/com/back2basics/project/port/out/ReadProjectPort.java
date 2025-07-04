@@ -31,4 +31,6 @@ public interface ReadProjectPort {
     List<StatusCountProjection> countProjectsByProjectStatus();
 
     List<Project> findByStatus(ProjectStatus status);
+
+    Optional<Project> findDeletedProjectById(Long id);
 }

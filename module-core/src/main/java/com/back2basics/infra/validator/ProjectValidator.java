@@ -20,7 +20,7 @@ public class ProjectValidator {
     }
 
     public Project findProjectForRestore(Long id) {
-        return port.findDeletedProject(id)
+        return port.findDeletedProjectById(id)
             .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
     }
 
