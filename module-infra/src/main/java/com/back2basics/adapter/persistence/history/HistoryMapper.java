@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HistoryMapper {
 
-    public static HistoryDocument toDocument(History history) {
+    public HistoryDocument toDocument(History history) {
         return new HistoryDocument(
             new ObjectId(),
             history.getHistoryType(),
@@ -27,7 +27,7 @@ public class HistoryMapper {
         );
     }
 
-    public static HistorySimpleResult toSimpleResult(HistoryDocument doc) {
+    public HistorySimpleResult toSimpleResult(HistoryDocument doc) {
         return new HistorySimpleResult(
             doc.getId().toHexString(),
             doc.getHistoryType(),
@@ -42,7 +42,7 @@ public class HistoryMapper {
         );
     }
 
-    public static HistoryDetailResult toDetailResult(HistoryDocument doc) {
+    public HistoryDetailResult toDetailResult(HistoryDocument doc) {
         return new HistoryDetailResult(
             doc.getId().toHexString(),
             doc.getHistoryType(),

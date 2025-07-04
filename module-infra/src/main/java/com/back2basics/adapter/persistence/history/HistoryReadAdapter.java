@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 public class HistoryReadAdapter implements HistoryReadPort {
 
     private final MongoTemplate mongoTemplate;
+    private final HistoryMapper historyMapper;
 
 
     @Override
@@ -35,7 +36,7 @@ public class HistoryReadAdapter implements HistoryReadPort {
             throw new HistoryException(HISTORY_NOT_FOUND);
         }
 
-        return HistoryMapper.toDetailResult(document);
+        return historyMapper.toDetailResult(document);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class HistoryReadAdapter implements HistoryReadPort {
         long total = mongoTemplate.count(new Query(), HistoryDocument.class);
 
         List<HistorySimpleResult> results = documents.stream()
-            .map(HistoryMapper::toSimpleResult)
+            .map(historyMapper::toSimpleResult)
             .toList();
 
         return new PageImpl<>(results, pageable, total);
