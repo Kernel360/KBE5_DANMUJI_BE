@@ -10,4 +10,6 @@ public interface UpdateProjectUseCase {
     void changedStatus(Long projectId, Long loggedInUserId);
 
     void calculateProgressRate(Long projectId);
+
+    void calculateProgressRateByDeleteStep(Long projectId);
 }

@@ -14,6 +14,7 @@ import lombok.Getter;
 @Getter
 public class Assignment implements TargetDomain {
 
+    // todo: id로만
     private final Long id;
     private final Project project;
     private User user;
