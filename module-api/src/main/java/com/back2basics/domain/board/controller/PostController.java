@@ -1,8 +1,5 @@
 package com.back2basics.domain.board.controller;
 
-import com.back2basics.board.file.port.in.FileDownloadUseCase;
-import com.back2basics.board.file.service.FileDownloadResult;
-import com.back2basics.board.file.service.FilePresignedUrlResult;
 import com.back2basics.board.post.port.in.PostCreateUseCase;
 import com.back2basics.board.post.port.in.PostDeleteUseCase;
 import com.back2basics.board.post.port.in.PostReadUseCase;
@@ -25,10 +22,15 @@ import com.back2basics.domain.board.dto.response.PostDashboardReadResponse;
 import com.back2basics.domain.board.dto.response.PostDetailReadResponse;
 import com.back2basics.domain.board.dto.response.PostSummaryReadResponse;
 import com.back2basics.domain.board.dto.response.ReadRecentPostResponse;
+import com.back2basics.file.port.in.FileDownloadUseCase;
+import com.back2basics.file.service.FileDownloadResult;
+import com.back2basics.file.service.FilePresignedUrlResult;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -192,9 +194,11 @@ public class PostController /*implements PostApiDocs*/ {
             fileId
         );
 
+        String encodedFileName = URLEncoder.encode(result.fileName(), StandardCharsets.UTF_8)
+            .replaceAll("\\+", "%20");
+
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + result.fileName() + "\"")
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFileName)
             .header(HttpHeaders.CONTENT_TYPE, result.mimeType())
             .body(result.bytes());
     }
@@ -203,7 +207,8 @@ public class PostController /*implements PostApiDocs*/ {
     public ResponseEntity<ApiResponse<List<PostDashboardReadResponse>>> getPostsDueSoon(
         @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        List<PostDashboardReadResult> results = postReadUseCase.getPostsWithProjectIdAndDueSoon(customUserDetails.getId());
+        List<PostDashboardReadResult> results = postReadUseCase.getPostsWithProjectIdAndDueSoon(
+            customUserDetails.getId());
         List<PostDashboardReadResponse> responseList = results.stream()
             .map(PostDashboardReadResponse::toResponse)
             .collect(Collectors.toList());
@@ -278,6 +283,7 @@ public class PostController /*implements PostApiDocs*/ {
             customUserDetails.getId(), postId, fileId
         );
 
-        return ApiResponse.success(PostResponseCode.POST_FILE_PRESIGNED_URL_SUCCESS, result.presignedUrl());
+        return ApiResponse.success(PostResponseCode.POST_FILE_PRESIGNED_URL_SUCCESS,
+            result.presignedUrl());
     }
 }

@@ -5,7 +5,7 @@ import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.S
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
-import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validator.ProjectValidator;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.port.in.UpdateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.command.UpdateProjectStepCommand;

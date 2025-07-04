@@ -1,6 +1,6 @@
 package com.back2basics.user.service;
 
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.user.port.in.SendMailUseCase;
 import com.back2basics.user.port.in.command.SendMailCommand;
 import com.back2basics.user.port.out.MailSenderPort;

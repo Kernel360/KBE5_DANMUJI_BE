@@ -1,5 +1,7 @@
 package com.back2basics.global.security.config;
 
+import com.back2basics.global.security.exception.CustomAccessDeniedHandler;
+import com.back2basics.global.security.exception.CustomAuthenticationEntryPointHandler;
 import com.back2basics.global.security.filter.IpInjectionFilter;
 import com.back2basics.global.security.filter.JwtAuthorizationFilter;
 import java.util.List;
@@ -26,13 +28,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final String[] allowedUrls = {"/", "/api/auth/**", "/error", "/api/**", "/mongo/**",
+    private final String[] allowedUrls = {"/", "/api/auth/**", "/error", "/mongo/**",
         "/api/users/password/reset-mail/request", "/api/users/password/reset-mail/confirm"};
     private final String[] swaggerUrls = {"/danmuji-ui.html", "/v3/api-docs/**", "/swagger-ui/**",
         "/swagger-ui.html", "/webjars/**", "/favicon.ico"};
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final IpInjectionFilter ipInjectionFilter;
+    private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
@@ -62,6 +66,10 @@ public class SecurityConfig {
                     .requestMatchers("/api/admin/**").hasRole("ADMIN") // 관리자 전용 API 보호
                     .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
 //                    .anyRequest().permitAll() // todo
+            )
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint(customAuthenticationEntryPointHandler)
+                .accessDeniedHandler(customAccessDeniedHandler)
             )
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(ipInjectionFilter, UsernamePasswordAuthenticationFilter.class)

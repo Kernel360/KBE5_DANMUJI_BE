@@ -13,44 +13,44 @@ public class ClientUtils {
         log.debug("[ClientUtils] X-Forwarded-For: {}", ip);
 
         // nginx 등에서 사용하는 실 IP
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
             log.debug("[ClientUtils] X-Real-IP: {}", ip);
         }
 
         // nginx 에서 간혹 사용하는 대체 표현
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-RealIP");
             log.debug("[ClientUtils] X-RealIP: {}", ip);
         }
 
         // proxy 환경일 경우 (구형 프록시?)
-        if (ip == null || ip.length() == 0) {
+        if (ip == null || ip.isEmpty()) {
             ip = request.getHeader("Proxy-Client-IP");
             log.debug("[ClientUtils] Proxy-Client-IP: {}", ip);
 
         }
 
         // 웹로직 서버일 경우(WAS)
-        if (ip == null || ip.length() == 0) {
+        if (ip == null || ip.isEmpty()) {
             ip = request.getHeader("WL-Proxy-Client-IP");
             log.debug("[ClientUtils] WL-Proxy-Client-IP: {}", ip);
         }
 
         // ISP 프록시 환경 등 일부 환경(구형?)
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
             log.debug("[ClientUtils] HTTP_CLIENT_IP: {}", ip);
         }
 
         // X-Forwarded-For의 오래된 명명 방식 (호환용)
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
             log.debug("[ClientUtils] HTTP_X_FORWARDED_FOR: {}", ip);
         }
 
         // 위 모든 헤더가 아닌 곳에서 오는 ip
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
             log.debug("[ClientUtils] request.getRemoteAddr(): {}", ip);
         }

@@ -1,9 +1,9 @@
 package com.back2basics.board.post.model;
 
-import com.back2basics.board.file.model.File;
 import com.back2basics.board.link.model.Link;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
+import com.back2basics.file.model.File;
 import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.user.model.Role;
 import java.time.LocalDateTime;
@@ -100,16 +100,18 @@ public class Post implements TargetDomain {
         LocalDateTime deletedAt, Long commentCount
     ) {
         return new Post(
-            id, parentId, projectId, projectStepId, authorIp, authorId, authorName, authorUsername, authorRole,
+            id, parentId, projectId, projectStepId, authorIp, authorId, authorName, authorUsername,
+            authorRole,
             title, content, type, priority, createdAt, updatedAt, deletedAt, commentCount
         );
     }
 
     // createSummaryPost 전용 생성자
     private Post(Long id, Long parentId, Long projectId, Long projectStepId,
-                 String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
-                 String title, String content, PostType type, PostPriority priority,
-                 LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Long commentCount) {
+        String authorIp, Long authorId, String authorName, String authorUsername, Role authorRole,
+        String title, String content, PostType type, PostPriority priority,
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
+        Long commentCount) {
         this.id = id;
         this.parentId = parentId;
         this.projectId = projectId;
@@ -131,10 +133,10 @@ public class Post implements TargetDomain {
     }
 
     private Post(Long id, Long parentId, Long projectId, Long projectStepId, String authorIp,
-                 Long authorId, String authorName, String authorUsername, Role authorRole, String title,
-                 String content, PostType type, PostPriority priority,
-                 LocalDateTime createdAt, LocalDateTime updatedAt,
-                 LocalDateTime deletedAt, List<File> files, List<Link> links) {
+        Long authorId, String authorName, String authorUsername, Role authorRole, String title,
+        String content, PostType type, PostPriority priority,
+        LocalDateTime createdAt, LocalDateTime updatedAt,
+        LocalDateTime deletedAt, List<File> files, List<Link> links) {
         this.id = id;
         this.parentId = parentId;
         this.projectId = projectId;
@@ -158,9 +160,9 @@ public class Post implements TargetDomain {
 
     // createDashboardPost() 용 생성자
     private Post(Long id, String title, LocalDateTime createdAt,
-                 String projectName, String projectStepName,
-                 String authorName, String authorUsername, Role authorRole,
-                 PostPriority priority, PostType type) {
+        String projectName, String projectStepName,
+        String authorName, String authorUsername, Role authorRole,
+        PostPriority priority, PostType type) {
         this.id = id;
         this.title = title;
         this.createdAt = createdAt;
@@ -174,9 +176,9 @@ public class Post implements TargetDomain {
     }
 
     public static Post createDashboardPost(Long id, String title, LocalDateTime createdAt,
-                                           String projectName, String projectStepName,
-                                           String authorName, String authorUsername, Role authorRole,
-                                           PostPriority priority, PostType type) {
+        String projectName, String projectStepName,
+        String authorName, String authorUsername, Role authorRole,
+        PostPriority priority, PostType type) {
         return new Post(
             id, title, createdAt,
             projectName, projectStepName, authorName,

@@ -3,7 +3,7 @@ package com.back2basics.inquiry.service;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.exception.ForbiddenAccessException;
-import com.back2basics.infra.validation.validator.InquiryValidator;
+import com.back2basics.infra.validator.InquiryValidator;
 import com.back2basics.inquiry.model.Inquiry;
 import com.back2basics.inquiry.port.in.UpdateInquiryUseCase;
 import com.back2basics.inquiry.port.in.command.UpdateInquiryCommand;

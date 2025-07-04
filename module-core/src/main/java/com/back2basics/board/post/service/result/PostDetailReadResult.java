@@ -1,10 +1,10 @@
 package com.back2basics.board.post.service.result;
 
-import com.back2basics.board.file.model.File;
 import com.back2basics.board.link.model.Link;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
+import com.back2basics.file.model.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;

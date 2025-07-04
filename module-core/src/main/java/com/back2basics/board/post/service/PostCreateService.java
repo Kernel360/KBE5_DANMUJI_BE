@@ -1,8 +1,5 @@
 package com.back2basics.board.post.service;
 
-import com.back2basics.board.file.model.File;
-import com.back2basics.board.file.port.out.FileSavePort;
-import com.back2basics.board.file.service.FileUploadService;
 import com.back2basics.board.link.service.LinkCreateService;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.PostCreateUseCase;
@@ -10,12 +7,16 @@ import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.out.PostCreatePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
+import com.back2basics.file.model.ContentType;
+import com.back2basics.file.model.File;
+import com.back2basics.file.port.out.FileSavePort;
+import com.back2basics.file.service.FileUploadService;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.s3.dto.PresignedUploadCompleteInfo;
-import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.ProjectValidator;
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.PostValidator;
+import com.back2basics.infra.validator.ProjectValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;
@@ -75,7 +76,8 @@ public class PostCreateService implements PostCreateUseCase {
         Post post = Post.createFromCommand(command, userId, userIp);
         Post savedPost = postCreatePort.save(post);
 
-        log.info("======================== createPostWithPresigned() 의 url : {}", uploadedFiles.get(0).getUrl());
+        log.info("======================== createPostWithPresigned() 의 url : {}",
+            uploadedFiles.get(0).getUrl());
 
         saveFilesFromPresignedUrls(uploadedFiles, savedPost.getId());
 
@@ -88,13 +90,18 @@ public class PostCreateService implements PostCreateUseCase {
         return PostCreateResult.toResult(savedPost);
     }
 
-    private void saveFilesFromPresignedUrls(List<PresignedUploadCompleteInfo> uploadedFiles, Long postId) {
-        if (uploadedFiles == null || uploadedFiles.isEmpty()) return;
+    private void saveFilesFromPresignedUrls(List<PresignedUploadCompleteInfo> uploadedFiles,
+        Long postId) {
+        if (uploadedFiles == null || uploadedFiles.isEmpty()) {
+            return;
+        }
 
-        log.info("======================== saveFilesFromPresignedUrls() 의 url : {}", uploadedFiles.get(0).getUrl());
+        log.info("======================== saveFilesFromPresignedUrls() 의 url : {}",
+            uploadedFiles.get(0).getUrl());
         List<File> fileModels = uploadedFiles.stream()
             .map(info -> File.create(
                 null,
+                ContentType.POST,
                 postId,
                 info.getOriginalName(),
                 info.getUrl(),
@@ -102,7 +109,9 @@ public class PostCreateService implements PostCreateUseCase {
                 info.getSize()
             )).toList();
         fileSavePort.saveAll(fileModels, postId);
-        log.info("======================== after fileSavePort.saveAll(fileModels, postId)의 url : {}", uploadedFiles.get(0).getUrl());
+        log.info(
+            "======================== after fileSavePort.saveAll(fileModels, postId)의 url : {}",
+            uploadedFiles.get(0).getUrl());
     }
 
     private void uploadAndSaveFiles(List<MultipartFile> files, Long postId) throws IOException {
@@ -110,11 +119,9 @@ public class PostCreateService implements PostCreateUseCase {
             return;
         }
 
-        List<File> fileModels = fileUploadService.upload(files, postId);
+        List<File> fileModels = fileUploadService.upload(files, postId, ContentType.POST);
         fileSavePort.saveAll(fileModels, postId);
     }
-
-
 
 
 }

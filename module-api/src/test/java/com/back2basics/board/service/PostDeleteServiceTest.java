@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.back2basics.board.post.service.PostDeleteService;
-import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.out.PostSoftDeletePort;
+import com.back2basics.board.post.service.PostDeleteService;
+import com.back2basics.infra.validator.PostValidator;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -6,8 +6,8 @@ import com.back2basics.board.post.port.out.PostRestorePort;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.PostValidator;
+import com.back2basics.infra.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

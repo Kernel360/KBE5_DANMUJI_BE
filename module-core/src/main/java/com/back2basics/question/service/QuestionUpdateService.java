@@ -1,6 +1,6 @@
 package com.back2basics.question.service;
 
-import com.back2basics.infra.validation.validator.QuestionValidator;
+import com.back2basics.infra.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.in.QuestionUpdateUseCase;
 import com.back2basics.question.port.in.command.QuestionUpdateCommand;
