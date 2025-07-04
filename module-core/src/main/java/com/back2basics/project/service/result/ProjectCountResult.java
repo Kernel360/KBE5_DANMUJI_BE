@@ -6,6 +6,6 @@ import com.back2basics.project.model.StatusCountProjection;
 public record ProjectCountResult(ProjectStatus status, Long count) {
 
     public static ProjectCountResult toResult(StatusCountProjection projection) {
-        return new ProjectCountResult(projection.projectStatus(), projection.count());
+        return new ProjectCountResult(projection.getProjectStatus(), projection.getCount());
     }
 }
