@@ -19,6 +19,8 @@ public class Checklist implements TargetDomain {
 
     private String content;
 
+    private Boolean isDeleted = false;
+
     private ChecklistStatus checklistStatus;
 
     private final LocalDateTime requestedAt;
@@ -66,6 +68,10 @@ public class Checklist implements TargetDomain {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
     }
 
     @Override

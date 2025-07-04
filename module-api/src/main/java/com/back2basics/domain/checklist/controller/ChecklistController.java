@@ -16,8 +16,8 @@ import com.back2basics.checklist.service.result.ApprovalResult;
 import com.back2basics.checklist.service.result.ChecklistInfoResult;
 import com.back2basics.domain.checklist.dto.request.CreateChecklistRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateApprovalRequest;
-import com.back2basics.domain.checklist.dto.request.UpdateChecklistRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateChecklistApprovalRequest;
+import com.back2basics.domain.checklist.dto.request.UpdateChecklistRequest;
 import com.back2basics.domain.checklist.dto.response.ApprovalInfoResponse;
 import com.back2basics.domain.checklist.dto.response.ApprovalResponse;
 import com.back2basics.global.response.result.ApiResponse;
@@ -26,6 +26,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,7 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_CREATE_SUCCESS);
     }
 
+    // 체크리스트 수정
     @PutMapping("/{checklistId}")
     public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -74,6 +76,22 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 
+    // 전체 체크리스트 조회
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ApprovalInfoResponse>>> getRequests() {
+        List<ChecklistInfoResult> results = readChecklistUseCase.findAll();
+        return ApiResponse.success(CHECKLIST_REQUEST_READ_ALL_SUCCESS,
+            ApprovalInfoResponse.from(results));
+    }
+
+    // 단건 조회 시 승인 정보 포함
+    @GetMapping("/{checklistId}/info")
+    public ResponseEntity<ApiResponse<List<ApprovalResponse>>> getApprovalsByChecklistId(
+        @PathVariable Long checklistId) {
+        List<ApprovalResult> results = readApprovalUseCase.findAllByChecklistId(checklistId);
+        return ApiResponse.success(CHECKLIST_RESPONSE_READ_SUCCESS, ApprovalResponse.from(results));
+    }
+
     // 체크리스트 상태 변경
     @PutMapping("/{checklistId}/status")
     public ResponseEntity<ApiResponse<Void>> change(@PathVariable Long checklistId,
@@ -83,6 +101,18 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 
+    // 체크리스트 삭제
+    @DeleteMapping("/{checklistId}")
+
+    // 답변 삭제
+    @DeleteMapping("/approval/{approvalId}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long checklistId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        deleteChecklistUseCase.delete(checklistId, userDetails.getId());
+        return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
+    }
+
+    // 필요없어보임
     @GetMapping("/{checklistId}")
     public ResponseEntity<ApiResponse<ApprovalInfoResponse>> getRequestDetail(
         @PathVariable Long checklistId) {
@@ -91,20 +121,8 @@ public class ChecklistController {
             ApprovalInfoResponse.from(result));
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<ApprovalInfoResponse>>> getRequests() {
-        List<ChecklistInfoResult> results = readChecklistUseCase.findAll();
-        return ApiResponse.success(CHECKLIST_REQUEST_READ_ALL_SUCCESS,
-            ApprovalInfoResponse.from(results));
-    }
 
-    @GetMapping("/{checklistId}/info")
-    public ResponseEntity<ApiResponse<List<ApprovalResponse>>> getApprovalsByChecklistId(
-        @PathVariable Long checklistId) {
-        List<ApprovalResult> results = readApprovalUseCase.findAllByChecklistId(checklistId);
-        return ApiResponse.success(CHECKLIST_RESPONSE_READ_SUCCESS, ApprovalResponse.from(results));
-    }
-
+    // 필요없어보임
     @GetMapping("/response/{approvalId}")
     public ResponseEntity<ApiResponse<ApprovalResponse>> getResponse(
         @PathVariable Long approvalId) {

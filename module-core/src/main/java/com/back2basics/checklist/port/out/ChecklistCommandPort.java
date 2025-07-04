@@ -9,4 +9,6 @@ public interface ChecklistCommandPort {
     void update(Checklist checklist);
 
     void save(Checklist checklist);
+
+    void delete(Checklist checklist);
 }

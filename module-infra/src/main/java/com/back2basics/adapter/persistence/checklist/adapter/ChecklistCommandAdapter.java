@@ -90,4 +90,18 @@ public class ChecklistCommandAdapter implements ChecklistCommandPort {
                 approvalResponseEntities));
     }
 
+    @Override
+    public void delete(Checklist checklist) {
+        ProjectStepEntity projectStepEntity = projectStepEntityRepository.getReferenceById(
+            checklist.getProjectStepId());
+        UserEntity requester = userEntityRepository.getReferenceById(
+            checklist.getUserId());
+        List<ApprovalEntity> approvalResponseEntities = approvalEntityRepository.findAllByChecklistId(
+            checklist.getId());
+        ChecklistEntity checklistEntity = mapper.toEntity(checklist, projectStepEntity, requester,
+            approvalResponseEntities);
+        checklistEntity.markDeleted();
+        checklistEntityRepository.save(checklistEntity);
+    }
+
 }
