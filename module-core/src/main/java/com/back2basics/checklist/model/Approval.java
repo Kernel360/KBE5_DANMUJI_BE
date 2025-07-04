@@ -18,6 +18,8 @@ public class Approval {
 
     private LocalDateTime respondedAt;
 
+    private Boolean deleted = false;
+
     public Approval(Long id, Long userId, Long checklistId, String message,
         ApprovalStatus status, LocalDateTime respondedAt) {
         this.id = id;
@@ -38,4 +40,9 @@ public class Approval {
         this.message = message;
         this.respondedAt = LocalDateTime.now();
     }
+
+    public void delete() {
+        this.deleted = true;
+    }
+
 }

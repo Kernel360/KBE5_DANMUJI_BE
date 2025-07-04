@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.checklist.entity;
 
 
+import com.back2basics.adapter.persistence.common.entity.BaseTimeEntity;
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.checklist.model.Approval;
 import com.back2basics.checklist.model.ApprovalStatus;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "approvals")
-public class ApprovalEntity {
+public class ApprovalEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

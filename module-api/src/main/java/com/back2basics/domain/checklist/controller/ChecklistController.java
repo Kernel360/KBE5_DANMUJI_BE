@@ -8,6 +8,7 @@ import static com.back2basics.domain.checklist.controller.code.ChecklistResponse
 import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_RESPONSE_STATUS_READ_SUCCESS;
 
 import com.back2basics.checklist.port.in.CreateChecklistUseCase;
+import com.back2basics.checklist.port.in.DeleteApprovalUseCase;
 import com.back2basics.checklist.port.in.DeleteChecklistUseCase;
 import com.back2basics.checklist.port.in.ReadApprovalUseCase;
 import com.back2basics.checklist.port.in.ReadChecklistUseCase;
@@ -47,6 +48,7 @@ public class ChecklistController {
     private final ReadApprovalUseCase readApprovalUseCase;
     private final ReadChecklistUseCase readChecklistUseCase;
     private final DeleteChecklistUseCase deleteChecklistUseCase;
+    private final DeleteApprovalUseCase deleteApprovalUseCase;
 
     // 체크리스트 생성
     @PostMapping("/{stepId}")
@@ -67,6 +69,8 @@ public class ChecklistController {
             request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
+
+    // 답변 수정
 
     // 체크리스트 승인자 추가
     @PutMapping("/approval/add/{checklistId}")
@@ -107,15 +111,15 @@ public class ChecklistController {
     @DeleteMapping("/{checklistId}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        deleteChecklistUseCase.delete(checklistId, userDetails.getId());
+        deleteChecklistUseCase.delete(userDetails.getId(), checklistId);
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 
     // 답변 삭제
-    @DeleteMapping("/approval/{approvalId}")
-    public ResponseEntity<ApiResponse<Void>> deleteApproval(@PathVariable Long checklistId,
+    @DeleteMapping("/approvals/{approvalId}")
+    public ResponseEntity<ApiResponse<Void>> deleteApproval(@PathVariable Long approvalId,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        deleteChecklistUseCase.delete(checklistId, userDetails.getId());
+        deleteApprovalUseCase.delete(userDetails.getId(), approvalId);
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 
