@@ -105,6 +105,7 @@ public class Project implements TargetDomain {
     public void restore() {
         this.isDeleted = false;
         this.deletedAt = null;
+        System.out.println("restore call");
     }
 
     public void calculateProgress(int totalStep, int completedStep) {

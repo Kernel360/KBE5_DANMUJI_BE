@@ -51,8 +51,6 @@ public class ProjectMapper {
     public ProjectEntity toEntity(Project project) {
         List<ProjectStepEntity> stepEntities = projectStepEntityRepository.findAllByProjectIdAndDeletedAtIsNull(project.getId());
         List<AssignmentEntity> assignmentEntities = assignmentEntityRepository.findByProject_Id(project.getId());
-        System.out.println("================ ProjectMapper의 project.isDeleted() = " + project.isDeleted() + " ======================");
-        System.out.println("================ ProjectMapper의 project.deletedAt() = " + project.getDeletedAt() + " ======================");
         return ProjectEntity.builder()
             .id(project.getId())
             .name(project.getName())
@@ -60,6 +58,7 @@ public class ProjectMapper {
             .startDate(project.getStartDate())
             .endDate(project.getEndDate())
             .isDeleted(project.isDeleted())
+            .deletedAt(project.getDeletedAt())
             .projectStatus(project.getProjectStatus())
             .projectCost(project.getProjectCost())
             .steps(stepEntities)

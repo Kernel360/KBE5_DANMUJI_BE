@@ -26,7 +26,7 @@ public class RestoreProjectAdapter implements RestoreProjectPort {
             .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
 
         ProjectEntity entity = mapper.toEntity(deletedProject);
-        entity.restore();
+        entity.restoreProject();
 
         projectRepository.save(entity);
     }
