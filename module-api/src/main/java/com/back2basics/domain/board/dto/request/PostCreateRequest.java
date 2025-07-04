@@ -4,6 +4,7 @@ import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.infra.validation.custom.CustomEnumCheck;
+import com.back2basics.infra.validation.custom.CustomLinkCheck;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -36,6 +37,7 @@ public class PostCreateRequest {
     @NotNull(message = "프로젝트 단계를 입력하세요.")
     private Long stepId;
 
+    @CustomLinkCheck
     private List<String> newLinks = List.of();
 
     public PostCreateCommand toCommand() {
