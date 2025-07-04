@@ -1,7 +1,7 @@
 package com.back2basics.domain.company.dto.request;
 
 import com.back2basics.company.port.in.command.CreateCompanyCommand;
-import com.back2basics.infra.validation.custom.CustomNotBlank;
+import com.back2basics.infra.validator.custom.CustomNotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;

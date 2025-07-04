@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation.validator;
+package com.back2basics.infra.validator.validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -8,6 +8,7 @@ import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.out.CommentReadPort;
 import com.back2basics.infra.exception.comment.CommentErrorCode;
 import com.back2basics.infra.exception.comment.CommentException;
+import com.back2basics.infra.validator.CommentValidator;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;

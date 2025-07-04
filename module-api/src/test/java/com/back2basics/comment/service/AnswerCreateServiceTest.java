@@ -6,12 +6,12 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import com.back2basics.board.post.model.Post;
 import com.back2basics.comment.model.Comment;
 import com.back2basics.comment.port.in.command.CommentCreateCommand;
 import com.back2basics.comment.port.out.CommentCreatePort;
-import com.back2basics.infra.validation.validator.CommentValidator;
-import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.board.post.model.Post;
+import com.back2basics.infra.validator.CommentValidator;
+import com.back2basics.infra.validator.PostValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

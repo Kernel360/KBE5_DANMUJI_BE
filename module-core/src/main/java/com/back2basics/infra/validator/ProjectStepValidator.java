@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation.validator;
+package com.back2basics.infra.validator;
 
 import static com.back2basics.infra.exception.projectstep.ProjectStepErrorCode.STEP_NOT_FOUND;
 

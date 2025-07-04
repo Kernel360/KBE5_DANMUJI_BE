@@ -2,7 +2,7 @@ package com.back2basics.user.service;
 
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.CreateUserUseCase;
 import com.back2basics.user.port.in.command.UserCreateCommand;

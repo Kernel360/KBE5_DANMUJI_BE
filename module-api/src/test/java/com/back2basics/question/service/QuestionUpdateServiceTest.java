@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.back2basics.infra.validation.validator.QuestionValidator;
+import com.back2basics.infra.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.in.command.QuestionUpdateCommand;
 import com.back2basics.question.port.out.QuestionUpdatePort;

@@ -1,6 +1,6 @@
 package com.back2basics.notify.service;
 
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
 import com.back2basics.notify.util.NotificationPublisher;
