@@ -4,6 +4,7 @@ import static com.back2basics.domain.company.controller.code.CompanyResponseCode
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_DELETE_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_READ_ALL_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_READ_SUCCESS;
+import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_RESTORE_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_SEARCH_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_UPDATE_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_USER_LIST_SUCCESS;
@@ -27,7 +28,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +51,7 @@ public class CompanyController /*implements CompanyApiDocs*/ {
     private final DeleteCompanyUseCase deleteCompanyUseCase;
     private final ReadCompanyUseCase readCompanyUseCase;
     private final UpdateCompanyUseCase updateCompanyUseCase;
+    private final RestoreCompanyUseCase companyRestoreUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createCompany(
@@ -162,6 +163,15 @@ public class CompanyController /*implements CompanyApiDocs*/ {
 
         deleteCompanyUseCase.deleteCompany(companyId, customUserDetails.getId());
         return ApiResponse.success(COMPANY_DELETE_SUCCESS);
+    }
+
+    @PutMapping("/{companyId}/restore")
+    public ResponseEntity<ApiResponse<Void>> restoreCompany(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long companyId) {
+        Long userId = customUserDetails.getId();
+        companyRestoreUseCase.restorePost(userId, companyId);
+        return ApiResponse.success(COMPANY_RESTORE_SUCCESS);
     }
 
 }
