@@ -2,6 +2,7 @@ package com.back2basics.company.service;
 
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.RestoreCompanyUseCase;
+import com.back2basics.company.port.out.RestoreCompanyPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validator.CompanyValidator;

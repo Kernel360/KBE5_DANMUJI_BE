@@ -171,7 +171,7 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long companyId) {
         Long userId = customUserDetails.getId();
-        companyRestoreUseCase.restorePost(userId, companyId);
+        companyRestoreUseCase.restoreCompany(userId, companyId);
         return ApiResponse.success(COMPANY_RESTORE_SUCCESS);
     }
 
