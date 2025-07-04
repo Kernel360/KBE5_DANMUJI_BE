@@ -12,6 +12,7 @@ import static com.back2basics.domain.company.controller.code.CompanyResponseCode
 import com.back2basics.company.port.in.CreateCompanyUseCase;
 import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.ReadCompanyUseCase;
+import com.back2basics.company.port.in.RestoreCompanyUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.company.service.result.ReadRecentCompanyResult;

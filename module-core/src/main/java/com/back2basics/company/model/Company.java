@@ -73,7 +73,10 @@ public class Company implements TargetDomain {
             .deletedAt(company.getDeletedAt())
             .build();
     }
-
+    public void restore(){
+        this.deletedAt = null;
+        this.isDelete = false;
+    }
     @Override
     public Long getId() {
         return this.id;
