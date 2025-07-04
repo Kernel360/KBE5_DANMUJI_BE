@@ -106,8 +106,9 @@ public class ProjectStepController {
     @DeleteMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> deleteStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long stepId) {
+        @PathVariable Long stepId, @RequestParam Long projectId) {
         deleteProjectStepUseCase.softDelete(stepId, customUserDetails.getId());
+        updateProjectUseCase.calculateProgressRateByDeleteStep(projectId);
         return ApiResponse.success(STEP_DELETE_SUCCESS);
     }
 
