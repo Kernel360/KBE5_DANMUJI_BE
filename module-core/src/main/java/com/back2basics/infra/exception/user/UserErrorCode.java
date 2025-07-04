@@ -13,7 +13,9 @@ public enum UserErrorCode implements ErrorCode {
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "U002", "이미 존재하는 아이디입니다."),
     PASSWORD_MISMATCH(HttpStatus.FORBIDDEN, "U003", "현재 비밀번호가 일치하지 않습니다."),
     VERIFICATION_FAILED(HttpStatus.FORBIDDEN, "U004", "인증에 실패했습니다."),
-    MAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "U005", "이메일 전송에 실패했습니다.");
+    MAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "U005", "이메일 전송에 실패했습니다."),
+    NOT_AUTHORIZED(HttpStatus.FORBIDDEN, "U006", "권한이 없습니다. 관리자에게 문의하세요");
+
 
     private final HttpStatus status;
     private final String code;

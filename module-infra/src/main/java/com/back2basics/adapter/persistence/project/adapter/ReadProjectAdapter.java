@@ -99,7 +99,7 @@ public class ReadProjectAdapter implements ReadProjectPort {
             .selectFrom(projectEntity)
             .where(
                 projectEntity.id.eq(projectId),
-                projectEntity.deletedAt.isNotNull()
+                projectEntity.isDeleted.eq(true)
             )
             .fetchOne();
 
