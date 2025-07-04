@@ -1,6 +1,6 @@
 package com.back2basics.inquiry.service;
 
-import com.back2basics.infra.validation.validator.InquiryValidator;
+import com.back2basics.infra.validator.InquiryValidator;
 import com.back2basics.inquiry.model.Inquiry;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;

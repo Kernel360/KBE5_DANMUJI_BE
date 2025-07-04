@@ -3,7 +3,8 @@ package com.back2basics.domain.board.dto.request;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
-import com.back2basics.infra.validation.custom.CustomEnumCheck;
+import com.back2basics.custom.CustomEnumCheck;
+import com.back2basics.custom.CustomLinkCheck;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -32,6 +33,8 @@ public class PostUpdateRequest {
     private List<Long> fileIdsToDelete;
 
     private List<Long> linkIdsToDelete;
+
+    @CustomLinkCheck
     private List<String> newLinks;
 
     public PostUpdateCommand toCommand() {

@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.back2basics.infra.exception.question.QuestionErrorCode;
 import com.back2basics.infra.exception.question.QuestionException;
-import com.back2basics.infra.validation.validator.QuestionValidator;
+import com.back2basics.infra.validator.QuestionValidator;
 import com.back2basics.question.model.Question;
 import com.back2basics.question.port.out.QuestionReadPort;
 import java.time.LocalDateTime;

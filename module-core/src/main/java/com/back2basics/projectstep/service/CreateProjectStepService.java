@@ -2,7 +2,7 @@ package com.back2basics.projectstep.service;
 
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validator.ProjectValidator;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;

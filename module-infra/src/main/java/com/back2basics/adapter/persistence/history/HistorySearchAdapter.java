@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 public class HistorySearchAdapter implements HistorySearchPort {
 
     private final MongoTemplate mongoTemplate;
+    private final HistoryMapper historyMapper;
 
     @Override
     public Page<HistorySimpleResult> searchHistories(HistorySearchCommand command,
@@ -32,7 +33,7 @@ public class HistorySearchAdapter implements HistorySearchPort {
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
 
         List<HistorySimpleResult> results = documents.stream()
-            .map(HistoryMapper::toSimpleResult)
+            .map(historyMapper::toSimpleResult)
             .toList();
 
         return PageableExecutionUtils.getPage(
