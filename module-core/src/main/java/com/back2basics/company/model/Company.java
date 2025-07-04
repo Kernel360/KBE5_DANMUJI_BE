@@ -55,6 +55,7 @@ public class Company implements TargetDomain {
 
     public void markDeleted() {
         this.isDelete = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
     public static Company copyOf(Company company) {
@@ -77,6 +78,7 @@ public class Company implements TargetDomain {
         this.deletedAt = null;
         this.isDelete = false;
     }
+
     @Override
     public Long getId() {
         return this.id;

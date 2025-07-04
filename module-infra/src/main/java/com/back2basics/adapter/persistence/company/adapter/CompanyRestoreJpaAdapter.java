@@ -20,7 +20,7 @@ public class CompanyRestoreJpaAdapter implements RestoreCompanyPort {
 
     @Override
     public void restoreCompany(Company company) {
-        Company deletedCompany = readCompanyJpaAdapter.findById(company.getId())
+        Company deletedCompany = readCompanyJpaAdapter.findByIdForRestore(company.getId())
             .orElseThrow(() -> new CompanyException(COMPANY_NOT_FOUND));
 
         CompanyEntity entity = mapper.toEntity(deletedCompany);

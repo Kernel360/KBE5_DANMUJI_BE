@@ -23,12 +23,10 @@ public class RestoreCompanyService implements RestoreCompanyUseCase {
     public void restoreCompany(Long requesterId, Long companyId) {
 
         userValidator.isAdmin(requesterId);
-        Company company = companyValidator.findCompany(companyId);
+        Company company = companyValidator.findCompanyForRestore(companyId);
 
         company.restore();
         restoreCompanyPort.restoreCompany(company);
-
-
 
         historyLogService.logRestored(DomainType.COMPANY, requesterId, company, "비활성화 회사 복구");
     }
