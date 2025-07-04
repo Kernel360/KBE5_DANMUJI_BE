@@ -31,6 +31,6 @@ public class PostRestoreService implements PostRestoreUseCase {
         postRestorePort.restorePost(post);
 
         historyLogService.logRestored(DomainType.POST, requesterId, post, "비활성화 게시글 복구");
-        postNotificationSender.sendNotification(requesterId, post.getId());
+        postNotificationSender.sendNotification(post.getAuthorId(), post.getId());
     }
 }
