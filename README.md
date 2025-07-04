@@ -23,7 +23,8 @@ https://www.danmuji.site <br>
 | 역할  | ID                   | PW           |
 | --- | -------------------- | ------------ |
 | 관리자 | `admin`  | `adminDanmuji11!!`  |
-| 고객사 | `client` | `clientDanmuji11!!` |
+| 개발사 | `devuser` | `devDanmuji11!!` |
+| 고객사 | `clientuser` | `clientDanmuji11!!` |
 
 ## ✨ 주요 기능
 📊 프로젝트 대시보드 & 상태 관리  
