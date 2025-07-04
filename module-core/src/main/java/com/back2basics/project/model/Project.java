@@ -2,10 +2,12 @@ package com.back2basics.project.model;
 
 import com.back2basics.assignment.model.Assignment;
 import com.back2basics.history.strategy.TargetDomain;
+import com.back2basics.project.port.in.command.ProjectCreateCommand;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.projectstep.model.ProjectStep;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
@@ -42,6 +44,8 @@ public class Project implements TargetDomain {
 
     private List<Assignment> assignments;
 
+    private int count;
+
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
@@ -56,28 +60,33 @@ public class Project implements TargetDomain {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
-        this.projectStatus = projectStatus != null ? projectStatus : ProjectStatus.IN_PROGRESS;
+        this.projectStatus = projectStatus;
         this.projectCost = projectCost;
-        this.steps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
-        this.assignments =
-            assignments != null ? new ArrayList<>(assignments) : new ArrayList<>();
-        this.progress = (progress != null) ? progress : 0;
+        this.steps = new ArrayList<>();
+        this.assignments = new ArrayList<>();
+        this.progress = 0;
     }
 
-    public void setSteps(List<ProjectStep> steps) {
-        this.steps = steps;
+    // todo: 함수 ㄴ, 값만
+    public static Project create(ProjectCreateCommand command) {
+        return Project.builder()
+            .name(command.getName())
+            .description(command.getDescription())
+            .projectCost(command.getProjectCost())
+            .startDate(command.getStartDate())
+            .endDate(command.getEndDate())
+            .projectStatus(createStatusByDate(command.getEndDate()))
+            .build();
     }
 
-    public void setUsers(List<Assignment> assignments) {
-        this.assignments = assignments;
-    }
-
+    // todo: 함수 ㄴ, 값만
     public void update(ProjectUpdateCommand command) {
         this.name = command.getName();
         this.description = command.getDescription();
         this.projectCost = command.getProjectCost();
         this.startDate = command.getStartDate();
         this.endDate = command.getEndDate();
+        calculateStatusByDate(command.getEndDate()); // 아닌거 같음
     }
 
     public void statusCompleted() {
@@ -88,20 +97,72 @@ public class Project implements TargetDomain {
         this.projectStatus = ProjectStatus.IN_PROGRESS;
     }
 
+    // todo: 비활성화 - 복구 분리
     public void softDeleted() {
-        if (this.isDeleted) {
-            this.isDeleted = false;
-            this.deletedAt = null;
-        } else {
-            this.isDeleted = true;
-            this.deletedAt = LocalDateTime.now();
-        }
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
 
+    public void restore() {
+        this.isDeleted = false;
+        this.deletedAt = null;
     }
 
     public void calculateProgress(int totalStep, int completedStep) {
         double result = ((double) completedStep / totalStep) * 100;
         this.progress = (int) result;
+        this.projectStatus = updateStatusByProgress(result);
+    }
+
+    private static ProjectStatus createStatusByDate(LocalDate endDate) {
+        LocalDate today = LocalDate.now();
+        ProjectStatus status = ProjectStatus.IN_PROGRESS;
+
+        if (endDate != null) {
+            long due = ChronoUnit.DAYS.between(today, endDate);
+            if (due < 0) {
+                status = ProjectStatus.DELAY;
+            } else if (due <= 7) {
+                status = ProjectStatus.DUE_SOON;
+            }
+        }
+        return status;
+    }
+
+    private void calculateStatusByDate(LocalDate endDate) {
+        LocalDate today = LocalDate.now();
+        ProjectStatus status = ProjectStatus.IN_PROGRESS;
+
+        if (endDate != null) {
+            long due = ChronoUnit.DAYS.between(today, endDate);
+            if (due < 0) {
+                status = ProjectStatus.DELAY;
+            } else if (due <= 7) {
+                status = ProjectStatus.DUE_SOON;
+            }
+            if (this.progress == 100) {
+                status = ProjectStatus.COMPLETED;
+            }
+        }
+        this.projectStatus = status;
+    }
+
+    private ProjectStatus updateStatusByProgress(double result) {
+        LocalDate today = LocalDate.now();
+        ProjectStatus status = ProjectStatus.IN_PROGRESS;
+        if (this.endDate != null) {
+            long due = ChronoUnit.DAYS.between(today, this.endDate);
+
+            if (due < 0) {
+                status = ProjectStatus.DELAY;
+            } else if (due <= 7) {
+                status = ProjectStatus.DUE_SOON;
+            }
+        }
+        if ((int) result == 100) {
+            status = ProjectStatus.COMPLETED;
+        }
+        return status;
     }
 
     public static Project copyOf(Project project) {

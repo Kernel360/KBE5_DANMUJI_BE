@@ -2,7 +2,6 @@ package com.back2basics.project.service;
 
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.out.ReadProjectPort;

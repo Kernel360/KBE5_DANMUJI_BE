@@ -233,5 +233,4 @@ public class Post implements TargetDomain {
     public Long getId() {
         return this.id;
     }
-
 }

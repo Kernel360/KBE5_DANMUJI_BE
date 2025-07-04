@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation.validator;
+package com.back2basics.infra.validator;
 
 import com.back2basics.infra.exception.inquiry.InquiryErrorCode;
 import com.back2basics.infra.exception.inquiry.InquiryException;

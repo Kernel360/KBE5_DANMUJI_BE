@@ -8,6 +8,7 @@ import static com.back2basics.domain.checklist.controller.code.ChecklistResponse
 import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_RESPONSE_STATUS_READ_SUCCESS;
 
 import com.back2basics.checklist.port.in.CreateChecklistUseCase;
+import com.back2basics.checklist.port.in.DeleteChecklistUseCase;
 import com.back2basics.checklist.port.in.ReadApprovalUseCase;
 import com.back2basics.checklist.port.in.ReadChecklistUseCase;
 import com.back2basics.checklist.port.in.UpdateApprovalUseCase;
@@ -45,6 +46,7 @@ public class ChecklistController {
     private final UpdateApprovalUseCase updateApprovalUseCase;
     private final ReadApprovalUseCase readApprovalUseCase;
     private final ReadChecklistUseCase readChecklistUseCase;
+    private final DeleteChecklistUseCase deleteChecklistUseCase;
 
     // 체크리스트 생성
     @PostMapping("/{stepId}")
@@ -103,10 +105,15 @@ public class ChecklistController {
 
     // 체크리스트 삭제
     @DeleteMapping("/{checklistId}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long checklistId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        deleteChecklistUseCase.delete(checklistId, userDetails.getId());
+        return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
+    }
 
     // 답변 삭제
     @DeleteMapping("/approval/{approvalId}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long checklistId,
+    public ResponseEntity<ApiResponse<Void>> deleteApproval(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         deleteChecklistUseCase.delete(checklistId, userDetails.getId());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
@@ -120,7 +127,6 @@ public class ChecklistController {
         return ApiResponse.success(CHECKLIST_REQUEST_READ_SUCCESS,
             ApprovalInfoResponse.from(result));
     }
-
 
     // 필요없어보임
     @GetMapping("/response/{approvalId}")

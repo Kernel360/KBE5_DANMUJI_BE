@@ -6,7 +6,7 @@ import com.back2basics.adapter.persistence.projectstep.ProjectStepEntity;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepEntityRepository;
 import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.infra.exception.projectstep.ProjectStepException;
-import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.projectstep.model.ProjectStep;
 import com.back2basics.projectstep.model.ProjectStepStatus;

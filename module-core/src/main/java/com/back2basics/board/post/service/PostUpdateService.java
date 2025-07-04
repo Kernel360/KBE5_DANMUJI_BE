@@ -14,7 +14,7 @@ import com.back2basics.file.service.FileUploadService;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.s3.dto.PresignedUploadCompleteInfo;
-import com.back2basics.infra.validation.validator.PostValidator;
+import com.back2basics.infra.validator.PostValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;

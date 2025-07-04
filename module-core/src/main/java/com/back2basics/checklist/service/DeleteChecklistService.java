@@ -4,7 +4,7 @@ import com.back2basics.checklist.model.Checklist;
 import com.back2basics.checklist.port.in.DeleteChecklistUseCase;
 import com.back2basics.checklist.port.out.ChecklistCommandPort;
 import com.back2basics.checklist.port.out.ChecklistQueryPort;
-import com.back2basics.infra.validation.validator.ChecklistValidator;
+import com.back2basics.infra.validator.ChecklistValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

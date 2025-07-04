@@ -6,7 +6,7 @@ import com.back2basics.checklist.port.in.command.CreateChecklistCommand;
 import com.back2basics.checklist.port.out.ChecklistCommandPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;

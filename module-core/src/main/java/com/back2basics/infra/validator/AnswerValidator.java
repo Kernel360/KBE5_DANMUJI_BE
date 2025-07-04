@@ -1,4 +1,4 @@
-package com.back2basics.infra.validation.validator;
+package com.back2basics.infra.validator;
 
 import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.out.ReadAnswerPort;

@@ -7,7 +7,7 @@ import com.back2basics.board.post.service.result.PostDashboardReadResult;
 import com.back2basics.board.post.service.result.PostDetailReadResult;
 import com.back2basics.board.post.service.result.PostSummaryReadResult;
 import com.back2basics.board.post.service.result.ReadRecentPostResult;
-import com.back2basics.infra.validation.validator.PostValidator;
+import com.back2basics.infra.validator.PostValidator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

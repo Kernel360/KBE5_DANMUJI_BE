@@ -7,7 +7,7 @@ import com.back2basics.assignment.service.notification.AssignmentNotificationSen
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validator.ProjectValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
@@ -43,7 +43,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     private final ReadProjectPort readProjectPort;
     private final ReadProjectStepPort readProjectStepPort;
 
-    // todo : 사용자 인증 로직 추가
+    //todo: 리팩토링 . 편의 메서드
     // PR 작성 : 수정 시 새로 등록된 유저의 경우 updateService 에서 create 해주는 게 맞는건지 의문
     @Override
     @Transactional
@@ -52,6 +52,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         Project project = projectValidator.findById(projectId);
         Project before = Project.copyOf(project);
         project.update(command);
+
         updateProjectPort.update(project);
 
         // 업체 타입 별 기존 assignments
@@ -98,6 +99,27 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         historyLogService.logUpdated(DomainType.PROJECT, loggedInUserId, before, project,
             "프로젝트 상태 수정");
     }
+
+    // todo: db 갔다오지말기, 멘토링
+    @Override
+    public void calculateProgressRate(Long projectId) {
+        Project project = readProjectPort.findProjectById(projectId);
+        int totalStep = readProjectStepPort.totalStep(projectId);
+        int completedStep = readProjectStepPort.totalCompletedStep(projectId);
+        project.calculateProgress(totalStep, completedStep);
+        updateProjectPort.update(project);
+    }
+
+    // 단계 삭제용 진행률 계산
+    @Override
+    public void calculateProgressRateByDeleteStep(Long projectId) {
+        Project project = readProjectPort.findProjectById(projectId);
+        int totalStep = readProjectStepPort.totalStep(projectId);
+        int completedStep = readProjectStepPort.totalCompletedStep(projectId);
+        project.calculateProgress(totalStep - 1, completedStep);
+        updateProjectPort.update(project);
+    }
+
 
     private void updateAssignments(List<Assignment> oldAssignments, List<User> updatedUsers,
         List<User> updatedManagers) {
@@ -156,14 +178,5 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         List<Long> assignmentIds = newAssignments.stream()
             .map(assignment -> assignment.getUser().getId()).toList();
         assignmentNotificationSender.sendNotification(assignmentIds, project.getId());
-    }
-
-    @Override
-    public void calculateProgressRate(Long projectId) {
-        Project project = readProjectPort.findProjectById(projectId);
-        int totalStep = readProjectStepPort.totalStep(projectId);
-        int completedStep = readProjectStepPort.totalCompletedStep(projectId);
-        project.calculateProgress(totalStep, completedStep);
-        updateProjectPort.update(project);
     }
 }

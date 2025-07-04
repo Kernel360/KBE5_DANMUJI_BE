@@ -11,7 +11,7 @@ import com.back2basics.checklist.port.out.ChecklistCommandPort;
 import com.back2basics.checklist.port.out.ChecklistQueryPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.ApprovalValidator;
+import com.back2basics.infra.validator.ApprovalValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;
@@ -44,8 +44,7 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
         approval.updateStatus(command.message(), command.status());
         approvalCommandPort.update(approval);
 
-        Checklist checklist = checklistQueryPort.findById(
-            approval.getChecklistId());
+        Checklist checklist = checklistQueryPort.findById(approval.getChecklistId());
         Checklist before = Checklist.copyOf(checklist);
 
         ProjectStep projectStep = readProjectStepPort.findById(checklist.getProjectStepId());
