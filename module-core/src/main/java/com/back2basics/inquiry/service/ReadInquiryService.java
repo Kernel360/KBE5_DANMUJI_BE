@@ -2,9 +2,11 @@ package com.back2basics.inquiry.service;
 
 import com.back2basics.infra.validator.InquiryValidator;
 import com.back2basics.inquiry.model.Inquiry;
+import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
+import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +88,17 @@ public class ReadInquiryService implements ReadInquiryUseCase {
             .toList();
 
         return new PageImpl<>(results, pageable, inquiryPage.getTotalElements());
+    }
+
+    @Override
+    public InquiryCountsDto getInquiryCounts() {
+        return readInquiryPort.getInquiryCounts();
+    }
+
+    @Override
+    public List<ReadRecentInquiryResult> getRecentInquiries() {
+        return readInquiryPort.getRecentInquiries()
+            .stream().map(ReadRecentInquiryResult::toResult).toList();
     }
 
 }

@@ -22,4 +22,6 @@ public interface UserQueryUseCase {
     Map<Long, String> getNameByIds(List<Long> userIds);
 
     String getNameById(Long userId);
+
+    Long getUserCounts();
 }

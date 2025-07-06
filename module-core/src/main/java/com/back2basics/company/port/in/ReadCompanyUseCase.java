@@ -20,7 +20,11 @@ public interface ReadCompanyUseCase {
 
     List<UserSummaryResult> getUsersByCompanyId(Long companyId);
 
-    List<UserListResult> getUsersInfoByCompanyId(Long companyId);
+    Page<UserSummaryResult> getUsersByCompanyId(Long companyId, Pageable pageable);
+
+    Page<UserListResult> getUsersInfoByCompanyId(Long companyId, Pageable pageable);
 
     List<ReadRecentCompanyResult> getRecentCompanies();
+
+    Long getCompanyCounts();
 }

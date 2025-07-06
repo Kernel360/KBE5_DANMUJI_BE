@@ -3,6 +3,7 @@ package com.back2basics.adapter.persistence.inquiry.adapter;
 import com.back2basics.adapter.persistence.inquiry.InquiryEntityRepository;
 import com.back2basics.adapter.persistence.inquiry.InquiryMapper;
 import com.back2basics.inquiry.model.Inquiry;
+import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,17 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
     public Page<Inquiry> getMyInquiries(Pageable pageable, Long id) {
         return inquiryEntityRepository.findByAuthorIdAndDeletedAtIsNull(id, pageable)
             .map(inquiryMapper::toDomain);
+    }
+
+    @Override
+    public InquiryCountsDto getInquiryCounts() {
+        return inquiryEntityRepository.getInquiryCounts();
+    }
+
+    @Override
+    public List<Inquiry> getRecentInquiries() {
+        return inquiryEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
+            .stream().map(inquiryMapper::toDomain).toList();
     }
 
 }

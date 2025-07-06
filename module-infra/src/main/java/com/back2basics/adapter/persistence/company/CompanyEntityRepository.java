@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -32,4 +33,7 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
     boolean existsByBizNoAndIdNot(Long bizNo, Long id);
 
     boolean existsByAddressAndIdNot(String address, Long id);
+
+    @Query("SELECT COUNT(c) FROM CompanyEntity c WHERE c.deletedAt IS NULL")
+    Long getCompanyCounts();
 }

@@ -21,6 +21,8 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     List<UserEntity> findAllByCompany_IdAndDeletedAtIsNull(Long companyId);
 
+    Page<UserEntity> findAllByCompany_IdAndDeletedAtIsNull(Long companyId, Pageable pageable);
+
     Page<UserEntity> findAllByDeletedAtIsNull(Pageable pageable);
 
     List<UserEntity> findAllByDeletedAtIsNull();
@@ -29,4 +31,7 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("SELECT u FROM UserEntity u WHERE u.username IN :usernames")
     List<UserEntity> findAllByUsernames(List<String> usernames);
+
+    @Query("SELECT COUNT(u) FROM UserEntity u WHERE u.deletedAt IS NULL")
+    Long getUserCounts();
 }
