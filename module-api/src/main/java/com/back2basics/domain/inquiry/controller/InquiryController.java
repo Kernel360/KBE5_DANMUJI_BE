@@ -11,6 +11,7 @@ import com.back2basics.domain.inquiry.dto.request.UpdateInquiryByUserRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryStatusByAdminRequest;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
 import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
@@ -65,8 +66,8 @@ public class InquiryController {
     }
 
     @GetMapping("/counts")
-    public ResponseEntity<ApiResponse<Long>> getInquiryCounts() {
-        Long counts = readInquiryUseCase.getInquiryCounts();
+    public ResponseEntity<ApiResponse<InquiryCountsDto>> getInquiryCounts() {
+        InquiryCountsDto counts = readInquiryUseCase.getInquiryCounts();
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, counts);
     }
 

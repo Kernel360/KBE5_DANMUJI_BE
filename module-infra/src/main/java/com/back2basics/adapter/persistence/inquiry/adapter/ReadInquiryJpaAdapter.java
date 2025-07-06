@@ -3,6 +3,7 @@ package com.back2basics.adapter.persistence.inquiry.adapter;
 import com.back2basics.adapter.persistence.inquiry.InquiryEntityRepository;
 import com.back2basics.adapter.persistence.inquiry.InquiryMapper;
 import com.back2basics.inquiry.model.Inquiry;
+import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import java.util.List;
 import java.util.Optional;
@@ -43,8 +44,8 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
     }
 
     @Override
-    public Long getInquiryCounts() {
-        return inquiryEntityRepository
+    public InquiryCountsDto getInquiryCounts() {
+        return inquiryEntityRepository.getInquiryCounts();
     }
 
 }

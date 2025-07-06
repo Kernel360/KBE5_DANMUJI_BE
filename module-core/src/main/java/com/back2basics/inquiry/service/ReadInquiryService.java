@@ -2,6 +2,7 @@ package com.back2basics.inquiry.service;
 
 import com.back2basics.infra.validator.InquiryValidator;
 import com.back2basics.inquiry.model.Inquiry;
+import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
@@ -89,8 +90,8 @@ public class ReadInquiryService implements ReadInquiryUseCase {
     }
 
     @Override
-    public Long getInquiryCounts() {
-        return readInquiryPort.
+    public InquiryCountsDto getInquiryCounts() {
+        return readInquiryPort.getInquiryCounts();
     }
 
 }
