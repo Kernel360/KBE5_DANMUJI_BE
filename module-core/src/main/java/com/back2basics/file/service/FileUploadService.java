@@ -16,7 +16,7 @@ public class FileUploadService {
 
     private final S3Util s3Util;
 
-    public List<File> upload(List<MultipartFile> multipartFiles, Long referenceId)
+    public List<File> upload(List<MultipartFile> multipartFiles, Long referenceId, ContentType contentType)
         throws IOException {
         List<File> fileModels = new ArrayList<>();
 
@@ -31,7 +31,7 @@ public class FileUploadService {
 
             fileModels.add(File.create(
                 null,
-                ContentType.valueOf(multipartFile.getContentType()),
+                contentType,
                 referenceId,
                 multipartFile.getOriginalFilename(),
                 fileUrl,

@@ -5,7 +5,7 @@ import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.out.ReadCompanyPort;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.company.service.result.ReadRecentCompanyResult;
-import com.back2basics.infra.validation.validator.CompanyValidator;
+import com.back2basics.infra.validator.CompanyValidator;
 import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserListResult;
 import com.back2basics.user.service.result.UserSummaryResult;

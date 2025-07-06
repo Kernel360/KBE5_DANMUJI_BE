@@ -9,7 +9,7 @@
 //import com.back2basics.project.port.out.ProjectRepositoryPort;
 //import com.back2basics.project.port.in.command.ProjectCreateCommand;
 //import com.back2basics.project.port.in.command.ProjectUpdateCommand;
-//import com.back2basics.infra.validation.validator.ProjectValidator;
+//import com.back2basics.infra.validation.ProjectValidator;
 //import com.back2basics.project.service.result.ProjectGetResult;
 //import com.back2basics.project.service.result.ProjectUpdateResult;
 //import java.util.List;

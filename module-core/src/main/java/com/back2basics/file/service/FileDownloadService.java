@@ -6,7 +6,7 @@ import com.back2basics.file.port.out.FilePresignedUrlPort;
 import com.back2basics.file.port.out.FileReadPort;
 import com.back2basics.infra.s3.MimeTypeUtils;
 import com.back2basics.infra.s3.S3Util;
-import com.back2basics.infra.validation.validator.FileValidator;
+import com.back2basics.infra.validator.FileValidator;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +29,7 @@ public class FileDownloadService implements FileDownloadUseCase {
     public FileDownloadResult downloadFile(Long userId, Long referenceId, Long fileId)
         throws IOException {
 
-        // fileValidator.validateDownloadPermission(userId, postId);
+        fileValidator.validateDownloadPermission(userId, referenceId);
         File file = fileReadPort.getFileById(fileId);
 
         String key = extractKeyFromUrl(file.getFileUrl());

@@ -10,6 +10,7 @@ import static com.back2basics.domain.project.controller.code.ProjectResponseCode
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_UPDATE_SUCCESS;
 
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
+import com.back2basics.domain.project.dto.request.ProjectSearchRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
 import com.back2basics.domain.project.dto.response.ProjectCountResponse;
 import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
@@ -22,6 +23,7 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
+import com.back2basics.project.port.in.SearchProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
 import com.back2basics.project.service.result.ProjectCountResult;
@@ -39,6 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -46,6 +49,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -63,6 +67,7 @@ public class ProjectController {
     private final UpdateProjectUseCase updateProjectUseCase;
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
+    private final SearchProjectUseCase searchProjectUseCase;
     private final UserQueryPort userQueryPort;
 
     // 생성
@@ -96,23 +101,20 @@ public class ProjectController {
     }
 
     // 검색 프로젝트 조회
-    // todo: 필터링 조건 추가
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> searchProjects(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestParam(required = false) String keyword,
-        @PageableDefault(
-            page = 0, size = 10, sort = "createdAt", direction = Direction.DESC
-        )
-        Pageable pageable) {
+        @ModelAttribute ProjectSearchRequest request,
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         User user = userQueryPort.findById(customUserDetails.getId());
         Page<ProjectListResult> result = null;
+        Pageable pageable = PageRequest.of(page, size);
 
         if (user.getRole() == Role.USER) {
-            result = readProjectUseCase.searchUserProjects(user.getId(), keyword,
+            result = searchProjectUseCase.searchUserProjects(user.getId(), request.toCommand(),
                 pageable);
         } else if (user.getRole() == Role.ADMIN) {
-            result = readProjectUseCase.searchProjects(keyword, pageable);
+            result = searchProjectUseCase.searchProjects(request.toCommand(), pageable);
         }
         Page<ProjectListResponse> response = Objects.requireNonNull(result)
             .map(ProjectListResponse::toResponse);

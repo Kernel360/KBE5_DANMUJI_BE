@@ -2,8 +2,8 @@ package com.back2basics.project.service;
 
 import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import com.back2basics.company.model.CompanyType;
-import com.back2basics.infra.validation.validator.ProjectValidator;
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.ProjectValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.model.StatusCountProjection;
@@ -35,20 +35,6 @@ public class ReadProjectService implements ReadProjectUseCase {
     @Override
     public Page<ProjectListResult> getAllProjects(Pageable pageable) {
         Page<Project> projects = readProjectPort.findAll(pageable);
-        return projects.map(ProjectListResult::toResult);
-    }
-
-    @Override
-    public Page<ProjectListResult> searchProjects(String keyword, Pageable pageable) {
-        Page<Project> projects = readProjectPort.searchByKeyword(keyword, pageable);
-        return projects.map(ProjectListResult::toResult);
-    }
-
-    @Override
-    public Page<ProjectListResult> searchUserProjects(Long userId, String keyword,
-        Pageable pageable) {
-        Page<Project> projects = readProjectPort.searchByKeywordAndUserId(userId, keyword,
-            pageable);
         return projects.map(ProjectListResult::toResult);
     }
 

@@ -1,6 +1,6 @@
 package com.back2basics.assignment.service.notification;
 
-import com.back2basics.infra.validation.validator.ProjectValidator;
+import com.back2basics.infra.validator.ProjectValidator;
 import com.back2basics.notify.model.NotificationType;
 import com.back2basics.notify.port.in.NotifyUseCase;
 import com.back2basics.notify.port.in.command.SendNotificationCommand;

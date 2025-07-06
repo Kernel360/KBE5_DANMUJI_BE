@@ -14,9 +14,9 @@ import com.back2basics.file.service.FileUploadService;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.s3.dto.PresignedUploadCompleteInfo;
-import com.back2basics.infra.validation.validator.PostValidator;
-import com.back2basics.infra.validation.validator.ProjectValidator;
-import com.back2basics.infra.validation.validator.UserValidator;
+import com.back2basics.infra.validator.PostValidator;
+import com.back2basics.infra.validator.ProjectValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.mention.MentionNotificationSender;
 import java.io.IOException;
 import java.util.List;
@@ -119,7 +119,7 @@ public class PostCreateService implements PostCreateUseCase {
             return;
         }
 
-        List<File> fileModels = fileUploadService.upload(files, postId);
+        List<File> fileModels = fileUploadService.upload(files, postId, ContentType.POST);
         fileSavePort.saveAll(fileModels, postId);
     }
 

@@ -5,7 +5,7 @@ import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.out.DeleteCompanyPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.CompanyValidator;
+import com.back2basics.infra.validator.CompanyValidator;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserCommandPort;
 import com.back2basics.user.port.out.UserQueryPort;

@@ -6,7 +6,7 @@ import com.back2basics.company.port.in.command.CreateCompanyCommand;
 import com.back2basics.company.port.out.CreateCompanyPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.validation.validator.CompanyValidator;
+import com.back2basics.infra.validator.CompanyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

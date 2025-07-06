@@ -29,6 +29,8 @@ import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -192,9 +194,11 @@ public class PostController /*implements PostApiDocs*/ {
             fileId
         );
 
+        String encodedFileName = URLEncoder.encode(result.fileName(), StandardCharsets.UTF_8)
+            .replaceAll("\\+", "%20");
+
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + result.fileName() + "\"")
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFileName)
             .header(HttpHeaders.CONTENT_TYPE, result.mimeType())
             .body(result.bytes());
     }

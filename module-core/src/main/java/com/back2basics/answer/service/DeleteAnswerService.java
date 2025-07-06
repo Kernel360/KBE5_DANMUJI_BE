@@ -4,7 +4,7 @@ import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.in.DeleteAnswerUseCase;
 import com.back2basics.answer.port.out.DeleteAnswerPort;
 import com.back2basics.infra.exception.ForbiddenAccessException;
-import com.back2basics.infra.validation.validator.AnswerValidator;
+import com.back2basics.infra.validator.AnswerValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

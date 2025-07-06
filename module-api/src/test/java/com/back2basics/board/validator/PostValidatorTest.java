@@ -4,13 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
-import com.back2basics.infra.exception.post.PostErrorCode;
-import com.back2basics.infra.exception.post.PostException;
-import com.back2basics.infra.validation.validator.PostValidator;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.model.PostPriority;
 import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.out.PostReadPort;
+import com.back2basics.infra.exception.post.PostErrorCode;
+import com.back2basics.infra.exception.post.PostException;
+import com.back2basics.infra.validator.PostValidator;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
