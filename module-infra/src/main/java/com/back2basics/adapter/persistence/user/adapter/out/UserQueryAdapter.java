@@ -112,4 +112,9 @@ public class UserQueryAdapter implements UserQueryPort {
         return userEntityRepository.findAllByUsernames(usernames).stream()
             .collect(Collectors.toMap(UserEntity::getUsername, UserEntity::getId));
     }
+
+    @Override
+    public Long getUserCounts() {
+        return userEntityRepository.getUserCounts();
+    }
 }

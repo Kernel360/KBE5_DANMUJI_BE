@@ -31,4 +31,7 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("SELECT u FROM UserEntity u WHERE u.username IN :usernames")
     List<UserEntity> findAllByUsernames(List<String> usernames);
+
+    @Query("SELECT COUNT(u) FROM UserEntity u WHERE u.deletedAt IS NULL")
+    Long getUserCounts();
 }

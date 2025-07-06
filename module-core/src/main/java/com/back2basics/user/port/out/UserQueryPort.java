@@ -37,4 +37,6 @@ public interface UserQueryPort {
     List<User> findAllByIds(List<Long> userIds);
 
     Map<String, Long> findUserIdsByUsernames(List<String> usernames);
+
+    Long getUserCounts();
 }

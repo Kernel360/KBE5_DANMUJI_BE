@@ -133,6 +133,12 @@ public class AdminController {
         return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
     }
 
+    @GetMapping("/counts")
+    public ResponseEntity<ApiResponse<Long>> getUserCounts() {
+        Long counts = userQueryUseCase.getUserCounts();
+        return ApiResponse.success(USER_READ_SUCCESS, counts);
+    }
+
     @PutMapping("/{userId}/role/{role}")
     public ResponseEntity<ApiResponse<Void>> updateUserRole(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
