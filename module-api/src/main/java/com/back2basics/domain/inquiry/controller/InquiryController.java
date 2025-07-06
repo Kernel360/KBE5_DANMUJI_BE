@@ -64,6 +64,12 @@ public class InquiryController {
             ReadInquiryResponse.toResponse(result));
     }
 
+    @GetMapping("/counts")
+    public ResponseEntity<ApiResponse<Long>> getInquiryCounts() {
+        Long counts = readInquiryUseCase.getInquiryCounts();
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, counts);
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getAllInquiries(
         @PageableDefault(

@@ -56,16 +56,27 @@ public class ReadCompanyService implements ReadCompanyUseCase {
     }
 
     @Override
-    public List<UserListResult> getUsersInfoByCompanyId(Long companyId) {
+    public Page<UserSummaryResult> getUsersByCompanyId(Long companyId, Pageable pageable) {
         companyValidator.validateCompanyExists(companyId);
-        return userQueryPort.findAllByCompanyId(companyId).stream()
-            .map(UserListResult::from).toList();
+        return userQueryPort.findAllByCompanyId(companyId, pageable).map(UserSummaryResult::from);
+    }
+
+    @Override
+    public Page<UserListResult> getUsersInfoByCompanyId(Long companyId, Pageable pageable) {
+        companyValidator.validateCompanyExists(companyId);
+        return userQueryPort.findAllByCompanyId(companyId, pageable)
+            .map(UserListResult::from);
     }
 
     @Override
     public List<ReadRecentCompanyResult> getRecentCompanies() {
         return readCompanyPort.getRecentCompanies()
             .stream().map(ReadRecentCompanyResult::toResult).toList();
+    }
+
+    @Override
+    public Long getCompanyCounts() {
+        return readCompanyPort.getCompanyCounts();
     }
 
 }

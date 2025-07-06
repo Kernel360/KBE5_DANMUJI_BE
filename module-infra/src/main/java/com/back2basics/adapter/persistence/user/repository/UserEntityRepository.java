@@ -21,6 +21,8 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     List<UserEntity> findAllByCompany_IdAndDeletedAtIsNull(Long companyId);
 
+    Page<UserEntity> findAllByCompany_IdAndDeletedAtIsNull(Long companyId, Pageable pageable);
+
     Page<UserEntity> findAllByDeletedAtIsNull(Pageable pageable);
 
     List<UserEntity> findAllByDeletedAtIsNull();

@@ -15,4 +15,6 @@ public interface ReadInquiryUseCase {
 
     Page<ReadInquiryResult> getMyInquiries(Pageable pageable, Long id);
 
+    Long getInquiryCounts();
+
 }

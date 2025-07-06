@@ -88,4 +88,9 @@ public class ReadInquiryService implements ReadInquiryUseCase {
         return new PageImpl<>(results, pageable, inquiryPage.getTotalElements());
     }
 
+    @Override
+    public Long getInquiryCounts() {
+        return readInquiryPort.
+    }
+
 }

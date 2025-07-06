@@ -42,4 +42,9 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
             .map(inquiryMapper::toDomain);
     }
 
+    @Override
+    public Long getInquiryCounts() {
+        return inquiryEntityRepository
+    }
+
 }
