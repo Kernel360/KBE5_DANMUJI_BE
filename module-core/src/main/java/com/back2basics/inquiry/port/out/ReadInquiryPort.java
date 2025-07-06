@@ -19,4 +19,6 @@ public interface ReadInquiryPort {
 
     InquiryCountsDto getInquiryCounts();
 
+    List<Inquiry> getRecentInquiries();
+
 }

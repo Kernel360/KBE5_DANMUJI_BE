@@ -25,4 +25,5 @@ public interface InquiryEntityRepository extends JpaRepository<InquiryEntity, Lo
         "FROM InquiryEntity i WHERE i.deletedAt IS NULL")
     InquiryCountsDto getInquiryCounts();
 
+    List<InquiryEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 }

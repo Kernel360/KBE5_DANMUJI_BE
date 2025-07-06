@@ -10,6 +10,7 @@ import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryByUserRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryStatusByAdminRequest;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
+import com.back2basics.domain.inquiry.dto.response.ReadRecentInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
@@ -17,6 +18,7 @@ import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.port.in.UpdateInquiryUseCase;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
+import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -110,6 +112,17 @@ public class InquiryController {
             .toList();
 
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, responseList);
+    }
+
+    @GetMapping("/recent-inquiries")
+    public ResponseEntity<ApiResponse<List<ReadRecentInquiryResponse>>> getRecentCompanies(
+    ) {
+        List<ReadRecentInquiryResult> inquiries = readInquiryUseCase.getRecentInquiries();
+
+        List<ReadRecentInquiryResponse> responseList = inquiries.stream()
+            .map(ReadRecentInquiryResponse::toResponse).toList();
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            responseList);
     }
 
     // todo:  의견

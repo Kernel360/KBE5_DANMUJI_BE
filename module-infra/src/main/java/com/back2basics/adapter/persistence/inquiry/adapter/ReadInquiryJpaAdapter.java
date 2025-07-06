@@ -48,4 +48,10 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
         return inquiryEntityRepository.getInquiryCounts();
     }
 
+    @Override
+    public List<Inquiry> getRecentInquiries() {
+        return inquiryEntityRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc()
+            .stream().map(inquiryMapper::toDomain).toList();
+    }
+
 }
