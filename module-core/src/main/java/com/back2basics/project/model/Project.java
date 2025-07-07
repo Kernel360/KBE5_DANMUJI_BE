@@ -8,7 +8,6 @@ import com.back2basics.projectstep.model.ProjectStep;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,13 +43,11 @@ public class Project implements TargetDomain {
 
     private List<Assignment> assignments;
 
-    private int count;
-
     @Builder
     public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate,
         LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
         boolean isDeleted, ProjectStatus projectStatus, String projectCost, List<ProjectStep> steps,
-        List<Assignment> assignments, Integer progress) {
+        List<Assignment> assignments, int progress) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -62,9 +59,9 @@ public class Project implements TargetDomain {
         this.isDeleted = isDeleted;
         this.projectStatus = projectStatus;
         this.projectCost = projectCost;
-        this.steps = new ArrayList<>();
-        this.assignments = new ArrayList<>();
-        this.progress = 0;
+        this.steps = steps;
+        this.assignments = assignments;
+        this.progress = progress;
     }
 
     // todo: 함수 ㄴ, 값만
@@ -76,6 +73,7 @@ public class Project implements TargetDomain {
             .startDate(command.getStartDate())
             .endDate(command.getEndDate())
             .projectStatus(createStatusByDate(command.getEndDate()))
+            .progress(0)
             .build();
     }
 
