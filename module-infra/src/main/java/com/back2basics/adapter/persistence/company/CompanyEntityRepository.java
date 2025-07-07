@@ -33,7 +33,7 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
                c.tel AS tel,
                COUNT(u.id) AS userCount
         FROM CompanyEntity c
-        LEFT JOIN UserEntity u ON u.company.id = c.id
+        LEFT JOIN UserEntity u ON u.company.id = c.id AND u.deletedAt IS NULL
         WHERE c.deletedAt IS NULL AND c.name LIKE %:keyword%
         GROUP BY c.id
         """)
