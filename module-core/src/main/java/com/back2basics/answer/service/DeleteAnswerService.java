@@ -3,6 +3,8 @@ package com.back2basics.answer.service;
 import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.in.DeleteAnswerUseCase;
 import com.back2basics.answer.port.out.DeleteAnswerPort;
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.exception.ForbiddenAccessException;
 import com.back2basics.infra.validator.AnswerValidator;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
 
     private final AnswerValidator answerValidator;
     private final DeleteAnswerPort deleteAnswerPort;
+    private final HistoryLogService historyLogService;
 
     @Override
     public void deleteAnswer(Long userId, Long answerId) {
@@ -25,5 +28,7 @@ public class DeleteAnswerService implements DeleteAnswerUseCase {
 
         answer.markDeleted();
         deleteAnswerPort.softDelete(answer);
+
+        historyLogService.logDeleted(DomainType.INQUIRY, userId, answer, "문의 답변 삭제");
     }
 }
