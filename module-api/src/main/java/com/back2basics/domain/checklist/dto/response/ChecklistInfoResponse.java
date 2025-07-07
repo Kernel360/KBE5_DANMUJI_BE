@@ -5,11 +5,11 @@ import com.back2basics.checklist.service.result.ChecklistInfoResult;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ApprovalInfoResponse(Long id, Long stepId, Long userId, ChecklistStatus status,
-                                   LocalDateTime completedAt) {
+public record ChecklistInfoResponse(Long id, Long stepId, Long userId, ChecklistStatus status,
+                                    LocalDateTime completedAt) {
 
-    public static ApprovalInfoResponse from(ChecklistInfoResult result) {
-        return new ApprovalInfoResponse(
+    public static ChecklistInfoResponse from(ChecklistInfoResult result) {
+        return new ChecklistInfoResponse(
             result.id(),
             result.stepId(),
             result.userId(),
@@ -18,9 +18,9 @@ public record ApprovalInfoResponse(Long id, Long stepId, Long userId, ChecklistS
         );
     }
 
-    public static List<ApprovalInfoResponse> from(List<ChecklistInfoResult> results) {
+    public static List<ChecklistInfoResponse> from(List<ChecklistInfoResult> results) {
         return results.stream()
-            .map(ApprovalInfoResponse::from)
+            .map(ChecklistInfoResponse::from)
             .toList();
     }
 }

@@ -3,7 +3,7 @@ package com.back2basics.checklist.service;
 import com.back2basics.checklist.model.Approval;
 import com.back2basics.checklist.port.in.ReadApprovalUseCase;
 import com.back2basics.checklist.port.out.ApprovalQueryPort;
-import com.back2basics.checklist.service.result.ApprovalResult;
+import com.back2basics.checklist.service.result.ChecklistWithApprovalResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ public class ReadApprovalService implements ReadApprovalUseCase {
     private final ApprovalQueryPort approvalQueryPort;
 
     @Override
-    public List<ApprovalResult> findAllByChecklistId(Long checklistId) {
+    public List<ChecklistWithApprovalResult> findAllByChecklistId(Long checklistId) {
         List<Approval> responses = approvalQueryPort.findApprovalsByChecklistId(
             checklistId);
 
         return responses.stream()
-            .map(response -> new ApprovalResult(
+            .map(response -> new ChecklistWithApprovalResult(
                 response.getId(),
                 response.getChecklistId(),
                 response.getUserId(),
@@ -32,9 +32,9 @@ public class ReadApprovalService implements ReadApprovalUseCase {
     }
 
     @Override
-    public ApprovalResult findById(Long id) {
+    public ChecklistWithApprovalResult findById(Long id) {
         Approval response = approvalQueryPort.findById(id);
-        return new ApprovalResult(
+        return new ChecklistWithApprovalResult(
             response.getId(),
             response.getChecklistId(),
             response.getUserId(),

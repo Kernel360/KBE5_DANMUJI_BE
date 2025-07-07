@@ -2,7 +2,6 @@ package com.back2basics.domain.checklist.controller;
 
 import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_REQUEST_CREATE_SUCCESS;
 import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_REQUEST_READ_ALL_SUCCESS;
-import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_REQUEST_READ_SUCCESS;
 import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_REQUEST_UPDATE_SUCCESS;
 import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_RESPONSE_READ_SUCCESS;
 import static com.back2basics.domain.checklist.controller.code.ChecklistResponseCode.CHECKLIST_RESPONSE_STATUS_READ_SUCCESS;
@@ -14,14 +13,14 @@ import com.back2basics.checklist.port.in.ReadApprovalUseCase;
 import com.back2basics.checklist.port.in.ReadChecklistUseCase;
 import com.back2basics.checklist.port.in.UpdateApprovalUseCase;
 import com.back2basics.checklist.port.in.UpdateChecklistUseCase;
-import com.back2basics.checklist.service.result.ApprovalResult;
 import com.back2basics.checklist.service.result.ChecklistInfoResult;
+import com.back2basics.checklist.service.result.ChecklistWithApprovalResult;
 import com.back2basics.domain.checklist.dto.request.CreateChecklistRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateApprovalRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateChecklistApprovalRequest;
 import com.back2basics.domain.checklist.dto.request.UpdateChecklistRequest;
-import com.back2basics.domain.checklist.dto.response.ApprovalInfoResponse;
-import com.back2basics.domain.checklist.dto.response.ApprovalResponse;
+import com.back2basics.domain.checklist.dto.response.ChecklistInfoResponse;
+import com.back2basics.domain.checklist.dto.response.ChecklistWithApprovalResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
 import java.util.List;
@@ -84,18 +83,20 @@ public class ChecklistController {
 
     // 전체 체크리스트 조회
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ApprovalInfoResponse>>> getRequests() {
+    public ResponseEntity<ApiResponse<List<ChecklistInfoResponse>>> getRequests() {
         List<ChecklistInfoResult> results = readChecklistUseCase.findAll();
         return ApiResponse.success(CHECKLIST_REQUEST_READ_ALL_SUCCESS,
-            ApprovalInfoResponse.from(results));
+            ChecklistInfoResponse.from(results));
     }
 
     // 단건 조회 시 승인 정보 포함
-    @GetMapping("/{checklistId}/info")
-    public ResponseEntity<ApiResponse<List<ApprovalResponse>>> getApprovalsByChecklistId(
+    @GetMapping("/{checklistId}")
+    public ResponseEntity<ApiResponse<List<ChecklistWithApprovalResponse>>> getApprovalsByChecklistId(
         @PathVariable Long checklistId) {
-        List<ApprovalResult> results = readApprovalUseCase.findAllByChecklistId(checklistId);
-        return ApiResponse.success(CHECKLIST_RESPONSE_READ_SUCCESS, ApprovalResponse.from(results));
+        List<ChecklistWithApprovalResult> results = readApprovalUseCase.findAllByChecklistId(
+            checklistId);
+        return ApiResponse.success(CHECKLIST_RESPONSE_READ_SUCCESS,
+            ChecklistWithApprovalResponse.from(results));
     }
 
     // 체크리스트 상태 변경
@@ -124,20 +125,20 @@ public class ChecklistController {
     }
 
     // 필요없어보임
-    @GetMapping("/{checklistId}")
-    public ResponseEntity<ApiResponse<ApprovalInfoResponse>> getRequestDetail(
-        @PathVariable Long checklistId) {
-        ChecklistInfoResult result = readChecklistUseCase.findByChecklistId(checklistId);
-        return ApiResponse.success(CHECKLIST_REQUEST_READ_SUCCESS,
-            ApprovalInfoResponse.from(result));
-    }
+//    @GetMapping("/{checklistId}")
+//    public ResponseEntity<ApiResponse<ApprovalInfoResponse>> getRequestDetail(
+//        @PathVariable Long checklistId) {
+//        ChecklistInfoResult result = readChecklistUseCase.findByChecklistId(checklistId);
+//        return ApiResponse.success(CHECKLIST_REQUEST_READ_SUCCESS,
+//            ApprovalInfoResponse.from(result));
+//    }
 
     // 필요없어보임
     @GetMapping("/response/{approvalId}")
-    public ResponseEntity<ApiResponse<ApprovalResponse>> getResponse(
+    public ResponseEntity<ApiResponse<ChecklistWithApprovalResponse>> getResponse(
         @PathVariable Long approvalId) {
-        ApprovalResult result = readApprovalUseCase.findById(approvalId);
+        ChecklistWithApprovalResult result = readApprovalUseCase.findById(approvalId);
         return ApiResponse.success(CHECKLIST_RESPONSE_STATUS_READ_SUCCESS,
-            ApprovalResponse.from(result));
+            ChecklistWithApprovalResponse.from(result));
     }
 }

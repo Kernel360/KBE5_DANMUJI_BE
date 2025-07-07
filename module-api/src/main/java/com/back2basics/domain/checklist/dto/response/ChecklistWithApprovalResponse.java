@@ -1,11 +1,11 @@
 package com.back2basics.domain.checklist.dto.response;
 
 import com.back2basics.checklist.model.ApprovalStatus;
-import com.back2basics.checklist.service.result.ApprovalResult;
+import com.back2basics.checklist.service.result.ChecklistWithApprovalResult;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ApprovalResponse(
+public record ChecklistWithApprovalResponse(
     Long id,
     Long checklistId,
     Long userId,
@@ -14,8 +14,8 @@ public record ApprovalResponse(
     LocalDateTime respondedAt
 ) {
 
-    public static ApprovalResponse from(ApprovalResult result) {
-        return new ApprovalResponse(
+    public static ChecklistWithApprovalResponse from(ChecklistWithApprovalResult result) {
+        return new ChecklistWithApprovalResponse(
             result.id(),
             result.checklistId(),
             result.userId(),
@@ -25,9 +25,10 @@ public record ApprovalResponse(
         );
     }
 
-    public static List<ApprovalResponse> from(List<ApprovalResult> results) {
+    public static List<ChecklistWithApprovalResponse> from(
+        List<ChecklistWithApprovalResult> results) {
         return results.stream()
-            .map(ApprovalResponse::from)
+            .map(ChecklistWithApprovalResponse::from)
             .toList();
     }
 }
