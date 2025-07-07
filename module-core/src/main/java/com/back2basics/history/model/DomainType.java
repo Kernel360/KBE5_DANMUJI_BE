@@ -1,7 +1,9 @@
 package com.back2basics.history.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
 
+@Getter
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum DomainType {
     POST("게시글"),
@@ -17,9 +19,5 @@ public enum DomainType {
 
     DomainType(String message) {
         this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }
