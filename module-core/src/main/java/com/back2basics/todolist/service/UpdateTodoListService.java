@@ -24,7 +24,7 @@ public class UpdateTodoListService implements UpdateTodoListUseCase {
         TodoList before = TodoList.copyOf(todoList);
         todoList.update(command.content());
 
-        historyLogService.logUpdated(DomainType.CHECK_LIST, loggedInUserId, before, todoList,
+        historyLogService.logUpdated(DomainType.TODOLIST, loggedInUserId, before, todoList,
             "체크리스트 정보 변경");
     }
 
@@ -41,7 +41,7 @@ public class UpdateTodoListService implements UpdateTodoListUseCase {
 
         todoListCommandPort.save(todoList);
 
-        historyLogService.logUpdated(DomainType.CHECK_LIST, loggedInUserId, before, todoList,
+        historyLogService.logUpdated(DomainType.TODOLIST, loggedInUserId, before, todoList,
             "체크리스트 정보 변경");
     }
 }

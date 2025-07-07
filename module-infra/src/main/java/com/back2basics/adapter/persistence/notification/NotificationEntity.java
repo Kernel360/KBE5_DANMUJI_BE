@@ -29,8 +29,8 @@ public class NotificationEntity extends BaseTimeEntity {
     @Column(name = "project_id")
     private Long projectId;
 
-    @Column(name = "post_id")
-    private Long postId;
+    @Column(name = "reference_id")
+    private Long referenceId;
 
     @Column(name = "message")
     private String message;
@@ -42,13 +42,12 @@ public class NotificationEntity extends BaseTimeEntity {
     private NotificationType type;
 
     @Builder
-    public NotificationEntity(Long id, Long clientId, Long projectId, Long postId, String message,
-        NotificationType type,
-        Boolean isRead) {
+    public NotificationEntity(Long id, Long clientId, Long projectId, Long referenceId,
+        String message, NotificationType type, Boolean isRead) {
         this.id = id;
         this.clientId = clientId;
         this.projectId = projectId;
-        this.postId = postId;
+        this.referenceId = referenceId;
         this.message = message;
         this.type = type;
         this.isRead = isRead;
