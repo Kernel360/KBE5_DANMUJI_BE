@@ -20,7 +20,7 @@ public class ChecklistMapper {
         return new Checklist(entity.getId(), entity.getProjectStep().getId(),
             entity.getUser().getId(), entity.getTitle(), entity.getContent(),
             entity.getChecklistStatus(),
-            entity.getRequestedAt(), entity.getCompletedAt(), approvalIds);
+            entity.getRequestedAt(), entity.getCreatedAt(), entity.getCompletedAt(), approvalIds);
     }
 
     public ChecklistEntity toEntity(Checklist request, ProjectStepEntity projectStep,

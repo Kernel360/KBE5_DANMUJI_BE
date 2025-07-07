@@ -16,23 +16,26 @@ public class Approval {
 
     private ApprovalStatus status;
 
+    private final LocalDateTime createdAt;
+
     private LocalDateTime respondedAt;
 
     private Boolean deleted = false;
 
     public Approval(Long id, Long userId, Long checklistId, String message,
-        ApprovalStatus status, LocalDateTime respondedAt) {
+        ApprovalStatus status, LocalDateTime createdAt, LocalDateTime respondedAt) {
         this.id = id;
         this.userId = userId;
         this.checklistId = checklistId;
         this.message = message;
         this.status = status;
+        this.createdAt = createdAt;
         this.respondedAt = respondedAt;
     }
 
     public static Approval create(Long userId, Long checklistId) {
         return new Approval(null, userId, checklistId, null,
-            ApprovalStatus.PENDING, null);
+            ApprovalStatus.PENDING, LocalDateTime.now(), null);
     }
 
     public void updateStatus(String message, ApprovalStatus status) {

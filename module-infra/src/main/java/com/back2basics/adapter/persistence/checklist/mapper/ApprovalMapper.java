@@ -14,7 +14,7 @@ public class ApprovalMapper {
     public Approval toDomain(ApprovalEntity entity) {
         return new Approval(entity.getId(), entity.getUser().getId(),
             entity.getChecklist().getId(), entity.getMessage(), entity.getStatus(),
-            entity.getRespondedAt());
+            entity.getCreatedAt(), entity.getRespondedAt());
     }
 
     public ApprovalEntity toEntity(Approval approval,

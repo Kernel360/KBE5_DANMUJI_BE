@@ -7,6 +7,7 @@ import com.back2basics.checklist.port.out.ApprovalQueryPort;
 import com.back2basics.checklist.port.out.ChecklistQueryPort;
 import com.back2basics.checklist.service.result.ApprovalResult;
 import com.back2basics.checklist.service.result.ChecklistDetailResult;
+import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReadApprovalService implements ReadApprovalUseCase {
 
+    private final UserQueryPort userQueryPort;
     private final ChecklistQueryPort checklistQueryPort;
     private final ApprovalQueryPort approvalQueryPort;
 
@@ -26,8 +28,10 @@ public class ReadApprovalService implements ReadApprovalUseCase {
                 approval.getId(),
                 approval.getChecklistId(),
                 approval.getUserId(),
+                userQueryPort.findById(approval.getUserId()).getName(),
                 approval.getMessage(),
                 approval.getStatus(),
+                approval.getCreatedAt(),
                 approval.getRespondedAt()
             ))
             .toList();
@@ -38,7 +42,9 @@ public class ReadApprovalService implements ReadApprovalUseCase {
             checklist.getId(),
             checklist.getProjectStepId(),
             checklist.getUserId(),
+            userQueryPort.findById(checklist.getUserId()).getName(),
             checklist.getChecklistStatus(),
+            checklist.getCreatedAt(),
             checklist.getCompletedAt(),
             approvalResults
         );
@@ -51,8 +57,10 @@ public class ReadApprovalService implements ReadApprovalUseCase {
             response.getId(),
             response.getChecklistId(),
             response.getUserId(),
+            userQueryPort.findById(response.getUserId()).getName(),
             response.getMessage(),
             response.getStatus(),
+            response.getCreatedAt(),
             response.getRespondedAt());
     }
 }

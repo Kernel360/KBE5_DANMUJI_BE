@@ -9,8 +9,10 @@ public record ApprovalResponse(
     Long id,
     Long checklistId,
     Long userId,
+    String username,
     String message,
     ApprovalStatus status,
+    LocalDateTime createdAt,
     LocalDateTime respondedAt
 ) {
 
@@ -19,8 +21,10 @@ public record ApprovalResponse(
             result.id(),
             result.checklistId(),
             result.userId(),
+            result.username(),
             result.message(),
             result.status(),
+            result.createdAt(),
             result.respondedAt()
         );
     }

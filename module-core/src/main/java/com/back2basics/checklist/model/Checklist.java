@@ -25,12 +25,14 @@ public class Checklist implements TargetDomain {
 
     private final LocalDateTime requestedAt;
 
+    private LocalDateTime createdAt;
+
     private LocalDateTime completedAt;
 
     private List<Long> responseIds;
 
     public Checklist(Long id, Long projectStepId, Long userId, String title, String content,
-        ChecklistStatus checklistStatus, LocalDateTime requestedAt,
+        ChecklistStatus checklistStatus, LocalDateTime createdAt, LocalDateTime requestedAt,
         LocalDateTime completedAt, List<Long> responseIds) {
         this.id = id;
         this.projectStepId = projectStepId;
@@ -38,6 +40,7 @@ public class Checklist implements TargetDomain {
         this.title = title;
         this.content = content;
         this.checklistStatus = checklistStatus;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
         this.requestedAt = requestedAt;
         this.completedAt = completedAt;
         this.responseIds = new ArrayList<>(responseIds != null ? responseIds : List.of());
@@ -46,7 +49,7 @@ public class Checklist implements TargetDomain {
     public static Checklist create(Long projectStepId, Long userId, String title, String content,
         List<Long> responseIds) {
         return new Checklist(null, projectStepId, userId, title, content, ChecklistStatus.PENDING,
-            LocalDateTime.now(), null, responseIds);
+            LocalDateTime.now(), LocalDateTime.now(), null, responseIds);
     }
 
     public void approve() {
@@ -88,6 +91,7 @@ public class Checklist implements TargetDomain {
             original.content,
             original.checklistStatus,
             original.requestedAt,
+            original.createdAt,
             original.completedAt,
             new ArrayList<>(original.responseIds)
         );

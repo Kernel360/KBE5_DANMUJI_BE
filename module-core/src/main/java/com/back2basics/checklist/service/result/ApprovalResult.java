@@ -7,8 +7,10 @@ public record ApprovalResult(
     Long id,
     Long checklistId,
     Long userId,
+    String username,
     String message,
     ApprovalStatus status,
+    LocalDateTime createdAt,
     LocalDateTime respondedAt
 ) {
 
