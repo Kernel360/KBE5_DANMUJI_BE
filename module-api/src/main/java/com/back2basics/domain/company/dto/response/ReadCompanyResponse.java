@@ -21,6 +21,7 @@ public class ReadCompanyResponse {
     private String email;
     private String tel;
     private LocalDateTime createdAt;
+    private int userCount;
 
     public static ReadCompanyResponse toResponse(ReadCompanyResult result) {
         return ReadCompanyResponse.builder()
@@ -34,6 +35,7 @@ public class ReadCompanyResponse {
             .email(result.getEmail())
             .tel(result.getTel())
             .createdAt(result.getCreatedAt())
+            .userCount(result.getUserCount())
             .build();
     }
 
