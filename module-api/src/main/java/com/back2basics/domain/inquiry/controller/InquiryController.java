@@ -73,6 +73,23 @@ public class InquiryController {
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, counts);
     }
 
+//    @GetMapping("/filtering")
+//    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getInquiryFiltering(@RequestParam(required = false) String title,
+//        @RequestParam(required = false) String writer,
+//        @RequestParam(required = false) InquiryStatus status,
+//        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+//        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+//        @PageableDefault(
+//            page = 0,
+//            size = 10,
+//            sort = "id",
+//            direction = Sort.Direction.DESC
+//        )
+//        Pageable pageable) {
+//
+//        return ApiResponse.success(());
+//    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getAllInquiries(
         @PageableDefault(
