@@ -26,7 +26,7 @@ public class CreateInquiryService implements CreateInquiryUseCase {
 
         Inquiry savedInquiry = createInquiryPort.save(inquiry);
 
-        historyLogService.logCreated(DomainType.INQUIRY, id, savedInquiry, "관리자 문의 생성");
+        historyLogService.logCreated(DomainType.INQUIRY, id, savedInquiry, "관리자 문의 신규 등록");
 
         return savedInquiry.getId();
     }

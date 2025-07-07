@@ -28,6 +28,11 @@ public class CompanyValidator {
             .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));
     }
 
+    public Company findCompanyForRestore(Long id) {
+        return readCompanyPort.findByIdForRestore(id)
+            .orElseThrow(() -> new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND));
+    }
+
     public void validateCompanyExists(Long id) {
         if (readCompanyPort.findById(id).isEmpty()) {
             throw new CompanyException(CompanyErrorCode.COMPANY_NOT_FOUND);

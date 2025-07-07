@@ -9,8 +9,8 @@ import com.back2basics.adapter.persistence.projectstep.ProjectStepMapper;
 import com.back2basics.project.model.Project;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -57,8 +57,8 @@ public class ProjectMapper {
             .description(project.getDescription())
             .startDate(project.getStartDate())
             .endDate(project.getEndDate())
-            .deletedAt(project.getDeletedAt())
             .isDeleted(project.isDeleted())
+            .deletedAt(project.getDeletedAt())
             .projectStatus(project.getProjectStatus())
             .projectCost(project.getProjectCost())
             .steps(stepEntities)

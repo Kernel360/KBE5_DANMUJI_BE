@@ -91,4 +91,9 @@ public class ProjectEntity extends BaseTimeEntity {
         this.steps = steps;
         this.assignments = assignments;
     }
+
+    public void restoreProject(){
+        this.deletedAt = null;
+        this.isDeleted = false;
+    }
 }
