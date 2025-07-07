@@ -79,4 +79,9 @@ public class UserQueryService implements UserQueryUseCase {
         return userQueryPort.findByIds(userIds).stream()
             .collect(Collectors.toMap(User::getId, User::getName));
     }
+
+    @Override
+    public Long getUserCounts() {
+        return userQueryPort.getUserCounts();
+    }
 }

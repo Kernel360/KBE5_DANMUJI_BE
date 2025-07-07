@@ -27,7 +27,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -134,14 +133,42 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         return ApiResponse.success(COMPANY_USER_LIST_SUCCESS, responseList);
     }
 
-    @GetMapping("/{companyId}/userLists")
-    public ResponseEntity<ApiResponse<List<UserListResponse>>> getUsersInfoByCompanyId(
-        @PathVariable Long companyId) {
-        List<UserListResponse> responseList = readCompanyUseCase.getUsersInfoByCompanyId(companyId)
-            .stream()
-            .map(UserListResponse::from)
-            .toList();
+    @GetMapping("/{companyId}/company-users")
+    public ResponseEntity<ApiResponse<Page<UserSummaryResponse>>> getUsersByCompanyIdWithPagination(
+        @PathVariable Long companyId,
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "createdAt",
+            direction = Direction.DESC
+        )
+        Pageable pageable) {
+        Page<UserSummaryResponse> responseList = readCompanyUseCase.getUsersByCompanyId(companyId,
+                pageable)
+            .map(UserSummaryResponse::from);
         return ApiResponse.success(COMPANY_USER_LIST_SUCCESS, responseList);
+    }
+
+    @GetMapping("/{companyId}/userLists")
+    public ResponseEntity<ApiResponse<Page<UserListResponse>>> getUsersInfoByCompanyId(
+        @PathVariable Long companyId,
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "createdAt",
+            direction = Direction.DESC
+        )
+        Pageable pageable) {
+        Page<UserListResponse> responseList = readCompanyUseCase.getUsersInfoByCompanyId(companyId,
+                pageable)
+            .map(UserListResponse::from);
+        return ApiResponse.success(COMPANY_USER_LIST_SUCCESS, responseList);
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<ApiResponse<Long>> getCompanyCounts() {
+        Long counts = readCompanyUseCase.getCompanyCounts();
+        return ApiResponse.success(COMPANY_READ_SUCCESS, counts);
     }
 
     @PutMapping("/{companyId}")

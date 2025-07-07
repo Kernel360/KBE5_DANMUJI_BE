@@ -17,4 +17,6 @@ public interface ReadCompanyPort {
     Page<Company> findAll(Pageable pageable);
 
     List<Company> getRecentCompanies();
+
+    Long getCompanyCounts();
 }

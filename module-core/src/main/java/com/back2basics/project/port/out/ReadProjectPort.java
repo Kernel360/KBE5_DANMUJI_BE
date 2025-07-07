@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+//todo: 동일 기능 삭제
 public interface ReadProjectPort {
 
     Optional<Project> findById(Long id);
@@ -31,4 +32,6 @@ public interface ReadProjectPort {
     List<StatusCountProjection> countProjectsByProjectStatus();
 
     List<Project> findByStatus(ProjectStatus status);
+
+    Project findDeletedProject(Long projectId);
 }
