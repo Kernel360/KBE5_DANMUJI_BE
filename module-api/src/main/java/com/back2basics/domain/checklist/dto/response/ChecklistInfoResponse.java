@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record ChecklistInfoResponse(Long id, Long stepId, Long userId, ChecklistStatus status,
-                                    LocalDateTime completedAt) {
+                                    LocalDateTime completedAt
+) {
 
     public static ChecklistInfoResponse from(ChecklistInfoResult result) {
         return new ChecklistInfoResponse(
