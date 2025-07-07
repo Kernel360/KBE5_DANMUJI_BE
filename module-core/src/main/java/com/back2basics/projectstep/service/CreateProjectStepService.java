@@ -26,7 +26,8 @@ public class CreateProjectStepService implements CreateProjectStepUseCase {
     public void createStep(CreateProjectStepCommand command, Long projectId, Long loggedInUserId) {
         projectValidator.findById(projectId);
         Integer maxOrder = readProjectStepPort.findMaxStepOrderByProjectId(projectId);
-        ProjectStep step = ProjectStep.create(projectId, command.getName(), maxOrder + 1,
+        ProjectStep step = ProjectStep.create(projectId, command.getName(),
+            maxOrder != null ? maxOrder + 1 : 1,
             ProjectStepStatus.PENDING);
 
         ProjectStep savedStep = saveProjectStepPort.save(step);

@@ -22,11 +22,12 @@ public class Company implements TargetDomain {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private boolean isDelete;
+    private int userCount;
 
     @Builder
     public Company(Long id, String name, String ceoName, String bio,
         Long bizNo, String zonecode, String address, String email, String tel,
-        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, int userCount) {
         this.id = id;
         this.name = name;
         this.ceoName = ceoName;
@@ -40,6 +41,7 @@ public class Company implements TargetDomain {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.isDelete = false;
+        this.userCount = userCount;
     }
 
     public void update(UpdateCompanyCommand command) {
@@ -74,7 +76,8 @@ public class Company implements TargetDomain {
             .deletedAt(company.getDeletedAt())
             .build();
     }
-    public void restore(){
+
+    public void restore() {
         this.deletedAt = null;
         this.isDelete = false;
     }

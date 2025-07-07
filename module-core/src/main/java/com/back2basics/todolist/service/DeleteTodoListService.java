@@ -20,9 +20,9 @@ public class DeleteTodoListService implements DeleteTodoListUseCase {
     @Override
     public void delete(Long checkListId, Long loggedInUserId) {
         todoListCommandPort.delete(checkListId);
-        
+
         TodoList deletedTodoList = todoListQueryPort.findById(checkListId);
-        historyLogService.logDeleted(DomainType.CHECK_LIST, loggedInUserId, deletedTodoList,
+        historyLogService.logDeleted(DomainType.TODOLIST, loggedInUserId, deletedTodoList,
             "체크리스트 삭제");
     }
 }

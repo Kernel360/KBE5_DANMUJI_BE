@@ -25,7 +25,7 @@ public class User implements TargetDomain {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
-    private Company company;
+    private Company company; // todo: 지우기
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
@@ -115,5 +115,5 @@ public class User implements TargetDomain {
     public Long getId() {
         return this.id;
     }
-    
+
 }

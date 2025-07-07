@@ -21,6 +21,6 @@ public class CreateTodoListService implements CreateTodoListUseCase {
         TodoList todoList = TodoList.create(command.content(), userId);
         TodoList savedTodoList = todoListCommandPort.save(todoList);
 
-        historyLogService.logCreated(DomainType.CHECK_LIST, userId, savedTodoList, "체크리스트 신규 등록");
+        historyLogService.logCreated(DomainType.TODOLIST, userId, savedTodoList, "체크리스트 신규 등록");
     }
 }

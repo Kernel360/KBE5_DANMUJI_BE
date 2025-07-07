@@ -1,6 +1,5 @@
 package com.back2basics.adapter.persistence.todolist.adapter;
 
-import com.back2basics.adapter.persistence.board.post.PostEntityRepository;
 import com.back2basics.adapter.persistence.todolist.entity.TodoListEntity;
 import com.back2basics.adapter.persistence.todolist.mapper.TodoListMapper;
 import com.back2basics.adapter.persistence.todolist.repository.TodoListEntityRepository;
@@ -20,7 +19,6 @@ public class TodoTodoListCommandAdapter implements TodoListCommandPort {
     private final TodoListMapper mapper;
     private final TodoListEntityRepository todoListEntityRepository;
     private final UserEntityRepository userEntityRepository;
-    private final PostEntityRepository postEntityRepository;
 
     @Override
     public TodoList save(TodoList todoList) {
@@ -30,7 +28,7 @@ public class TodoTodoListCommandAdapter implements TodoListCommandPort {
     }
 
     @Override
-    public void delete(Long checkListId) {
-        todoListEntityRepository.deleteById(checkListId);
+    public void delete(Long todoListId) {
+        todoListEntityRepository.deleteById(todoListId);
     }
 }

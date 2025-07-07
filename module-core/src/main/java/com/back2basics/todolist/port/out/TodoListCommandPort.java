@@ -6,5 +6,5 @@ public interface TodoListCommandPort {
 
     TodoList save(TodoList todoList);
 
-    void delete(Long checkListId);
+    void delete(Long todoListId);
 }

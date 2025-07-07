@@ -27,7 +27,7 @@ public class MentionReadAdapter implements ReadMentionPort {
                 notificationEntity.id,
                 notificationEntity.clientId,
                 notificationEntity.projectId,
-                notificationEntity.postId,
+                notificationEntity.referenceId,
                 notificationEntity.message.as("content"),
                 notificationEntity.type,
                 notificationEntity.isRead,
@@ -41,7 +41,8 @@ public class MentionReadAdapter implements ReadMentionPort {
                     NotificationType.MENTIONED,
                     NotificationType.PROJECT_POST_CREATED, NotificationType.COMMENT_POST_CREATED,
                     NotificationType.COMMENT_REPLY_CREATED, NotificationType.POST_REPLY_CREATED,
-                    NotificationType.POST_RESTORED
+                    NotificationType.POST_RESTORED, NotificationType.CHECKLIST_ACCEPTED,
+                    NotificationType.CHECKLIST_REJECTED, NotificationType.CHECKLIST_REQUEST
                 ),
                 notificationEntity.deletedAt.isNull()
             )
