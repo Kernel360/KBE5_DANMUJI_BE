@@ -1,12 +1,13 @@
 package com.back2basics.answer.model;
 
 import com.back2basics.answer.port.in.command.UpdateAnswerCommand;
+import com.back2basics.history.strategy.TargetDomain;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Answer {
+public class Answer implements TargetDomain {
 
     private Long id;
     private Long inquiryId;
@@ -39,6 +40,23 @@ public class Answer {
 
     public void markDeleted() {
         this.isDelete = true;
+    }
+
+    public static Answer copyOf(Answer source) {
+        return Answer.builder()
+            .id(source.getId())
+            .inquiryId(source.getInquiryId())
+            .authorId(source.getAuthorId())
+            .content(source.getContent())
+            .createdAt(source.getCreatedAt())
+            .updatedAt(source.getUpdatedAt())
+            .deletedAt(source.getDeletedAt())
+            .build();
+    }
+
+    @Override
+    public Long getId(){
+        return this.id;
     }
 
 }

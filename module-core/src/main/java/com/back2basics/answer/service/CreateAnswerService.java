@@ -4,11 +4,10 @@ import com.back2basics.answer.model.Answer;
 import com.back2basics.answer.port.in.CreateAnswerUseCase;
 import com.back2basics.answer.port.in.command.CreateAnswerCommand;
 import com.back2basics.answer.port.out.CreateAnswerPort;
-import com.back2basics.infra.validator.AnswerValidator;
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validator.InquiryValidator;
-import com.back2basics.infra.validator.QuestionValidator;
 import com.back2basics.inquiry.model.Inquiry;
-import com.back2basics.user.port.out.UserQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,9 @@ import org.springframework.stereotype.Service;
 public class CreateAnswerService implements CreateAnswerUseCase {
 
     private final CreateAnswerPort createAnswerPort;
-    private final QuestionValidator questionValidator;
-    private final AnswerValidator answerValidator;
-    private final UserQueryPort userQueryPort;
     private final InquiryValidator inquiryValidator;
+    private final HistoryLogService historyLogService;
+
 
     @Override
     public Long createAnswer(Long inquiryId, Long authorId, CreateAnswerCommand command) {
@@ -32,6 +30,7 @@ public class CreateAnswerService implements CreateAnswerUseCase {
             .content(command.getContent())
             .build();
 
+        historyLogService.logCreated(DomainType.INQUIRY, authorId, inquiry, "문의 답변 완료");
         return createAnswerPort.save(answer);
     }
 
