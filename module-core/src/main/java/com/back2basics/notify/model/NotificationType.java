@@ -23,14 +23,9 @@ public enum NotificationType {
 
     MENTIONED("회원님이 언급되었습니다."),
 
-    STEP_APPROVAL_REQUEST("단계 승인 요청이 도착했습니다."),
-    STEP_APPROVAL_ACCEPTED("단계 승인이 완료되었습니다."),
-    STEP_APPROVAL_REJECTED("단계 승인이 거절되었습니다.");
+    CHECKLIST_REQUEST("체크 리스트 승인 요청이 도착했습니다."),
+    CHECKLIST_ACCEPTED("체크 리스트 승인이 완료되었습니다."),
+    CHECKLIST_REJECTED("체크 리스트 승인이 거절되었습니다.");
 
     private final String description;
-
-    // @JsonValue
-    public String getDescription() {
-        return description;
-    }
 }

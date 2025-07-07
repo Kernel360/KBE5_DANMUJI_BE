@@ -21,6 +21,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,8 +50,7 @@ public class NotifyController {
 
     // SSE 연결 및 읽지 않은 알림 전송
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(
-        @CookieValue(value = "accessToken", required = false) String accessToken)
+    public SseEmitter subscribe(@CookieValue(value = "accessToken") String accessToken)
         throws IOException {
         return subscribeNotificationUseCase.subscribe(jwtTokenProvider.getId(accessToken));
     }
@@ -83,7 +83,7 @@ public class NotifyController {
     @GetMapping
     public ResponseEntity<ApiResponse<Page<NotificationResponse>>> getAll(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @PageableDefault Pageable pageable) {
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable) {
         Page<NotificationResult> notifications = notificationQueryUseCase.findByClientId(
             userDetails.getId(), pageable);
         Page<NotificationResponse> responses = notifications.map(NotificationResponse::from);

@@ -9,9 +9,9 @@ public enum DomainType {
     PROJECT("프로젝트"),
     COMPANY("업체"),
     STEP("단계"),
-    APPROVAL_REQUEST("승인 요청"),
+    CHECKLIST("체크리스트"),
     INQUIRY("관리자 문의"),
-    CHECK_LIST("체크리스트");
+    TODOLIST("할일리스트");
 
     private final String message;
 
