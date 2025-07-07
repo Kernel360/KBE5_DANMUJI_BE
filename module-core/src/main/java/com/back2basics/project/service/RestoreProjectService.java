@@ -1,24 +1,33 @@
 package com.back2basics.project.service;
 
+
+import com.back2basics.history.model.DomainType;
+import com.back2basics.history.service.HistoryLogService;
+import com.back2basics.infra.validator.ProjectValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.model.Project;
-import com.back2basics.project.port.in.RestoreProjectUSeCase;
-import com.back2basics.project.port.out.ReadProjectPort;
-import com.back2basics.project.port.out.UpdateProjectPort;
+import com.back2basics.project.port.in.RestoreProjectUseCase;
+import com.back2basics.project.port.out.RestoreProjectPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RestoreProjectService implements RestoreProjectUSeCase {
+public class RestoreProjectService implements RestoreProjectUseCase {
 
-    private final ReadProjectPort readProjectPort;
-    private final UpdateProjectPort updateProjectPort;
+    private final ProjectValidator projectValidator;
+    private final HistoryLogService historyLogService;
+    private final UserValidator userValidator;
+    private final RestoreProjectPort restoreProjectPort;
 
-    // todo: 삭제 프로젝트 확인 valid
     @Override
-    public void restoreProject(Long projectId) {
-        Project project = readProjectPort.findDeletedProject(projectId);
+    public void restoreProject(Long requesterId, Long projectId) {
+        userValidator.isAdmin(requesterId);
+        Project project = projectValidator.findProjectForRestore(projectId);
+
         project.restore();
-        updateProjectPort.update(project);
+        restoreProjectPort.restoreProject(project);
+
+        historyLogService.logRestored(DomainType.PROJECT, requesterId, project, "비활성화 프로젝트 복구");
     }
 }

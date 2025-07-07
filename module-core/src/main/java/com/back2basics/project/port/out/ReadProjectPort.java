@@ -33,5 +33,5 @@ public interface ReadProjectPort {
 
     List<Project> findByStatus(ProjectStatus status);
 
-    Project findDeletedProject(Long projectId);
+    Optional<Project> findDeletedProjectById(Long id);
 }

@@ -1,5 +1,7 @@
 package com.back2basics.adapter.persistence.project.adapter;
 
+import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
+import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_ALREADY_RESTORED;
 import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.project.ProjectEntity;
@@ -10,6 +12,7 @@ import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.model.StatusCountProjection;
 import com.back2basics.project.port.out.ReadProjectPort;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReadProjectAdapter implements ReadProjectPort {
 
+    private final JPAQueryFactory jpaQueryFactory;
     private final ProjectEntityRepository projectEntityRepository;
     private final ProjectMapper projectMapper;
 
@@ -90,7 +94,19 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
-    public Project findDeletedProject(Long projectId) {
-        return projectMapper.toDomain(projectEntityRepository.findByIdAndIsDeletedTrue(projectId));
+    public Optional<Project> findDeletedProjectById(Long projectId) {
+        ProjectEntity entity = jpaQueryFactory
+            .selectFrom(projectEntity)
+            .where(
+                projectEntity.id.eq(projectId),
+                projectEntity.isDeleted.eq(true)
+            )
+            .fetchOne();
+
+        if (entity == null) {
+            throw new ProjectException(PROJECT_ALREADY_RESTORED);
+        }
+
+        return Optional.of(projectMapper.toDomain(entity));
     }
 }

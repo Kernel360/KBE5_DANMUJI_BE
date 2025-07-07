@@ -19,10 +19,16 @@ public class ProjectValidator {
             .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
     }
 
+    public Project findProjectForRestore(Long id) {
+        return port.findDeletedProjectById(id)
+            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+    }
+
     public void validateNotFoundProjectId(Long id) {
         boolean exists = port.existsById(id);
         if (!exists) {
             throw new ProjectException(PROJECT_NOT_FOUND);
         }
     }
+
 }

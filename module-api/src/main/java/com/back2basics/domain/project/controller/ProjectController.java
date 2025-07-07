@@ -24,7 +24,7 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
-import com.back2basics.project.port.in.RestoreProjectUSeCase;
+import com.back2basics.project.port.in.RestoreProjectUseCase;
 import com.back2basics.project.port.in.SearchProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
@@ -70,8 +70,8 @@ public class ProjectController {
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
     private final SearchProjectUseCase searchProjectUseCase;
-    private final RestoreProjectUSeCase restoreProjectUSeCase;
     private final UserQueryPort userQueryPort;
+    private final RestoreProjectUseCase projectRestoreUseCase;
 
     // 생성
     @PostMapping
@@ -158,16 +158,6 @@ public class ProjectController {
         return ApiResponse.success(PROJECT_DELETE_SUCCESS);
     }
 
-    // 복구
-    @PutMapping("/{projectId}/restore")
-    public ResponseEntity<ApiResponse<Void>> restoreProject(
-        @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectId
-    ) {
-        restoreProjectUSeCase.restoreProject(projectId);
-        return ApiResponse.success(PROJECT_RESTORE_SUCCESS);
-    }
-
     // 프로젝트 상태 변경
     @PutMapping("/{projectId}/status")
     public ResponseEntity<ApiResponse<Void>> updateProjectStatus(
@@ -231,5 +221,14 @@ public class ProjectController {
         List<ProjectCountResponse> response = result.stream().map(ProjectCountResponse::toResponse)
             .toList();
         return ApiResponse.success(PROJECT_COUNT_BY_STATUS_SUCCESS, response);
+    }
+
+    @PutMapping("/{projectId}/restore")
+    public ResponseEntity<ApiResponse<Void>> restoreProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId) {
+        Long userId = customUserDetails.getId();
+        projectRestoreUseCase.restoreProject(userId, projectId);
+        return ApiResponse.success(PROJECT_RESTORE_SUCCESS);
     }
 }
