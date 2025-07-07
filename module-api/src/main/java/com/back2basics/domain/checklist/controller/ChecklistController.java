@@ -72,9 +72,16 @@ public class ChecklistController {
     }
 
     // 답변 수정
+    @PutMapping("/approvals/{approvalId}")
+    public ResponseEntity<ApiResponse<Void>> updateApproval(@PathVariable Long approvalId,
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestBody UpdateApprovalRequest request) {
+        updateApprovalUseCase.update(approvalId, userDetails.getId(), request.toCommand());
+        return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
+    }
 
     // 체크리스트 승인자 추가
-    @PutMapping("/approval/add/{checklistId}")
+    @PutMapping("/approvals/add/{checklistId}")
     public ResponseEntity<ApiResponse<Void>> addApprover(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody UpdateChecklistApprovalRequest request) {
@@ -99,15 +106,6 @@ public class ChecklistController {
             checklistId);
         return ApiResponse.success(CHECKLIST_RESPONSE_READ_SUCCESS,
             ChecklistDetailResponse.from(result));
-    }
-
-    // 체크리스트 상태 변경
-    @PutMapping("/{checklistId}/status")
-    public ResponseEntity<ApiResponse<Void>> change(@PathVariable Long checklistId,
-        @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody UpdateApprovalRequest request) {
-        updateApprovalUseCase.change(checklistId, userDetails.getId(), request.toCommand());
-        return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
 
     // 체크리스트 삭제

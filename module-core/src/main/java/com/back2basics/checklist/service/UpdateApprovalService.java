@@ -37,7 +37,7 @@ public class UpdateApprovalService implements UpdateApprovalUseCase {
     private final ReadProjectStepPort readProjectStepPort;
 
     @Override
-    public void change(Long approvalId, Long userId, UpdateApprovalCommand command) {
+    public void update(Long approvalId, Long userId, UpdateApprovalCommand command) {
         approvalValidator.validateApproval(approvalId, userId);
 
         Approval approval = approvalQueryPort.findById(approvalId);
