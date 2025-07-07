@@ -63,4 +63,6 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
     List<StatusCountProjection> countProjectsByStatus();
 
     List<ProjectEntity> findAllByProjectStatusAndDeletedAtIsNullOrderByIdDesc(ProjectStatus status);
+
+    ProjectEntity findByIdAndIsDeletedTrue(Long projectId);
 }

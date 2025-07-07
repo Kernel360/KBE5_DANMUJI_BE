@@ -26,6 +26,8 @@ public interface UserQueryPort {
 
     List<User> findAllByCompanyId(Long companyId);
 
+    Page<User> findAllByCompanyId(Long companyId, Pageable pageable);
+
     List<User> findAllByCompanyIdAndDeletedAtIsNull(Long companyId);
 
     boolean existsById(Long userId);
@@ -35,4 +37,6 @@ public interface UserQueryPort {
     List<User> findAllByIds(List<Long> userIds);
 
     Map<String, Long> findUserIdsByUsernames(List<String> usernames);
+
+    Long getUserCounts();
 }
