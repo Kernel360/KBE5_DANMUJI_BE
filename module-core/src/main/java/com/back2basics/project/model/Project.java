@@ -97,7 +97,6 @@ public class Project implements TargetDomain {
         this.projectStatus = ProjectStatus.IN_PROGRESS;
     }
 
-    // todo: 비활성화 - 복구 분리
     public void softDeleted() {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
@@ -106,6 +105,7 @@ public class Project implements TargetDomain {
     public void restore() {
         this.isDeleted = false;
         this.deletedAt = null;
+        System.out.println("restore call");
     }
 
     public void calculateProgress(int totalStep, int completedStep) {

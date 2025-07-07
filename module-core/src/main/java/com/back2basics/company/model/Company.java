@@ -55,6 +55,7 @@ public class Company implements TargetDomain {
 
     public void markDeleted() {
         this.isDelete = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
     public static Company copyOf(Company company) {
@@ -72,6 +73,10 @@ public class Company implements TargetDomain {
             .updatedAt(company.getUpdatedAt())
             .deletedAt(company.getDeletedAt())
             .build();
+    }
+    public void restore(){
+        this.deletedAt = null;
+        this.isDelete = false;
     }
 
     @Override
