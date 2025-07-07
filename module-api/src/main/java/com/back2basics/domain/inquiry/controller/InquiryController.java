@@ -13,6 +13,7 @@ import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.domain.inquiry.dto.response.ReadRecentInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.inquiry.model.InquiryCountsDto;
+import com.back2basics.inquiry.model.InquirySearchCondition;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
 import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
@@ -73,35 +74,33 @@ public class InquiryController {
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, counts);
     }
 
-//    @GetMapping("/filtering")
-//    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getInquiryFiltering(@RequestParam(required = false) String title,
-//        @RequestParam(required = false) String writer,
-//        @RequestParam(required = false) InquiryStatus status,
-//        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-//        @PageableDefault(
-//            page = 0,
-//            size = 10,
-//            sort = "id",
-//            direction = Sort.Direction.DESC
-//        )
-//        Pageable pageable) {
-//
-//        return ApiResponse.success(());
-//    }
+    @GetMapping("/filtering")
+    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getInquiryFiltering(
+        InquirySearchCondition condition,
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "createdAt",
+            direction = Sort.Direction.DESC
+        )
+        Pageable pageable) {
+        Page<ReadInquiryResult> inquiries = readInquiryUseCase.searchInquiries(condition, pageable);
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            inquiries.map(ReadInquiryResponse::toResponse));
+    }
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getAllInquiries(
         @PageableDefault(
             page = 0,
             size = 10,
-            sort = "id",
+            sort = "createdAt",
             direction = Sort.Direction.DESC
         )
         Pageable pageable) {
-        Page<ReadInquiryResult> inquires = readInquiryUseCase.getAllInquiries(pageable);
+        Page<ReadInquiryResult> inquiries = readInquiryUseCase.getAllInquiries(pageable);
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
-            inquires.map(ReadInquiryResponse::toResponse));
+            inquiries.map(ReadInquiryResponse::toResponse));
     }
 
     @GetMapping("/my")

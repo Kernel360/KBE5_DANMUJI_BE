@@ -2,6 +2,7 @@ package com.back2basics.inquiry.port.out;
 
 import com.back2basics.inquiry.model.Inquiry;
 import com.back2basics.inquiry.model.InquiryCountsDto;
+import com.back2basics.inquiry.model.InquirySearchCondition;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -20,5 +21,7 @@ public interface ReadInquiryPort {
     InquiryCountsDto getInquiryCounts();
 
     List<Inquiry> getRecentInquiries();
+
+    Page<Inquiry> search(InquirySearchCondition condition, Pageable pageable);
 
 }

@@ -1,9 +1,12 @@
 package com.back2basics.adapter.persistence.inquiry.adapter;
 
+import com.back2basics.adapter.persistence.inquiry.InquiryEntity;
 import com.back2basics.adapter.persistence.inquiry.InquiryEntityRepository;
 import com.back2basics.adapter.persistence.inquiry.InquiryMapper;
+import com.back2basics.adapter.persistence.inquiry.InquirySpecifications;
 import com.back2basics.inquiry.model.Inquiry;
 import com.back2basics.inquiry.model.InquiryCountsDto;
+import com.back2basics.inquiry.model.InquirySearchCondition;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +14,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -54,4 +58,19 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
             .stream().map(inquiryMapper::toDomain).toList();
     }
 
+    @Override
+    public Page<Inquiry> search(InquirySearchCondition condition, Pageable pageable) {
+        Specification<InquiryEntity> spec = Specification.where(null);
+
+        spec = spec.and(InquirySpecifications.hasTitle(condition.getTitle()));
+        spec = spec.and(InquirySpecifications.hasAuthorId(condition.getAuthorId()));
+        spec = spec.and(InquirySpecifications.hasStatus(condition.getStatus()));
+        spec = spec.and(InquirySpecifications.betweenCreatedAt(condition.getStartDate(),
+            condition.getEndDate()));
+
+        Page<InquiryEntity> entityPage = inquiryEntityRepository.findAll(spec, pageable);
+
+        // Entity → Domain 변환
+        return entityPage.map(inquiryMapper::toDomain);
+    }
 }

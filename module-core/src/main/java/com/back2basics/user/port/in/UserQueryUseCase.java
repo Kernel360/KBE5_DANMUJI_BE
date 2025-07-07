@@ -4,6 +4,7 @@ import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,6 +21,8 @@ public interface UserQueryUseCase {
     Page<UserSimpleResult> getDeletedUsers(Pageable pageable);
 
     Map<Long, String> getNameByIds(List<Long> userIds);
+
+    Optional<Long> getIdByName(String userName);
 
     String getNameById(Long userId);
 

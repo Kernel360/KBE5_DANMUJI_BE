@@ -3,6 +3,7 @@ package com.back2basics.user.port.out;
 import com.back2basics.user.model.User;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,6 +12,8 @@ public interface UserQueryPort {
     User findByUsername(String username);
 
     User findById(Long userId);
+
+    Optional<Long> findIdByName(String name);
 
     List<User> findByIds(List<Long> ids);
 

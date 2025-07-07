@@ -10,6 +10,7 @@ import com.back2basics.user.model.User;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,11 @@ public class UserQueryAdapter implements UserQueryPort {
     public User findById(Long userId) {
         return userEntityRepository.findById(userId).map(userMapper::toDomain)
             .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+    }
+
+    @Override
+    public Optional<Long> findIdByName(String userName) {
+        return userEntityRepository.findIdByName(userName);
     }
 
     @Override
