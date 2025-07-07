@@ -32,6 +32,7 @@ public class CreateCompanyService implements CreateCompanyUseCase {
             .address(createCompanyCommand.getAddress())
             .email(createCompanyCommand.getEmail())
             .tel(createCompanyCommand.getTel())
+            .userCount(0)
             .build();
 
         Company savedCompany = createCompanyPort.save(company);
