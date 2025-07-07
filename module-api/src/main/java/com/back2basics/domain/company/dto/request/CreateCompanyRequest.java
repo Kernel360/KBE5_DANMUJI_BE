@@ -15,7 +15,7 @@ public class CreateCompanyRequest {
     private String ceoName;
     @CustomNotBlank(message = "회사 소개는 공백일 수 없습니다.")
     private String bio;
-    @Pattern(regexp = "\\d{10}", message = "사업자등록번호는 숫자 10자리여야 합니다.")
+    @Pattern(regexp = "^[1-9]\\d{9}$", message = "사업자등록번호는 숫자 10자리이며, 첫 자리는 1~9여야 합니다.")
     private String bizNo;
     @CustomNotBlank(message = "우편 번호는 공백일 수 없습니다.")
     private String zonecode;
