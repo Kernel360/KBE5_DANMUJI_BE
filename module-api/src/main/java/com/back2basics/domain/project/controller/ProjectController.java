@@ -7,6 +7,7 @@ import static com.back2basics.domain.project.controller.code.ProjectResponseCode
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_ALL_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_BY_STATUS_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_READ_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_RESTORE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_UPDATE_SUCCESS;
 
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
@@ -23,6 +24,7 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.in.ReadProjectUseCase;
+import com.back2basics.project.port.in.RestoreProjectUSeCase;
 import com.back2basics.project.port.in.SearchProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
@@ -68,6 +70,7 @@ public class ProjectController {
     private final ReadProjectUseCase readProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
     private final SearchProjectUseCase searchProjectUseCase;
+    private final RestoreProjectUSeCase restoreProjectUSeCase;
     private final UserQueryPort userQueryPort;
 
     // 생성
@@ -153,6 +156,16 @@ public class ProjectController {
         @PathVariable Long projectId) {
         deleteProjectUseCase.deleteProject(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_DELETE_SUCCESS);
+    }
+
+    // 복구
+    @PutMapping("/{projectId}/restore")
+    public ResponseEntity<ApiResponse<Void>> restoreProject(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long projectId
+    ) {
+        restoreProjectUSeCase.restoreProject(projectId);
+        return ApiResponse.success(PROJECT_RESTORE_SUCCESS);
     }
 
     // 프로젝트 상태 변경

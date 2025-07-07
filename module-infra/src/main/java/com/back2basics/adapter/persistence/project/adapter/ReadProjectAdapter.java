@@ -88,4 +88,9 @@ public class ReadProjectAdapter implements ReadProjectPort {
         return projectEntityRepository.findAllByProjectStatusAndDeletedAtIsNullOrderByIdDesc(status)
             .stream().map(projectMapper::toDomain).toList();
     }
+
+    @Override
+    public Project findDeletedProject(Long projectId) {
+        return projectMapper.toDomain(projectEntityRepository.findByIdAndIsDeletedTrue(projectId));
+    }
 }
