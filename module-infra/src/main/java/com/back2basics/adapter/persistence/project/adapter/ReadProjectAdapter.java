@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.project.adapter;
 
 import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_ALREADY_RESTORED;
+import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
@@ -29,7 +30,11 @@ public class ReadProjectAdapter implements ReadProjectPort {
 
     @Override
     public Project findById(Long id) {
-        return projectMapper.toDomain(projectEntityRepository.findByIdAndIsDeletedFalse(id));
+        ProjectEntity entity = projectEntityRepository.findByIdAndIsDeletedFalse(id);
+        if (entity == null) {
+            throw new ProjectException(PROJECT_NOT_FOUND);
+        }
+        return projectMapper.toDomain(entity);
     }
 
     @Override
@@ -80,6 +85,7 @@ public class ReadProjectAdapter implements ReadProjectPort {
             .stream().map(projectMapper::toDomain).toList();
     }
 
+    //todo: projectId가 없어서 null인 경우에도 PROJECT_ALREADY_RESTORED가 호출 (맞지 않는 에러)
     @Override
     public Optional<Project> findDeletedProjectById(Long projectId) {
         ProjectEntity entity = jpaQueryFactory
