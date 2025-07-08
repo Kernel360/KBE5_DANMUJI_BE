@@ -4,7 +4,6 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.model.StatusCountProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Long> {
 
-    Optional<ProjectEntity> findByIdAndIsDeletedFalse(Long id);
+    ProjectEntity findByIdAndIsDeletedFalse(Long id);
 
     Page<ProjectEntity> findAllByIsDeletedFalse(Pageable pageable);
 

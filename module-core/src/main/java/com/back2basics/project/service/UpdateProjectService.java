@@ -86,7 +86,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
     @Override
     public void changedStatus(Long projectId, Long loggedInUserId) {
-        Project project = readProjectPort.findProjectById(projectId);
+        Project project = projectValidator.findById(projectId);
         Project before = Project.copyOf(project);
 
         if (project.getProjectStatus() == ProjectStatus.IN_PROGRESS) {
@@ -103,7 +103,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     // todo: db 갔다오지말기, 멘토링
     @Override
     public void calculateProgressRate(Long projectId) {
-        Project project = readProjectPort.findProjectById(projectId);
+        Project project = projectValidator.findById(projectId);
         int totalStep = readProjectStepPort.totalStep(projectId);
         int completedStep = readProjectStepPort.totalCompletedStep(projectId);
         project.calculateProgress(totalStep, completedStep);
@@ -113,7 +113,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     // 단계 삭제용 진행률 계산
     @Override
     public void calculateProgressRateByDeleteStep(Long projectId) {
-        Project project = readProjectPort.findProjectById(projectId);
+        Project project = projectValidator.findById(projectId);
         int totalStep = readProjectStepPort.totalStep(projectId);
         int completedStep = readProjectStepPort.totalCompletedStep(projectId);
         project.calculateProgress(totalStep - 1, completedStep);
