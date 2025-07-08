@@ -4,11 +4,11 @@ public class IpHolder {
 
     private static final ThreadLocal<String> ipThreadLocal = new ThreadLocal<>();
 
-    public static void set(String ip) {
+    public static void setIp(String ip) {
         ipThreadLocal.set(ip);
     }
 
-    public static String get() {
+    public static String getIp() {
         return ipThreadLocal.get();
     }
 
