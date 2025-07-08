@@ -5,9 +5,9 @@ import com.back2basics.adapter.persistence.inquiry.InquiryEntityRepository;
 import com.back2basics.adapter.persistence.inquiry.InquiryMapper;
 import com.back2basics.adapter.persistence.inquiry.InquirySpecifications;
 import com.back2basics.inquiry.model.Inquiry;
-import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.model.InquirySearchCondition;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
+import com.back2basics.inquiry.service.result.CountInquiryResult;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +48,7 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
     }
 
     @Override
-    public InquiryCountsDto getInquiryCounts() {
+    public CountInquiryResult getInquiryCounts() {
         return inquiryEntityRepository.getInquiryCounts();
     }
 

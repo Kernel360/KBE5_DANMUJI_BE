@@ -9,15 +9,16 @@ import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode
 import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryByUserRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryStatusByAdminRequest;
+import com.back2basics.domain.inquiry.dto.response.CountInquiryResponse;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.domain.inquiry.dto.response.ReadRecentInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.model.InquirySearchCondition;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
 import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
 import com.back2basics.inquiry.port.in.UpdateInquiryUseCase;
+import com.back2basics.inquiry.service.result.CountInquiryResult;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
 import com.back2basics.security.model.CustomUserDetails;
@@ -69,9 +70,10 @@ public class InquiryController {
     }
 
     @GetMapping("/counts")
-    public ResponseEntity<ApiResponse<InquiryCountsDto>> getInquiryCounts() {
-        InquiryCountsDto counts = readInquiryUseCase.getInquiryCounts();
-        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS, counts);
+    public ResponseEntity<ApiResponse<CountInquiryResponse>> getInquiryCounts() {
+        CountInquiryResult counts = readInquiryUseCase.getInquiryCounts();
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            CountInquiryResponse.toResponse(counts));
     }
 
     @GetMapping("/filtering")

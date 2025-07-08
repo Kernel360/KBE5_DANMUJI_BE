@@ -1,7 +1,7 @@
 package com.back2basics.inquiry.port.in;
 
-import com.back2basics.inquiry.model.InquiryCountsDto;
 import com.back2basics.inquiry.model.InquirySearchCondition;
+import com.back2basics.inquiry.service.result.CountInquiryResult;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
 import java.util.List;
@@ -18,7 +18,7 @@ public interface ReadInquiryUseCase {
 
     Page<ReadInquiryResult> getMyInquiries(Pageable pageable, Long id);
 
-    InquiryCountsDto getInquiryCounts();
+    CountInquiryResult getInquiryCounts();
 
     List<ReadRecentInquiryResult> getRecentInquiries();
 
