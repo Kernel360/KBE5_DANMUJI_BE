@@ -20,6 +20,7 @@ public class IpInterceptor implements HandlerInterceptor {
 
         String ip = ClientUtils.getRemoteIp(request);
         IpHolder.setIp(ip);
+        log.info("========= IpInterceptor에서 IP 주입 : {}", ip);
         return true;
     }
 
@@ -28,6 +29,8 @@ public class IpInterceptor implements HandlerInterceptor {
                                 @NonNull HttpServletResponse response,
                                 @NonNull Object handler,
                                 Exception ex) {
+
+        log.info("========= IpInterceptor에서 ThreadLocal Clear() 호출");
         IpHolder.clear(); // 메모리 누수 방지 -> 요청 완료 후 IP 제거
     }
 }
