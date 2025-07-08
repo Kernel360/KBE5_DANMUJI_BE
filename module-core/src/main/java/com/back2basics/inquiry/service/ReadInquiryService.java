@@ -2,8 +2,8 @@ package com.back2basics.inquiry.service;
 
 import com.back2basics.infra.validator.InquiryValidator;
 import com.back2basics.inquiry.model.Inquiry;
-import com.back2basics.inquiry.model.InquirySearchCondition;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
+import com.back2basics.inquiry.port.in.command.InquirySearchCommand;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import com.back2basics.inquiry.service.result.CountInquiryResult;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
@@ -105,27 +105,35 @@ public class ReadInquiryService implements ReadInquiryUseCase {
     }
 
     @Override
-    public Page<ReadInquiryResult> searchInquiries(InquirySearchCondition condition,
+    public Page<ReadInquiryResult> searchInquiries(InquirySearchCommand command,
         Pageable pageable) {
-        if (StringUtils.hasText(condition.getAuthorName())) {
-            Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(condition.getAuthorName());
+        // 1) authorName → authorId 변환
+        InquirySearchCommand searchCmd = command;   // 기본값
+        if (StringUtils.hasText(command.getAuthorName())) {
+            Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(command.getAuthorName());
             if (authorIdOpt.isEmpty()) {
                 return Page.empty(pageable);
             }
-            condition.setAuthorId(authorIdOpt.get());
+
+            // 🔸 불변 객체 → 복사‑수정
+            searchCmd = command.toBuilder()
+                .authorId(authorIdOpt.get())
+                .build();
         }
 
-        Page<Inquiry> page = readInquiryPort.search(condition, pageable);
+        // 2) 조회
+        Page<Inquiry> page = readInquiryPort.search(searchCmd, pageable);
 
-        if (StringUtils.hasText(condition.getAuthorName())) {
-            return page.map(inq -> ReadInquiryResult.toResult(inq, condition.getAuthorName()));
+        // 3) 결과 매핑
+        if (StringUtils.hasText(command.getAuthorName())) {
+            return page.map(inq -> ReadInquiryResult.toResult(inq, command.getAuthorName()));
         } else {
-            List<Long> authorIds = page.getContent().stream()
-                .map(Inquiry::getAuthorId)
-                .distinct()
-                .toList();
-            Map<Long, String> idNameMap = userQueryUseCase.getNameByIds(authorIds);
-
+            Map<Long, String> idNameMap = userQueryUseCase.getNameByIds(
+                page.getContent().stream()
+                    .map(Inquiry::getAuthorId)
+                    .distinct()
+                    .toList()
+            );
             return page.map(inq -> ReadInquiryResult.toResult(
                 inq,
                 idNameMap.getOrDefault(inq.getAuthorId(), "알 수 없음")

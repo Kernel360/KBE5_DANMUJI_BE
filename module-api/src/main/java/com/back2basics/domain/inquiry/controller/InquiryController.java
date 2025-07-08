@@ -7,13 +7,13 @@ import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_UPDATE_SUCCESS;
 
 import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
+import com.back2basics.domain.inquiry.dto.request.SearchInquiryRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryByUserRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryStatusByAdminRequest;
 import com.back2basics.domain.inquiry.dto.response.CountInquiryResponse;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.domain.inquiry.dto.response.ReadRecentInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.inquiry.model.InquirySearchCondition;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
 import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
@@ -34,6 +34,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -78,7 +79,7 @@ public class InquiryController {
 
     @GetMapping("/filtering")
     public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getInquiryFiltering(
-        InquirySearchCondition condition,
+        @Valid @ModelAttribute SearchInquiryRequest request,
         @PageableDefault(
             page = 0,
             size = 10,
@@ -86,7 +87,12 @@ public class InquiryController {
             direction = Sort.Direction.DESC
         )
         Pageable pageable) {
-        Page<ReadInquiryResult> inquiries = readInquiryUseCase.searchInquiries(condition, pageable);
+
+        System.out.println("request" + request);
+        System.out.println("request.toCommand() = " + request.toCommand());
+
+        Page<ReadInquiryResult> inquiries = readInquiryUseCase.searchInquiries(request.toCommand(),
+            pageable);
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
             inquiries.map(ReadInquiryResponse::toResponse));
     }

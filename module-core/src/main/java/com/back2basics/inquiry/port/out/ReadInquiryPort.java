@@ -1,7 +1,7 @@
 package com.back2basics.inquiry.port.out;
 
 import com.back2basics.inquiry.model.Inquiry;
-import com.back2basics.inquiry.model.InquirySearchCondition;
+import com.back2basics.inquiry.port.in.command.InquirySearchCommand;
 import com.back2basics.inquiry.service.result.CountInquiryResult;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +22,6 @@ public interface ReadInquiryPort {
 
     List<Inquiry> getRecentInquiries();
 
-    Page<Inquiry> search(InquirySearchCondition condition, Pageable pageable);
+    Page<Inquiry> search(InquirySearchCommand condition, Pageable pageable);
 
 }

@@ -1,6 +1,6 @@
 package com.back2basics.inquiry.port.in;
 
-import com.back2basics.inquiry.model.InquirySearchCondition;
+import com.back2basics.inquiry.port.in.command.InquirySearchCommand;
 import com.back2basics.inquiry.service.result.CountInquiryResult;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
@@ -22,5 +22,5 @@ public interface ReadInquiryUseCase {
 
     List<ReadRecentInquiryResult> getRecentInquiries();
 
-    Page<ReadInquiryResult> searchInquiries(InquirySearchCondition condition, Pageable pageable);
+    Page<ReadInquiryResult> searchInquiries(InquirySearchCommand command, Pageable pageable);
 }

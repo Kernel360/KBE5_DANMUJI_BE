@@ -1,13 +1,16 @@
-package com.back2basics.inquiry.model;
+package com.back2basics.inquiry.port.in.command;
 
+import com.back2basics.inquiry.model.InquiryStatus;
 import java.time.LocalDate;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
-@Setter
-public class InquirySearchCondition {
+@Builder(toBuilder = true)
+@ToString
+public class InquirySearchCommand {
 
     private String title;
     private String authorName;

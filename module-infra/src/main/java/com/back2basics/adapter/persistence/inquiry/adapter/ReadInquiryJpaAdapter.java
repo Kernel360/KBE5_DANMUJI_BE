@@ -5,7 +5,7 @@ import com.back2basics.adapter.persistence.inquiry.InquiryEntityRepository;
 import com.back2basics.adapter.persistence.inquiry.InquiryMapper;
 import com.back2basics.adapter.persistence.inquiry.InquirySpecifications;
 import com.back2basics.inquiry.model.Inquiry;
-import com.back2basics.inquiry.model.InquirySearchCondition;
+import com.back2basics.inquiry.port.in.command.InquirySearchCommand;
 import com.back2basics.inquiry.port.out.ReadInquiryPort;
 import com.back2basics.inquiry.service.result.CountInquiryResult;
 import java.util.List;
@@ -59,7 +59,7 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
     }
 
     @Override
-    public Page<Inquiry> search(InquirySearchCondition condition, Pageable pageable) {
+    public Page<Inquiry> search(InquirySearchCommand condition, Pageable pageable) {
         Specification<InquiryEntity> spec = Specification.where(null);
 
         spec = spec.and(InquirySpecifications.hasTitle(condition.getTitle()));
