@@ -1,6 +1,7 @@
 package com.back2basics.user.port.out;
 
 import com.back2basics.user.model.User;
+import com.back2basics.user.port.in.command.SearchUserCommand;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,4 +45,6 @@ public interface UserQueryPort {
     Map<String, Long> findUserIdsByUsernames(List<String> usernames);
 
     Long getUserCounts();
+
+    Page<User> searchUsers(SearchUserCommand command, Pageable pageable);
 }

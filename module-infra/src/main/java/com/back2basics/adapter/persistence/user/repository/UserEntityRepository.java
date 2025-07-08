@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
+public interface UserEntityRepository extends JpaRepository<UserEntity, Long>,
+    JpaSpecificationExecutor<UserEntity> {
 
     boolean existsByUsername(String username);
 
@@ -41,5 +45,10 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("SELECT DISTINCT u.position FROM UserEntity u WHERE u.deletedAt IS NULL")
     List<String> getUserPositions();
+
+    @Override
+    @EntityGraph(attributePaths = "company")
+        // ★ 이 한 줄이면 끝
+    Page<UserEntity> findAll(Specification<UserEntity> spec, Pageable pageable);
 
 }
