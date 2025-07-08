@@ -63,21 +63,20 @@ public class CreateProjectService implements CreateProjectUseCase {
 
 
     private void assignUsers(Project project, ProjectCreateCommand command) {
-        List<User> devManagers = command.getDevManagerId().stream().map(userQueryPort::findById)
-            .toList();
-        List<User> clientManagers = command.getClientManagerId().stream()
-            .map(userQueryPort::findById).toList();
-        List<User> devUsers = command.getDevUserId().stream().map(userQueryPort::findById).toList();
-        List<User> clientUsers = command.getClientUserId().stream().map(userQueryPort::findById)
-            .toList();
+        List<User> clientUsers = userQueryPort.findByIds(command.getClientUserId());
+        List<User> devUsers = userQueryPort.findByIds(command.getDevUserId());
 
-        List<Assignment> assignments = Assignment.createProjectUser(project, devManagers,
-            clientManagers, devUsers, clientUsers);
+        List<Long> clientCompanyIds = clientUsers.stream().map(User::getCompanyId).toList();
+        List<Long> devCompanyIds = devUsers.stream().map(User::getCompanyId).toList();
+
+        List<Assignment> assignments = Assignment.createProjectUser(project,
+            command.getDevManagerId(), command.getClientManagerId(), command.getDevUserId(),
+            command.getClientUserId(), devCompanyIds, clientCompanyIds);
         saveProjectUserPort.saveAll(assignments);
 
         // 알림을 위한 assignments id 리스트
         List<Long> assignmentIds = assignments.stream()
-            .map(assignment -> assignment.getUser().getId()).toList();
+            .map(Assignment::getUserId).toList();
         assignmentNotificationSender.sendNotification(assignmentIds, project.getId());
     }
 }

@@ -1,5 +1,6 @@
 package com.back2basics.project.service.result;
 
+import com.back2basics.assignment.model.Assignment;
 import com.back2basics.assignment.service.result.ReadAssignmentResult;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.project.model.Project;
@@ -36,12 +37,12 @@ public class ProjectGetResult {
     public static ProjectGetResult toResult(Project project) {
         String clientCompany = project.getAssignments().stream()
             .filter(user -> user.getCompanyType() == CompanyType.CLIENT)
-            .map(user -> user.getCompany().getName())
+            .map(Assignment::getCompanyName)
             .findFirst().orElse(null);
 
         String developerCompany = project.getAssignments().stream()
             .filter(user -> user.getCompanyType() == CompanyType.DEVELOPER)
-            .map(user -> user.getCompany().getName())
+            .map(Assignment::getCompanyName)
             .findFirst().orElse(null);
 
         return ProjectGetResult.builder()
