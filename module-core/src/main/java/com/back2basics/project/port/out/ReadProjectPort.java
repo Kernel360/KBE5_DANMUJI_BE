@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 //todo: 동일 기능 삭제
 public interface ReadProjectPort {
 
-    Optional<Project> findById(Long id);
+    Project findById(Long id);
 
     Project findProjectById(Long id);
 

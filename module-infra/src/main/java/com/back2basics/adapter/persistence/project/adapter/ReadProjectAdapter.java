@@ -29,9 +29,8 @@ public class ReadProjectAdapter implements ReadProjectPort {
     private final ProjectMapper projectMapper;
 
     @Override
-    public Optional<Project> findById(Long id) {
-        return projectEntityRepository.findByIdAndIsDeletedFalse(id)
-            .map(projectMapper::toDomain);
+    public Project findById(Long id) {
+        return projectMapper.toDomain(projectEntityRepository.findByIdAndIsDeletedFalse(id));
     }
 
     @Override
