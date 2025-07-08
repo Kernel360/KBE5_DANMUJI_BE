@@ -6,6 +6,7 @@
 //import java.time.LocalDateTime;
 //import java.util.ArrayList;
 //import java.util.List;
+//import java.util.Random;
 //import java.util.UUID;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
@@ -19,9 +20,11 @@
 //
 //    private final UserEntityRepository userRepository;
 //
+//    private static final Random RANDOM = new Random();
+//
 //    @Override
 //    public void run(String... args) {
-//        int total = 2_000_000;
+//        int total = 200_000;
 //        int batchSize = 10_000;
 //        List<UserEntity> batch = new ArrayList<>();
 //
@@ -30,7 +33,7 @@
 //                // .username("user" + i)
 //                .username(UUID.randomUUID().toString().replace("-", "").substring(0, 12))
 //                .password("pw1234")
-//                .name("사용자" + i)
+//                .name(generateRandomName())
 //                .email("user" + i + "@email.com")
 //                .phone("010-0000-" + String.format("%04d", i % 10000))
 //                .position("Dev")
@@ -51,5 +54,15 @@
 //        if (!batch.isEmpty()) {
 //            userRepository.saveAll(batch);
 //        }
+//    }
+//
+//    private static String generateRandomName() {
+//        int length = 6 + RANDOM.nextInt(3); // 이름 길이: 6~8
+//        StringBuilder name = new StringBuilder();
+//        for (int i = 0; i < length; i++) {
+//            char c = (char) ('a' + RANDOM.nextInt(26));
+//            name.append(i == 0 ? Character.toUpperCase(c) : c); // 첫 글자 대문자
+//        }
+//        return name.toString();
 //    }
 //}
