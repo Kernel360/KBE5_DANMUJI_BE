@@ -4,6 +4,7 @@ import com.back2basics.company.model.Company;
 import com.back2basics.infra.validator.CompanyValidator;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
+import com.back2basics.user.port.in.command.SearchUserCommand;
 import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserPositionResult;
@@ -95,5 +96,10 @@ public class UserQueryService implements UserQueryUseCase {
     @Override
     public Long getUserCounts() {
         return userQueryPort.getUserCounts();
+    }
+
+    @Override
+    public Page<UserInfoResult> searchUsers(SearchUserCommand command, Pageable pageable) {
+        
     }
 }

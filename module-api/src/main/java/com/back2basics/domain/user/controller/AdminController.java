@@ -1,5 +1,6 @@
 package com.back2basics.domain.user.controller;
 
+import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_ALL_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CREATE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_DELETE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_EXISTS_SUCCESS;
@@ -9,6 +10,8 @@ import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_ROLE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_SUCCESS;
 
+import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
+import com.back2basics.domain.user.dto.request.SearchUserRequest;
 import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.domain.user.dto.request.UserUpdateRequest;
 import com.back2basics.domain.user.dto.response.UserCreateResponse;
@@ -31,11 +34,13 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -143,6 +148,23 @@ public class AdminController {
             .map(UserPositionResponse::from)
             .toList();
         return ApiResponse.success(USER_POSITIONS_READ_SUCCESS, responseList);
+    }
+
+    @GetMapping("/filtering")
+    public ResponseEntity<ApiResponse<Page<UserInfoResponse>>> getUserFiltering(
+        @Valid @ModelAttribute SearchUserRequest request,
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "createdAt",
+            direction = Sort.Direction.DESC
+        )
+        Pageable pageable) {
+
+        Page<UserInfoResult> inquiries = readInquiryUseCase.searchInquiries(request.toCommand(),
+            pageable);
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            inquiries.map(ReadInquiryResponse::toResponse));
     }
 
     @GetMapping("/counts")

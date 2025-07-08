@@ -1,5 +1,6 @@
 package com.back2basics.user.port.in;
 
+import com.back2basics.user.port.in.command.SearchUserCommand;
 import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserPositionResult;
 import com.back2basics.user.service.result.UserSimpleResult;
@@ -30,4 +31,6 @@ public interface UserQueryUseCase {
     String getNameById(Long userId);
 
     Long getUserCounts();
+
+    Page<UserInfoResult> searchUsers(SearchUserCommand command, Pageable pageable);
 }
