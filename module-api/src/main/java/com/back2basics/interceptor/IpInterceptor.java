@@ -19,7 +19,7 @@ public class IpInterceptor implements HandlerInterceptor {
                              @NonNull  Object handler) {
 
         String ip = ClientUtils.getRemoteIp(request);
-        IpHolder.set(ip);
+        IpHolder.setIp(ip);
         return true;
     }
 
