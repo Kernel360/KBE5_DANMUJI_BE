@@ -2,7 +2,6 @@ package com.back2basics.adapter.persistence.project.adapter;
 
 import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_ALREADY_RESTORED;
-import static com.back2basics.infra.exception.project.ProjectErrorCode.PROJECT_NOT_FOUND;
 
 import com.back2basics.adapter.persistence.project.ProjectEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntityRepository;
@@ -34,12 +33,6 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
-    public Project findProjectById(Long id) {
-        return projectEntityRepository.findById(id).map(projectMapper::toDomain)
-            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
-    }
-
-    @Override
     public Page<Project> findAll(Pageable pageable) {
         return projectEntityRepository.findAllByIsDeletedFalse(pageable)
             .map(projectMapper::toDomain);
@@ -68,11 +61,6 @@ public class ReadProjectAdapter implements ReadProjectPort {
     public List<Project> getAllProjects() {
         return projectEntityRepository.findAllByIsDeletedFalse().stream()
             .map(projectMapper::toDomain).toList();
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return projectEntityRepository.existsById(id);
     }
 
     @Override
