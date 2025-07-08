@@ -47,7 +47,7 @@ public class ReadProjectService implements ReadProjectUseCase {
 
     @Override
     public ProjectDetailResult getProjectDetails(Long projectId, Long userId) {
-        Project project = projectValidator.findById(projectId);
+        Project project = projectValidator.findAssignmentsProject(projectId, userId);
         UserType userType = assignmentQueryPort.findUserTypeByProjectIdAndUserId(projectId, userId);
         CompanyType companyType = assignmentQueryPort.findCompanyTypeByProjectIdAndUserId(projectId,
             userId);
