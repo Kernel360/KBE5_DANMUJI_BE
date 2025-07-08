@@ -4,12 +4,10 @@ import com.back2basics.inquiry.model.InquiryStatus;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Builder(toBuilder = true)
-@ToString
 public class InquirySearchCommand {
 
     private String title;

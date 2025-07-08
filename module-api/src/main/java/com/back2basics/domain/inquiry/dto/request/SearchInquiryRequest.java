@@ -6,12 +6,10 @@ import jakarta.annotation.Nullable;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
-@ToString
 public class SearchInquiryRequest {
 
     @Nullable

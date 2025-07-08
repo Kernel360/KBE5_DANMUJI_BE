@@ -88,9 +88,6 @@ public class InquiryController {
         )
         Pageable pageable) {
 
-        System.out.println("request" + request);
-        System.out.println("request.toCommand() = " + request.toCommand());
-
         Page<ReadInquiryResult> inquiries = readInquiryUseCase.searchInquiries(request.toCommand(),
             pageable);
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,

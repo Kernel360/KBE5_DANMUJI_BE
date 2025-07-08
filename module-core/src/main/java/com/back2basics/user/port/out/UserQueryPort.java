@@ -21,6 +21,8 @@ public interface UserQueryPort {
 
     List<User> findAll();
 
+    List<String> findAllPositions();
+
     List<User> findAllByDeletedAtIsNull();
 
     Page<User> findAllByDeletedAtIsNull(Pageable pageable);

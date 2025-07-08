@@ -2,6 +2,7 @@ package com.back2basics.domain.company.controller;
 
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_CREATE_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_DELETE_SUCCESS;
+import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_NAME_READ_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_READ_ALL_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_READ_SUCCESS;
 import static com.back2basics.domain.company.controller.code.CompanyResponseCode.COMPANY_RESTORE_SUCCESS;
@@ -14,10 +15,12 @@ import com.back2basics.company.port.in.DeleteCompanyUseCase;
 import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.in.RestoreCompanyUseCase;
 import com.back2basics.company.port.in.UpdateCompanyUseCase;
+import com.back2basics.company.service.result.CompanyNameResult;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.company.service.result.ReadRecentCompanyResult;
 import com.back2basics.domain.company.dto.request.CreateCompanyRequest;
 import com.back2basics.domain.company.dto.request.UpdateCompanyRequest;
+import com.back2basics.domain.company.dto.response.CompanyNameResponse;
 import com.back2basics.domain.company.dto.response.ReadCompanyResponse;
 import com.back2basics.domain.company.dto.response.ReadRecentCompanyResponse;
 import com.back2basics.domain.user.dto.response.UserListResponse;
@@ -81,6 +84,15 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         ReadCompanyResult result = readCompanyUseCase.getCompany(companyId);
         return ApiResponse.success(COMPANY_READ_SUCCESS,
             ReadCompanyResponse.toResponse(result));
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<ApiResponse<List<CompanyNameResponse>>> getCompanyName() {
+        List<CompanyNameResult> resultList = readCompanyUseCase.getAllNames();
+        List<CompanyNameResponse> responseList = resultList.stream()
+            .map(CompanyNameResponse::from)
+            .toList();
+        return ApiResponse.success(COMPANY_NAME_READ_SUCCESS, responseList);
     }
 
     @GetMapping("/search")

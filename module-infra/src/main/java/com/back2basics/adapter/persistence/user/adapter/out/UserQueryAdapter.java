@@ -58,6 +58,11 @@ public class UserQueryAdapter implements UserQueryPort {
     }
 
     @Override
+    public List<String> findAllPositions() {
+        return userEntityRepository.getUserPositions();
+    }
+
+    @Override
     public List<User> findAllByDeletedAtIsNull() {
         return userEntityRepository.findAllByDeletedAtIsNull().stream().map(userMapper::toDomain)
             .toList();

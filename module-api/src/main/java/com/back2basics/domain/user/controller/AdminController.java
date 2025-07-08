@@ -3,6 +3,7 @@ package com.back2basics.domain.user.controller;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_CREATE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_DELETE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_EXISTS_SUCCESS;
+import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_POSITIONS_READ_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_ALL_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_READ_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_ROLE_SUCCESS;
@@ -12,6 +13,7 @@ import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.domain.user.dto.request.UserUpdateRequest;
 import com.back2basics.domain.user.dto.response.UserCreateResponse;
 import com.back2basics.domain.user.dto.response.UserInfoResponse;
+import com.back2basics.domain.user.dto.response.UserPositionResponse;
 import com.back2basics.domain.user.dto.response.UserSimpleResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
@@ -22,6 +24,7 @@ import com.back2basics.user.port.in.UpdateUserUseCase;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.service.result.UserCreateResult;
 import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserPositionResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -131,6 +134,15 @@ public class AdminController {
         List<UserInfoResponse> responseList = resultList.stream().map(UserInfoResponse::from)
             .toList();
         return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
+    }
+
+    @GetMapping("/positions")
+    public ResponseEntity<ApiResponse<List<UserPositionResponse>>> getAllPositions() {
+        List<UserPositionResult> resultList = userQueryUseCase.getAllPositions();
+        List<UserPositionResponse> responseList = resultList.stream()
+            .map(UserPositionResponse::from)
+            .toList();
+        return ApiResponse.success(USER_POSITIONS_READ_SUCCESS, responseList);
     }
 
     @GetMapping("/counts")

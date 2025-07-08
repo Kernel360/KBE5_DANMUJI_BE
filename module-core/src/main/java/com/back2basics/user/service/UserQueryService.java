@@ -6,6 +6,7 @@ import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserPositionResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,11 @@ public class UserQueryService implements UserQueryUseCase {
                 : null;
             return UserInfoResult.of(user, company);
         }).toList();
+    }
+
+    @Override
+    public List<UserPositionResult> getAllPositions() {
+        return userQueryPort.findAllPositions().stream().map(UserPositionResult::from).toList();
     }
 
     @Override

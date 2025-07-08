@@ -39,4 +39,7 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
     @Query("SELECT COUNT(u) FROM UserEntity u WHERE u.deletedAt IS NULL")
     Long getUserCounts();
 
+    @Query("SELECT DISTINCT u.position FROM UserEntity u WHERE u.deletedAt IS NULL")
+    List<String> getUserPositions();
+
 }
