@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ProjectErrorCode implements ErrorCode {
     PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "PJ001", "프로젝트를 찾을 수 없습니다"),
-    // todo: project_user error, response code의 위치
-    PROJECT_USER_NOT_FOUND(HttpStatus.NOT_FOUND, "PJU001", "프로젝트 유저를 찾을 수 없습니다"),
     PROJECT_ALREADY_RESTORED(HttpStatus.BAD_REQUEST, "PJU001", "이미 복구된 프로젝트입니다.");
-
 
 
     private final HttpStatus status;
