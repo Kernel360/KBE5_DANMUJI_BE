@@ -29,15 +29,12 @@ public class ReadProjectAdapter implements ReadProjectPort {
     private final ProjectMapper projectMapper;
 
     @Override
-    public Optional<Project> findById(Long id) {
-        return projectEntityRepository.findByIdAndIsDeletedFalse(id)
-            .map(projectMapper::toDomain);
-    }
-
-    @Override
-    public Project findProjectById(Long id) {
-        return projectEntityRepository.findById(id).map(projectMapper::toDomain)
-            .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
+    public Project findById(Long id) {
+        ProjectEntity entity = projectEntityRepository.findByIdAndIsDeletedFalse(id);
+        if (entity == null) {
+            throw new ProjectException(PROJECT_NOT_FOUND);
+        }
+        return projectMapper.toDomain(entity);
     }
 
     @Override
@@ -72,11 +69,6 @@ public class ReadProjectAdapter implements ReadProjectPort {
     }
 
     @Override
-    public boolean existsById(Long id) {
-        return projectEntityRepository.existsById(id);
-    }
-
-    @Override
     public List<Project> findByStatusAndUserId(Long userId, ProjectStatus status) {
         return projectEntityRepository.findProjectsByUserIdAndStatus(userId, status)
             .stream().map(projectMapper::toDomain).toList();
@@ -93,6 +85,7 @@ public class ReadProjectAdapter implements ReadProjectPort {
             .stream().map(projectMapper::toDomain).toList();
     }
 
+    //todo: projectId가 없어서 null인 경우에도 PROJECT_ALREADY_RESTORED가 호출 (맞지 않는 에러)
     @Override
     public Optional<Project> findDeletedProjectById(Long projectId) {
         ProjectEntity entity = jpaQueryFactory

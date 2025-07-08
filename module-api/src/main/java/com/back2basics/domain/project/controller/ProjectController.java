@@ -104,6 +104,7 @@ public class ProjectController {
     }
 
     // 검색 프로젝트 조회
+    //todo: 키워드, 카테고리 둘 중 하나만 넣었을 때 전체가 출력됨
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> searchProjects(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
