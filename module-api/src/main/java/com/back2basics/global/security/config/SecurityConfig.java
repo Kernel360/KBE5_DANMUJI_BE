@@ -72,7 +72,6 @@ public class SecurityConfig {
                 .accessDeniedHandler(customAccessDeniedHandler)
             )
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterAfter(ipInjectionFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 
