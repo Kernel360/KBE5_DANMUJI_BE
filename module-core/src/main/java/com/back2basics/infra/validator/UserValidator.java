@@ -31,11 +31,14 @@ public class UserValidator {
         throw new UserException(NOT_AUTHORIZED);
     }
 
-    public boolean isAdminAndDeveloper(Long userId, Long projectId) {
+    public void isAdminOrDeveloper(Long userId, Long projectId) {
         CompanyType companyType = assignmentQueryPort.findCompanyTypeByProjectIdAndUserId(projectId,
             userId);
-        if (isAdmin(userId) || companyType == CompanyType.DEVELOPER) {
-            return true;
+        if (companyType == CompanyType.DEVELOPER) {
+            return;
+        }
+        if (isAdmin(userId)) {
+            return;
         }
         throw new UserException(NOT_AUTHORIZED);
     }
