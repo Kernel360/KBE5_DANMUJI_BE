@@ -19,6 +19,7 @@ public enum UserResponseCode implements ResponseCode {
     USER_SEND_MAIL_SUCCESS(HttpStatus.OK, "U207", "사용자 비밀번호 재설정 이메일 발송 완료"),
     USER_EXISTS_SUCCESS(HttpStatus.OK, "U208", "사용자 존재 여부 확인 완료"),
     USER_UPDATE_ROLE_SUCCESS(HttpStatus.OK, "U209", "사용자 역할 업데이트 완료"),
+    USER_POSITIONS_READ_SUCCESS(HttpStatus.OK, "U210", "사용자 직책 조회 완료"),
     ;
 
     private final HttpStatus status;

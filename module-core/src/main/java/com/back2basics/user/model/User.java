@@ -57,9 +57,8 @@ public class User implements TargetDomain {
             .build();
     }
 
-    public void updateUser(String username, String name, String email, String phone,
+    public void updateUser(String name, String email, String phone,
         String position, Long companyId) {
-        this.username = username;
         this.name = name;
         this.email = email;
         this.phone = phone;
