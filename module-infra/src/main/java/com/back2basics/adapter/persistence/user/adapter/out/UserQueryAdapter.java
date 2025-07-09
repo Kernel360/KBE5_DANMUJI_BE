@@ -142,6 +142,6 @@ public class UserQueryAdapter implements UserQueryPort {
 
         Page<UserEntity> entityPage = userEntityRepository.findAll(spec, pageable);
 
-        return entityPage.map(userMapper::toDomain);  // company 포함 도메인으로 변환
+        return entityPage.map(userMapper::toDomain);
     }
 }

@@ -10,7 +10,6 @@ import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_ROLE_SUCCESS;
 import static com.back2basics.domain.user.controller.code.UserResponseCode.USER_UPDATE_SUCCESS;
 
-import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.domain.user.dto.request.SearchUserRequest;
 import com.back2basics.domain.user.dto.request.UserCreateRequest;
 import com.back2basics.domain.user.dto.request.UserUpdateRequest;
@@ -161,10 +160,10 @@ public class AdminController {
         )
         Pageable pageable) {
 
-        Page<UserInfoResult> inquiries = readInquiryUseCase.searchInquiries(request.toCommand(),
+        Page<UserInfoResult> users = userQueryUseCase.searchUsers(request.toCommand(),
             pageable);
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
-            inquiries.map(ReadInquiryResponse::toResponse));
+            users.map(UserInfoResponse::from));
     }
 
     @GetMapping("/counts")

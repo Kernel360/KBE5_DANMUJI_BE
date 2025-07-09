@@ -9,18 +9,29 @@ public class UserSpecifications {
 
     public static Specification<UserEntity> hasCompany(Long companyId) {
         return (root, query, cb) -> {
-            return cb.equal(root.join("company", JoinType.INNER).get("id"), companyId);
+            if (companyId == null) {
+                return null;                      // ← 조건 무시
+            }
+            return cb.equal(root.join("company", JoinType.INNER)     // ← 연관 조인
+                .get("id"), companyId);
         };
     }
 
     public static Specification<UserEntity> hasPosition(String position) {
-        return (root, query, cb) -> cb.equal(root.get("position"), position);
+        return (root, query, cb) -> {
+            if (!StringUtils.hasText(position)) {
+                return null;         // ← 조건 무시
+            }
+            return cb.equal(root.get("position"), position);
+        };
     }
 
-    /**
-     * 이름 정확 일치 (선택)
-     */
     public static Specification<UserEntity> hasExactName(String name) {
-        return StringUtils.hasText(name) ? (root, q, cb) -> cb.equal(root.get("name"), name) : null;
+        return (root, query, cb) -> {
+            if (!StringUtils.hasText(name)) {
+                return null;             // ← 조건 무시
+            }
+            return cb.equal(root.get("name"), name);
+        };
     }
 }

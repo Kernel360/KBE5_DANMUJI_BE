@@ -100,6 +100,12 @@ public class UserQueryService implements UserQueryUseCase {
 
     @Override
     public Page<UserInfoResult> searchUsers(SearchUserCommand command, Pageable pageable) {
-        
+        return userQueryPort.searchUsers(command, pageable)
+            .map(user -> {
+                Company company = user.getCompanyId() != null
+                    ? companyValidator.findCompany(user.getCompanyId())
+                    : null;
+                return UserInfoResult.of(user, company);
+            });
     }
 }
