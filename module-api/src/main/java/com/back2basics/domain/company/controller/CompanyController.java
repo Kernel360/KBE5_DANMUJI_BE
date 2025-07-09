@@ -100,7 +100,7 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         @PageableDefault(
             page = 0,
             size = 10,
-            sort = "createdAt",
+            sort = "id",
             direction = Direction.DESC
         )
         Pageable pageable,
@@ -118,7 +118,7 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         @PageableDefault(
             page = 0,
             size = 10,
-            sort = "createdAt",
+            sort = "id",
             direction = Direction.DESC
         )
         Pageable pageable) {
@@ -154,7 +154,7 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         @PageableDefault(
             page = 0,
             size = 10,
-            sort = "createdAt",
+            sort = "id",
             direction = Direction.DESC
         )
         Pageable pageable) {
@@ -170,7 +170,7 @@ public class CompanyController /*implements CompanyApiDocs*/ {
         @PageableDefault(
             page = 0,
             size = 10,
-            sort = "createdAt",
+            sort = "id",
             direction = Direction.DESC
         )
         Pageable pageable) {
