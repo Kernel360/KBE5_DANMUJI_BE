@@ -1,4 +1,4 @@
-package com.back2basics.board.post.service;
+package com.back2basics.board.post.service.utils;
 
 import com.back2basics.file.model.ContentType;
 import com.back2basics.file.model.File;

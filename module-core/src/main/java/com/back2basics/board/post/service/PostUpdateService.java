@@ -19,14 +19,13 @@ public class PostUpdateService implements PostUpdateUseCase {
     @Override
     public void updatePost(Long userId, String userIp, Long postId,
         PostUpdateCommand command, List<MultipartFile> files) throws IOException {
-        processor.update(userId, userIp, postId, command, files, null);
+        processor.updateWithMultipart(userId, userIp, postId, command, files);
     }
 
     @Override
     public void updatePostWithPresigned(Long userId, String userIp, Long postId,
-        PostUpdateCommand command, List<PresignedUploadCompleteInfo> uploadedFiles)
-        throws IOException {
-        processor.update(userId, userIp, postId, command, null, uploadedFiles);
+        PostUpdateCommand command, List<PresignedUploadCompleteInfo> uploadedFiles) {
+        processor.updateWithPresigned(userId, userIp, postId, command, uploadedFiles);
     }
 //
 //    private final PostUpdatePort postUpdatePort;

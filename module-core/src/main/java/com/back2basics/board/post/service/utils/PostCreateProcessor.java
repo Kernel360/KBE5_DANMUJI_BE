@@ -4,7 +4,6 @@ import com.back2basics.board.link.service.LinkCreateService;
 import com.back2basics.board.post.model.Post;
 import com.back2basics.board.post.port.in.command.PostCreateCommand;
 import com.back2basics.board.post.port.out.PostCreatePort;
-import com.back2basics.board.post.service.PostFileService;
 import com.back2basics.board.post.service.notification.PostNotificationSender;
 import com.back2basics.board.post.service.result.PostCreateResult;
 import com.back2basics.history.model.DomainType;
@@ -25,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class PostCreateProcessor {
 
-    private final PostValidator validator;
+    private final PostValidator postValidator;
     private final ProjectValidator projectValidator;
     private final UserValidator userValidator;
     private final PostCreatePort postCreatePort;
@@ -35,32 +34,44 @@ public class PostCreateProcessor {
     private final MentionNotificationSender mentionNotificationSender;
     private final HistoryLogService historyLogService;
 
-    public PostCreateResult create(Long userId, Long projectId, Long stepId, String userIp,
-        PostCreateCommand command, List<MultipartFile> files, List<PresignedUploadCompleteInfo> uploadedFiles)
-        throws IOException {
+    public PostCreateResult createWithMultipart(Long userId, Long projectId, Long stepId,
+        String userIp, PostCreateCommand command,
+        List<MultipartFile> files) throws IOException {
 
-        userValidator.validateNotFoundUserId(userId);
-        projectValidator.findById(projectId);
-        validator.findParentPost(command.getParentId());
-
+        validate(userId, projectId, command);
         Post post = Post.createFromCommand(command, userId, userIp);
         Post savedPost = postCreatePort.save(post);
 
-        if (files != null) {
-            postFileService.uploadAndSave(files, savedPost.getId());
-        }
-
-        if (uploadedFiles != null) {
-            postFileService.savePresigned(uploadedFiles, savedPost.getId());
-        }
-
-        linkCreateService.createLinks(command.getNewLinks(), savedPost.getId());
-
-        postNotificationSender.sendNotification(userId, savedPost.getId(), command);
-        mentionNotificationSender.notifyMentionedUsers(userId, projectId, savedPost.getId(), post.getContent());
-
-        historyLogService.logCreated(DomainType.POST, userId, savedPost, "게시글 생성");
+        postFileService.uploadAndSave(files, savedPost.getId());
+        handleAfterSave(userId, projectId, savedPost, command);
 
         return PostCreateResult.toResult(savedPost);
+    }
+
+    public PostCreateResult createWithPresigned(Long userId, Long projectId, Long stepId,
+        String userIp, PostCreateCommand command,
+        List<PresignedUploadCompleteInfo> uploadedFiles) {
+
+        validate(userId, projectId, command);
+        Post post = Post.createFromCommand(command, userId, userIp);
+        Post savedPost = postCreatePort.save(post);
+
+        postFileService.savePresigned(uploadedFiles, savedPost.getId());
+        handleAfterSave(userId, projectId, savedPost, command);
+
+        return PostCreateResult.toResult(savedPost);
+    }
+
+    private void validate(Long userId, Long projectId, PostCreateCommand command) {
+        userValidator.validateNotFoundUserId(userId);
+        projectValidator.findById(projectId);
+        postValidator.findParentPost(command.getParentId());
+    }
+
+    private void handleAfterSave(Long userId, Long projectId, Post post, PostCreateCommand command) {
+        linkCreateService.createLinks(command.getNewLinks(), post.getId());
+        postNotificationSender.sendNotification(userId, post.getId(), command);
+        mentionNotificationSender.notifyMentionedUsers(userId, projectId, post.getId(), post.getContent());
+        historyLogService.logCreated(DomainType.POST, userId, post, "게시글 생성");
     }
 }

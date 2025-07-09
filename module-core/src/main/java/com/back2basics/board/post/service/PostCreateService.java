@@ -24,16 +24,15 @@ public class PostCreateService implements PostCreateUseCase {
     public PostCreateResult createPost(Long userId, Long projectId, Long stepId,
         String userIp, PostCreateCommand command, List<MultipartFile> files) throws IOException {
 
-        return processor.create(userId, projectId, stepId, userIp, command, files, null);
+        return processor.createWithMultipart(userId, projectId, stepId, userIp, command, files);
     }
 
     @Override
     @Transactional
     public PostCreateResult createPostWithPresigned(Long userId, Long projectId, Long stepId,
-        String userIp, PostCreateCommand command, List<PresignedUploadCompleteInfo> uploadedFiles)
-        throws IOException {
+        String userIp, PostCreateCommand command, List<PresignedUploadCompleteInfo> uploadedFiles) {
 
-        return processor.create(userId, projectId, stepId, userIp, command, null, uploadedFiles);
+        return processor.createWithPresigned(userId, projectId, stepId, userIp, command, uploadedFiles);
     }
 
 }
