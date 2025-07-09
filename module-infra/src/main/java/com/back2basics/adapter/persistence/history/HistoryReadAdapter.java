@@ -43,10 +43,22 @@ public class HistoryReadAdapter implements HistoryReadPort {
     public Page<HistorySimpleResult> getHistories(Pageable pageable) {
         Query query = new Query()
             .with(pageable)
-            .with(Sort.by(Sort.Direction.DESC, "history_created_at"));
+            .with(Sort.by(Sort.Direction.DESC, "_id"));
+
+        query.fields()
+            .include("_id")
+            .include("history_type")
+            .include("domain_type")
+            .include("domain_id")
+            .include("changed_at")
+            .include("changer_id")
+            .include("changer_name")
+            .include("changer_username")
+            .include("changer_role")
+            .include("message");
 
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
-        long total = mongoTemplate.count(new Query(), HistoryDocument.class);
+        long total = mongoTemplate.count(query, HistoryDocument.class);
 
         List<HistorySimpleResult> results = documents.stream()
             .map(historyMapper::toSimpleResult)
