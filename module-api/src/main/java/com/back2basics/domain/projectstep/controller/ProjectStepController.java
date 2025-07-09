@@ -12,6 +12,7 @@ import com.back2basics.domain.projectstep.dto.request.CreateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.request.UpdateProjectStepRequest;
 import com.back2basics.domain.projectstep.dto.response.ProjectStepResponse;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.projectstep.port.in.CreateProjectStepUseCase;
 import com.back2basics.projectstep.port.in.DeleteProjectStepUseCase;
@@ -46,13 +47,14 @@ public class ProjectStepController {
     private final ReadProjectStepUseCase readProjectStepUseCase;
 
     private final UpdateProjectUseCase updateProjectUseCase;
+    private final UserValidator userValidator;
 
-    //todo: projectId 를 pathVariable - RequestParam ?
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @RequestBody CreateProjectStepRequest request, @RequestParam Long projectId) {
-
+        @RequestBody CreateProjectStepRequest request,
+        @RequestParam Long projectId) {
+        userValidator.isAdminAndDeveloper(customUserDetails.getId(), projectId);
         CreateProjectStepCommand command = request.toCommand();
         createProjectStepUseCase.createStep(command, projectId, customUserDetails.getId());
         updateProjectUseCase.calculateProgressRate(projectId);
@@ -64,9 +66,9 @@ public class ProjectStepController {
     @PutMapping("/{projectId}/reorder")
     public ResponseEntity<ApiResponse<Void>> reorderSteps(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectId,
-        @RequestBody List<Long> stepIdsInNewOrder) {
-
+        @RequestBody List<Long> stepIdsInNewOrder,
+        @PathVariable Long projectId) {
+        userValidator.isAdminAndDeveloper(customUserDetails.getId(), projectId);
         updateProjectStepUseCase.reorderSteps(projectId, stepIdsInNewOrder);
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
@@ -92,11 +94,14 @@ public class ProjectStepController {
     }
 
     // 수정
+    //todo: 프론트에서 projectId 넘기기
     @PutMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> updateStepName(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long stepId, @RequestBody
-        UpdateProjectStepRequest request) {
+        @RequestBody UpdateProjectStepRequest request,
+        @RequestParam Long projectId,
+        @PathVariable Long stepId) {
+        userValidator.isAdminAndDeveloper(customUserDetails.getId(), projectId);
         UpdateProjectStepCommand command = request.toCommand();
         updateProjectStepUseCase.updateStepName(command, stepId, customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
@@ -106,26 +111,36 @@ public class ProjectStepController {
     @DeleteMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> deleteStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long stepId, @RequestParam Long projectId) {
+        @PathVariable Long stepId,
+        @RequestParam Long projectId) {
+        userValidator.isAdminAndDeveloper(customUserDetails.getId(), projectId);
         deleteProjectStepUseCase.softDelete(stepId, customUserDetails.getId());
         updateProjectUseCase.calculateProgressRateByDeleteStep(projectId);
         return ApiResponse.success(STEP_DELETE_SUCCESS);
     }
 
-    // todo: 단계 상태 변경, 진행중 -> 완료 / (취소: 완료 -> 진행중) api 따로?
+    // 단계 상태 변경
     @PutMapping("/{stepId}/status")
-    public ResponseEntity<ApiResponse<Void>> updateStepStatus(@PathVariable Long stepId,
-        @RequestParam Long projectId) {
+    public ResponseEntity<ApiResponse<Void>> updateStepStatus(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @RequestParam Long projectId,
+        @PathVariable Long stepId
+    ) {
+        userValidator.isAdminAndDeveloper(customUserDetails.getId(), projectId);
         updateProjectStepUseCase.updateStepStatus(stepId);
         updateProjectUseCase.calculateProgressRate(projectId);
         return ApiResponse.success(STEP_STATUS_UPDATE_SUCCESS);
     }
 
     // ProjectStepStatus PENDING 으로 초기화
+    //todo: 프론트에서 projectId 넘기기
     @PutMapping("/{stepId}/revert")
-    public ResponseEntity<ApiResponse<Void>> revertStepStatus(@PathVariable Long stepId) {
+    public ResponseEntity<ApiResponse<Void>> revertStepStatus(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @RequestParam Long projectId,
+        @PathVariable Long stepId) {
+        userValidator.isAdminAndDeveloper(customUserDetails.getId(), projectId);
         updateProjectStepUseCase.revertStepStatus(stepId);
         return ApiResponse.success(STEP_STATUS_REVERT_SUCCESS);
     }
-
 }
