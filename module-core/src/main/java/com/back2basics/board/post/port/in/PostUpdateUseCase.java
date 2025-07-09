@@ -22,5 +22,5 @@ public interface PostUpdateUseCase {
         Long postId,
         PostUpdateCommand command,
         List<PresignedUploadCompleteInfo> uploadedFiles
-    );
+    ) throws IOException;
 }

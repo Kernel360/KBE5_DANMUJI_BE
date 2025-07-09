@@ -259,7 +259,7 @@ public class PostController /*implements PostApiDocs*/ {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
         @RequestBody @Valid PostUpdateWithPresignedRequest request
-    ) {
+    ) throws IOException {
         Long userId = customUserDetails.getId();
         String userIp = IpHolder.getIp();
 
