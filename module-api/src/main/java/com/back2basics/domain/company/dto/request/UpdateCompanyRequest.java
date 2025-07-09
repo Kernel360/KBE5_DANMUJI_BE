@@ -26,8 +26,8 @@ public class UpdateCompanyRequest {
     private String email;
     @CustomNotBlank(message = "회사 전화번호는 공백일 수 없습니다.")
     @Pattern(
-        regexp = "^\\d{9,11}$",
-        message = "전화번호는 숫자만 포함하여 9~11자리여야 합니다."
+        regexp = "^\\d{8,11}$",
+        message = "전화번호는 숫자만 포함하여 8~11자리여야 합니다."
     )
     private String tel;
 
