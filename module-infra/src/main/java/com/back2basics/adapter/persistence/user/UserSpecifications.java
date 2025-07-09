@@ -10,9 +10,9 @@ public class UserSpecifications {
     public static Specification<UserEntity> hasCompany(Long companyId) {
         return (root, query, cb) -> {
             if (companyId == null) {
-                return null;                      // ← 조건 무시
+                return null;
             }
-            return cb.equal(root.join("company", JoinType.INNER)     // ← 연관 조인
+            return cb.equal(root.join("company", JoinType.INNER)
                 .get("id"), companyId);
         };
     }
@@ -20,7 +20,7 @@ public class UserSpecifications {
     public static Specification<UserEntity> hasPosition(String position) {
         return (root, query, cb) -> {
             if (!StringUtils.hasText(position)) {
-                return null;         // ← 조건 무시
+                return null;
             }
             return cb.equal(root.get("position"), position);
         };
@@ -29,7 +29,7 @@ public class UserSpecifications {
     public static Specification<UserEntity> hasExactName(String name) {
         return (root, query, cb) -> {
             if (!StringUtils.hasText(name)) {
-                return null;             // ← 조건 무시
+                return null;
             }
             return cb.equal(root.get("name"), name);
         };

@@ -107,24 +107,21 @@ public class ReadInquiryService implements ReadInquiryUseCase {
     @Override
     public Page<ReadInquiryResult> searchInquiries(InquirySearchCommand command,
         Pageable pageable) {
-        // 1) authorName → authorId 변환
-        InquirySearchCommand searchCmd = command;   // 기본값
+
+        InquirySearchCommand searchCmd = command;
         if (StringUtils.hasText(command.getAuthorName())) {
             Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(command.getAuthorName());
             if (authorIdOpt.isEmpty()) {
                 return Page.empty(pageable);
             }
 
-            // 🔸 불변 객체 → 복사‑수정
             searchCmd = command.toBuilder()
                 .authorId(authorIdOpt.get())
                 .build();
         }
 
-        // 2) 조회
         Page<Inquiry> page = readInquiryPort.search(searchCmd, pageable);
 
-        // 3) 결과 매핑
         if (StringUtils.hasText(command.getAuthorName())) {
             return page.map(inq -> ReadInquiryResult.toResult(inq, command.getAuthorName()));
         } else {
