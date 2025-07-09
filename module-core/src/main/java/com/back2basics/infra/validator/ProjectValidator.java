@@ -38,16 +38,17 @@ public class ProjectValidator {
             throw new ProjectException(PROJECT_NOT_FOUND);
         }
 
-        if (userValidator.isAdmin(userId)) {
-            return project;
-        }
-
         boolean exists = project.getAssignments().stream()
             .anyMatch(assignment -> assignment.getUserId().equals(userId));
 
         if (exists) {
             return project;
         }
+
+        if (userValidator.isAdmin(userId)) {
+            return project;
+        }
+
         throw new AssignmentException(NOT_ASSIGNMENT_USER);
     }
 }
