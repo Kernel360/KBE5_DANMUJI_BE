@@ -236,7 +236,7 @@ public class PostController /*implements PostApiDocs*/ {
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPostWithPresigned(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid PostCreateWithPresignedRequest request
-    ) {
+    ) throws IOException {
         Long userId = customUserDetails.getId();
         String userIp = IpHolder.getIp();
 
