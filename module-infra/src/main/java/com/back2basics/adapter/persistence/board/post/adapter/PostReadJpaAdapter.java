@@ -148,7 +148,7 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.projectId.eq(projectId)
                 //postEntity.projectStepId.eq(projectStepId)
             )
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -184,7 +184,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             ))
             .from(postEntity)
             .where(postEntity.deletedAt.isNull())
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .limit(5)
             .fetch();
     }
@@ -219,7 +219,7 @@ public class PostReadJpaAdapter implements PostReadPort {
                         .where(assignmentEntity.user.id.eq(userId))
                 )
             )
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .limit(5)
             .fetch();
 
@@ -258,7 +258,7 @@ public class PostReadJpaAdapter implements PostReadPort {
                         .where(assignmentEntity.user.id.eq(userId))
                 )
             )
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .limit(5)
             .fetch();
 
