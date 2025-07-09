@@ -45,6 +45,18 @@ public class HistoryReadAdapter implements HistoryReadPort {
             .with(pageable)
             .with(Sort.by(Sort.Direction.DESC, "_id"));
 
+        query.fields()
+            .include("_id")
+            .include("history_type")
+            .include("domain_type")
+            .include("domain_id")
+            .include("changed_at")
+            .include("changer_id")
+            .include("changer_name")
+            .include("changer_username")
+            .include("changer_role")
+            .include("message");
+
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
         long total = mongoTemplate.count(query, HistoryDocument.class);
 
