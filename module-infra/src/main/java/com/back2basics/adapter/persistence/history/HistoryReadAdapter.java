@@ -46,7 +46,7 @@ public class HistoryReadAdapter implements HistoryReadPort {
             .with(Sort.by(Sort.Direction.DESC, "_id"));
 
         List<HistoryDocument> documents = mongoTemplate.find(query, HistoryDocument.class);
-        long total = mongoTemplate.count(new Query(), HistoryDocument.class);
+        long total = mongoTemplate.count(query, HistoryDocument.class);
 
         List<HistorySimpleResult> results = documents.stream()
             .map(historyMapper::toSimpleResult)
