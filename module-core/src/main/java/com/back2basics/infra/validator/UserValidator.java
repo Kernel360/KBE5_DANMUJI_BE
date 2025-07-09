@@ -1,8 +1,11 @@
 package com.back2basics.infra.validator;
 
 import static com.back2basics.infra.exception.user.UserErrorCode.DUPLICATE_USERNAME;
+import static com.back2basics.infra.exception.user.UserErrorCode.NOT_AUTHORIZED;
 import static com.back2basics.infra.exception.user.UserErrorCode.USER_NOT_FOUND;
 
+import com.back2basics.assignment.port.out.AssignmentQueryPort;
+import com.back2basics.company.model.CompanyType;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
@@ -16,10 +19,25 @@ import org.springframework.stereotype.Component;
 public class UserValidator {
 
     private final UserQueryPort userQueryPort;
+    private final AssignmentQueryPort assignmentQueryPort;
 
-    public boolean isAdmin(Long userId){
+    public boolean isAdmin(Long userId) {
         User user = userQueryPort.findById(userId);
-        return user.getRole() == Role.ADMIN;
+        boolean isAdmin = user.getRole() == Role.ADMIN;
+
+        if (isAdmin) {
+            return true;
+        }
+        throw new UserException(NOT_AUTHORIZED);
+    }
+
+    public boolean isAdminAndDeveloper(Long userId, Long projectId) {
+        CompanyType companyType = assignmentQueryPort.findCompanyTypeByProjectIdAndUserId(projectId,
+            userId);
+        if (isAdmin(userId) || companyType == CompanyType.DEVELOPER) {
+            return true;
+        }
+        throw new UserException(NOT_AUTHORIZED);
     }
 
     public void validateDuplicateUsername(String username) {
