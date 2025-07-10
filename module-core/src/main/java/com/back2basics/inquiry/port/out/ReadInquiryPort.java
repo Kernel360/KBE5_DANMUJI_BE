@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReadInquiryPort {
 
-    Optional<Inquiry> getInquiry(Long id);
+    Optional<Inquiry> getInquiry(Long id, Long userId);
+
+    Optional<Inquiry> getUsersInquiry(Long id);
 
     List<Inquiry> getAllInquiries();
 

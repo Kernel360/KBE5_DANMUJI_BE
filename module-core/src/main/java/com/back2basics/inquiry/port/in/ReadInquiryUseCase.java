@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReadInquiryUseCase {
 
-    ReadInquiryResult getInquiry(Long id);
+    ReadInquiryResult getInquiry(Long id, Long userId);
+
+    ReadInquiryResult getInquiryAsAdmin(Long id);
 
     List<ReadInquiryResult> getAllInquiries();
 

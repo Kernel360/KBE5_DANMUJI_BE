@@ -14,6 +14,8 @@ public interface InquiryEntityRepository extends JpaRepository<InquiryEntity, Lo
 
     Optional<InquiryEntity> findByIdAndDeletedAtIsNull(Long id);
 
+    Optional<InquiryEntity> findByIdAndAuthorIdAndDeletedAtIsNull(Long id, Long userId);
+
     List<InquiryEntity> findAllByDeletedAtIsNullOrderByCreatedAtDesc();
 
     Page<InquiryEntity> findAllByDeletedAtIsNull(Pageable pageable);
