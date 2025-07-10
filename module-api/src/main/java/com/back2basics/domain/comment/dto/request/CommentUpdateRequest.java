@@ -9,7 +9,7 @@ import lombok.Getter;
 public class CommentUpdateRequest {
 
     @NotBlank(message = "내용을 입력해주세요.")
-    @CustomStringLengthCheck
+    @CustomStringLengthCheck(min = 1, max = 50, message = "댓글 내용은 50자 이하로 입력해주세요")
     private String content;
 
     public CommentUpdateCommand toCommand() {
