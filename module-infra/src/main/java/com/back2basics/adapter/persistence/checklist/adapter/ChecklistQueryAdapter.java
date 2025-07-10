@@ -2,6 +2,7 @@ package com.back2basics.adapter.persistence.checklist.adapter;
 
 import static com.back2basics.infra.exception.checklist.ChecklistErrorCode.CHECKLIST_NOT_FOUND;
 
+import com.back2basics.adapter.persistence.checklist.entity.ChecklistEntity;
 import com.back2basics.adapter.persistence.checklist.mapper.ChecklistMapper;
 import com.back2basics.adapter.persistence.checklist.repository.ChecklistEntityRepository;
 import com.back2basics.checklist.model.Checklist;
@@ -35,5 +36,13 @@ public class ChecklistQueryAdapter implements ChecklistQueryPort {
     @Override
     public boolean existsById(Long checklistId) {
         return checklistEntityRepository.existsById(checklistId);
+    }
+
+    @Override
+    public List<Checklist> findAllByStepId(Long stepId) {
+        List<ChecklistEntity> checklists = checklistEntityRepository.findAllByProjectStepId(stepId);
+        return checklists.stream()
+            .map(mapper::toDomain)
+            .toList();
     }
 }

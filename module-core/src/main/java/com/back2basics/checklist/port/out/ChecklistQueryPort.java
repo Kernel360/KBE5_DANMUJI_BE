@@ -10,4 +10,6 @@ public interface ChecklistQueryPort {
     List<Checklist> findAll();
 
     boolean existsById(Long checklistId);
+
+    List<Checklist> findAllByStepId(Long stepId);
 }

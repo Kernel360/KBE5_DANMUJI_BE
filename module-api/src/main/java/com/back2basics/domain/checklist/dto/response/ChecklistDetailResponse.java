@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record ChecklistDetailResponse(Long id, Long stepId, Long userId, String username,
-                                      ChecklistStatus status, LocalDateTime createdAt,
-                                      LocalDateTime completedAt,
+                                      ChecklistStatus status, String title, String content,
+                                      LocalDateTime createdAt, LocalDateTime completedAt,
                                       List<ApprovalResponse> approvals) {
 
     public static ChecklistDetailResponse from(ChecklistDetailResult result) {
@@ -17,6 +17,8 @@ public record ChecklistDetailResponse(Long id, Long stepId, Long userId, String 
             result.userId(),
             result.username(),
             result.status(),
+            result.title(),
+            result.content(),
             result.createdAt(),
             result.completedAt(),
             ApprovalResponse.from(result.approvals())
