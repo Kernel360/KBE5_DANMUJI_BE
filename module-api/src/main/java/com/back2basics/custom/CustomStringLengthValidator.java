@@ -16,8 +16,7 @@ public class CustomStringLengthValidator implements ConstraintValidator<CustomSt
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        // 해당 커스텀어노테이션만 붙이면 @NotBlank가 적용되도록 null, isEmpty 체크
-        if (value == null || value.trim().isEmpty()) return false;
+        if (value == null) return true; // @NotBlank로 따로 처리하도록 수정 : null은 허용
         int length = value.length();
         return length >= min && length <= max;
     }
