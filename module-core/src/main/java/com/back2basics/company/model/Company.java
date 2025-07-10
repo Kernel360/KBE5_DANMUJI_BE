@@ -74,6 +74,7 @@ public class Company implements TargetDomain {
             .createdAt(company.getCreatedAt())
             .updatedAt(company.getUpdatedAt())
             .deletedAt(company.getDeletedAt())
+            .userCount(company.getUserCount())
             .build();
     }
 

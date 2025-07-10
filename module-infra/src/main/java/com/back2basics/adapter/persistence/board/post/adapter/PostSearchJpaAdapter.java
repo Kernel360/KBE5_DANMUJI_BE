@@ -69,7 +69,7 @@ public class PostSearchJpaAdapter implements PostSearchPort {
                 matchesType(command.getType()),
                 matchesStep(command.getProjectStepId())
             )
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();

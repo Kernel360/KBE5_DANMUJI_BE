@@ -155,7 +155,7 @@ public class AdminController {
         @PageableDefault(
             page = 0,
             size = 10,
-            sort = "createdAt",
+            sort = "id",
             direction = Sort.Direction.DESC
         )
         Pageable pageable) {
