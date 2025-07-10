@@ -91,15 +91,16 @@ public class ChecklistController {
     }
 
     // 전체 체크리스트 조회
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<ChecklistInfoResponse>>> getRequests() {
-        List<ChecklistInfoResult> results = readChecklistUseCase.findAll();
+    @GetMapping("/{stepId}")
+    public ResponseEntity<ApiResponse<List<ChecklistInfoResponse>>> getRequests(
+        @PathVariable Long stepId) {
+        List<ChecklistInfoResult> results = readChecklistUseCase.findAllByStepId(stepId);
         return ApiResponse.success(CHECKLIST_REQUEST_READ_ALL_SUCCESS,
             ChecklistInfoResponse.from(results));
     }
 
     // 단건 조회 시 승인 정보 포함
-    @GetMapping("/{checklistId}")
+    @GetMapping("/{checklistId}/info")
     public ResponseEntity<ApiResponse<ChecklistDetailResponse>> getApprovalsByChecklistId(
         @PathVariable Long checklistId) {
         ChecklistDetailResult result = readApprovalUseCase.findAllByChecklistId(
