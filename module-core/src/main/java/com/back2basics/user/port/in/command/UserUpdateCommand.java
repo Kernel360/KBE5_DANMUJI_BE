@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserUpdateCommand {
 
-    private String username;
     private String name;
     private String email;
     private String phone;
@@ -16,9 +15,8 @@ public class UserUpdateCommand {
     private Long companyId;
 
     @Builder
-    public UserUpdateCommand(String username, String name, String email,
+    public UserUpdateCommand(String name, String email,
         String phone, String position, Long companyId) {
-        this.username = username;
         this.name = name;
         this.email = email;
         this.phone = phone;

@@ -14,11 +14,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProjectValidator {
 
-    private final ReadProjectPort port;
+    private final ReadProjectPort readProjectPort;
     private final UserValidator userValidator;
 
     public Project findById(Long id) {
-        Project project = port.findById(id);
+
+        Project project = readProjectPort.findById(id);
         if (project != null) {
             return project;
         }
@@ -26,27 +27,28 @@ public class ProjectValidator {
     }
 
     public Project findProjectForRestore(Long id) {
-        return port.findDeletedProjectById(id)
+        return readProjectPort.findDeletedProjectById(id)
             .orElseThrow(() -> new ProjectException(PROJECT_NOT_FOUND));
     }
 
     // todo: 관리자 여부 검증, 프로젝트 할당 여부 검증을 메서드로 나눠야 할 지
     public Project findAssignmentsProject(Long projectId, Long userId) {
-        Project project = port.findById(projectId);
+        Project project = readProjectPort.findById(projectId);
         if (project == null) {
             throw new ProjectException(PROJECT_NOT_FOUND);
+        }
+
+        boolean exists = project.getAssignments().stream()
+            .anyMatch(assignment -> assignment.getUserId().equals(userId));
+
+        if (exists) {
+            return project;
         }
 
         if (userValidator.isAdmin(userId)) {
             return project;
         }
 
-        boolean exists = project.getAssignments().stream()
-            .anyMatch(assignment -> assignment.getUser().getId().equals(userId));
-
-        if (exists) {
-            return project;
-        }
         throw new AssignmentException(NOT_ASSIGNMENT_USER);
     }
 }

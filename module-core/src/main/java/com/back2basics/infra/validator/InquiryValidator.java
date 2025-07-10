@@ -13,8 +13,13 @@ public class InquiryValidator {
 
     private final ReadInquiryPort readInquiryPort;
 
-    public Inquiry findInquiry(Long id) {
-        return readInquiryPort.getInquiry(id)
+    public Inquiry findInquiry(Long id, Long userId) {
+        return readInquiryPort.getInquiry(id, userId)
+            .orElseThrow(() -> new InquiryException(InquiryErrorCode.INQUIRY_FOUND_NOT_ALLOWED));
+    }
+
+    public Inquiry findUsersInquiry(Long id) {
+        return readInquiryPort.getUsersInquiry(id)
             .orElseThrow(() -> new InquiryException(InquiryErrorCode.INQUIRY_NOT_FOUND));
     }
 

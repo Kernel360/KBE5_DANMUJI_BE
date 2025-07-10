@@ -13,5 +13,6 @@ public interface PostCreateUseCase {
         PostCreateCommand command, List<MultipartFile> files) throws IOException;
 
     PostCreateResult createPostWithPresigned(Long userId, Long projectId, Long stepId,
-        String userIp, PostCreateCommand command, List<PresignedUploadCompleteInfo> uploadedFiles);
+        String userIp, PostCreateCommand command, List<PresignedUploadCompleteInfo> uploadedFiles)
+        throws IOException;
 }

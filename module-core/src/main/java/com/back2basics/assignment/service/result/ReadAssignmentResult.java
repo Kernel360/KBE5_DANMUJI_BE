@@ -1,7 +1,7 @@
 package com.back2basics.assignment.service.result;
 
-import com.back2basics.company.model.CompanyType;
 import com.back2basics.assignment.model.Assignment;
+import com.back2basics.company.model.CompanyType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,11 +13,11 @@ public class ReadAssignmentResult {
     private String clientCompany;
     private String developerCompany;
 
-    public static ReadAssignmentResult toResult(Assignment user) {
+    public static ReadAssignmentResult toResult(Assignment assignment) {
         return ReadAssignmentResult.builder()
-            .developerCompany(user.getCompany().getName())
-            .clientCompany(user.getCompany().getName())
-            .companyType(user.getCompanyType())
+            .developerCompany(assignment.getCompanyName())
+            .clientCompany(assignment.getCompanyName())
+            .companyType(assignment.getCompanyType())
             .build();
     }
 }

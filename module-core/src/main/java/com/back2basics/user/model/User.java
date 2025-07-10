@@ -1,6 +1,5 @@
 package com.back2basics.user.model;
 
-import com.back2basics.company.model.Company;
 import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.user.port.in.command.UserCreateCommand;
 import java.time.LocalDateTime;
@@ -25,13 +24,11 @@ public class User implements TargetDomain {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
-    private Company company; // todo: 지우기
 
     @Builder
     public User(Long id, String username, String password, String name, String email, String phone,
         String position, Role role, Long companyId, LocalDateTime lastLoginAt,
-        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-        Company company) {
+        LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -45,7 +42,6 @@ public class User implements TargetDomain {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
-        this.company = company;
     }
 
     public static User create(UserCreateCommand command, String encodedPassword) {
@@ -61,9 +57,8 @@ public class User implements TargetDomain {
             .build();
     }
 
-    public void updateUser(String username, String name, String email, String phone,
+    public void updateUser(String name, String email, String phone,
         String position, Long companyId) {
-        this.username = username;
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -107,7 +102,6 @@ public class User implements TargetDomain {
             .createdAt(user.getCreatedAt())
             .updatedAt(user.getUpdatedAt())
             .deletedAt(user.getDeletedAt())
-            .company(user.getCompany())
             .build();
     }
 

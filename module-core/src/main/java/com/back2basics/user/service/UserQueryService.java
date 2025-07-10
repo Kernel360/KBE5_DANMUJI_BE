@@ -4,11 +4,14 @@ import com.back2basics.company.model.Company;
 import com.back2basics.infra.validator.CompanyValidator;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.UserQueryUseCase;
+import com.back2basics.user.port.in.command.SearchUserCommand;
 import com.back2basics.user.port.out.UserQueryPort;
 import com.back2basics.user.service.result.UserInfoResult;
+import com.back2basics.user.service.result.UserPositionResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,6 +43,11 @@ public class UserQueryService implements UserQueryUseCase {
                 : null;
             return UserInfoResult.of(user, company);
         }).toList();
+    }
+
+    @Override
+    public List<UserPositionResult> getAllPositions() {
+        return userQueryPort.findAllPositions().stream().map(UserPositionResult::from).toList();
     }
 
     @Override
@@ -81,7 +89,23 @@ public class UserQueryService implements UserQueryUseCase {
     }
 
     @Override
+    public Optional<Long> getIdByName(String userName) {
+        return userQueryPort.findIdByName(userName);
+    }
+
+    @Override
     public Long getUserCounts() {
         return userQueryPort.getUserCounts();
+    }
+
+    @Override
+    public Page<UserInfoResult> searchUsers(SearchUserCommand command, Pageable pageable) {
+        return userQueryPort.searchUsers(command, pageable)
+            .map(user -> {
+                Company company = user.getCompanyId() != null
+                    ? companyValidator.findCompany(user.getCompanyId())
+                    : null;
+                return UserInfoResult.of(user, company);
+            });
     }
 }

@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 public enum InquiryErrorCode implements ErrorCode {
 
     INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "INQ001", "문의사항을 찾을 수 없습니다."),
-    INQUIRY_DELETE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "INQ002", "자신의 문의사항이 아닙니다.");
+    INQUIRY_FOUND_NOT_ALLOWED(HttpStatus.FORBIDDEN, "INQ002", "자신의 문의사항이 아닙니다."),
+    INQUIRY_DELETE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "INQ003", "자신의 문의사항이 아닙니다.");
 
     private final HttpStatus status;
     private final String code;

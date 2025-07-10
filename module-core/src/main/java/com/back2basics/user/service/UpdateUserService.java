@@ -23,7 +23,7 @@ public class UpdateUserService implements UpdateUserUseCase {
     public void update(Long userId, UserUpdateCommand command, Long loggedInUserId) {
         User user = userQueryPort.findById(userId);
         User beforeUser = User.copyOf(user);
-        user.updateUser(command.getUsername(), command.getName(), command.getEmail(),
+        user.updateUser(command.getName(), command.getEmail(),
             command.getPhone(), command.getPosition(), command.getCompanyId());
 
         userCommandPort.save(user);

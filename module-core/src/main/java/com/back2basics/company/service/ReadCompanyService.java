@@ -3,6 +3,7 @@ package com.back2basics.company.service;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.in.ReadCompanyUseCase;
 import com.back2basics.company.port.out.ReadCompanyPort;
+import com.back2basics.company.service.result.CompanyNameResult;
 import com.back2basics.company.service.result.ReadCompanyResult;
 import com.back2basics.company.service.result.ReadRecentCompanyResult;
 import com.back2basics.infra.validator.CompanyValidator;
@@ -46,6 +47,11 @@ public class ReadCompanyService implements ReadCompanyUseCase {
     public List<ReadCompanyResult> getAllCompanies() {
         return readCompanyPort.getAllCompanies()
             .stream().map(ReadCompanyResult::toResult).toList();
+    }
+
+    @Override
+    public List<CompanyNameResult> getAllNames() {
+        return readCompanyPort.getAllNames();
     }
 
     @Override

@@ -15,7 +15,7 @@ public class UpdateCompanyRequest {
     private String ceoName;
     @CustomNotBlank(message = "회사 소개는 공백일 수 없습니다.")
     private String bio;
-    @Pattern(regexp = "\\d{10}", message = "사업자등록번호는 숫자 10자리여야 합니다.")
+    @Pattern(regexp = "^[1-9]\\d{9}$", message = "사업자등록번호는 숫자 10자리이며, 첫 자리는 1~9여야 합니다.")
     private String bizNo;
     @CustomNotBlank(message = "우편 번호는 공백일 수 없습니다.")
     private String zonecode;
@@ -26,8 +26,8 @@ public class UpdateCompanyRequest {
     private String email;
     @CustomNotBlank(message = "회사 전화번호는 공백일 수 없습니다.")
     @Pattern(
-        regexp = "^\\d{9,11}$",
-        message = "전화번호는 숫자만 포함하여 9~11자리여야 합니다."
+        regexp = "^\\d{8,11}$",
+        message = "전화번호는 숫자만 포함하여 8~11자리여야 합니다."
     )
     private String tel;
 

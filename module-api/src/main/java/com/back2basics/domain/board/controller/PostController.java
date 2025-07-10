@@ -26,6 +26,7 @@ import com.back2basics.file.port.in.FileDownloadUseCase;
 import com.back2basics.file.service.FileDownloadResult;
 import com.back2basics.file.service.FilePresignedUrlResult;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.global.utils.IpHolder;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class PostController /*implements PostApiDocs*/ {
         throws IOException {
 
         Long userId = customUserDetails.getId();
-        String userIp = customUserDetails.getIp();
+        String userIp = IpHolder.getIp();
         PostCreateResult result = createPostUseCase.createPost(
             userId,
             request.getProjectId(),
@@ -133,7 +134,7 @@ public class PostController /*implements PostApiDocs*/ {
         throws IOException {
 
         Long userId = customUserDetails.getId();
-        String userIp = customUserDetails.getIp();
+        String userIp = IpHolder.getIp();
         postUpdateUseCase.updatePost(userId, userIp, postId, request.toCommand(), files);
 
         return ApiResponse.success(PostResponseCode.POST_UPDATE_SUCCESS);
@@ -235,9 +236,9 @@ public class PostController /*implements PostApiDocs*/ {
     public ResponseEntity<ApiResponse<PostCreateResponse>> createPostWithPresigned(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid PostCreateWithPresignedRequest request
-    ) {
+    ) throws IOException {
         Long userId = customUserDetails.getId();
-        String userIp = customUserDetails.getIp();
+        String userIp = IpHolder.getIp();
 
         log.info("========================url : {}", request.getUploadedFiles().get(0).getUrl());
         log.info("========================url : {}", request.getUploadedFiles().get(0).getUrl());
@@ -258,9 +259,9 @@ public class PostController /*implements PostApiDocs*/ {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long postId,
         @RequestBody @Valid PostUpdateWithPresignedRequest request
-    ) {
+    ) throws IOException {
         Long userId = customUserDetails.getId();
-        String userIp = customUserDetails.getIp();
+        String userIp = IpHolder.getIp();
 
         postUpdateUseCase.updatePostWithPresigned(
             userId,

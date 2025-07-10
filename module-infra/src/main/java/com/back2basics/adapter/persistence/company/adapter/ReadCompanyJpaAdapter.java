@@ -8,6 +8,7 @@ import com.back2basics.adapter.persistence.company.CompanyEntityRepository;
 import com.back2basics.adapter.persistence.company.CompanyMapper;
 import com.back2basics.company.model.Company;
 import com.back2basics.company.port.out.ReadCompanyPort;
+import com.back2basics.company.service.result.CompanyNameResult;
 import com.back2basics.infra.exception.company.CompanyException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -46,6 +47,11 @@ public class ReadCompanyJpaAdapter implements ReadCompanyPort {
     public List<Company> getAllCompanies() {
         return companyEntityRepository.findByDeletedAtIsNull()
             .stream().map(companyMapper::toDomain).toList();
+    }
+
+    @Override
+    public List<CompanyNameResult> getAllNames() {
+        return companyEntityRepository.getAllNames();
     }
 
     @Override
