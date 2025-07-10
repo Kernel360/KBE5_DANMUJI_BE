@@ -2,6 +2,7 @@ package com.back2basics.project.service;
 
 import com.back2basics.assignment.port.out.AssignmentQueryPort;
 import com.back2basics.company.model.CompanyType;
+import com.back2basics.company.port.out.ReadCompanyPort;
 import com.back2basics.infra.validator.ProjectValidator;
 import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.model.Project;
@@ -18,6 +19,7 @@ import com.back2basics.project.service.result.ProjectRecentGetResult;
 import com.back2basics.project.service.result.ProjectStatusResult;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.UserType;
+import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,8 @@ public class ReadProjectService implements ReadProjectUseCase {
     private final ReadProjectPort readProjectPort;
     private final ProjectValidator projectValidator;
     private final UserValidator userValidator;
+    private final UserQueryPort userQueryPort;
+    private final ReadCompanyPort readCompanyPort;
     private final AssignmentQueryPort assignmentQueryPort;
 
     @Override
@@ -108,11 +112,11 @@ public class ReadProjectService implements ReadProjectUseCase {
         return project.getAssignments().stream()
             .filter(assignment -> assignment.getCompanyType().equals(CompanyType.CLIENT))
             .map(assignment -> new ProjectClientUserResult(
-                assignment.getUser().getId(),
-                assignment.getUser().getName(),
-                assignment.getUser().getUsername(),
-                assignment.getCompany().getId(),
-                assignment.getCompany().getName()
+                assignment.getUserId(),
+                userQueryPort.findById(assignment.getUserId()).getName(),
+                userQueryPort.findById(assignment.getUserId()).getUsername(),
+                assignment.getCompanyId(),
+                assignment.getCompanyName()
             )).toList();
     }
 }
