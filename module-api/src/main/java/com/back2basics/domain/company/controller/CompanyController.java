@@ -78,14 +78,6 @@ public class CompanyController /*implements CompanyApiDocs*/ {
             responseList);
     }
 
-    @GetMapping("/{companyId}")
-    public ResponseEntity<ApiResponse<ReadCompanyResponse>> getCompanyById(
-        @PathVariable Long companyId) {
-        ReadCompanyResult result = readCompanyUseCase.getCompany(companyId);
-        return ApiResponse.success(COMPANY_READ_SUCCESS,
-            ReadCompanyResponse.toResponse(result));
-    }
-
     @GetMapping("/name")
     public ResponseEntity<ApiResponse<List<CompanyNameResponse>>> getCompanyName() {
         List<CompanyNameResult> resultList = readCompanyUseCase.getAllNames();
@@ -93,6 +85,14 @@ public class CompanyController /*implements CompanyApiDocs*/ {
             .map(CompanyNameResponse::from)
             .toList();
         return ApiResponse.success(COMPANY_NAME_READ_SUCCESS, responseList);
+    }
+
+    @GetMapping("/{companyId}")
+    public ResponseEntity<ApiResponse<ReadCompanyResponse>> getCompanyById(
+        @PathVariable Long companyId) {
+        ReadCompanyResult result = readCompanyUseCase.getCompany(companyId);
+        return ApiResponse.success(COMPANY_READ_SUCCESS,
+            ReadCompanyResponse.toResponse(result));
     }
 
     @GetMapping("/search")
