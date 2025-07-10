@@ -135,7 +135,7 @@ public class UserQueryAdapter implements UserQueryPort {
     @Override
     public Page<User> searchUsers(SearchUserCommand command, Pageable pageable) {
 
-        Specification<UserEntity> spec = Specification.where(null);
+        Specification<UserEntity> spec = Specification.where(UserSpecifications.isNotDeleted());
         spec = spec.and(UserSpecifications.hasCompany(command.getCompanyId()));
         spec = spec.and(UserSpecifications.hasPosition(command.getPosition()));
         spec = spec.and(UserSpecifications.hasExactName(command.getName()));
