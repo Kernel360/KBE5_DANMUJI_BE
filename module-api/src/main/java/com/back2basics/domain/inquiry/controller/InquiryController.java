@@ -22,6 +22,7 @@ import com.back2basics.inquiry.service.result.CountInquiryResult;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
 import com.back2basics.security.model.CustomUserDetails;
+import com.back2basics.user.model.Role;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -64,8 +65,18 @@ public class InquiryController {
 
     @GetMapping("/{inquiryId}")
     public ResponseEntity<ApiResponse<ReadInquiryResponse>> getInquiryById(
-        @PathVariable Long inquiryId) {
-        ReadInquiryResult result = readInquiryUseCase.getInquiry(inquiryId);
+        @PathVariable Long inquiryId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        if (userDetails.getRole() == Role.ADMIN) {
+            // 관리자: userId 비교 없이 전체 조회
+            ReadInquiryResult result = readInquiryUseCase.getInquiryAsAdmin(inquiryId);
+            return ApiResponse.success(INQUIRY_READ_SUCCESS,
+                ReadInquiryResponse.toResponse(result));
+        }
+
+        ReadInquiryResult result = readInquiryUseCase.getInquiry(inquiryId,
+            userDetails.getId());
         return ApiResponse.success(INQUIRY_READ_SUCCESS,
             ReadInquiryResponse.toResponse(result));
     }

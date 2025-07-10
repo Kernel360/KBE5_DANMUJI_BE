@@ -22,7 +22,7 @@ public class CreateAnswerService implements CreateAnswerUseCase {
 
     @Override
     public Long createAnswer(Long inquiryId, Long authorId, CreateAnswerCommand command) {
-        Inquiry inquiry = inquiryValidator.findInquiry(inquiryId);
+        Inquiry inquiry = inquiryValidator.findUsersInquiry(inquiryId);
 
         Answer answer = Answer.builder()
             .inquiryId(inquiry.getId())

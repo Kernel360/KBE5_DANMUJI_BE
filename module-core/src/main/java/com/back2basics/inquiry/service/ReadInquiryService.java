@@ -28,8 +28,18 @@ public class ReadInquiryService implements ReadInquiryUseCase {
     private final UserQueryUseCase userQueryUseCase;
 
     @Override
-    public ReadInquiryResult getInquiry(Long id) {
-        Inquiry inquiry = inquiryValidator.findInquiry(id);
+    public ReadInquiryResult getInquiry(Long id, Long userId) {
+        Inquiry inquiry = inquiryValidator.findInquiry(id, userId);
+        Long authorId = inquiry.getAuthorId();
+
+        String authorName = userQueryUseCase.getNameById(authorId);
+
+        return ReadInquiryResult.toResult(inquiry, authorName);
+    }
+
+    @Override
+    public ReadInquiryResult getInquiryAsAdmin(Long id) {
+        Inquiry inquiry = inquiryValidator.findUsersInquiry(id);
         Long authorId = inquiry.getAuthorId();
 
         String authorName = userQueryUseCase.getNameById(authorId);
