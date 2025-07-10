@@ -7,7 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface SearchProjectPort {
 
-    Page<Project> searchByKeywordAndUserId(Long userId, ProjectSearchCommand command, Pageable pageable);
-
     Page<Project> searchByKeyword(ProjectSearchCommand command, Pageable pageable);
+
+    Page<Project> searchByKeywordAndUserId(Long userId, ProjectSearchCommand command,
+        Pageable pageable);
 }
