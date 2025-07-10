@@ -9,4 +9,5 @@ public interface ReadChecklistUseCase {
 
     List<ChecklistInfoResult> findAll();
 
+    List<ChecklistInfoResult> findAllByStepId(Long stepId);
 }

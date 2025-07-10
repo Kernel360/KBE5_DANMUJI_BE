@@ -1,7 +1,7 @@
 package com.back2basics.project.port.in;
 
 import com.back2basics.project.model.ProjectStatus;
-import com.back2basics.project.port.in.command.ProjectSearchCommand;
+import com.back2basics.project.service.result.ProjectClientUserResult;
 import com.back2basics.project.service.result.ProjectCountResult;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
@@ -34,4 +34,6 @@ public interface ReadProjectUseCase {
     List<ProjectStatusResult> findProjectByStatus(Long userId, Role role, ProjectStatus status);
 
     List<ProjectCountResult> getCountByProjectStatus();
+
+    List<ProjectClientUserResult> getClientUsersByProjectId(Long projectId);
 }

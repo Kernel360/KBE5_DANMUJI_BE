@@ -14,7 +14,7 @@ public record AssignProjectListResult(Long id, String companyName,
         List<AssignUserResult> assignUsers = assignments.stream().map(AssignUserResult::toResult)
             .toList();
 
-        return new AssignProjectListResult(assignment.getCompany().getId(),
-            assignment.getCompany().getName(), assignUsers);
+        return new AssignProjectListResult(assignment.getCompanyId(),
+            assignment.getCompanyName(), assignUsers);
     }
 }

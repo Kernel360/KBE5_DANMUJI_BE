@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.company;
 
 import com.back2basics.adapter.persistence.company.dto.CompanyWithUserCountProjection;
+import com.back2basics.company.service.result.CompanyNameResult;
 import io.lettuce.core.dynamic.annotation.Param;
 import java.util.List;
 import java.util.Optional;
@@ -56,4 +57,11 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
 
     @Query("SELECT COUNT(c) FROM CompanyEntity c WHERE c.deletedAt IS NULL")
     Long getCompanyCounts();
+
+    @Query("""
+            SELECT new com.back2basics.company.service.result.CompanyNameResult(c.id, c.name)
+            FROM CompanyEntity c
+            WHERE c.deletedAt IS NULL
+        """)
+    List<CompanyNameResult> getAllNames();
 }

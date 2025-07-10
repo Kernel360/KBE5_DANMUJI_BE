@@ -22,7 +22,6 @@ import com.back2basics.file.model.File;
 import com.back2basics.file.port.out.FileReadPort;
 import com.back2basics.infra.exception.post.PostException;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -148,7 +147,7 @@ public class PostReadJpaAdapter implements PostReadPort {
                 postEntity.projectId.eq(projectId)
                 //postEntity.projectStepId.eq(projectStepId)
             )
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -184,7 +183,7 @@ public class PostReadJpaAdapter implements PostReadPort {
             ))
             .from(postEntity)
             .where(postEntity.deletedAt.isNull())
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .limit(5)
             .fetch();
     }
@@ -192,7 +191,7 @@ public class PostReadJpaAdapter implements PostReadPort {
     @Override
     public List<Post> getPostsWithProjectIdAndDueSoon(Long userId) {
         List<PostDashboardProjection> projections = queryFactory
-            .select(Projections.constructor(
+            .selectDistinct(Projections.constructor(
                 PostDashboardProjection.class,
                 postEntity.id,
                 projectEntity.name.as("projectName"),
@@ -207,19 +206,15 @@ public class PostReadJpaAdapter implements PostReadPort {
             ))
             .from(postEntity)
             .join(projectEntity).on(postEntity.projectId.eq(projectEntity.id))
+            .join(assignmentEntity).on(projectEntity.id.eq(assignmentEntity.project.id))
             .join(projectStepEntity).on(postEntity.projectStepId.eq(projectStepEntity.id))
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
                 postEntity.deletedAt.isNull(),
-//                projectEntity.projectStatus.eq(ProjectStatus.IN_PROGRESS),
-                projectEntity.id.in(
-                    JPAExpressions
-                        .select(assignmentEntity.project.id)
-                        .from(assignmentEntity)
-                        .where(assignmentEntity.user.id.eq(userId))
-                )
+                assignmentEntity.user.id.eq(userId)
+                // 필요 시 주석 해제: projectEntity.projectStatus.eq(ProjectStatus.IN_PROGRESS)
             )
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .limit(5)
             .fetch();
 
@@ -231,7 +226,7 @@ public class PostReadJpaAdapter implements PostReadPort {
     @Override
     public List<Post> getHighPriorityPostsByUserId(Long userId) {
         List<PostDashboardProjection> projections = queryFactory
-            .select(Projections.constructor(
+            .selectDistinct(Projections.constructor(
                 PostDashboardProjection.class,
                 postEntity.id,
                 projectEntity.name.as("projectName"),
@@ -246,19 +241,15 @@ public class PostReadJpaAdapter implements PostReadPort {
             ))
             .from(postEntity)
             .join(projectEntity).on(postEntity.projectId.eq(projectEntity.id))
+            .join(assignmentEntity).on(projectEntity.id.eq(assignmentEntity.project.id))
             .join(projectStepEntity).on(postEntity.projectStepId.eq(projectStepEntity.id))
             .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
             .where(
+                assignmentEntity.user.id.eq(userId),
                 postEntity.deletedAt.isNull(),
-                postEntity.priority.in(PostPriority.HIGH, PostPriority.URGENT),
-                projectEntity.id.in(
-                    JPAExpressions
-                        .select(assignmentEntity.project.id)
-                        .from(assignmentEntity)
-                        .where(assignmentEntity.user.id.eq(userId))
-                )
+                postEntity.priority.in(PostPriority.HIGH, PostPriority.URGENT)
             )
-            .orderBy(postEntity.createdAt.desc())
+            .orderBy(postEntity.id.desc())
             .limit(5)
             .fetch();
 

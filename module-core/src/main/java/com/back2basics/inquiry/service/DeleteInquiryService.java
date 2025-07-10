@@ -26,7 +26,7 @@ public class DeleteInquiryService implements DeleteInquiryUseCase {
     @Override
     public void deleteInquiry(Long inquiryId, Long userId) {
 
-        Inquiry inquiry = inquiryValidator.findInquiry(inquiryId);
+        Inquiry inquiry = inquiryValidator.findUsersInquiry(inquiryId);
 
         // todo : 커스텀익셉션 사용, Validator로 로직 이동
         if (!inquiry.getAuthorId().equals(userId)) {

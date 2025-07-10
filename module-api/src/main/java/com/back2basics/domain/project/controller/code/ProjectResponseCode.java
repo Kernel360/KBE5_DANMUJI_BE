@@ -19,7 +19,8 @@ public enum ProjectResponseCode implements ResponseCode {
     DELETED_PROJECT_READ_ALL_SUCCESS(HttpStatus.OK, "PJ208", "삭제 프로젝트 목록 조회 완료"),
     PROJECT_COUNT_BY_STATUS_SUCCESS(HttpStatus.OK, "PJ209", "프로젝트 상태별 목록 개수 조회 완료"),
     PROJECT_READ_BY_STATUS_SUCCESS(HttpStatus.OK, "PJ210", "프로젝트 상태에 따른 목록 조회 완료"),
-    PROJECT_RESTORE_SUCCESS(HttpStatus.OK, "PJ211", "비활성화 프로젝트 복구 완료");
+    PROJECT_RESTORE_SUCCESS(HttpStatus.OK, "PJ211", "비활성화 프로젝트 복구 완료"),
+    PROJECT_CLIENT_USER_READ_SUCCESS(HttpStatus.OK, "PJ212", "프로젝트에 할당된 고객사 정보 조회 완료");
 
 
     private final HttpStatus status;

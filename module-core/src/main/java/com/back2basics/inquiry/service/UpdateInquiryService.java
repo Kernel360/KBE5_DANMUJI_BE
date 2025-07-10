@@ -22,7 +22,7 @@ public class UpdateInquiryService implements UpdateInquiryUseCase {
 
     @Override
     public void updateByUser(Long inquiryId, Long authorId, UpdateInquiryCommand command) {
-        Inquiry inquiry = inquiryValidator.findInquiry(inquiryId);
+        Inquiry inquiry = inquiryValidator.findUsersInquiry(inquiryId);
         Inquiry before = Inquiry.copyOf(inquiry);
 
         // todo : 커스텀익셉션 사용, Validator로 로직 이동
@@ -40,7 +40,7 @@ public class UpdateInquiryService implements UpdateInquiryUseCase {
     @Override
     public void updateByAdmin(Long inquiryId, UpdateInquiryStatusCommand command,
         Long loggedInUserId) {
-        Inquiry inquiry = inquiryValidator.findInquiry(inquiryId);
+        Inquiry inquiry = inquiryValidator.findUsersInquiry(inquiryId);
         Inquiry before = Inquiry.copyOf(inquiry);
 
         inquiry.updateStatus(command);

@@ -5,6 +5,7 @@ import com.back2basics.board.post.model.PostType;
 import com.back2basics.board.post.port.in.command.PostUpdateCommand;
 import com.back2basics.custom.CustomEnumCheck;
 import com.back2basics.custom.CustomLinkCheck;
+import com.back2basics.custom.CustomStringLengthCheck;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -14,9 +15,11 @@ import lombok.Getter;
 public class PostUpdateRequest {
 
     @NotBlank(message = "제목은 필수입니다.")
+    @CustomStringLengthCheck(min = 1, max = 50, message = "게시글 제목은 30자 이하로 입력해주세요")
     private String title;
 
-    @NotBlank(message = "내용은 필수입니다.")
+    @NotBlank(message = "내용이 비어있을 수 없습니다.")
+    @CustomStringLengthCheck(min = 1, max = 50, message = "게시글 내용은 1,000자 이하로 입력해주세요")
     private String content;
 
     @NotNull(message = "타입이 입력되지 않았습니다.")

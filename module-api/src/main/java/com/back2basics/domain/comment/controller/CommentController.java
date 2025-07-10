@@ -11,6 +11,7 @@ import com.back2basics.domain.comment.dto.request.CommentUpdateRequest;
 import com.back2basics.domain.comment.dto.response.CommentReadResponse;
 import com.back2basics.domain.comment.swagger.CommentApiDocs;
 import com.back2basics.global.response.result.ApiResponse;
+import com.back2basics.global.utils.IpHolder;
 import com.back2basics.security.model.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -57,7 +58,7 @@ public class CommentController implements CommentApiDocs {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid CommentCreateRequest request) {
         Long createdId = createCommentUseCase.createComment(customUserDetails.getId(),
-            customUserDetails.getIp(),
+            IpHolder.getIp(),
             request.toCommand());
         return ApiResponse.success(CommentResponseCode.COMMENT_CREATE_SUCCESS, createdId);
     }
@@ -68,7 +69,7 @@ public class CommentController implements CommentApiDocs {
         @PathVariable Long commentId,
         @Valid @RequestBody CommentUpdateRequest request
     ) {
-        updateCommentUseCase.updateComment(customUserDetails.getId(), customUserDetails.getIp(),
+        updateCommentUseCase.updateComment(customUserDetails.getId(), IpHolder.getIp(),
             commentId,
             request.toCommand());
         return ApiResponse.success(CommentResponseCode.COMMENT_UPDATE_SUCCESS);

@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record ChecklistDetailResult(Long id, Long stepId, Long userId, String username,
-                                    ChecklistStatus status, LocalDateTime createdAt,
-                                    LocalDateTime completedAt,
+                                    ChecklistStatus status, String title, String content,
+                                    LocalDateTime createdAt, LocalDateTime completedAt,
                                     List<ApprovalResult> approvals) {
 
 }
