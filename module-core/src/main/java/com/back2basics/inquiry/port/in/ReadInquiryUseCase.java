@@ -25,4 +25,7 @@ public interface ReadInquiryUseCase {
     List<ReadRecentInquiryResult> getRecentInquiries();
 
     Page<ReadInquiryResult> searchInquiries(InquirySearchCommand command, Pageable pageable);
+
+    Page<ReadInquiryResult> searchUserInquiries(Long userId, InquirySearchCommand command,
+        Pageable pageable);
 }

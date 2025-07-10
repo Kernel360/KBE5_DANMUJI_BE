@@ -26,4 +26,6 @@ public interface ReadInquiryPort {
 
     Page<Inquiry> search(InquirySearchCommand condition, Pageable pageable);
 
+    Page<Inquiry> searchUser(Long userId, InquirySearchCommand condition, Pageable pageable);
+
 }

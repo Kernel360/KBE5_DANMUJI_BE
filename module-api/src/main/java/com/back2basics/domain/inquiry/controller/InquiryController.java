@@ -89,7 +89,7 @@ public class InquiryController {
     }
 
     @GetMapping("/filtering")
-    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getInquiryFiltering(
+    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getInquiryFiltered(
         @Valid @ModelAttribute SearchInquiryRequest request,
         @PageableDefault(
             page = 0,
@@ -100,6 +100,25 @@ public class InquiryController {
         Pageable pageable) {
 
         Page<ReadInquiryResult> inquiries = readInquiryUseCase.searchInquiries(request.toCommand(),
+            pageable);
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            inquiries.map(ReadInquiryResponse::toResponse));
+    }
+
+    @GetMapping("/my/filtering")
+    public ResponseEntity<ApiResponse<Page<ReadInquiryResponse>>> getMyInquiryFiltered(
+        @Valid @ModelAttribute SearchInquiryRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "createdAt",
+            direction = Sort.Direction.DESC
+        )
+        Pageable pageable) {
+
+        Page<ReadInquiryResult> inquiries = readInquiryUseCase.searchUserInquiries(
+            userDetails.getId(), request.toCommand(),
             pageable);
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
             inquiries.map(ReadInquiryResponse::toResponse));
