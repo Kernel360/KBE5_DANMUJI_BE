@@ -147,4 +147,38 @@ public class ReadInquiryService implements ReadInquiryUseCase {
             ));
         }
     }
+
+    @Override
+    public Page<ReadInquiryResult> searchUserInquiries(Long userId, InquirySearchCommand command,
+        Pageable pageable) {
+
+        InquirySearchCommand searchCmd = command;
+        if (StringUtils.hasText(command.getAuthorName())) {
+            Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(command.getAuthorName());
+            if (authorIdOpt.isEmpty()) {
+                return Page.empty(pageable);
+            }
+
+            searchCmd = command.toBuilder()
+                .authorId(authorIdOpt.get())
+                .build();
+        }
+
+        Page<Inquiry> page = readInquiryPort.searchUser(userId, searchCmd, pageable);
+
+        if (StringUtils.hasText(command.getAuthorName())) {
+            return page.map(inq -> ReadInquiryResult.toResult(inq, command.getAuthorName()));
+        } else {
+            Map<Long, String> idNameMap = userQueryUseCase.getNameByIds(
+                page.getContent().stream()
+                    .map(Inquiry::getAuthorId)
+                    .distinct()
+                    .toList()
+            );
+            return page.map(inq -> ReadInquiryResult.toResult(
+                inq,
+                idNameMap.getOrDefault(inq.getAuthorId(), "알 수 없음")
+            ));
+        }
+    }
 }

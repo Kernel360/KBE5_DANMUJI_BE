@@ -79,4 +79,21 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
         // Entity → Domain 변환
         return entityPage.map(inquiryMapper::toDomain);
     }
+
+    @Override
+    public Page<Inquiry> searchUser(Long userId, InquirySearchCommand condition,
+        Pageable pageable) {
+        Specification<InquiryEntity> spec = Specification.where(null);
+
+        spec = spec.and(InquirySpecifications.hasTitle(condition.getTitle()));
+        spec = spec.and(InquirySpecifications.hasAuthorId(userId));
+        spec = spec.and(InquirySpecifications.hasStatus(condition.getStatus()));
+        spec = spec.and(InquirySpecifications.betweenCreatedAt(condition.getStartDate(),
+            condition.getEndDate()));
+
+        Page<InquiryEntity> entityPage = inquiryEntityRepository.findAll(spec, pageable);
+
+        // Entity → Domain 변환
+        return entityPage.map(inquiryMapper::toDomain);
+    }
 }
