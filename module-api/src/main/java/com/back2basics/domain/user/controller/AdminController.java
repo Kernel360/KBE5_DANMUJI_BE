@@ -78,6 +78,32 @@ public class AdminController {
             UserCreateResponse.from(result));
     }
 
+    @GetMapping("/positions")
+    public ResponseEntity<ApiResponse<List<UserPositionResponse>>> getAllPositions() {
+        List<UserPositionResult> resultList = userQueryUseCase.getAllPositions();
+        List<UserPositionResponse> responseList = resultList.stream()
+            .map(UserPositionResponse::from)
+            .toList();
+        return ApiResponse.success(USER_POSITIONS_READ_SUCCESS, responseList);
+    }
+
+    @GetMapping("/filtering")
+    public ResponseEntity<ApiResponse<Page<UserInfoResponse>>> getUserFiltering(
+        @Valid @ModelAttribute SearchUserRequest request,
+        @PageableDefault(
+            page = 0,
+            size = 10,
+            sort = "id",
+            direction = Sort.Direction.DESC
+        )
+        Pageable pageable) {
+
+        Page<UserInfoResult> users = userQueryUseCase.searchUsers(request.toCommand(),
+            pageable);
+        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
+            users.map(UserInfoResponse::from));
+    }
+
     @GetMapping("/exists/{username}")
     public ResponseEntity<ApiResponse<Boolean>> checkUsernameExists(@PathVariable String username) {
         boolean exists = userQueryUseCase.existsByUsername(username);
@@ -138,32 +164,6 @@ public class AdminController {
         List<UserInfoResponse> responseList = resultList.stream().map(UserInfoResponse::from)
             .toList();
         return ApiResponse.success(USER_READ_ALL_SUCCESS, responseList);
-    }
-
-    @GetMapping("/positions")
-    public ResponseEntity<ApiResponse<List<UserPositionResponse>>> getAllPositions() {
-        List<UserPositionResult> resultList = userQueryUseCase.getAllPositions();
-        List<UserPositionResponse> responseList = resultList.stream()
-            .map(UserPositionResponse::from)
-            .toList();
-        return ApiResponse.success(USER_POSITIONS_READ_SUCCESS, responseList);
-    }
-
-    @GetMapping("/filtering")
-    public ResponseEntity<ApiResponse<Page<UserInfoResponse>>> getUserFiltering(
-        @Valid @ModelAttribute SearchUserRequest request,
-        @PageableDefault(
-            page = 0,
-            size = 10,
-            sort = "id",
-            direction = Sort.Direction.DESC
-        )
-        Pageable pageable) {
-
-        Page<UserInfoResult> users = userQueryUseCase.searchUsers(request.toCommand(),
-            pageable);
-        return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
-            users.map(UserInfoResponse::from));
     }
 
     @GetMapping("/counts")
