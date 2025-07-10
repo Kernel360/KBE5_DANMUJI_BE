@@ -34,4 +34,8 @@ public class UserSpecifications {
             return cb.equal(root.get("name"), name);
         };
     }
+
+    public static Specification<UserEntity> isNotDeleted() {
+        return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+    }
 }
