@@ -1,6 +1,7 @@
 package com.back2basics.domain.project.controller;
 
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.DELETED_PROJECT_READ_ALL_SUCCESS;
+import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_CLIENT_USER_READ_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_COUNT_BY_STATUS_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_CREATE_SUCCESS;
 import static com.back2basics.domain.project.controller.code.ProjectResponseCode.PROJECT_DELETE_SUCCESS;
@@ -247,6 +248,6 @@ public class ProjectController {
         List<ProjectClientUserResponse> response = result.stream()
             .map(ProjectClientUserResponse::from)
             .toList();
-        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
+        return ApiResponse.success(PROJECT_CLIENT_USER_READ_SUCCESS, response);
     }
 }
