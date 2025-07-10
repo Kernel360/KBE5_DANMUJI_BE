@@ -13,6 +13,7 @@ import static com.back2basics.domain.project.controller.code.ProjectResponseCode
 import com.back2basics.domain.project.dto.request.ProjectCreateRequest;
 import com.back2basics.domain.project.dto.request.ProjectSearchRequest;
 import com.back2basics.domain.project.dto.request.ProjectUpdateRequest;
+import com.back2basics.domain.project.dto.response.ProjectClientUserResponse;
 import com.back2basics.domain.project.dto.response.ProjectCountResponse;
 import com.back2basics.domain.project.dto.response.ProjectDetailResponse;
 import com.back2basics.domain.project.dto.response.ProjectGetResponse;
@@ -28,6 +29,7 @@ import com.back2basics.project.port.in.RestoreProjectUseCase;
 import com.back2basics.project.port.in.SearchProjectUseCase;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
+import com.back2basics.project.service.result.ProjectClientUserResult;
 import com.back2basics.project.service.result.ProjectCountResult;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
@@ -230,5 +232,16 @@ public class ProjectController {
         Long userId = customUserDetails.getId();
         projectRestoreUseCase.restoreProject(userId, projectId);
         return ApiResponse.success(PROJECT_RESTORE_SUCCESS);
+    }
+
+    @GetMapping("/{projectId}/client-user")
+    public ResponseEntity<ApiResponse<List<ProjectClientUserResponse>>> getClientUsersByProjectId(
+        @PathVariable Long projectId) {
+        List<ProjectClientUserResult> result = readProjectUseCase.getClientUsersByProjectId(
+            projectId);
+        List<ProjectClientUserResponse> response = result.stream()
+            .map(ProjectClientUserResponse::from)
+            .toList();
+        return ApiResponse.success(PROJECT_READ_ALL_SUCCESS, response);
     }
 }

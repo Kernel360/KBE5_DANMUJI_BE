@@ -9,6 +9,7 @@ import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.model.StatusCountProjection;
 import com.back2basics.project.port.in.ReadProjectUseCase;
 import com.back2basics.project.port.out.ReadProjectPort;
+import com.back2basics.project.service.result.ProjectClientUserResult;
 import com.back2basics.project.service.result.ProjectCountResult;
 import com.back2basics.project.service.result.ProjectDetailResult;
 import com.back2basics.project.service.result.ProjectGetResult;
@@ -99,5 +100,19 @@ public class ReadProjectService implements ReadProjectUseCase {
     public List<ProjectCountResult> getCountByProjectStatus() {
         List<StatusCountProjection> projections = readProjectPort.countProjectsByProjectStatus();
         return projections.stream().map(ProjectCountResult::toResult).toList();
+    }
+
+    @Override
+    public List<ProjectClientUserResult> getClientUsersByProjectId(Long projectId) {
+        Project project = readProjectPort.findById(projectId);
+        return project.getAssignments().stream()
+            .filter(assignment -> assignment.getCompanyType().equals(CompanyType.CLIENT))
+            .map(assignment -> new ProjectClientUserResult(
+                assignment.getUser().getId(),
+                assignment.getUser().getName(),
+                assignment.getUser().getUsername(),
+                assignment.getCompany().getId(),
+                assignment.getCompany().getName()
+            )).toList();
     }
 }
