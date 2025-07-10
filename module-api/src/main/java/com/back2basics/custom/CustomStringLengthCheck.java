@@ -12,9 +12,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CustomStringLengthCheck {
 
-    int min() default 0;
+    int min();
 
-    int max() default Integer.MAX_VALUE;
+    int max();
 
     String message() default "너무 많은 내용을 담을 수 없습니다.";
 
