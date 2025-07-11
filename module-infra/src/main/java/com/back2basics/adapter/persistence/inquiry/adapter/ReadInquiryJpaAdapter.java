@@ -66,7 +66,8 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
 
     @Override
     public Page<Inquiry> search(InquirySearchCommand condition, Pageable pageable) {
-        Specification<InquiryEntity> spec = Specification.where(null);
+        Specification<InquiryEntity> spec = Specification.where(
+            InquirySpecifications.isNotDeleted());
 
         spec = spec.and(InquirySpecifications.hasTitle(condition.getTitle()));
         spec = spec.and(InquirySpecifications.hasAuthorId(condition.getAuthorId()));
@@ -83,7 +84,8 @@ public class ReadInquiryJpaAdapter implements ReadInquiryPort {
     @Override
     public Page<Inquiry> searchUser(Long userId, InquirySearchCommand condition,
         Pageable pageable) {
-        Specification<InquiryEntity> spec = Specification.where(null);
+        Specification<InquiryEntity> spec = Specification.where(
+            InquirySpecifications.isNotDeleted());
 
         spec = spec.and(InquirySpecifications.hasTitle(condition.getTitle()));
         spec = spec.and(InquirySpecifications.hasAuthorId(userId));
