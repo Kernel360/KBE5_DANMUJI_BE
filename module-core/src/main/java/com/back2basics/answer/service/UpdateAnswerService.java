@@ -6,7 +6,7 @@ import com.back2basics.answer.port.in.command.UpdateAnswerCommand;
 import com.back2basics.answer.port.out.UpdateAnswerPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.exception.ForbiddenAccessException;
+import com.back2basics.infra.exception.global.ForbiddenAccessException;
 import com.back2basics.infra.validator.AnswerValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,12 @@ public class UpdateAnswerService implements UpdateAnswerUseCase {
         Answer before = Answer.copyOf(answer);
 
         if (!answer.getAuthorId().equals(userId)) {
-            throw new ForbiddenAccessException("자신의 답변만 삭제할 수 있습니다.");
+            throw new ForbiddenAccessException("자신의 답변만 수정할 수 있습니다.");
         }
 
         answer.update(command);
         updateAnswerPort.update(answer);
 
-        historyLogService.logUpdated(DomainType.INQUIRY, userId, before,answer, "문의 답변 수정");
+        historyLogService.logUpdated(DomainType.INQUIRY, userId, before, answer, "문의 답변 수정");
     }
 }

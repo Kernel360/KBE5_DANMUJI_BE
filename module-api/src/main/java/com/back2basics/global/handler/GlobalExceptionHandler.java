@@ -10,9 +10,8 @@ import com.back2basics.global.response.code.ErrorCode;
 import com.back2basics.global.response.error.CustomException;
 import com.back2basics.global.response.error.ErrorResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.infra.exception.ForbiddenAccessException;
-import com.back2basics.infra.exception.company.DuplicateCompanyException;
 import com.back2basics.infra.exception.file.FileErrorCode;
+import com.back2basics.infra.exception.global.ForbiddenAccessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
@@ -218,21 +217,21 @@ public class GlobalExceptionHandler {
         return ApiResponse.error(errorCode, ErrorResponse.of(errorCode));
     }
 
-    @ExceptionHandler(DuplicateCompanyException.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleDuplicateCompanyException(
-        DuplicateCompanyException ex) {
-
-        log.warn("중복 회사 생성 예외 발생: {}", ex.getMessage());
-        ErrorResponse response = ErrorResponse.of(ex.getErrorCode(), ex.getErrors());
-
-        return ApiResponse.error(ex.getErrorCode(), response);
-    }
+//    @ExceptionHandler(DuplicateCompanyException.class)
+//    public ResponseEntity<ApiResponse<ErrorResponse>> handleDuplicateCompanyException(
+//        DuplicateCompanyException ex) {
+//
+//        log.warn("중복 회사 생성 예외 발생: {}", ex.getMessage());
+//        ErrorResponse response = ErrorResponse.of(ex.getErrorCode(), ex.getErrors());
+//
+//        return ApiResponse.error(ex.getErrorCode(), response);
+//    }
 
     @ExceptionHandler(ForbiddenAccessException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleForbiddenAccessException(
         ForbiddenAccessException ex) {
 
-        log.warn("문의 사항 삭제 예외 발생: {}", ex.getMessage());
+        log.warn("접근 권한 예외 발생: {}", ex.getMessage());
         ErrorResponse response = ErrorResponse.of(ex.getErrorCode(), ex.getErrors());
 
         return ApiResponse.error(ex.getErrorCode(), response);

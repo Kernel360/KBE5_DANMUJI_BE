@@ -179,7 +179,7 @@ public class InquiryController {
     // todo:  의견
     // swlee: 사실 여기서 권한체크를 하면 편하긴 한데 서비스레이어에서 validator 통해서 검증로직을 처리하므로
     // validator에게 권한 검증 로직을 위임하는 것이 나아보입니다.
-    // byuser 메소드는 시큐리티객체 사용해야되고 byadmin은 사용안해도 되는 것도 비일관적입니다.(byadmin은 이력생성때문에 제가 넣었어요)
+    // byuser 메소드는 시큐리티객체 사용해야ㅊ되고 byadmin은 사용안해도 되는 것도 비일관적입니다.(byadmin은 이력생성때문에 제가 넣었어요)
     @PutMapping("/{inquiryId}/user")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<Void>> updateByUser(
