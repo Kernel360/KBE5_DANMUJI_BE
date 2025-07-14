@@ -43,6 +43,7 @@ public class ReadApprovalService implements ReadApprovalUseCase {
             checklist.getProjectStepId(),
             checklist.getUserId(),
             userQueryPort.findById(checklist.getUserId()).getName(),
+            userQueryPort.findById(checklist.getUserId()).getUsername(),
             checklist.getChecklistStatus(),
             checklist.getTitle(),
             checklist.getContent(),

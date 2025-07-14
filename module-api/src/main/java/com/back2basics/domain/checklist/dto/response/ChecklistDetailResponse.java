@@ -5,7 +5,7 @@ import com.back2basics.checklist.service.result.ChecklistDetailResult;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ChecklistDetailResponse(Long id, Long stepId, Long userId, String username,
+public record ChecklistDetailResponse(Long id, Long stepId, Long userId, String name,String username,
                                       ChecklistStatus status, String title, String content,
                                       LocalDateTime createdAt, LocalDateTime completedAt,
                                       List<ApprovalResponse> approvals) {
@@ -15,6 +15,7 @@ public record ChecklistDetailResponse(Long id, Long stepId, Long userId, String 
             result.id(),
             result.stepId(),
             result.userId(),
+            result.name(),
             result.username(),
             result.status(),
             result.title(),
