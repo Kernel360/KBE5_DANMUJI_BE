@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChecklistEntityRepository extends JpaRepository<ChecklistEntity, Long> {
 
-    List<ChecklistEntity> findAllByProjectStepId(Long stepId);
+    List<ChecklistEntity> findAllByProjectStepIdAndDeletedAtIsNullOrderByIdDesc(Long stepId);
 }
