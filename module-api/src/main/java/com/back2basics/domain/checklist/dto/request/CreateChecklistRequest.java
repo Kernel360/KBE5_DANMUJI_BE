@@ -3,6 +3,7 @@ package com.back2basics.domain.checklist.dto.request;
 import com.back2basics.checklist.port.in.command.CreateChecklistCommand;
 import com.back2basics.custom.CustomStringLengthCheck;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record CreateChecklistRequest(
@@ -14,6 +15,7 @@ public record CreateChecklistRequest(
     @CustomStringLengthCheck(min = 0, max = 500, message = "내용은 최대 500자까지 입력할 수 있습니다.")
     String content,
 
+    @NotNull(message = "승인자는 반드시 1명 이상 선택해야합니다.")
     List<Long> approvalIds) {
 
     public CreateChecklistCommand toCommand() {
