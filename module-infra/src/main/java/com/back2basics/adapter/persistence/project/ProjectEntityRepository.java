@@ -3,6 +3,7 @@ package com.back2basics.adapter.persistence.project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.model.StatusCountProjection;
 import io.lettuce.core.dynamic.annotation.Param;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,4 +65,9 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
     List<ProjectEntity> findAllByProjectStatusAndDeletedAtIsNullOrderByIdDesc(ProjectStatus status);
 
     ProjectEntity findByIdAndIsDeletedTrue(Long projectId);
+
+    @Query("SELECT p.id FROM ProjectEntity p WHERE p.deletedAt < :threshold")
+    List<Long> findIdsByDeletedAtBefore(LocalDateTime threshold);
+
+    void deleteByIdIn(List<Long> deletedProjectIds);
 }

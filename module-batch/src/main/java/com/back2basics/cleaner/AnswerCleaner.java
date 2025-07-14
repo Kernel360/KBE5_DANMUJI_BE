@@ -19,6 +19,6 @@ public class AnswerCleaner implements SoftDeletableCleaner {
 
     @Override
     public String getName() {
-        return "Inquiry";
+        return "Answer";
     }
 }
