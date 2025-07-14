@@ -15,6 +15,7 @@ import com.back2basics.project.port.out.ReadProjectPort;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -101,5 +102,13 @@ public class ReadProjectAdapter implements ReadProjectPort {
         }
 
         return Optional.of(projectMapper.toDomain(entity));
+    }
+
+    @Override
+    public List<Project> findUpdatableProjects() {
+        return projectEntityRepository.findUpdatableProjects()
+            .stream()
+            .map(projectMapper::toDomain)
+            .collect(Collectors.toList());
     }
 }

@@ -84,7 +84,7 @@ public class Project implements TargetDomain {
         this.projectCost = command.getProjectCost();
         this.startDate = command.getStartDate();
         this.endDate = command.getEndDate();
-        calculateStatusByDate(command.getEndDate()); // 아닌거 같음
+//        calculateStatusByDate(command.getEndDate()); // 배치로 변경
     }
 
     public void statusCompleted() {
@@ -179,5 +179,22 @@ public class Project implements TargetDomain {
             .assignments(project.getAssignments())
             .progress(project.getProgress())
             .build();
+    }
+
+    public void calculateStatus() {
+        LocalDate today = LocalDate.now();
+        LocalDate end = this.getEndDate();
+
+        if (end == null) {
+            return;
+        }
+
+        if (end.isBefore(today)) {
+            this.projectStatus = ProjectStatus.DELAY;
+        } else if (!end.isBefore(today) && ChronoUnit.DAYS.between(today, end) <= 7) {
+            this.projectStatus = ProjectStatus.DUE_SOON;
+        } else if (this.progress == 100) {
+            this.projectStatus = ProjectStatus.COMPLETED;
+        }
     }
 }
