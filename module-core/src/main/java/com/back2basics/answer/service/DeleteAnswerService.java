@@ -5,7 +5,7 @@ import com.back2basics.answer.port.in.DeleteAnswerUseCase;
 import com.back2basics.answer.port.out.DeleteAnswerPort;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
-import com.back2basics.infra.exception.ForbiddenAccessException;
+import com.back2basics.infra.exception.global.ForbiddenAccessException;
 import com.back2basics.infra.validator.AnswerValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
