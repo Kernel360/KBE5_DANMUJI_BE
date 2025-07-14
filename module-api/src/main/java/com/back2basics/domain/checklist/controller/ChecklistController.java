@@ -25,6 +25,7 @@ import com.back2basics.domain.checklist.dto.response.ChecklistDetailResponse;
 import com.back2basics.domain.checklist.dto.response.ChecklistInfoResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.security.model.CustomUserDetails;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public class ChecklistController {
     @PostMapping("/{stepId}")
     public ResponseEntity<ApiResponse<Void>> create(@PathVariable Long stepId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody CreateChecklistRequest request) {
+        @Valid @RequestBody CreateChecklistRequest request) {
         createChecklistUseCase.create(stepId, userDetails.getId(),
             request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_CREATE_SUCCESS);
@@ -65,7 +66,7 @@ public class ChecklistController {
     @PutMapping("/{checklistId}")
     public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long checklistId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody UpdateChecklistRequest request) {
+        @Valid @RequestBody UpdateChecklistRequest request) {
         updateChecklistUseCase.update(checklistId, userDetails.getId(),
             request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
@@ -75,7 +76,7 @@ public class ChecklistController {
     @PutMapping("/approvals/{approvalId}")
     public ResponseEntity<ApiResponse<Void>> updateApproval(@PathVariable Long approvalId,
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody UpdateApprovalRequest request) {
+        @Valid @RequestBody UpdateApprovalRequest request) {
         updateApprovalUseCase.update(approvalId, userDetails.getId(), request.toCommand());
         return ApiResponse.success(CHECKLIST_REQUEST_UPDATE_SUCCESS);
     }
