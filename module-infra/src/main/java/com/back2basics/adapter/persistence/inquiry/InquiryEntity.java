@@ -35,6 +35,7 @@ public class InquiryEntity extends BaseTimeEntity {
     private String content;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private InquiryStatus inquiryStatus;
 
     @Builder
