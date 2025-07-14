@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.inquiry;
 
 import com.back2basics.inquiry.service.result.CountInquiryResult;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -30,4 +31,9 @@ public interface InquiryEntityRepository extends JpaRepository<InquiryEntity, Lo
     CountInquiryResult getInquiryCounts();
 
     List<InquiryEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
+
+    void deleteByIdIn(List<Long> deletedInquiryIds);
+
+    @Query("SELECT i.id FROM InquiryEntity i WHERE i.deletedAt < :threshold")
+    List<Long> findIdsByDeletedAtBefore(LocalDateTime threshold);
 }

@@ -14,7 +14,13 @@ public interface ProjectStepEntityRepository extends JpaRepository<ProjectStepEn
     @Query("SELECT MAX(s.stepOrder) FROM ProjectStepEntity s WHERE s.project.id = :projectId AND s.deletedAt IS NULL")
     Integer findMaxStepOrderByProjectId(Long projectId);
 
-    int countByProject_IdAndProjectStepStatus(Long projectId, ProjectStepStatus status); // completed step
+    int countByProject_IdAndProjectStepStatus(Long projectId,
+        ProjectStepStatus status); // completed step
 
     int countByProject_Id(Long projectId); // all step
+
+    void deleteAllByProjectIdIn(List<Long> deletedProjectIds);
+
+    @Query("SELECT p.id FROM ProjectStepEntity p WHERE p.project.id IN :projectIds")
+    List<Long> findIdsByProjectIdIn(List<Long> projectIds);
 }
