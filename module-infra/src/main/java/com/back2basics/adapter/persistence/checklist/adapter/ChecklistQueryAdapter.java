@@ -40,7 +40,7 @@ public class ChecklistQueryAdapter implements ChecklistQueryPort {
 
     @Override
     public List<Checklist> findAllByStepId(Long stepId) {
-        List<ChecklistEntity> checklists = checklistEntityRepository.findAllByProjectStepId(stepId);
+        List<ChecklistEntity> checklists = checklistEntityRepository.findAllByProjectStepIdAndDeletedAtIsNullOrderByIdDesc(stepId);
         return checklists.stream()
             .map(mapper::toDomain)
             .toList();
