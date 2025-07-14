@@ -7,6 +7,7 @@ public record ApprovalResult(
     Long id,
     Long checklistId,
     Long userId,
+    String name,
     String username,
     String message,
     ApprovalStatus status,
