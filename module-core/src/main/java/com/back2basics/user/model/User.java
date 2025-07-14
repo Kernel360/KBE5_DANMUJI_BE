@@ -49,6 +49,7 @@ public class User implements TargetDomain {
             .username(command.getUsername())
             .password(encodedPassword)
             .name(command.getName())
+            .username(command.getUsername())
             .email(command.getEmail())
             .phone(command.getPhone())
             .position(command.getPosition())
