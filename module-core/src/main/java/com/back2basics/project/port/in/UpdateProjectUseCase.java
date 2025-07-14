@@ -6,10 +6,12 @@ public interface UpdateProjectUseCase {
 
     void updateProject(Long projectId, ProjectUpdateCommand projectUpdateCommand,
         Long loggedInUserId);
-    
+
     void changedStatus(Long projectId, Long loggedInUserId);
 
     void calculateProgressRate(Long projectId);
 
     void calculateProgressRateByDeleteStep(Long projectId);
+
+    void updateDueSoonAndDelayedProjects();
 }

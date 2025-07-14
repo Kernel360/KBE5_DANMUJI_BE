@@ -70,4 +70,7 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity, Lo
     List<Long> findIdsByDeletedAtBefore(LocalDateTime threshold);
 
     void deleteByIdIn(List<Long> deletedProjectIds);
+
+    @Query("SELECT p FROM ProjectEntity p WHERE p.deletedAt IS NULL AND p.projectStatus IN ('IN_PROGRESS', 'DUE_SOON')")
+    List<ProjectEntity> findUpdatableProjects();
 }

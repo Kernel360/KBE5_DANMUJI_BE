@@ -29,4 +29,6 @@ public interface ReadProjectPort {
     List<Project> findByStatus(ProjectStatus status);
 
     Optional<Project> findDeletedProjectById(Long id);
+
+    List<Project> findUpdatableProjects();
 }
