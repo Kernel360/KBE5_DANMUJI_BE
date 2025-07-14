@@ -40,4 +40,7 @@ public class InquirySpecifications {
         };
     }
 
+    public static Specification<InquiryEntity> isNotDeleted() {
+        return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+    }
 }
