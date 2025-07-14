@@ -53,4 +53,6 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long>,
     Page<UserEntity> findAll(Specification<UserEntity> spec, Pageable pageable);
 
     void deleteByDeletedAtBefore(LocalDateTime threshold);
+
+    void deleteAllByCompanyIdIn(List<Long> deletedCompanyIds);
 }

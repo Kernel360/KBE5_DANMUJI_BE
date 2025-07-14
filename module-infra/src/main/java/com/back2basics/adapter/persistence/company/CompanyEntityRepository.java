@@ -66,5 +66,8 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
         """)
     List<CompanyNameResult> getAllNames();
 
-    void deleteByDeletedAtBefore(LocalDateTime threshold);
+    @Query("SELECT c.id FROM CompanyEntity c WHERE c.deletedAt < :threshold")
+    List<Long> findIdsByDeletedAtBefore(LocalDateTime threshold);
+
+    void deleteByIdIn(List<Long> ids);
 }
