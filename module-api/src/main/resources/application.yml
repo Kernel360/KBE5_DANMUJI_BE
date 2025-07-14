@@ -30,7 +30,9 @@ spring:
     time-zone: Asia/Seoul
     serialization:
       write-dates-as-timestamps: false
-
+  batch:
+    job:
+      enabled: false
 # Swagger 설정
 # http://localhost:8080/danmuji-ui.html
 springdoc:
