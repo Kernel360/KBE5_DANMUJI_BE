@@ -1,8 +1,8 @@
 package com.back2basics.adapter.persistence.project.adapter;
 
-import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
-import static com.back2basics.adapter.persistence.company.QCompanyEntity.companyEntity;
 import static com.back2basics.adapter.persistence.assignment.QAssignmentEntity.assignmentEntity;
+import static com.back2basics.adapter.persistence.company.QCompanyEntity.companyEntity;
+import static com.back2basics.adapter.persistence.project.QProjectEntity.projectEntity;
 
 import com.back2basics.adapter.persistence.company.QCompanyEntity;
 import com.back2basics.adapter.persistence.project.ProjectEntity;
@@ -20,7 +20,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
@@ -40,12 +39,12 @@ public class SearchProjectAdapter implements SearchProjectPort {
             .leftJoin(assignmentEntity.company, companyEntity)
             .where(
                 projectEntity.isDeleted.eq(false),
-                matchesKeyword(command.getKeyword(), command.getCategory(), projectEntity,
-                    companyEntity),
-                matchesStatus(command.getProjectStatus(), projectEntity),
-                matchesPeriod(command.getStartDate(), command.getEndDate(), projectEntity)
+                matchesKeyword(command.getKeyword(), command.getCategory()
+                ),
+                matchesStatus(command.getProjectStatus()),
+                matchesPeriod(command.getStartDate(), command.getEndDate())
             )
-            .orderBy(sortOrder(command.getSort(), projectEntity))
+            .orderBy(sortOrder(command.getSort()))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -59,10 +58,10 @@ public class SearchProjectAdapter implements SearchProjectPort {
             .leftJoin(assignmentEntity.company, companyEntity)
             .where(
                 projectEntity.isDeleted.eq(false),
-                matchesKeyword(command.getKeyword(), command.getCategory(), projectEntity,
-                    companyEntity),
-                matchesStatus(command.getProjectStatus(), projectEntity),
-                matchesPeriod(command.getStartDate(), command.getEndDate(), projectEntity)
+                matchesKeyword(command.getKeyword(), command.getCategory()
+                ),
+                matchesStatus(command.getProjectStatus()),
+                matchesPeriod(command.getStartDate(), command.getEndDate())
             )
             .fetchOne();
         return PageableExecutionUtils.getPage(projects, pageable, () -> count != null ? count : 0L);
@@ -79,12 +78,12 @@ public class SearchProjectAdapter implements SearchProjectPort {
             .where(
                 assignmentEntity.user.id.eq(userId), // 할당
                 projectEntity.isDeleted.eq(false),
-                matchesKeyword(command.getKeyword(), command.getCategory(), projectEntity,
-                    companyEntity),
-                matchesStatus(command.getProjectStatus(), projectEntity),
-                matchesPeriod(command.getStartDate(), command.getEndDate(), projectEntity)
+                matchesKeyword(command.getKeyword(), command.getCategory()
+                ),
+                matchesStatus(command.getProjectStatus()),
+                matchesPeriod(command.getStartDate(), command.getEndDate())
             )
-            .orderBy(sortOrder(command.getSort(), projectEntity))
+            .orderBy(sortOrder(command.getSort()))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -99,53 +98,55 @@ public class SearchProjectAdapter implements SearchProjectPort {
             .where(
                 assignmentEntity.user.id.eq(userId),
                 projectEntity.isDeleted.eq(false),
-                matchesKeyword(command.getKeyword(), command.getCategory(), projectEntity,
-                    companyEntity),
-                matchesStatus(command.getProjectStatus(), projectEntity),
-                matchesPeriod(command.getStartDate(), command.getEndDate(), projectEntity)
+                matchesKeyword(command.getKeyword(), command.getCategory()
+                ),
+                matchesStatus(command.getProjectStatus()),
+                matchesPeriod(command.getStartDate(), command.getEndDate())
             )
             .fetchOne();
         return PageableExecutionUtils.getPage(projects, pageable, () -> count != null ? count : 0L);
     }
 
     // 조건 메서드
-    private BooleanExpression matchesKeyword(String keyword, String category,
-        QProjectEntity projectEntity, QCompanyEntity companyEntity) {
+    private BooleanExpression matchesKeyword(String keyword, String category) {
         if (keyword == null || keyword.isBlank() || category == null) {
             return null;
         }
-        if (category.equals("projectName")) {
-            return projectEntity.name.contains(keyword);
-        } else if (category.equals("companyName")) {
-            return companyEntity.name.contains(keyword);
-        } else {
-            return projectEntity.name.contains(keyword);
-        }
+
+        return switch (category) {
+            case "all" -> QProjectEntity.projectEntity.name.contains(keyword)
+                .or(QCompanyEntity.companyEntity.name.contains(keyword));
+            case "projectName" -> QProjectEntity.projectEntity.name.contains(keyword);
+            case "companyName" -> QCompanyEntity.companyEntity.name.contains(keyword);
+            default -> null;
+        };
     }
 
-    private BooleanExpression matchesStatus(ProjectStatus projectStatus, QProjectEntity project) {
-        return (projectStatus == null) ? null : project.projectStatus.eq(projectStatus);
+    private BooleanExpression matchesStatus(ProjectStatus projectStatus) {
+        return (projectStatus == null) ? null
+            : QProjectEntity.projectEntity.projectStatus.eq(projectStatus);
     }
 
-    private BooleanExpression matchesPeriod(LocalDate startDate, LocalDate endDate,
-        QProjectEntity project) {
+    private BooleanExpression matchesPeriod(LocalDate startDate, LocalDate endDate) {
         if (startDate != null && endDate != null) {
-            return project.startDate.goe(startDate)
-                .and(project.endDate.loe(endDate));
+            return QProjectEntity.projectEntity.startDate.goe(startDate)
+                .and(QProjectEntity.projectEntity.endDate.loe(endDate));
         }
         if (startDate != null) {
-            return project.startDate.goe(startDate);
+            return QProjectEntity.projectEntity.startDate.goe(startDate);
         }
         if (endDate != null) {
-            return project.endDate.loe(endDate);
+            return QProjectEntity.projectEntity.endDate.loe(endDate);
         }
         return null;
     }
 
-    private OrderSpecifier<?> sortOrder(String sort, QProjectEntity projectEntity) {
+    private OrderSpecifier<?> sortOrder(String sort) {
         if ("oldest".equals(sort)) {
-            return projectEntity.createdAt.asc();
+            return QProjectEntity.projectEntity.createdAt.asc();
+        } else if ("latest".equals(sort)) {
+            return QProjectEntity.projectEntity.createdAt.desc();
         }
-        return projectEntity.createdAt.desc();
+        return null;
     }
 }

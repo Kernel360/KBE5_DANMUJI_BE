@@ -21,14 +21,15 @@ public class UserValidator {
     private final UserQueryPort userQueryPort;
     private final AssignmentQueryPort assignmentQueryPort;
 
+    public void checkAdmin(Long userId) {
+        if (!isAdmin(userId)) {
+            throw new UserException(NOT_AUTHORIZED);
+        }
+    }
+
     public boolean isAdmin(Long userId) {
         User user = userQueryPort.findById(userId);
-        boolean isAdmin = user.getRole() == Role.ADMIN;
-
-        if (isAdmin) {
-            return true;
-        }
-        throw new UserException(NOT_AUTHORIZED);
+        return user.getRole() == Role.ADMIN;
     }
 
     public void isAdminOrDeveloper(Long userId, Long projectId) {

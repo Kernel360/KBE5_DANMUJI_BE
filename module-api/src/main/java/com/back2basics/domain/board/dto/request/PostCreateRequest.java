@@ -23,7 +23,7 @@ public class PostCreateRequest {
     private String title;
 
     @NotBlank(message = "내용이 비어있을 수 없습니다.")
-    @CustomStringLengthCheck(min = 1, max = 50, message = "게시글 내용은 1,000자 이하로 입력해주세요")
+    @CustomStringLengthCheck(min = 1, max = 1000, message = "게시글 내용은 1,000자 이하로 입력해주세요")
     private String content;
 
     @NotNull(message = "타입이 입력되지 않았습니다.")
