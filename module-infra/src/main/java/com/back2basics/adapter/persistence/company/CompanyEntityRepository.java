@@ -3,6 +3,7 @@ package com.back2basics.adapter.persistence.company;
 import com.back2basics.adapter.persistence.company.dto.CompanyWithUserCountProjection;
 import com.back2basics.company.service.result.CompanyNameResult;
 import io.lettuce.core.dynamic.annotation.Param;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -64,4 +65,6 @@ public interface CompanyEntityRepository extends JpaRepository<CompanyEntity, Lo
             WHERE c.deletedAt IS NULL
         """)
     List<CompanyNameResult> getAllNames();
+
+    void deleteByDeletedAtBefore(LocalDateTime threshold);
 }
