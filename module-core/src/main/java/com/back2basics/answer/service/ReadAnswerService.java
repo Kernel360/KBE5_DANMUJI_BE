@@ -5,7 +5,6 @@ import com.back2basics.answer.port.in.ReadAnswerUseCase;
 import com.back2basics.answer.port.out.ReadAnswerPort;
 import com.back2basics.answer.service.result.ReadAnswerResult;
 import com.back2basics.infra.validator.InquiryValidator;
-import com.back2basics.user.port.in.UserQueryUseCase;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,6 @@ public class ReadAnswerService implements ReadAnswerUseCase {
 
     private final InquiryValidator inquiryValidator;
     private final ReadAnswerPort readAnswerPort;
-    private final UserQueryUseCase userQueryUseCase;
     private final UserQueryPort userQueryPort;
 
     @Override
