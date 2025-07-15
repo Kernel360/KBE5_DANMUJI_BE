@@ -2,6 +2,7 @@ package com.back2basics.domain.inquiry.dto.request;
 
 import com.back2basics.inquiry.model.InquiryStatus;
 import com.back2basics.inquiry.port.in.command.InquirySearchCommand;
+import com.back2basics.user.model.Role;
 import jakarta.annotation.Nullable;
 import java.time.LocalDate;
 import lombok.Getter;
@@ -17,7 +18,9 @@ public class SearchInquiryRequest {
     @Nullable
     private String authorName;
     @Nullable
-    private Long authorId;
+    private String authorUsername;
+    @Nullable
+    private Role role;
     @Nullable
     private InquiryStatus status;
     @Nullable
@@ -31,7 +34,8 @@ public class SearchInquiryRequest {
         return InquirySearchCommand.builder()
             .title(title)
             .authorName(authorName)
-            .authorId(authorId)
+            .authorUsername(authorUsername)
+            .role(role)
             .status(status)
             .startDate(startDate)
             .endDate(endDate)

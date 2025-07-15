@@ -174,6 +174,22 @@ public class PostController /*implements PostApiDocs*/ {
         return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
     }
 
+    @GetMapping("/search/with-count-query")
+    public ResponseEntity<ApiResponse<Page<PostSummaryReadResponse>>> searchPostsWithCountQuery(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Valid @ModelAttribute PostSearchRequest request,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostSummaryReadResult> resultPage = postSearchUseCase.searchPostWithCountQuery(
+            customUserDetails.getId(), request.toCommand(), pageable);
+        Page<PostSummaryReadResponse> responsePage = resultPage.map(
+            PostSummaryReadResponse::toResponse);
+
+        return ApiResponse.success(PostResponseCode.POST_READ_ALL_SUCCESS, responsePage);
+    }
+
     @GetMapping("/recent-posts")
     public ResponseEntity<ApiResponse<List<ReadRecentPostResponse>>> getRecentPosts(
     ) {
