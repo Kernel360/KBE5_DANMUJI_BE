@@ -6,6 +6,7 @@ import com.back2basics.answer.port.out.ReadAnswerPort;
 import com.back2basics.answer.service.result.ReadAnswerResult;
 import com.back2basics.infra.validator.InquiryValidator;
 import com.back2basics.user.port.in.UserQueryUseCase;
+import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class ReadAnswerService implements ReadAnswerUseCase {
     private final InquiryValidator inquiryValidator;
     private final ReadAnswerPort readAnswerPort;
     private final UserQueryUseCase userQueryUseCase;
+    private final UserQueryPort userQueryPort;
 
     @Override
     public Page<ReadAnswerResult> getAnswersByInquiryId(Long inquiryId,
@@ -29,7 +31,7 @@ public class ReadAnswerService implements ReadAnswerUseCase {
             pageable);
         List<Long> authorIds = answers.getContent().stream().map(Answer::getAuthorId).toList();
 
-        Map<Long, String> authorNameMap = userQueryUseCase.getNameByIds(authorIds);
+        Map<Long, String> authorNameMap = userQueryPort.getNameByIds(authorIds);
 
         List<ReadAnswerResult> results = answers.getContent().stream()
             .map(answer -> ReadAnswerResult.toResult(
