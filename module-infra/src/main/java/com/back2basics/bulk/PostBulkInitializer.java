@@ -22,22 +22,23 @@
 //
 //    @Override
 //    public void run(String... args) {
-//        int total = 200_000;
-//        int batchSize = 10_000;
+//        int total = 500_000;
+//        int batchSize = 10_0000;
 //        List<PostEntity> batch = new ArrayList<>();
 //
 //        for (int i = 1; i <= total; i++) {
 //            PostEntity post = new PostEntity(
 //                null,                         // id (auto-generated)
 //                null,                         // parentId
-//                randomLong(1, 100),           // projectId
+//                //,           // projectId
+//                22L,
 //                randomIp(),                   // authorIp
-//                randomLong(1, 10000),         // authorId
+//                1L,         // authorId
 //                randomTitle(),
 //                "This is dummy content for post #" + i,
 //                randomEnum(PostType.class),
 //                randomEnum(PostPriority.class),
-//                randomLong(1, 10)             // projectStepId
+//                randomLong(132, 137)             // projectStepId
 //            );
 //
 //            batch.add(post);
@@ -80,4 +81,4 @@
 //    }
 //
 //}
-
+//

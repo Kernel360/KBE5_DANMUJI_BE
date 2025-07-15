@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -97,6 +98,68 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             pageable,
             () -> Optional.ofNullable(countQuery.fetchOne()).orElse(0L)
         );
+    }
+
+    @Override
+    public Page<Post> searchWithCountQuery(PostSearchCommand command, Pageable pageable) {
+        List<PostSummaryProjection> results = queryFactory
+            .select(Projections.constructor(
+                PostSummaryProjection.class,
+                postEntity.id.as("postId"),
+                postEntity.parentId,
+                postEntity.projectId,
+                postEntity.projectStepId,
+                postEntity.authorId,
+                userEntity.name.as("authorName"),
+                userEntity.username.as("authorUsername"),
+                userEntity.role.as("authorRole"),
+                postEntity.title,
+                postEntity.type,
+                postEntity.priority,
+                postEntity.createdAt,
+                JPAExpressions
+                    .select(commentEntity.count())
+                    .from(commentEntity)
+                    .where(
+                        commentEntity.postId.eq(postEntity.id),
+                        commentEntity.deletedAt.isNull()
+                    )
+            ))
+            .from(postEntity)
+            .join(userEntity).on(postEntity.authorId.eq(userEntity.id))
+            .where(
+                postEntity.projectId.eq(command.getProjectId()),
+                activePosts(),
+                matchesTitle(command.getTitle()),
+                matchesAuthor(command.getAuthor()),
+                matchesPriority(command.getPriority()),
+                matchesType(command.getType()),
+                matchesStep(command.getProjectStepId())
+            )
+            .orderBy(postEntity.id.desc())
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        List<Post> posts = results.stream()
+            .map(mapper::toDomain)
+            .collect(Collectors.toList());
+
+        Long totalCount = queryFactory
+            .select(postEntity.count())
+            .from(postEntity)
+            .where(
+                postEntity.projectId.eq(command.getProjectId()),
+                activePosts(),
+                matchesTitle(command.getTitle()),
+                matchesAuthor(command.getAuthor()),
+                matchesPriority(command.getPriority()),
+                matchesType(command.getType()),
+                matchesStep(command.getProjectStepId())
+            )
+            .fetchOne();
+
+        return new PageImpl<>(posts, pageable, Optional.ofNullable(totalCount).orElse(0L));
     }
 
     private BooleanExpression activePosts() {

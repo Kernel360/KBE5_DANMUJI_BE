@@ -35,4 +35,21 @@ public class InquiryMapper {
             .build();
     }
 
+    public Inquiry toDomain(InquirySummaryProjection projection) {
+        if (projection == null) {
+            return null;
+        }
+
+        return Inquiry.builder()
+            .id(projection.inquiryId())
+            .authorId(projection.authorId())
+            .name(projection.authorName())
+            .username(projection.authorUsername())
+            .role(projection.authorRole())
+            .title(projection.title())
+            .inquiryStatus(projection.status())
+            .createdAt(projection.createdAt())
+            .build();
+    }
+
 }
