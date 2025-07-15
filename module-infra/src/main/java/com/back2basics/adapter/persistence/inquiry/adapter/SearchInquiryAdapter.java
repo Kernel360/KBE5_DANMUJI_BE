@@ -70,7 +70,9 @@ public class SearchInquiryAdapter implements SearchInquiryPort {
             .and(matchesTitle(command.getTitle()))
             .and(matchesStatus(command.getStatus()))
             .and(matchesStartDate(command.getStartDate()))
-            .and(matchesEndDate(command.getEndDate()));
+            .and(matchesEndDate(command.getEndDate()))
+            .and(matchesAuthorUsername(command.getAuthorUsername()))
+            .and(matchesAuthorName(command.getAuthorName()));
     }
 
     private BooleanExpression isActive() {
@@ -91,5 +93,13 @@ public class SearchInquiryAdapter implements SearchInquiryPort {
 
     private BooleanExpression matchesEndDate(LocalDate endDate) {
         return (endDate == null) ? null : inquiryEntity.createdAt.loe(endDate.atTime(23, 59, 59));
+    }
+
+    private BooleanExpression matchesAuthorUsername(String username) {
+        return (username == null || username.isBlank()) ? null : userEntity.username.containsIgnoreCase(username);
+    }
+
+    private BooleanExpression matchesAuthorName(String name) {
+        return (name == null || name.isBlank()) ? null : userEntity.name.containsIgnoreCase(name);
     }
 }
