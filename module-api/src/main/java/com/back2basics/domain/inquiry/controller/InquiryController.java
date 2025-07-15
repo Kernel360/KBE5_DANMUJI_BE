@@ -4,6 +4,7 @@ import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_DELETE_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_ALL_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_READ_SUCCESS;
+import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_SEARCH_SUCCESS;
 import static com.back2basics.domain.inquiry.controller.code.InquiryResponseCode.INQUIRY_UPDATE_SUCCESS;
 
 import com.back2basics.domain.inquiry.dto.request.CreateInquiryRequest;
@@ -11,14 +12,17 @@ import com.back2basics.domain.inquiry.dto.request.SearchInquiryRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryByUserRequest;
 import com.back2basics.domain.inquiry.dto.request.UpdateInquiryStatusByAdminRequest;
 import com.back2basics.domain.inquiry.dto.response.CountInquiryResponse;
+import com.back2basics.domain.inquiry.dto.response.InquirySummaryResponse;
 import com.back2basics.domain.inquiry.dto.response.ReadInquiryResponse;
 import com.back2basics.domain.inquiry.dto.response.ReadRecentInquiryResponse;
 import com.back2basics.global.response.result.ApiResponse;
 import com.back2basics.inquiry.port.in.CreateInquiryUseCase;
 import com.back2basics.inquiry.port.in.DeleteInquiryUseCase;
 import com.back2basics.inquiry.port.in.ReadInquiryUseCase;
+import com.back2basics.inquiry.port.in.SearchInquiryUseCase;
 import com.back2basics.inquiry.port.in.UpdateInquiryUseCase;
 import com.back2basics.inquiry.service.result.CountInquiryResult;
+import com.back2basics.inquiry.service.result.InquirySummaryResult;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
 import com.back2basics.security.model.CustomUserDetails;
@@ -27,6 +31,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -41,6 +46,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -52,6 +58,7 @@ public class InquiryController {
     private final ReadInquiryUseCase readInquiryUseCase;
     private final DeleteInquiryUseCase deleteInquiryUseCase;
     private final UpdateInquiryUseCase updateInquiryUseCase;
+    private final SearchInquiryUseCase searchInquiryUseCase;
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
@@ -103,6 +110,21 @@ public class InquiryController {
             pageable);
         return ApiResponse.success(INQUIRY_READ_ALL_SUCCESS,
             inquiries.map(ReadInquiryResponse::toResponse));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<InquirySummaryResponse>>> searchPosts(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @Valid @ModelAttribute SearchInquiryRequest request,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<InquirySummaryResult> result = searchInquiryUseCase.searchWithFilter(request.toCommand(), pageable);
+        Page<InquirySummaryResponse> response = result.map(
+            InquirySummaryResponse::toResponse);
+
+        return ApiResponse.success(INQUIRY_SEARCH_SUCCESS, response);
     }
 
     @GetMapping("/my/filtering")

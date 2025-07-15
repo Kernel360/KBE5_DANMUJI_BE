@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
 public interface ChecklistEntityRepository extends JpaRepository<ChecklistEntity, Long> {
 
     List<ChecklistEntity> findAllByProjectStepId(Long stepId);
+
+    void deleteAllByProjectStepIdIn(List<Long> projectStepIds);
+    
+    List<ChecklistEntity> findAllByProjectStepIdAndDeletedAtIsNullOrderByIdDesc(Long stepId);
 }

@@ -12,6 +12,7 @@ import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectUpdateCommand;
+import com.back2basics.project.port.out.ReadProjectPort;
 import com.back2basics.project.port.out.SaveProjectUserPort;
 import com.back2basics.project.port.out.UpdateProjectPort;
 import com.back2basics.projectstep.port.out.ReadProjectStepPort;
@@ -38,7 +39,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     private final AssignmentNotificationSender assignmentNotificationSender;
     private final HistoryLogService historyLogService;
 
-
+    private final ReadProjectPort readProjectPort;
     private final ReadProjectStepPort readProjectStepPort;
 
     //todo: 리팩토링 . 편의 메서드
@@ -104,6 +105,15 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         int completedStep = readProjectStepPort.totalCompletedStep(projectId);
         project.calculateProgress(totalStep - 1, completedStep);
         updateProjectPort.update(project);
+    }
+
+    @Override
+    public void updateDueSoonAndDelayedProjects() {
+        List<Project> projects = readProjectPort.findUpdatableProjects();
+        for (Project project : projects) {
+            project.calculateStatus();
+            updateProjectPort.update(project);
+        }
     }
 
     // 기존 user의 userType이 변경된 경우 또는 user가 프로젝트에서 제외된 경우

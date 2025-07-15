@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.user.repository;
 
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long>,
 
     Page<UserEntity> findAllByCompany_IdAndDeletedAtIsNull(Long companyId, Pageable pageable);
 
-    Page<UserEntity> findAllByDeletedAtIsNull(Pageable pageable);
+    Page<UserEntity> findAllByDeletedAtIsNullOrderByIdDesc(Pageable pageable);
 
     List<UserEntity> findAllByDeletedAtIsNull();
 
@@ -51,4 +52,7 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long>,
         // ★ 이 한 줄이면 끝
     Page<UserEntity> findAll(Specification<UserEntity> spec, Pageable pageable);
 
+    void deleteByDeletedAtBefore(LocalDateTime threshold);
+
+    void deleteAllByCompanyIdIn(List<Long> deletedCompanyIds);
 }

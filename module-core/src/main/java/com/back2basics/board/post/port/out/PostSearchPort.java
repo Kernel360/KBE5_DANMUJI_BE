@@ -8,4 +8,6 @@ import org.springframework.data.domain.Pageable;
 public interface PostSearchPort {
 
     Page<Post> search(PostSearchCommand command, Pageable pageable);
+
+    Page<Post> searchWithCountQuery(PostSearchCommand command, Pageable pageable);
 }
