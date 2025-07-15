@@ -21,4 +21,11 @@ public class PostSearchService implements PostSearchUseCase {
         return postSearchPort.search(command, pageable)
             .map(PostSummaryReadResult::toResult);
     }
+
+    @Override
+    public Page<PostSummaryReadResult> searchPostWithCountQuery(Long userId, PostSearchCommand command,
+        Pageable pageable) {
+        return postSearchPort.searchWithCountQuery(command, pageable)
+            .map(PostSummaryReadResult::toResult);
+    }
 }

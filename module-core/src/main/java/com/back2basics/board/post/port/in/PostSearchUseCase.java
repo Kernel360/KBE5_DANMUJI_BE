@@ -9,4 +9,7 @@ public interface PostSearchUseCase {
 
     Page<PostSummaryReadResult> searchPost(Long userId, PostSearchCommand command,
         Pageable pageable);
+
+    Page<PostSummaryReadResult> searchPostWithCountQuery(Long userId, PostSearchCommand command,
+        Pageable pageable);
 }
