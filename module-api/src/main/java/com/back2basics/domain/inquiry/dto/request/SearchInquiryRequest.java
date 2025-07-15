@@ -22,8 +22,6 @@ public class SearchInquiryRequest {
     @Nullable
     private Role role;
     @Nullable
-    private Long authorId;
-    @Nullable
     private InquiryStatus status;
     @Nullable
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -38,7 +36,6 @@ public class SearchInquiryRequest {
             .authorName(authorName)
             .authorUsername(authorUsername)
             .role(role)
-            .authorId(authorId)
             .status(status)
             .startDate(startDate)
             .endDate(endDate)
