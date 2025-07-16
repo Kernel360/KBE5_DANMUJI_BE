@@ -65,17 +65,14 @@ public class CreateProjectService implements CreateProjectUseCase {
         }
     }
 
-
+    //todo: hotfix
     private void assignUsers(Project project, ProjectCreateCommand command) {
         List<User> clientUsers = userQueryPort.findByIds(command.getClientUserId());
         List<User> devUsers = userQueryPort.findByIds(command.getDevUserId());
 
-        List<Long> clientCompanyIds = clientUsers.stream().map(User::getCompanyId).toList();
-        List<Long> devCompanyIds = devUsers.stream().map(User::getCompanyId).toList();
-
         List<Assignment> assignments = Assignment.createProjectUser(project,
             command.getDevManagerId(), command.getClientManagerId(), command.getDevUserId(),
-            command.getClientUserId(), devCompanyIds, clientCompanyIds);
+            command.getClientUserId(), devUsers, clientUsers);
         saveProjectUserPort.saveAll(assignments);
 
         // 알림을 위한 assignments id 리스트

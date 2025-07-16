@@ -165,9 +165,6 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         List<User> clientUserList = userQueryPort.findByIds(newClientUsers);
         List<User> devUserList = userQueryPort.findByIds(newDevUsers);
 
-        List<Long> clientCompanyIds = clientUserList.stream().map(User::getCompanyId).toList();
-        List<Long> devCompanyIds = devUserList.stream().map(User::getCompanyId).toList();
-
         // 생성
         List<Assignment> newAssignments = Assignment.createProjectUser(
             project,
@@ -175,8 +172,8 @@ public class UpdateProjectService implements UpdateProjectUseCase {
             clientManagers,
             newDevUsers,
             newClientUsers,
-            devCompanyIds,
-            clientCompanyIds
+            devUserList,
+            clientUserList
         );
 
         saveProjectUserPort.saveAll(newAssignments);
