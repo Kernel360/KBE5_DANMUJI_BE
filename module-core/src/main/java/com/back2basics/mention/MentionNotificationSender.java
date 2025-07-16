@@ -17,7 +17,7 @@ public class MentionNotificationSender {
     private final UserQueryPort userQueryPort;
     private final NotifyUseCase notifyUseCase;
 
-    public void notifyMentionedUsers(Long senderId, Long projectId, Long postId, String content) {
+    public void notifyMentionedUsers(Long senderId, Long projectId, Long referenceId, String content) {
         List<String> mentionedUsernames = MentionUtils.extractMentionUsernames(content);
 
         if (mentionedUsernames.isEmpty()) {
@@ -34,7 +34,7 @@ public class MentionNotificationSender {
             notifyUseCase.notify(new SendNotificationCommand(
                 receiverId,
                 projectId,
-                postId,
+                referenceId,
                 NotificationType.MENTIONED.getDescription(),
                 NotificationType.MENTIONED
             ));
