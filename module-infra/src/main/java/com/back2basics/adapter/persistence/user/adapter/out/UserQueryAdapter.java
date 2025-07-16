@@ -7,6 +7,7 @@ import com.back2basics.adapter.persistence.user.entity.UserEntity;
 import com.back2basics.adapter.persistence.user.mapper.UserMapper;
 import com.back2basics.adapter.persistence.user.repository.UserEntityRepository;
 import com.back2basics.infra.exception.user.UserException;
+import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
 import com.back2basics.user.port.in.command.SearchUserCommand;
 import com.back2basics.user.port.out.UserQueryPort;
@@ -26,6 +27,13 @@ public class UserQueryAdapter implements UserQueryPort {
 
     private final UserMapper userMapper;
     private final UserEntityRepository userEntityRepository;
+
+    @Override
+    public User findAdminByRole() {
+        return userEntityRepository.findAdminByRole(Role.ADMIN)
+            .map(userMapper::toDomain)
+            .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+    }
 
     @Override
     public User findByUsername(String username) {

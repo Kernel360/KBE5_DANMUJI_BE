@@ -15,6 +15,7 @@ public class CreateInquiryService implements CreateInquiryUseCase {
 
     private final CreateInquiryPort createInquiryPort;
     private final HistoryLogService historyLogService;
+    private final InquiryNotificationSender inquiryNotificationSender;
 
     @Override
     public Long createInquiry(CreateInquiryCommand command, Long id) {
@@ -24,9 +25,11 @@ public class CreateInquiryService implements CreateInquiryUseCase {
             .content(command.getContent())
             .build();
 
+
         Inquiry savedInquiry = createInquiryPort.save(inquiry);
 
         historyLogService.logCreated(DomainType.INQUIRY, id, savedInquiry, "관리자 문의 신규 등록");
+        inquiryNotificationSender.sendNotification(savedInquiry.getAuthorId(), savedInquiry);
 
         return savedInquiry.getId();
     }
