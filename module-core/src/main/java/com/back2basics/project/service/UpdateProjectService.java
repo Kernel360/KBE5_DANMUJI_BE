@@ -8,6 +8,7 @@ import com.back2basics.company.model.CompanyType;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validator.ProjectValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.UpdateProjectUseCase;
@@ -35,6 +36,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     private final AssignmentQueryPort assignmentQueryPort;
     private final SaveProjectUserPort saveProjectUserPort;
     private final UserQueryPort userQueryPort;
+    private final UserValidator userValidator;
     private final DeleteAssignmentPort deleteAssignmentPort;
     private final AssignmentNotificationSender assignmentNotificationSender;
     private final HistoryLogService historyLogService;
@@ -48,6 +50,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
     @Transactional
     public void updateProject(Long projectId,
         ProjectUpdateCommand command, Long loggedInUserId) {
+        userValidator.checkAdmin(loggedInUserId);
         Project project = projectValidator.findById(projectId);
         Project before = Project.copyOf(project);
         project.update(command);
@@ -73,6 +76,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
     @Override
     public void changedStatus(Long projectId, Long loggedInUserId) {
+        userValidator.checkAdmin(loggedInUserId);
         Project project = projectValidator.findById(projectId);
         Project before = Project.copyOf(project);
 
