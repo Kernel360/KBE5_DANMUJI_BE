@@ -9,6 +9,7 @@ import com.back2basics.company.model.CompanyType;
 import com.back2basics.infra.exception.user.UserException;
 import com.back2basics.user.model.Role;
 import com.back2basics.user.model.User;
+import com.back2basics.user.model.UserType;
 import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,13 @@ public class UserValidator {
         return user.getRole() == Role.ADMIN;
     }
 
-    public void isAdminOrDeveloper(Long userId, Long projectId) {
+    public void isAdminOrDeveloperOrManager(Long userId, Long projectId) {
         CompanyType companyType = assignmentQueryPort.findCompanyTypeByProjectIdAndUserId(projectId,
             userId);
+        UserType userType = assignmentQueryPort.findUserTypeByProjectIdAndUserId(projectId, userId);
+        if (userType == UserType.MANAGER) {
+            return;
+        }
         if (companyType == CompanyType.DEVELOPER) {
             return;
         }
