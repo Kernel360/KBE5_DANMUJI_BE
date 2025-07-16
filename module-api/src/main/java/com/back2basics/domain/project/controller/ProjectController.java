@@ -22,7 +22,6 @@ import com.back2basics.domain.project.dto.response.ProjectListResponse;
 import com.back2basics.domain.project.dto.response.ProjectRecentGetResponse;
 import com.back2basics.domain.project.dto.response.ProjectStatusResponse;
 import com.back2basics.global.response.result.ApiResponse;
-import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.model.ProjectStatus;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
@@ -76,14 +75,15 @@ public class ProjectController {
     private final SearchProjectUseCase searchProjectUseCase;
     private final RestoreProjectUseCase projectRestoreUseCase;
     private final UserQueryPort userQueryPort;
-    private final UserValidator userValidator;
+
+    //todo: pageable 리팩토링
 
     // 생성
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createProject(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody @Valid ProjectCreateRequest request) {
-        userValidator.isAdmin(customUserDetails.getId());
+
         createProjectUseCase.createProject(request.toCommand(), customUserDetails.getId());
         return ApiResponse.success(PROJECT_CREATE_SUCCESS);
     }
@@ -109,12 +109,12 @@ public class ProjectController {
     }
 
     // 검색 프로젝트 조회
-    //todo: 키워드, 카테고리 둘 중 하나만 넣었을 때 전체가 출력됨
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> searchProjects(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @ModelAttribute ProjectSearchRequest request,
-        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
         User user = userQueryPort.findById(customUserDetails.getId());
         Page<ProjectListResult> result = null;
         Pageable pageable = PageRequest.of(page, size);
@@ -132,7 +132,6 @@ public class ProjectController {
     }
 
     // 상세 정보 조회
-    // todo: api 2개로 분할
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectDetailResponse>> getProjectDetails(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -147,9 +146,8 @@ public class ProjectController {
     @PutMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Void>> updateProject(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
-        @PathVariable Long projectId,
-        @RequestBody @Valid ProjectUpdateRequest request) {
-        userValidator.isAdmin(customUserDetails.getId());
+        @RequestBody @Valid ProjectUpdateRequest request,
+        @PathVariable Long projectId) {
         ProjectUpdateCommand command = request.toCommand();
         updateProjectUseCase.updateProject(projectId, command, customUserDetails.getId());
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
@@ -160,7 +158,6 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<Void>> deleteProject(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-        userValidator.isAdmin(customUserDetails.getId());
         deleteProjectUseCase.deleteProject(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_DELETE_SUCCESS);
     }
@@ -170,7 +167,6 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<Void>> updateProjectStatus(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-        userValidator.isAdmin(customUserDetails.getId());
         updateProjectUseCase.changedStatus(projectId, customUserDetails.getId());
         return ApiResponse.success(PROJECT_UPDATE_SUCCESS);
     }
@@ -234,9 +230,7 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<Void>> restoreProject(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long projectId) {
-        Long userId = customUserDetails.getId();
-        userValidator.isAdmin(userId);
-        projectRestoreUseCase.restoreProject(userId, projectId);
+        projectRestoreUseCase.restoreProject(customUserDetails.getId(), projectId);
         return ApiResponse.success(PROJECT_RESTORE_SUCCESS);
     }
 

@@ -3,6 +3,7 @@ package com.back2basics.project.service;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
 import com.back2basics.infra.validator.ProjectValidator;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.DeleteProjectUseCase;
 import com.back2basics.project.port.out.UpdateProjectPort;
@@ -14,11 +15,13 @@ import org.springframework.stereotype.Service;
 public class DeleteProjectService implements DeleteProjectUseCase {
 
     private final UpdateProjectPort port;
+    private final UserValidator userValidator;
     private final ProjectValidator projectValidator;
     private final HistoryLogService historyLogService;
 
     @Override
     public void deleteProject(Long id, Long loggedInUserId) {
+        userValidator.checkAdmin(loggedInUserId);
 
         Project project = projectValidator.findById(id);
         project.softDeleted();

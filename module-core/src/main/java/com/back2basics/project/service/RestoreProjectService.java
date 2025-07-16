@@ -22,7 +22,7 @@ public class RestoreProjectService implements RestoreProjectUseCase {
 
     @Override
     public void restoreProject(Long requesterId, Long projectId) {
-        userValidator.isAdmin(requesterId);
+        userValidator.checkAdmin(requesterId);
         Project project = projectValidator.findProjectForRestore(projectId);
 
         project.restore();
