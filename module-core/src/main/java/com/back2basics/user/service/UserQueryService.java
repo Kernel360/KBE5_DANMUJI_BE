@@ -10,9 +10,6 @@ import com.back2basics.user.service.result.UserInfoResult;
 import com.back2basics.user.service.result.UserPositionResult;
 import com.back2basics.user.service.result.UserSimpleResult;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -75,22 +72,6 @@ public class UserQueryService implements UserQueryUseCase {
                     : null;
                 return UserSimpleResult.of(user, company);
             });
-    }
-
-    @Override
-    public String getNameById(Long userId) {
-        return userQueryPort.findById(userId).getName();
-    }
-
-    @Override
-    public Map<Long, String> getNameByIds(List<Long> userIds) {
-        return userQueryPort.findByIds(userIds).stream()
-            .collect(Collectors.toMap(User::getId, User::getName));
-    }
-
-    @Override
-    public Optional<Long> getIdByName(String userName) {
-        return userQueryPort.findIdByName(userName);
     }
 
     @Override

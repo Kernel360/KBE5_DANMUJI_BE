@@ -144,4 +144,10 @@ public class UserQueryAdapter implements UserQueryPort {
 
         return entityPage.map(userMapper::toDomain);
     }
+
+    @Override
+    public Map<Long, String> getNameByIds(List<Long> userIds) {
+        return userEntityRepository.findAllById(userIds).stream()
+            .collect(Collectors.toMap(UserEntity::getId, UserEntity::getUsername));
+    }
 }

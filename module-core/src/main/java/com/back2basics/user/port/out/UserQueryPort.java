@@ -47,4 +47,6 @@ public interface UserQueryPort {
     Long getUserCounts();
 
     Page<User> searchUsers(SearchUserCommand command, Pageable pageable);
+
+    Map<Long, String> getNameByIds(List<Long> userIds);
 }

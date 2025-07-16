@@ -9,6 +9,7 @@ import com.back2basics.inquiry.service.result.CountInquiryResult;
 import com.back2basics.inquiry.service.result.ReadInquiryResult;
 import com.back2basics.inquiry.service.result.ReadRecentInquiryResult;
 import com.back2basics.user.port.in.UserQueryUseCase;
+import com.back2basics.user.port.out.UserQueryPort;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,13 +27,15 @@ public class ReadInquiryService implements ReadInquiryUseCase {
     private final ReadInquiryPort readInquiryPort;
     private final InquiryValidator inquiryValidator;
     private final UserQueryUseCase userQueryUseCase;
+    private final UserQueryPort userQueryPort;
 
     @Override
     public ReadInquiryResult getInquiry(Long id, Long userId) {
         Inquiry inquiry = inquiryValidator.findInquiry(id, userId);
         Long authorId = inquiry.getAuthorId();
 
-        String authorName = userQueryUseCase.getNameById(authorId);
+        String authorName = userQueryPort.findById(authorId).getName();
+        ;
 
         return ReadInquiryResult.toResult(inquiry, authorName);
     }
@@ -42,7 +45,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
         Inquiry inquiry = inquiryValidator.findUsersInquiry(id);
         Long authorId = inquiry.getAuthorId();
 
-        String authorName = userQueryUseCase.getNameById(authorId);
+        String authorName = userQueryPort.findById(authorId).getName();
 
         return ReadInquiryResult.toResult(inquiry, authorName);
     }
@@ -54,7 +57,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
             .map(Inquiry::getAuthorId)
             .toList();
 
-        Map<Long, String> authorNameMap = userQueryUseCase.getNameByIds(authorIds);
+        Map<Long, String> authorNameMap = userQueryPort.getNameByIds(authorIds);
 
         return inquiries.stream()
             .map(inquiry -> ReadInquiryResult.toResult(inquiry,
@@ -71,7 +74,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
             .map(Inquiry::getAuthorId)
             .toList();
 
-        Map<Long, String> authorNameMap = userQueryUseCase.getNameByIds(authorIds);
+        Map<Long, String> authorNameMap = userQueryPort.getNameByIds(authorIds);
 
         List<ReadInquiryResult> results = inquiryPage.getContent().stream()
             .map(inquiry -> ReadInquiryResult.toResult(
@@ -91,7 +94,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
             .map(Inquiry::getAuthorId)
             .toList();
 
-        Map<Long, String> authorNameMap = userQueryUseCase.getNameByIds(authorIds);
+        Map<Long, String> authorNameMap = userQueryPort.getNameByIds(authorIds);
 
         List<ReadInquiryResult> results = inquiryPage.getContent().stream()
             .map(inquiry -> ReadInquiryResult.toResult(
@@ -120,7 +123,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
 
         InquirySearchCommand searchCmd = command;
         if (StringUtils.hasText(command.getAuthorName())) {
-            Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(command.getAuthorName());
+            Optional<Long> authorIdOpt = userQueryPort.findIdByName(command.getAuthorName());
             if (authorIdOpt.isEmpty()) {
                 return Page.empty(pageable);
             }
@@ -135,7 +138,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
         if (StringUtils.hasText(command.getAuthorName())) {
             return page.map(inq -> ReadInquiryResult.toResult(inq, command.getAuthorName()));
         } else {
-            Map<Long, String> idNameMap = userQueryUseCase.getNameByIds(
+            Map<Long, String> idNameMap = userQueryPort.getNameByIds(
                 page.getContent().stream()
                     .map(Inquiry::getAuthorId)
                     .distinct()
@@ -154,7 +157,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
 
         InquirySearchCommand searchCmd = command;
         if (StringUtils.hasText(command.getAuthorName())) {
-            Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(command.getAuthorName());
+            Optional<Long> authorIdOpt = userQueryPort.findIdByName(command.getAuthorName());
             if (authorIdOpt.isEmpty()) {
                 return Page.empty(pageable);
             }
@@ -169,7 +172,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
         if (StringUtils.hasText(command.getAuthorName())) {
             return page.map(inq -> ReadInquiryResult.toResult(inq, command.getAuthorName()));
         } else {
-            Map<Long, String> idNameMap = userQueryUseCase.getNameByIds(
+            Map<Long, String> idNameMap = userQueryPort.getNameByIds(
                 page.getContent().stream()
                     .map(Inquiry::getAuthorId)
                     .distinct()

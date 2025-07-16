@@ -28,4 +28,5 @@ public class ReadAnswerJpaAdapter implements ReadAnswerPort {
             inquiryId, pageable).map(answerMapper::toDomain);
 
     }
+    
 }

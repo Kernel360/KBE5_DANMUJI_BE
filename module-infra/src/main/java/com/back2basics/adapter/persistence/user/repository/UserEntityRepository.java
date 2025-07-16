@@ -49,7 +49,6 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long>,
 
     @Override
     @EntityGraph(attributePaths = "company")
-        // ★ 이 한 줄이면 끝
     Page<UserEntity> findAll(Specification<UserEntity> spec, Pageable pageable);
 
     void deleteByDeletedAtBefore(LocalDateTime threshold);
