@@ -34,7 +34,8 @@ public class ReadInquiryService implements ReadInquiryUseCase {
         Inquiry inquiry = inquiryValidator.findInquiry(id, userId);
         Long authorId = inquiry.getAuthorId();
 
-        String authorName = userQueryUseCase.getNameById(authorId);
+        String authorName = userQueryPort.findById(authorId).getName();
+        ;
 
         return ReadInquiryResult.toResult(inquiry, authorName);
     }
@@ -44,7 +45,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
         Inquiry inquiry = inquiryValidator.findUsersInquiry(id);
         Long authorId = inquiry.getAuthorId();
 
-        String authorName = userQueryUseCase.getNameById(authorId);
+        String authorName = userQueryPort.findById(authorId).getName();
 
         return ReadInquiryResult.toResult(inquiry, authorName);
     }
@@ -122,7 +123,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
 
         InquirySearchCommand searchCmd = command;
         if (StringUtils.hasText(command.getAuthorName())) {
-            Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(command.getAuthorName());
+            Optional<Long> authorIdOpt = userQueryPort.findIdByName(command.getAuthorName());
             if (authorIdOpt.isEmpty()) {
                 return Page.empty(pageable);
             }
@@ -156,7 +157,7 @@ public class ReadInquiryService implements ReadInquiryUseCase {
 
         InquirySearchCommand searchCmd = command;
         if (StringUtils.hasText(command.getAuthorName())) {
-            Optional<Long> authorIdOpt = userQueryUseCase.getIdByName(command.getAuthorName());
+            Optional<Long> authorIdOpt = userQueryPort.findIdByName(command.getAuthorName());
             if (authorIdOpt.isEmpty()) {
                 return Page.empty(pageable);
             }
