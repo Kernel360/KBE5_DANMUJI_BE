@@ -1,6 +1,7 @@
 package com.back2basics.adapter.persistence.user.repository;
 
 import com.back2basics.adapter.persistence.user.entity.UserEntity;
+import com.back2basics.user.model.Role;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long>,
     JpaSpecificationExecutor<UserEntity> {
+
+    Optional<UserEntity> findAdminByRole(Role role);
 
     boolean existsByUsername(String username);
 

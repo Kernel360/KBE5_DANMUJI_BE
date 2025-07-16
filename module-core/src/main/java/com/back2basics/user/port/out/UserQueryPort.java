@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserQueryPort {
 
+    User findAdminByRole();
+
     User findByUsername(String username);
 
     User findById(Long userId);
