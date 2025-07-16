@@ -3,6 +3,7 @@ package com.back2basics.assignment.model;
 import com.back2basics.company.model.CompanyType;
 import com.back2basics.history.strategy.TargetDomain;
 import com.back2basics.project.model.Project;
+import com.back2basics.user.model.User;
 import com.back2basics.user.model.UserType;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,30 +52,32 @@ public class Assignment implements TargetDomain {
             .build();
     }
 
-    //todo: 개발사, 고객사 create로 분리하는게 좋을 지
-    public static List<Assignment> createProjectUser(Project project, List<Long> devManagers,
-        List<Long> clientManagers, List<Long> devUsers, List<Long> clientUsers,
-        List<Long> devCompanyIds, List<Long> clientCompanyIds) {
+    //todo: devUserIds, clientUserIds 삭제 확인
+    public static List<Assignment> createProjectUser(Project project, List<Long> devManagerIds,
+        List<Long> clientManagerIds, List<Long> devUserIds, List<Long> clientUserIds,
+        List<User> devUsers, List<User> clientUsers) {
 
         // index(int)로 stream 사용
-        List<Assignment> developers = IntStream.range(0, devUsers.size())
+        List<Assignment> developers = IntStream.range(0, devUserIds.size())
             .mapToObj(i -> Assignment.builder()
                 .projectId(project.getId())
-                .userId(devUsers.get(i))
-                .companyId(devCompanyIds.get(i))
+                .userId(devUsers.get(i).getId())
+                .companyId(devUsers.get(i).getCompanyId())
                 .userType(
-                    devManagers.contains(devUsers.get(i)) ? UserType.MANAGER : UserType.MEMBER)
+                    devManagerIds.contains(devUsers.get(i).getId()) ? UserType.MANAGER
+                        : UserType.MEMBER)
                 .companyType(CompanyType.DEVELOPER)
                 .build())
             .toList();
 
-        List<Assignment> clients = IntStream.range(0, clientUsers.size())
+        List<Assignment> clients = IntStream.range(0, clientUserIds.size())
             .mapToObj(i -> Assignment.builder()
                 .projectId(project.getId())
-                .userId(clientUsers.get(i))
-                .companyId(clientCompanyIds.get(i))
+                .userId(clientUsers.get(i).getId())
+                .companyId(clientUsers.get(i).getCompanyId())
                 .userType(
-                    clientManagers.contains(clientUsers.get(i)) ? UserType.MANAGER : UserType.MEMBER
+                    clientManagerIds.contains(clientUsers.get(i).getId()) ? UserType.MANAGER
+                        : UserType.MEMBER
                 )
                 .companyType(CompanyType.CLIENT)
                 .build())

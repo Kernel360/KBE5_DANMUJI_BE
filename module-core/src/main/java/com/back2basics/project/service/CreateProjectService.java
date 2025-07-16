@@ -4,6 +4,7 @@ import com.back2basics.assignment.model.Assignment;
 import com.back2basics.assignment.service.notification.AssignmentNotificationSender;
 import com.back2basics.history.model.DomainType;
 import com.back2basics.history.service.HistoryLogService;
+import com.back2basics.infra.validator.UserValidator;
 import com.back2basics.project.model.Project;
 import com.back2basics.project.port.in.CreateProjectUseCase;
 import com.back2basics.project.port.in.command.ProjectCreateCommand;
@@ -27,6 +28,7 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final SaveProjectStepPort saveProjectStepPort;
     private final SaveProjectUserPort saveProjectUserPort;
     private final UserQueryPort userQueryPort;
+    private final UserValidator userValidator;
     private final AssignmentNotificationSender assignmentNotificationSender;
     private final HistoryLogService historyLogService;
 
@@ -36,6 +38,8 @@ public class CreateProjectService implements CreateProjectUseCase {
     @Override
     @Transactional
     public void createProject(ProjectCreateCommand command, Long loggedInUserId) {
+
+        userValidator.checkAdmin(loggedInUserId);
         Project project = Project.create(command);
         Project savedProject = saveProjectPort.createSave(project);
         historyLogService.logCreated(DomainType.PROJECT, loggedInUserId, savedProject,
@@ -61,17 +65,14 @@ public class CreateProjectService implements CreateProjectUseCase {
         }
     }
 
-
+    //todo: hotfix
     private void assignUsers(Project project, ProjectCreateCommand command) {
         List<User> clientUsers = userQueryPort.findByIds(command.getClientUserId());
         List<User> devUsers = userQueryPort.findByIds(command.getDevUserId());
 
-        List<Long> clientCompanyIds = clientUsers.stream().map(User::getCompanyId).toList();
-        List<Long> devCompanyIds = devUsers.stream().map(User::getCompanyId).toList();
-
         List<Assignment> assignments = Assignment.createProjectUser(project,
             command.getDevManagerId(), command.getClientManagerId(), command.getDevUserId(),
-            command.getClientUserId(), devCompanyIds, clientCompanyIds);
+            command.getClientUserId(), devUsers, clientUsers);
         saveProjectUserPort.saveAll(assignments);
 
         // 알림을 위한 assignments id 리스트
