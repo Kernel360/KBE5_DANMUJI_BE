@@ -49,13 +49,14 @@ public class ProjectStepController {
     private final UpdateProjectUseCase updateProjectUseCase;
     private final UserValidator userValidator;
 
+    //todo: 권한확인 로직 이동
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createStep(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody CreateProjectStepRequest request,
         @RequestParam Long projectId) {
-        userValidator.isAdminOrDeveloper(customUserDetails.getId(), projectId);
         CreateProjectStepCommand command = request.toCommand();
+        userValidator.isAdminOrDeveloperOrManager(customUserDetails.getId(), projectId);
         createProjectStepUseCase.createStep(command, projectId, customUserDetails.getId());
         updateProjectUseCase.calculateProgressRate(projectId);
 
@@ -68,7 +69,7 @@ public class ProjectStepController {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestBody List<Long> stepIdsInNewOrder,
         @PathVariable Long projectId) {
-        userValidator.isAdminOrDeveloper(customUserDetails.getId(), projectId);
+        userValidator.isAdminOrDeveloperOrManager(customUserDetails.getId(), projectId);
         updateProjectStepUseCase.reorderSteps(projectId, stepIdsInNewOrder);
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
     }
@@ -101,7 +102,7 @@ public class ProjectStepController {
         @RequestBody UpdateProjectStepRequest request,
         @RequestParam Long projectId,
         @PathVariable Long stepId) {
-        userValidator.isAdminOrDeveloper(customUserDetails.getId(), projectId);
+        userValidator.isAdminOrDeveloperOrManager(customUserDetails.getId(), projectId);
         UpdateProjectStepCommand command = request.toCommand();
         updateProjectStepUseCase.updateStepName(command, stepId, customUserDetails.getId());
         return ApiResponse.success(STEP_UPDATE_SUCCESS);
@@ -113,7 +114,7 @@ public class ProjectStepController {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long stepId,
         @RequestParam Long projectId) {
-        userValidator.isAdminOrDeveloper(customUserDetails.getId(), projectId);
+        userValidator.isAdminOrDeveloperOrManager(customUserDetails.getId(), projectId);
         deleteProjectStepUseCase.softDelete(stepId, customUserDetails.getId());
         updateProjectUseCase.calculateProgressRateByDeleteStep(projectId);
         return ApiResponse.success(STEP_DELETE_SUCCESS);
@@ -126,7 +127,7 @@ public class ProjectStepController {
         @RequestParam Long projectId,
         @PathVariable Long stepId
     ) {
-        userValidator.isAdminOrDeveloper(customUserDetails.getId(), projectId);
+        userValidator.isAdminOrDeveloperOrManager(customUserDetails.getId(), projectId);
         updateProjectStepUseCase.updateStepStatus(stepId);
         updateProjectUseCase.calculateProgressRate(projectId);
         return ApiResponse.success(STEP_STATUS_UPDATE_SUCCESS);
@@ -139,7 +140,7 @@ public class ProjectStepController {
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @RequestParam Long projectId,
         @PathVariable Long stepId) {
-        userValidator.isAdminOrDeveloper(customUserDetails.getId(), projectId);
+        userValidator.isAdminOrDeveloperOrManager(customUserDetails.getId(), projectId);
         updateProjectStepUseCase.revertStepStatus(stepId);
         return ApiResponse.success(STEP_STATUS_REVERT_SUCCESS);
     }
