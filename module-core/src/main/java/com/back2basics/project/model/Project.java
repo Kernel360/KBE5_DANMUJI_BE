@@ -84,7 +84,7 @@ public class Project implements TargetDomain {
         this.projectCost = command.getProjectCost();
         this.startDate = command.getStartDate();
         this.endDate = command.getEndDate();
-//        calculateStatusByDate(command.getEndDate()); // 배치로 변경
+        calculateStatusByDate(command.getEndDate()); // 배치로 변경
     }
 
     public void statusCompleted() {
