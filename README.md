@@ -16,6 +16,11 @@
 
 ## 🎥 실행 영상
 > Todo 😺
+- 개발사
+
+- 고객사
+
+- 관리자
 
 ## 📎배포 링크
 https://www.danmuji.site <br>
@@ -28,7 +33,7 @@ https://www.danmuji.site <br>
 
 ## ✨ 주요 기능
 📊 프로젝트 대시보드 & 상태 관리  
-✅ 체크리스트 기반 단계별 승인 흐름  
+✅ 게시글/체크리스트 기반 단계별 진행  
 💬 요청/답변 커뮤니티 및 커뮤니케이션 로그  
 🔔 실시간 알림 (SSE) 및 멘션 기능  
 🗂️ 이력 관리, 사용자 권한 제어, 파일 첨부
@@ -67,10 +72,7 @@ https://www.danmuji.site <br>
 </p>
 
 ## 🛠️ 프로젝트 아키텍처
-> Todo 😺
-
-## 🗂️ 기술 문서
-> Todo 😺
+<img width="1116" height="630" alt="image" src="https://github.com/user-attachments/assets/70283467-29ae-47ff-8ac5-1e0c0819b673" />
 
 ## 💻 실행 방법
 
@@ -114,7 +116,7 @@ npm run dev
 ## 👨‍👩‍👧‍👦 팀원 소개
 | 프로필 | 역할 | GitHub | 주요 담당 |
 |--------|-------------|--------|------------|
-| <div align="center"><img src="https://avatars.githubusercontent.com/u/102000749?v=4" width="100"/><br><strong>곽유진</strong></div> | 💻 팀장/백엔드 개발자 | [@ooyniz](https://github.com/ooyniz) | - 백엔드 & 프론트엔드 배포 환경 구성 (Nginx, Spring Boot, React)<br>- 서버 배포 및 운영 (EC2)<br>- 로그인 인증 로직 구현 (Spring Security + JWT + Redis)<br>- 액세스 토큰 / 리프레시 토큰 발급 및 갱신 처리<br>- SSE 기반 실시간 알림 기능 구현 (Redis 저장소 연동)<br>- 비밀번호 변경 시 Google SMTP 기반 이메일 인증 기능<br>- 사용자, 할 일 리스트(TodoList) CRUD API<br>- 프로젝트 단계 별 체크리스트 CRUD API 및 승인/거절 처리 |
+| <div align="center"><img src="https://avatars.githubusercontent.com/u/102000749?v=4" width="100"/><br><strong>곽유진</strong></div> | 💻 팀장/백엔드 개발자 | [@ooyniz](https://github.com/ooyniz) | - 백엔드 & 프론트엔드 배포 환경 구성 (Nginx, Spring Boot, React)<br>- 서버 배포 및 운영 (EC2)<br>- 로그인 인증 로직 구현 (Spring Security + JWT + Redis)<br>- 액세스 토큰 / 리프레시 토큰 발급 및 갱신 처리<br>- SSE 기반 실시간 알림 기능 구현 (Redis 저장소 연동)<br>- 비밀번호 변경 시 Google SMTP 기반 이메일 인증 기능<br>- 사용자, 할 일 리스트(TodoList) CRUD API<br>- 프로젝트 단계 별 체크리스트 CRUD API 및 승인/거절 처리<br>- Spring Schedule 기반 배치 작업 구현(삭제 및 갱신) |
 | <div align="center"><img src="https://avatars.githubusercontent.com/u/127851510?v=4" width="100"/><br><strong>김정인</strong></div> | 💻 백엔드 개발자 | [@HakPyun](https://github.com/HakPyun) |  - 업체 / 문의사항 / 답변 도메인별 CRUD 및 필터 검색 기능 구현<br> - 문의사항 및 답변에 대한 JWT 'Role', 'id' 기반 권한 분리<br> - 담당 도메인별 커스텀 예외 처리 및 에러 응답 구조 설계<br> - 관리자 대시보드용 통계 / 조회 API 작성 |
 | <div align="center"><img src="https://avatars.githubusercontent.com/u/174098989?v=4" width="100"/><br><strong>박진효</strong></div> | 💻 백엔드 개발자 | [@JinHy00](https://github.com/JinHy00) | - 프로젝트 CRUD API 구현<br>- 프로젝트별 단계 CRUD API 구현<br>- 프로젝트 멤버 할당 및 제외 로직 작성<br>- 조건별 필터링을 통한 프로젝트 검색 기능 구현 |
 | <div align="center"><img src="https://avatars.githubusercontent.com/u/89715722?v=4" width="100"/><br><strong>이승우</strong></div> | 💻 백엔드 개발자 | [@2eungwoo](https://github.com/2eungwoo) | - 단계별 게시판 CRUD 기능 구현<br>- 필터 기반 검색 기능 구현<br>- Cloudflare R2 기반 파일 업로드/다운로드 기능 구현<br>- SSE 기반 실시간 '@멘션' 기능 구현<br>- MongoDB 기반 NoSQL 이력 관리 기능 구현<br>- 멀티모듈 및 헥사고날 아키텍처 환경 구축<br>- 운영 환경별 Logback 기반 로깅 시스템 구성<br>- EC2 기반 클라우드 배포 자동화 스크립트 작성 |
