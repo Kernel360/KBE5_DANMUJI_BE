@@ -14,13 +14,61 @@
 </div>
 
 
-## 🎥 실행 영상
-> Todo 😺
-- 개발사
+## ⚙️ 기능 소개
+### 대시보드
+> 관리자와 고객사, 개발사는 각각 전용 대시보드에서 시스템 사용 현황을 한 눈에 파악할 수 있습니다. 
 
-- 고객사
+![관리자대시보드움짤](https://github.com/user-attachments/assets/7f234152-372d-4731-96e9-849db8cec88f)
+![유저대시보드](https://github.com/user-attachments/assets/3ec696c8-3601-49c9-9931-4db3cc0a71d1)
 
-- 관리자
+### 프로젝트 & 단계
+
+> 관리자는 프로젝트에 참여할 사용자와 업체를 직접 등록할 수 있습니다.
+
+![회원등록](https://github.com/user-attachments/assets/a558df92-1e7e-4f95-b524-f01d2de608b0)
+![회사등록움짤](https://github.com/user-attachments/assets/f8aa8d50-3a43-4067-ad98-a346f7c3e482)
+![회사보기움짤](https://github.com/user-attachments/assets/4ad6f184-869c-4cf7-b50c-648e67ed9981)
+
+> 관리자는 프로젝트를 생성할 때, 참여자와 업체들을 지정해줍니다.
+> 담당자와 멤버는 언제든 변경이 가능합니다.
+
+![플젝생성](https://github.com/user-attachments/assets/3f2cb4fd-a652-4c73-8d86-b8477645460a)
+![플젝 담당자 수정](https://github.com/user-attachments/assets/628a4be2-8fda-4c57-af60-a14cd2c3fdbd)
+
+> 프로젝트 참여자들은 프로젝트 목록에서 자신이 속한 프로젝트를 쉽게 찾을 수 있습니다.
+
+![플젝목록보기](https://github.com/user-attachments/assets/4ed45218-5781-473e-bd49-1bb62643f44d)
+
+> 각 프로젝트마다 고유하게 구성된 단계별 탭에서 업무를 구분하여 진행 및 관리할 수 있습니다.
+
+![단계별필터링](https://github.com/user-attachments/assets/c23c07a7-4a0a-484d-bf55-ffa24719a0e1)
+
+> 프로젝트 담당자 및 관리자는 기업과 프로젝트의 성격에 맞게 단계를 커스텀할 수 있습니다.
+
+![단계상태바꾸기](https://github.com/user-attachments/assets/18db3c16-5c57-49c0-9c34-0e37e8f20382)
+![단계순서바꾸기](https://github.com/user-attachments/assets/f68c2b4f-6a1f-4c86-9155-2dba6d0cf087)
+
+
+### 게시글 & 체크리스트
+
+> 게시판을 통해 파일 공유, 질문 답변, 업무 소통이 가능합니다.
+
+![게시글작성](https://github.com/user-attachments/assets/db65969c-4baa-41db-953d-c8fcb332fc41)
+
+> 프로젝트 내 참여하고 있는 다른 사용자를 멘션하여 빠르고 쉬운 의사 전달이 가능합니다.
+
+![멘션기;능](https://github.com/user-attachments/assets/6a040811-ce0b-4b07-b2a5-81739500d55f)
+
+
+> 담당자의 승인 절차 하에 단계별 필요한 업무 현황을 관리할 수 있습니다. 
+
+</br>
+
+</br>
+
+</br>
+
+
 
 ## 📎배포 링크
 https://www.danmuji.site <br>
