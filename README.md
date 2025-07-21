@@ -138,7 +138,7 @@ https://www.danmuji.site <br>
 </p>
 
 ## 🛠️ 프로젝트 아키텍처
-<img width="1116" height="630" alt="image" src="https://github.com/user-attachments/assets/70283467-29ae-47ff-8ac5-1e0c0819b673" />
+<img width="1920" height="1080" alt="단무지아키텍처" src="https://github.com/user-attachments/assets/8882928c-b7cc-4167-aecf-e4085141c048" />
 
 ## 💻 실행 방법
 
