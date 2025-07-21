@@ -14,13 +14,79 @@
 </div>
 
 
-## 🎥 실행 영상
-> Todo 😺
-- 개발사
+## ⚙️ 기능 소개
+### 대시보드
+> 관리자와 고객사, 개발사는 각각 전용 대시보드에서 시스템 사용 현황을 한 눈에 파악할 수 있습니다. 
 
-- 고객사
+![관리자대시보드움짤](https://github.com/user-attachments/assets/7f234152-372d-4731-96e9-849db8cec88f)
+![유저대시보드](https://github.com/user-attachments/assets/3ec696c8-3601-49c9-9931-4db3cc0a71d1)
 
-- 관리자
+### 프로젝트 & 단계
+
+> 관리자는 프로젝트에 참여할 사용자와 업체를 직접 등록할 수 있습니다.
+
+![회원등록](https://github.com/user-attachments/assets/a558df92-1e7e-4f95-b524-f01d2de608b0)
+![회사등록움짤](https://github.com/user-attachments/assets/f8aa8d50-3a43-4067-ad98-a346f7c3e482)
+![회사보기움짤](https://github.com/user-attachments/assets/4ad6f184-869c-4cf7-b50c-648e67ed9981)
+
+> 관리자는 프로젝트를 생성할 때, 참여자와 업체들을 지정해줍니다.
+> 담당자와 멤버는 언제든 변경이 가능합니다.
+
+![플젝생성](https://github.com/user-attachments/assets/3f2cb4fd-a652-4c73-8d86-b8477645460a)
+![플젝 담당자 수정](https://github.com/user-attachments/assets/628a4be2-8fda-4c57-af60-a14cd2c3fdbd)
+
+> 프로젝트 참여자들은 프로젝트 목록에서 자신이 속한 프로젝트를 쉽게 찾을 수 있습니다.
+
+![플젝목록보기](https://github.com/user-attachments/assets/4ed45218-5781-473e-bd49-1bb62643f44d)
+
+> 각 프로젝트마다 고유하게 구성된 단계별 탭에서 업무를 구분하여 진행 및 관리할 수 있습니다.
+
+![단계별필터링](https://github.com/user-attachments/assets/c23c07a7-4a0a-484d-bf55-ffa24719a0e1)
+
+> 프로젝트 담당자 및 관리자는 기업과 프로젝트의 성격에 맞게 단계를 커스텀할 수 있습니다.
+
+![단계상태바꾸기](https://github.com/user-attachments/assets/18db3c16-5c57-49c0-9c34-0e37e8f20382)
+![단계순서바꾸기](https://github.com/user-attachments/assets/f68c2b4f-6a1f-4c86-9155-2dba6d0cf087)
+
+
+### 게시글 & 체크리스트
+
+> 게시판을 통해 파일 공유, 질문 답변, 업무 소통이 가능합니다.
+
+![게시글작성](https://github.com/user-attachments/assets/db65969c-4baa-41db-953d-c8fcb332fc41)
+![파일다운로드](https://github.com/user-attachments/assets/0fba0d14-d265-476b-84e2-6feb45fa173c)
+
+> 프로젝트 내 참여하고 있는 다른 사용자를 멘션하여 빠르고 쉬운 의사 전달이 가능합니다.
+
+![멘션기능](https://github.com/user-attachments/assets/6a040811-ce0b-4b07-b2a5-81739500d55f)
+
+> 체크리스트를 통해 담당자의 승인 절차 하에 단계별 필요한 업무 현황을 관리할 수 있습니다.
+
+![체크리스트작성](https://github.com/user-attachments/assets/4fb3cd87-c227-402e-b125-f3a7160a11b8)
+
+> 체크리스트 승인자로 지정된 사용자는 대시보드에서 알림을 확인하여 등록된 체크리스트를 관리할 수 있습니다.<br/>
+> 승인자가 한 명이라도 반려한 체크리스트는 반려상태가 됩니다.
+
+![알림타고드가서승인반려](https://github.com/user-attachments/assets/52fa2637-439a-4b65-b1fa-4ebabcc54d9d)
+![승인자한명이라도반려함](https://github.com/user-attachments/assets/3800e18e-7501-4cc2-8468-71b43389bf9c)
+
+### 히스토리
+
+> 시스템에서 발생한 모든 이벤트는 이력으로 남습니다.
+
+![필터링움짤](https://github.com/user-attachments/assets/14e164ce-3716-42ff-8209-122e3b8c9aa6)
+
+> 관리자는 시스템 오류나 실수로 인해 삭제된 컨텐츠를 이곳에서 복구할 수 있습니다.
+
+![게시글복구](https://github.com/user-attachments/assets/46f54731-f2d0-421f-bf13-ff868fdeafdf)
+![플젝비활복구](https://github.com/user-attachments/assets/0e666da5-8069-40fa-a2c5-d584109070e6)
+
+### 문의
+
+> 관리자는 사용자들의 불편사항 혹은 프로젝트 관리요청에 대한 문의를 받고 답변할 수 있습니다.
+
+![문의하기](https://github.com/user-attachments/assets/c3b26802-f163-4803-bc8e-78456facf766)
+![문의답변하기](https://github.com/user-attachments/assets/101662b5-8682-460d-9368-a95c2d92a7a2)
 
 ## 📎배포 링크
 https://www.danmuji.site <br>
@@ -72,7 +138,7 @@ https://www.danmuji.site <br>
 </p>
 
 ## 🛠️ 프로젝트 아키텍처
-<img width="1116" height="630" alt="image" src="https://github.com/user-attachments/assets/70283467-29ae-47ff-8ac5-1e0c0819b673" />
+<img width="1920" height="1080" alt="단무지아키텍처" src="https://github.com/user-attachments/assets/8882928c-b7cc-4167-aecf-e4085141c048" />
 
 ## 💻 실행 방법
 
