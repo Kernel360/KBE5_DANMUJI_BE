@@ -159,7 +159,10 @@ public class PostSearchJpaAdapter implements PostSearchPort {
             )
             .fetchOne();
 
-        return new PageImpl<>(posts, pageable, Optional.ofNullable(totalCount).orElse(0L));
+        return new PageImpl<>(
+            posts,
+            pageable,
+            Optional.ofNullable(totalCount).orElse(0L));
     }
 
     private BooleanExpression activePosts() {
